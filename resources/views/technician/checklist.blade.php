@@ -1,0 +1,191 @@
+@extends("layouts.app")
+
+@section("title", "Servicios Realizados - Pest Controller SAT")
+@section("page-title", "Servicios Realizados")
+
+@section("content")
+<div class="max-w-6xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-900">Servicios realizados</h2>
+            <p class="text-gray-600">Cliente: {{ $service->client->name }}</p>
+            <p class="text-gray-600">Fecha: {{ $service->scheduled_date->format("d/m/Y H:i") }}</p>
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="{{ route("technician.service.show", $service) }}" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                Volver al Servicio
+            </a>
+        </div>
+    </div>
+
+    <!-- Formulario del Checklist -->
+    <form method="POST" action="{{ route("technician.service.checklist.save", $service) }}" class="space-y-6">
+        @csrf
+        
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <!-- Título DESRATIZACIÓN -->
+            <h3 class="text-xl font-bold text-green-600 mb-6">DESRATIZACIÓN</h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Columna Izquierda - Check de Puntos -->
+                <div class="space-y-4">
+                    <h4 class="text-lg font-semibold text-gray-900 mb-4">Check de Puntos</h4>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <input type="checkbox" name="installed_points_check" value="1" 
+                                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                            <label class="ml-3 text-sm text-gray-700">Puntos instalados</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" name="existing_points_check" value="1" 
+                                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                            <label class="ml-3 text-sm text-gray-700">Puntos existentes</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" name="spare_points_check" value="1" 
+                                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                            <label class="ml-3 text-sm text-gray-700">Puntos de repuesto</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" name="bait_weight_check" value="1" 
+                                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                            <label class="ml-3 text-sm text-gray-700">Peso cebo instalado (gramos)</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" name="physical_installed_check" value="1" 
+                                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                            <label class="ml-3 text-sm text-gray-700">Puntos físicos instalados</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" name="physical_existing_check" value="1" 
+                                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                            <label class="ml-3 text-sm text-gray-700">Puntos físicos existentes</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" name="physical_spare_check" value="1" 
+                                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                            <label class="ml-3 text-sm text-gray-700">Puntos físicos de repuesto</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Columna Derecha - Productos y Resultados -->
+                <div class="space-y-6">
+                    <!-- Productos Aplicados -->
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-4">Productos aplicados</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <input type="radio" name="applied_product" value="DETIA PLUS BLOQUE (Brodifacoum 0.005%) (P-426/15)" 
+                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
+                                <label class="ml-3 text-sm text-gray-700">DETIA PLUS BLOQUE (Brodifacoum 0.005%) (P-426/15)</label>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <input type="radio" name="applied_product" value="RASTOP MOLIENDA (Bromadolona 0.005%) (P-446/16)" 
+                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
+                                <label class="ml-3 text-sm text-gray-700">RASTOP MOLIENDA (Bromadolona 0.005%) (P-446/16)</label>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <input type="radio" name="applied_product" value="PASTA RASTOP (Bromadolona 0.005%) (P-498/16)" 
+                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
+                                <label class="ml-3 text-sm text-gray-700">PASTA RASTOP (Bromadolona 0.005%) (P-498/16)</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Resultados Observados -->
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-4">Resultados observados</h4>
+                        <div class="grid grid-cols-3 gap-3">
+                            @php
+                                $observedResults = old("observed_results", $service->observed_results ?? []);
+                                $options = [
+                                    "1" => "Roído",
+                                    "2" => "Muestra roedor", 
+                                    "3" => "Sustraído",
+                                    "4" => "Destruido",
+                                    "5" => "Hongo",
+                                    "6" => "Polvo",
+                                    "7" => "Captura roedor",
+                                    "8" => "Bloqueado",
+                                    "9" => "Babosa"
+                                ];
+                            @endphp
+                            
+                            @foreach($options as $number => $option)
+                            <div class="flex items-center">
+                                <input type="checkbox" name="observed_results[]" value="{{ $option }}" 
+                                       {{ in_array($option, $observedResults) ? "checked" : "" }}
+                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                                <label class="ml-2 text-sm text-gray-700">{{ $number }} | {{ $option }}</label>
+                            </div>
+                            @endforeach
+                        </div>
+                        
+                        <!-- Campos adicionales -->
+                        <div class="mt-6 space-y-4">
+                            <div class="flex items-center space-x-4">
+                                <label class="text-sm font-medium text-gray-700">PUNTOS INSTALADOS</label>
+                                <input type="number" name="total_installed_points" value="{{ old("total_installed_points", $service->total_installed_points) }}" 
+                                       class="w-20 border border-gray-300 rounded px-2 py-1 text-sm" min="0">
+                            </div>
+                            
+                            <div class="flex items-center space-x-4">
+                                <label class="text-sm font-medium text-gray-700">ACTIVIDAD DE CONSUMO TOTAL</label>
+                                <input type="number" name="total_consumption_activity" value="{{ old("total_consumption_activity", $service->total_consumption_activity) }}" 
+                                       class="w-20 border border-gray-300 rounded px-2 py-1 text-sm" step="0.01" min="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Botón Detalle -->
+            <div class="mt-8 flex justify-end">
+                <a href="{{ route("technician.service.detail", $service) }}" 
+                   class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
+                    Detalle
+                </a>
+            </div>
+        </div>
+        
+        <!-- Sitios Tratados -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">Sitios tratados</h4>
+            <textarea name="treated_sites" rows="6" 
+                      class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                      placeholder="Describa los sitios tratados...">{{ old("treated_sites", $service->treated_sites) }}</textarea>
+        </div>
+        
+        <!-- Descripción del servicio y sugerencias -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">Descripción del servicio y sugerencias</h4>
+            <textarea name="service_description" rows="6" 
+                      class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                      placeholder="Descripción del servicio realizado y sugerencias...">{{ old("service_description", $service->description) }}</textarea>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="flex justify-end space-x-4">
+            <a href="{{ route("technician.service.show", $service) }}" 
+               class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                Cancelar
+            </a>
+            <button type="submit" 
+                    class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
+                Guardar Checklist
+            </button>
+        </div>
+    </form>
+</div>
+@endsection

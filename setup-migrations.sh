@@ -1,0 +1,47 @@
+#!/bin/bash
+
+echo "=== CREANDO MIGRACIONES PEST CONTROLLER ==="
+
+cd /var/www/html/pest-controller
+
+# Crear migraciones adicionales
+php artisan make:migration create_pests_table
+php artisan make:migration create_equipment_table
+php artisan make:migration create_suppliers_table
+php artisan make:migration create_invoices_table
+php artisan make:migration create_certificates_table
+php artisan make:migration create_audit_logs_table
+php artisan make:migration create_backups_table
+php artisan make:migration create_maintenance_logs_table
+php artisan make:migration create_notifications_table
+php artisan make:migration create_ratings_table
+php artisan make:migration create_media_table
+php artisan make:migration create_work_order_materials_table
+php artisan make:migration create_work_order_checklists_table
+php artisan make:migration create_work_order_media_table
+php artisan make:migration create_work_order_ratings_table
+php artisan make:migration create_work_order_notifications_table
+php artisan make:migration create_work_order_audit_logs_table
+php artisan make:migration create_work_order_backups_table
+php artisan make:migration create_work_order_maintenance_logs_table
+php artisan make:migration create_work_order_pests_table
+php artisan make:migration create_work_order_equipment_table
+php artisan make:migration create_work_order_suppliers_table
+php artisan make:migration create_work_order_invoices_table
+php artisan make:migration create_work_order_certificates_table
+php artisan make:migration create_work_order_work_orders_table
+php artisan make:migration create_work_order_work_order_materials_table
+php artisan make:migration create_work_order_work_order_checklists_table
+php artisan make:migration create_work_order_work_order_media_table
+php artisan make:migration create_work_order_work_order_ratings_table
+php artisan make:migration create_work_order_work_order_notifications_table
+php artisan make:migration create_work_order_work_order_audit_logs_table
+php artisan make:migration create_work_order_work_order_backups_table
+php artisan make:migration create_work_order_work_order_maintenance_logs_table
+php artisan make:migration create_work_order_work_order_pests_table
+php artisan make:migration create_work_order_work_order_equipment_table
+php artisan make:migration create_work_order_work_order_suppliers_table
+php artisan make:migration create_work_order_work_order_invoices_table
+php artisan make:migration create_work_order_work_order_certificates_table
+
+echo "Migraciones creadas exitosamente!"

@@ -1,0 +1,174 @@
+@extends("layouts.app")
+
+@section("title", "Detalle del Servicio - Pest Controller SAT")
+@section("page-title", "Detalle del Servicio")
+
+@section("content")
+<div class="max-w-6xl mx-auto space-y-6">
+    <!-- Service Header -->
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <div class="flex justify-between items-start mb-4">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900">{{ $service->client->name ?? "Cliente no encontrado" }}</h2>
+                <p class="text-gray-600">{{ $service->address }}</p>
+            </div>
+            <div class="text-right">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+                    @if($service->status == "pendiente") bg-gray-100 text-gray-800
+                    @elseif($service->status == "en_progreso") bg-blue-100 text-blue-800
+                    @elseif($service->status == "vencido") bg-red-100 text-red-800
+                    @else bg-green-100 text-green-800
+                    @endif">
+                    {{ ucfirst(str_replace("_", " ", $service->status)) }}
+                </span>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <h3 class="text-sm font-medium text-gray-500">Tipo de Servicio</h3>
+                <p class="text-lg font-semibold text-gray-900">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                        @if($service->service_type == "desratizacion") bg-red-100 text-red-800
+                        @elseif($service->service_type == "desinsectacion") bg-yellow-100 text-yellow-800
+                        @else bg-blue-100 text-blue-800
+                        @endif">
+                        {{ ucfirst($service->service_type) }}
+                    </span>
+                </p>
+            </div>
+            <div>
+                <h3 class="text-sm font-medium text-gray-500">Prioridad</h3>
+                <p class="text-lg font-semibold text-gray-900">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                        @if($service->priority == "alta") bg-red-100 text-red-800
+                        @elseif($service->priority == "media") bg-yellow-100 text-yellow-800
+                        @else bg-green-100 text-green-800
+                        @endif">
+                        {{ ucfirst($service->priority) }}
+                    </span>
+                </p>
+            </div>
+            <div>
+                <h3 class="text-sm font-medium text-gray-500">Fecha Programada</h3>
+                <p class="text-lg font-semibold text-gray-900">{{ $service->scheduled_date->format("d/m/Y H:i") }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Service Details -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Client Information -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Información del Cliente</h3>
+            <div class="space-y-3">
+                <div>
+                    <span class="text-sm font-medium text-gray-500">Razón Social:</span>
+                    <p class="text-gray-900">{{ $service->client->name ?? "N/A" }}</p>
+                </div>
+                <div>
+                    <span class="text-sm font-medium text-gray-500">RUT:</span>
+                    <p class="text-gray-900">{{ $service->client->rut ?? "N/A" }}</p>
+                </div>
+                <div>
+                    <span class="text-sm font-medium text-gray-500">Email:</span>
+                    <p class="text-gray-900">{{ $service->client->email ?? "N/A" }}</p>
+                </div>
+                <div>
+                    <span class="text-sm font-medium text-gray-500">Teléfono:</span>
+                    <p class="text-gray-900">{{ $service->client->phone ?? "N/A" }}</p>
+                </div>
+                <div>
+                    <span class="text-sm font-medium text-gray-500">Tipo de Negocio:</span>
+                    <p class="text-gray-900">{{ $service->client->business_type ?? "No especificado" }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Information -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Detalles del Servicio</h3>
+            <div class="space-y-3">
+                <div>
+                    <span class="text-sm font-medium text-gray-500">Descripción:</span>
+                    <p class="text-gray-900">{{ $service->description ?? "Sin descripción" }}</p>
+                </div>
+                <div>
+                    <span class="text-sm font-medium text-gray-500">Técnico Asignado:</span>
+                    <p class="text-gray-900">{{ $service->assignedUser->name ?? "Sin asignar" }}</p>
+                </div>
+                @if($service->started_at)
+                <div>
+                    <span class="text-sm font-medium text-gray-500">Iniciado:</span>
+                    <p class="text-gray-900">{{ $service->started_at->format("d/m/Y H:i") }}</p>
+                </div>
+                @endif
+                @if($service->completed_at)
+                <div>
+                    <span class="text-sm font-medium text-gray-500">Completado:</span>
+                    <p class="text-gray-900">{{ $service->completed_at->format("d/m/Y H:i") }}</p>
+                </div>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Used -->
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Productos Utilizados</h3>
+        @if($service->products->count() > 0)
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producto</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ingrediente Activo</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de Uso</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @foreach($service->products as $product)
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">{{ $product->name }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {{ $product->active_ingredient }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {{ $product->pivot->quantity }} {{ $product->unit }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {{ $product->pivot->used_at ? \Carbon\Carbon::parse($product->pivot->used_at)->format("d/m/Y H:i") : "No registrado" }}
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        @else
+        <p class="text-gray-500 text-center py-4">No se han registrado productos para este servicio</p>
+        @endif
+    </div>
+
+    <!-- Actions -->
+    <div class="flex justify-between items-center">
+        <a href="{{ route("services.index") }}" 
+           class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+            Volver a Servicios
+        </a>
+        
+        <div class="flex space-x-4">
+            @can("edit-services")
+            <a href="{{ route("services.edit", $service) }}" 
+               class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+                Editar Servicio
+            </a>
+            @endcan
+            
+            
+        </div>
+    </div>
+</div>
+@endsection

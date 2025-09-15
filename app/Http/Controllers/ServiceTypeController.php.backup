@@ -1,0 +1,75 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\ServiceType;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
+class ServiceTypeController extends Controller
+{
+    public function index()
+    {
+         = ServiceType::orderBy("name")->get();
+        return view('service-types.index', compact('serviceTypes'));
+    }
+
+    public function create()
+    {
+        return view('service-types.create');
+    }
+
+    public function store(Request )
+    {
+        ->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        ServiceType::create([
+            'name' => ->name,
+            'slug' => Str::slug(->name),
+            'description' => ->description,
+            'is_active' => true,
+        ]);
+
+        return redirect()->route('service-types.index')
+            ->with('success', 'Tipo de servicio creado exitosamente');
+    }
+
+    public function show(ServiceType )
+    {
+        return view('service-types.show', compact('serviceType'));
+    }
+
+    public function edit(ServiceType )
+    {
+        return view('service-types.edit', compact('serviceType'));
+    }
+
+    public function update(Request , ServiceType )
+    {
+        ->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'is_active' => 'boolean',
+        ]);
+
+        ->update([
+            'name' => ->name,
+            'slug' => Str::slug(->name),
+            'description' => ->description,
+            'is_active' => ->boolean('is_active'),
+        ]);
+
+        return redirect()->route('service-types.index')
+            ->with('success', 'Tipo de servicio actualizado exitosamente');
+    }
+
+    public function destroy(ServiceType )
+    {
+        ->delete();
+        return redirect()->route('service-types.index')
+            ->with('success', 'Tipo de servicio eliminado exitosamente');
+    }
+}

@@ -1,0 +1,183 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Service;
+use App\Models\ServiceReport;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
+class ReportController extends Controller
+{
+    /**
+     * Generar PDF del servicio
+     */
+    public function generatePdf(Service $service)
+    {
+        if ($service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
+            abort(403, "No tienes acceso a este servicio");
+        }
+
+        if (!$service->checklist_completed) {
+            return redirect()->back()->with("error", "El checklist debe estar completado para generar el PDF");
+        }
+
+        // Verificar si ya existe un reporte para este servicio
+        $existingReport = ServiceReport::where("service_id", $service->id)->first();
+        
+        if ($existingReport) {
+            return redirect()->route("reports.download", $existingReport);
+        }
+
+        // Generar datos del reporte
+        $reportNumber = ServiceReport::generateReportNumber();
+        $qrCode = ServiceReport::generateQRCode();
+        
+        // Generar código QR
+        $qrCodeSvg = QrCode::size(80)
+            ->format("svg")
+            ->generate($this->getValidationUrl($qrCode));
+
+        // Preparar datos para el PDF
+        $checklistData = $service->checklist_data ?? [];
+        
+        // Cargar relaciones necesarias
+        $service->load(["client", "assignedUser", "observations"]);
+
+        // Generar PDF
+        $pdf = Pdf::loadView("reports.service-report", [
+            "service" => $service,
+            "checklistData" => $checklistData,
+            "qrCode" => $qrCodeSvg,
+            "report" => (object) [
+                "report_number" => $reportNumber,
+                "qr_code" => $qrCode,
+                "generated_at" => now(),
+            ]
+        ]);
+
+        $pdf->setPaper("A4", "portrait");
+        $pdf->setOptions([
+            "isHtml5ParserEnabled" => true,
+            "isRemoteEnabled" => true,
+            "defaultFont" => "Arial",
+        ]);
+
+        // Guardar PDF en storage
+        $fileName = "service-report-{$service->id}-{$reportNumber}.pdf";
+        $filePath = "reports/{$fileName}";
+        
+        Storage::disk("public")->put($filePath, $pdf->output());
+
+        // Crear registro en base de datos
+        $report = ServiceReport::create([
+            "service_id" => $service->id,
+            "generated_by" => auth()->id(),
+            "report_number" => $reportNumber,
+            "file_path" => $filePath,
+            "qr_code" => $qrCode,
+            "report_data" => [
+                "service_id" => $service->id,
+                "client_name" => $service->client->name ?? "N/A",
+                "service_type" => $service->service_type ?? "Desratización",
+                "address" => $service->address ?? "N/A",
+                "technician_name" => $service->assignedUser->name ?? "N/A",
+                "checklist_data" => $checklistData,
+                "observations_count" => $service->observations->count(),
+                "generated_at" => now()->toISOString(),
+            ],
+            "generated_at" => now(),
+        ]);
+
+        return redirect()->route("reports.download", $report)
+            ->with("success", "PDF generado exitosamente");
+    }
+
+    /**
+     * Descargar PDF del reporte
+     */
+    public function downloadPdf(ServiceReport $report)
+    {
+        if ($report->service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
+            abort(403, "No tienes acceso a este reporte");
+        }
+
+        $filePath = storage_path("app/public/{$report->file_path}");
+        
+        if (!file_exists($filePath)) {
+            abort(404, "Archivo PDF no encontrado");
+        }
+
+        return response()->download($filePath, "{$report->report_number}.pdf");
+    }
+
+    /**
+     * Ver PDF en el navegador
+     */
+    public function viewPdf(ServiceReport $report)
+    {
+        if ($report->service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
+            abort(403, "No tienes acceso a este reporte");
+        }
+
+        $filePath = storage_path("app/public/{$report->file_path}");
+        
+        if (!file_exists($filePath)) {
+            abort(404, "Archivo PDF no encontrado");
+        }
+
+        return response()->file($filePath);
+    }
+
+    /**
+     * Validar reporte mediante QR
+     */
+    public function validateReport($qrCode)
+    {
+        $report = ServiceReport::where("qr_code", $qrCode)->first();
+        
+        if (!$report) {
+            abort(404, "Reporte no encontrado");
+        }
+
+        $report->load(["service.client", "service.assignedUser", "generatedBy"]);
+
+        return view("reports.validation", compact("report"));
+    }
+
+    /**
+     * Historial de reportes (Solo Super Admin)
+     */
+    public function history()
+    {
+        if (!auth()->user()->hasRole("super-admin")) {
+            abort(403, "No tienes permisos para acceder al historial");
+        }
+
+        $reports = ServiceReport::with(["service.client", "generatedBy"])
+            ->latest()
+            ->paginate(20);
+
+        return view("reports.history", compact("reports"));
+    }
+
+    /**
+     * Obtener URL de validación
+     */
+    private function getValidationUrl($qrCode)
+    {
+        return url("/validate-report/{$qrCode}");
+    }
+
+    /**
+     * Compartir reporte por email (futuro)
+     */
+    public function shareReport(Request $request, ServiceReport $report)
+    {
+        // TODO: Implementar envío por email
+        return redirect()->back()->with("info", "Funcionalidad de compartir por email próximamente");
+    }
+}

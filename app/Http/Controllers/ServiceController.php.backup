@@ -1,0 +1,111 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Service;
+use App\Models\Client;
+use App\Models\Product;
+use App\Models\ServiceType;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
+class ServiceController extends Controller
+{
+    public function index()
+    {
+        $services = Service::with("client", "assignedUser", "serviceType")->paginate(10);
+        return view("services.index", compact("services"));
+    }
+
+    public function create()
+    {
+        $clients = Client::all();
+        $serviceTypes = ServiceType::all();
+        $products = Product::all();
+        $technicians = User::whereHas("roles", function($query) { $query->where("name", "technician"); })->paginate(10);
+        return view("services.create", compact("clients", "products", "serviceTypes", "technicians"));
+    }
+
+    public function store(Request $request)
+    {
+        \Log::info("ServiceController@store called", ["request" => $request->all()]);
+        
+        $request->validate([
+            "client_id" => "required|exists:clients,id",
+            "service_type_id" => "required|exists:service_types,id",
+            "scheduled_date" => "required|date",
+            "address" => "required|string|max:255",
+            "priority" => "required|in:alta,media,baja",
+            "description" => "nullable|string",
+        ]);
+
+        $service = Service::create([
+            "client_id" => $request->client_id,
+            "service_type_id" => $request->service_type_id,
+            "scheduled_date" => $request->scheduled_date,
+            "address" => $request->address,
+            "priority" => $request->priority,
+            "description" => $request->description,
+            "status" => "pendiente",
+            "assigned_to" => $request->assigned_to ?: auth()->id(),
+        ]);
+
+        // Crear notificación para el técnico asignado
+        if ($service->assigned_to) {
+            $service->load('assignedUser', 'client');
+            $service->assignedUser->notify(new \App\Notifications\ServiceAssignedNotification($service));
+        }
+
+        // Si está en vista de técnico, preguntar si quiere iniciar inmediatamente
+        if (session("technician_view", false)) {
+            return redirect()->route("technician.service.confirm-start", $service)->with("success", "Servicio creado exitosamente. ¿Deseas iniciarlo ahora?");
+        }
+
+        \Log::info("Redirecting to services.index");
+        return redirect()->route("services.index")->with("success", "Servicio creado exitosamente");
+    }
+
+    public function show(Service $service)
+    {
+        $service->load("client", "assignedUser", "serviceType", "observations");
+        return view("services.show", compact("service"));
+    }
+
+    public function edit(Service $service)
+    {
+        $clients = Client::all();
+        $serviceTypes = ServiceType::all();
+        $technicians = User::whereHas("roles", function($query) { $query->where("name", "technician"); })->paginate(10);
+        return view("services.edit", compact("service", "clients", "serviceTypes", "technicians"));
+    }
+
+    public function update(Request $request, Service $service)
+    {
+        $request->validate([
+            "client_id" => "required|exists:clients,id",
+            "service_type_id" => "required|exists:service_types,id",
+            "scheduled_date" => "required|date",
+            "address" => "required|string|max:255",
+            "priority" => "required|in:alta,media,baja",
+            "description" => "nullable|string",
+        ]);
+
+        $service->update([
+            "client_id" => $request->client_id,
+            "service_type_id" => $request->service_type_id,
+            "scheduled_date" => $request->scheduled_date,
+            "address" => $request->address,
+            "priority" => $request->priority,
+            "description" => $request->description,
+            "assigned_to" => $request->assigned_to,
+        ]);
+
+        return redirect()->route("services.index")->with("success", "Servicio actualizado exitosamente");
+    }
+
+    public function destroy(Service $service)
+    {        $service->delete();        return redirect()->route("services.index")->with("success", "Servicio eliminado exitosamente");    }
+
+    public function start(Service $service)    {        $service->update(["status" => "en_progreso"]);        return redirect()->back()->with("success", "Servicio iniciado exitosamente");    }\n    public function complete(Service $service)    {        $service->update(["status" => "finalizado"]);        return redirect()->back()->with("success", "Servicio completado exitosamente");    }
+

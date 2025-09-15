@@ -1,0 +1,91 @@
+
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ServiceTypeController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ViewController;
+use App\Http\Controllers\TechnicianController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ProfileController;
+
+// Rutas de autenticación
+Route::get("/login", [AuthController::class, "showLoginForm"])->name("login");
+Route::post("/login", [AuthController::class, "login"]);
+Route::post("/logout", [AuthController::class, "logout"])->name("logout");
+Route::get("/", function () {
+    return redirect()->route("login");
+});
+
+// Rutas de cambio de vista
+Route::middleware("auth")->group(function () {
+    Route::post("/switch-to-technician", [ViewController::class, "switchToTechnicianView"])->name("switch.to.technician");
+    Route::post("/switch-to-admin", [ViewController::class, "switchToAdminView"])->name("switch.to.admin");
+    Route::get("/current-view", [ViewController::class, "getCurrentView"])->name("current.view");
+});
+
+// Rutas protegidas
+Route::middleware("auth")->group(function () {
+    Route::get("/dashboard", [DashboardController::class, "index"])->name("dashboard");
+    Route::get("/home", [DashboardController::class, "index"])->name("home");
+    
+    // Servicios
+    Route::resource("services", ServiceController::class);
+    // Tipos de Servicios
+    Route::resource("service-types", ServiceTypeController::class);
+    Route::post("services/{service}/start", [ServiceController::class, "start"])->name("services.start");
+    Route::post("services/{service}/complete", [ServiceController::class, "complete"])->name("services.complete");
+    Route::get("services/{service}/pdf", [ServiceController::class, "generatePdf"])->name("services.pdf");
+    
+    // Clientes
+    Route::resource("clients", ClientController::class);
+    
+    // Productos
+    Route::resource("products", ProductController::class);
+    Route::post("products/{product}/update-stock", [ProductController::class, "updateStock"])->name("products.update-stock");
+    
+    // Usuarios (Solo Admin)
+    Route::resource("users", UserController::class);
+    Route::post("users/{user}/toggle-status", [UserController::class, "toggleStatus"])->name("users.toggle-status");
+    
+    // Rutas de reportes PDF
+
+    Route::get("/report/validate/{qrCode}", [ReportController::class, "validateReport"])->name("report.validate");
+    // Rutas de reportes PDF
+    Route::middleware(["role:technician|super-admin"])->prefix("reports")->name("reports.")->group(function () {
+        Route::post("/generate/{service}", [ReportController::class, "generatePdf"])->name("generate");
+        Route::get("/download/{serviceReport}", [ReportController::class, "downloadPdf"])->name("download");
+        Route::get("/view/{serviceReport}", [ReportController::class, "viewPdf"])->name("view");
+    });
+
+    Route::middleware(["role:super-admin"])->group(function () {
+        Route::get("/reports/history", [ReportController::class, "history"])->name("reports.history");
+    });
+
+    // Rutas de perfil
+    Route::get("/profile/edit", [ProfileController::class, "edit"])->name("profile.edit");
+    Route::put("/profile/update", [ProfileController::class, "update"])->name("profile.update");
+});
+
+// Rutas de técnicos (con middleware específico)
+Route::middleware(["auth", "role:technician|super-admin", "technician.view"])->prefix("technician")->name("technician.")->group(function () {
+    Route::get("/dashboard", [TechnicianController::class, "dashboard"])->name("dashboard");
+    Route::get("/services", [TechnicianController::class, "services"])->name("services");
+    Route::get("/services/{service}", [TechnicianController::class, "showService"])->name("service.show");
+    Route::get("/services/{service}/detail", [TechnicianController::class, "showServiceDetail"])->name("service.detail");
+    Route::post("/services/{service}/start", [TechnicianController::class, "startService"])->name("service.start");
+    Route::post("/services/{service}/complete", [TechnicianController::class, "completeService"])->name("service.complete");
+    Route::get("/profile", [TechnicianController::class, "profile"])->name("profile");
+
+    // Rutas del Checklist por etapas
+    Route::get("/services/{service}/checklist", [TechnicianController::class, "showChecklist"])->name("service.checklist");
+    Route::post("/services/{service}/checklist", [TechnicianController::class, "saveChecklistStage"])->name("service.checklist.save");
+
+    // Rutas de Observaciones (integradas en el checklist)
+    Route::post("/services/{service}/observations", [TechnicianController::class, "saveObservationFromChecklist"])->name("service.observations.save");
+});
