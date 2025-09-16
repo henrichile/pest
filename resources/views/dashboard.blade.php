@@ -148,6 +148,27 @@
         </div>
     </div>
 </div>
-@section("scripts")<script src="/js/dashboard-kpis.js?v={{ time() }}"></script>@endsection
 @endsection
-@section("scripts")<script>    document.addEventListener("DOMContentLoaded", function() {        const kpiCards = document.querySelectorAll(".bg-white.rounded-lg.shadow-lg.p-6");        kpiCards.forEach((card, index) => {            card.style.cursor = "pointer";            card.style.transition = "all 0.2s";            card.addEventListener("click", function() {                let url = "";                switch(index) {                    case 0: url = "/services"; break;                    case 1: url = "/clients"; break;                    case 2: url = "/services?filter=completed"; break;                    case 3: url = "/admin/users?role=technician"; break;                }                if (url) window.location.href = url;            });        });    });</script>@endsection
+
+@section("scripts")
+<script src="/js/dashboard-kpis.js?v={{ time() }}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const kpiCards = document.querySelectorAll(".bg-white.rounded-lg.shadow-lg.p-6");
+        kpiCards.forEach((card, index) => {
+            card.style.cursor = "pointer";
+            card.style.transition = "all 0.2s";
+            card.addEventListener("click", function() {
+                let url = "";
+                switch(index) {
+                    case 0: url = "/admin/services"; break;
+                    case 1: url = "/admin/clients"; break;
+                    case 2: url = "/admin/services?filter=completed"; break;
+                    case 3: url = "/admin/users?role=technician"; break;
+                }
+                if (url) window.location.href = url;
+            });
+        });
+    });
+</script>
+@endsection
