@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Service;
 use App\Models\Client;
 use App\Models\User;
+use App\Models\Site;
 
 class DashboardController extends Controller
 {
@@ -33,5 +34,42 @@ class DashboardController extends Controller
         ];
 
         return view("dashboard", compact("user", "stats"));
+    }
+
+    public function statistics()
+    {
+        $user = auth()->user();
+        
+        // Estadísticas detalladas
+        $stats = [
+            "work_orders" => Service::count(),
+            "work_orders_pending" => Service::where("status", "pendiente")->count(),
+            "work_orders_in_progress" => Service::where("status", "en_progreso")->count(),
+            "work_orders_completed" => Service::where("status", "completado")->count(),
+            "clients" => Client::count(),
+            "sites" => Site::count(),
+            "technicians" => User::whereHas("roles", function($Q) { $Q->where("name", "technician"); })->count(),
+        ];
+
+        // Servicios por mes (últimos 6 meses)
+        $monthlyServices = [];
+        for ($i = 5; $i >= 0; $i--) {
+            $date = now()->subMonths($i);
+            $count = Service::whereYear('created_at', $date->year)
+                           ->whereMonth('created_at', $date->month)
+                           ->count();
+            $monthlyServices[] = [
+                'month' => $date->format('M Y'),
+                'count' => $count
+            ];
+        }
+
+        // Servicios recientes
+        $recentServices = Service::with(['client', 'assignedUser'])
+                                 ->latest()
+                                 ->limit(10)
+                                 ->get();
+
+        return view("admin.statistics", compact("user", "stats", "monthlyServices", "recentServices"));
     }
 }

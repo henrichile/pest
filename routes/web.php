@@ -55,6 +55,7 @@ Route::middleware(['auth'])->group(function () {
 // Rutas de admin
 Route::middleware(['auth', 'role:super-admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/statistics', [App\Http\Controllers\DashboardController::class, 'statistics'])->name('statistics');
     
     // Servicios
     Route::resource('services', App\Http\Controllers\ServiceController::class);
