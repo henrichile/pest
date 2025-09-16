@@ -25,16 +25,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: #1a472a;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
         
         .logo-image {
-            width: 60px;
-            height: 36px;
-            margin-right: 15px;
+            width: 120px;
+            height: 72px;
         }
         
         .title {
@@ -235,7 +231,6 @@
     <div class="header">
         <div class="logo">
             <img src="{{ public_path('images/pestcontroller-logo.png') }}" alt="Logo Pest Controller" class="logo-image">
-            PEST CONTROLLER
         </div>
         <div class="title">REPORTE DE SERVICIO COMPLETADO</div>
         @if(isset($qrCode))
