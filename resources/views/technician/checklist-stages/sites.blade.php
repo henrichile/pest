@@ -1,3 +1,18 @@
+@extends('layouts.app-tec')
+
+@section('css')
+<style>
+    .field-help {
+        font-size: 12px;
+        color: #666;
+        margin-top: 5px;
+        font-style: italic;
+    }
+</style>
+@endsection
+
+@section('content')
+
 <!-- Etapa 5: Sitios Tratados -->
 <div class="stage-title">Etapa 5: Sitios Tratados</div>
 <div class="stage-instruction">Describa los sitios donde se realizó el tratamiento</div>
@@ -14,7 +29,7 @@
     </div>
     
     <div class="buttons-container">
-        <a href="{{ route("technician.service.checklist.submit", $service) }}" class="back-button">
+        <a href="{{ route("technician.service.checklist.stage", ["service" => $service, "stage" => "observations"]) }}" class="back-button">
             <span class="arrow">←</span> Anterior
         </a>
         <button type="submit" class="next-button">
@@ -23,11 +38,4 @@
     </div>
 </form>
 
-<style>
-.field-help {
-    font-size: 12px;
-    color: #666;
-    margin-top: 5px;
-    font-style: italic;
-}
-</style>
+@endsection

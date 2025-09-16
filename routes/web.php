@@ -65,7 +65,7 @@ Route::middleware(['auth', 'role:super-admin'])->prefix('admin')->name('admin.')
     // Productos
     Route::resource('products', App\Http\Controllers\ProductController::class);
     Route::patch('users/{user}/toggle-status', [App\Http\Controllers\UserController::class, 'toggleStatus'])->name('users.toggle-status');
-    Route::resource("users", AppHttpControllersSERCONTROLLER::CLASS);
+    Route::resource("users", App\Http\Controllers\UserController::class);
     
     // Roles y Permisos
     Route::get('/roles-permissions', [App\Http\Controllers\RolePermissionController::class, 'index'])->name('roles-permissions');
@@ -77,15 +77,24 @@ Route::middleware(['auth', 'role:super-admin'])->prefix('admin')->name('admin.')
     Route::delete('/permissions/{permission}', [App\Http\Controllers\RolePermissionController::class, 'deletePermission'])->name('permissions.destroy');
     
     // Configuraciones
-    Route::get('/notification-center', function() { return view('admin.notification-center'); })->name('notification-center');
+    Route::get('/notification-center', [App\Http\Controllers\NotificationController::class, 'index'])->name('notification-center');
+    Route::resource('notifications', App\Http\Controllers\NotificationController::class)->except(['index']);
+    Route::patch('/notifications/{notification}/mark-read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.mark-read');
+    Route::patch('/notifications/{notification}/mark-unread', [App\Http\Controllers\NotificationController::class, 'markAsUnread'])->name('notifications.mark-unread');
+    Route::patch('/notifications/mark-all-read', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
+    Route::get('/api/notifications/unread-count', [App\Http\Controllers\NotificationController::class, 'getUnreadCount'])->name('notifications.unread-count');
+    Route::get('/api/notifications/recent', [App\Http\Controllers\NotificationController::class, 'getRecentNotifications'])->name('notifications.recent');
     Route::get('/checklist-management', function() { return view('admin.checklist-management'); })->name('checklist-management');
-    Route::post("/checklist-management/templates", [AppHttpControllersChecklistManagementController::class, "createTemplate"])->name("checklist-management.templates.create");
-    Route::put("/checklist-management/templates/{template}", [AppHttpControllersChecklistManagementController::class, "updateTemplate"])->name("checklist-management.templates.update");
-    Route::delete("/checklist-management/templates/{template}", [AppHttpControllersChecklistManagementController::class, "deleteTemplate"])->name("checklist-management.templates.delete");
-    Route::patch("/checklist-management/templates/{template}/toggle", [AppHttpControllersChecklistManagementController::class, "toggleTemplateStatus"])->name("checklist-management.templates.toggle");
-    Route::post("/checklist-management/items", [AppHttpControllersChecklistManagementController::class, "createItem"])->name("checklist-management.items.create");
-    Route::put("/checklist-management/items/{item}", [AppHttpControllersChecklistManagementController::class, "updateItem"])->name("checklist-management.items.update");
-    Route::delete("/checklist-management/items/{item}", [AppHttpControllersChecklistManagementController::class, "deleteItem"])->name("checklist-management.items.delete");
+    // TODO: Arreglar estas rutas cuando el controlador ChecklistManagementController esté disponible
+    /*
+    Route::post("/checklist-management/templates", [App\Http\Controllers\ChecklistManagementController::class, "createTemplate"])->name("checklist-management.templates.create");
+    Route::put("/checklist-management/templates/{template}", [App\Http\Controllers\ChecklistManagementController::class, "updateTemplate"])->name("checklist-management.templates.update");
+    Route::delete("/checklist-management/templates/{template}", [App\Http\Controllers\ChecklistManagementController::class, "deleteTemplate"])->name("checklist-management.templates.delete");
+    Route::patch("/checklist-management/templates/{template}/toggle", [App\Http\Controllers\ChecklistManagementController::class, "toggleTemplateStatus"])->name("checklist-management.templates.toggle");
+    Route::post("/checklist-management/items", [App\Http\Controllers\ChecklistManagementController::class, "createItem"])->name("checklist-management.items.create");
+    Route::put("/checklist-management/items/{item}", [App\Http\Controllers\ChecklistManagementController::class, "updateItem"])->name("checklist-management.items.update");
+    Route::delete("/checklist-management/items/{item}", [App\Http\Controllers\ChecklistManagementController::class, "deleteItem"])->name("checklist-management.items.delete");
+    */
     Route::resource('service-types', App\Http\Controllers\ServiceTypeController::class);
 });
 
@@ -109,7 +118,17 @@ Route::middleware(['auth', 'role:technician'])->prefix('technician')->name('tech
     Route::post('/services/{service}/checklist/process-location', [App\Http\Controllers\TechnicianController::class, 'processLocation'])->name('service.checklist.process-location');
     Route::post('/services/{service}/checklist/submit', [App\Http\Controllers\TechnicianController::class, 'saveChecklistStage'])->name('service.checklist.submit');
     Route::get('/services/{service}/checklist/{stage}', [App\Http\Controllers\TechnicianController::class, 'showChecklistStage'])->where('stage', 'points|products|results|observations|sites|description')->name('service.checklist.stage');
+    
+    // Notificaciones para técnicos
+    Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+    Route::patch('/notifications/{notification}/mark-read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.mark-read');
+    Route::patch('/notifications/mark-all-read', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
+    Route::get('/api/notifications/unread-count', [App\Http\Controllers\NotificationController::class, 'getUnreadCount'])->name('notifications.unread-count');
+    Route::get('/api/notifications/recent', [App\Http\Controllers\NotificationController::class, 'getRecentNotifications'])->name('notifications.recent');
 });
 
+// Rutas adicionales autenticadas
+Route::middleware(['auth'])->group(function () {
     Route::patch('products/{product}/update-stock', [App\Http\Controllers\ProductController::class, 'updateStock'])->name('products.update-stock');
+});
 

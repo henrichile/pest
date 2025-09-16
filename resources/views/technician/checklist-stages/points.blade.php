@@ -1,3 +1,42 @@
+@extends('layouts.app-tec')
+
+@section('css')
+<style>
+    .checkbox-group {
+        margin: 20px 0;
+    }
+
+    .checkbox-item {
+        margin-bottom: 12px;
+    }
+
+    .checkbox-item label {
+        margin-left: 8px;
+    }
+
+    .buttons-container {
+        margin-top: 20px;
+    }
+
+    .next-button {
+        background: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .next-button:hover {
+        background: #218838;
+    }
+</style>
+@endsection
+
+@section('content')
+
 <!-- Etapa 1: Check de Puntos -->
 <div class="stage-title">Etapa 1: Check de Puntos</div>
 <div class="stage-instruction">Marque los puntos que correspondan</div>
@@ -63,3 +102,4 @@
         </button>
     </div>
 </form>
+@endsection

@@ -20,7 +20,7 @@
     </div>
 
     <!-- Formulario del Checklist -->
-    <form method="POST" action="{{ route("technician.service.checklist.save", $service) }}" class="space-y-6">
+    <form method="POST" action="{{ route("technician.service.checklist.submit", $service) }}" class="space-y-6">
         @csrf
         
         <div class="bg-white rounded-lg shadow-lg p-6">

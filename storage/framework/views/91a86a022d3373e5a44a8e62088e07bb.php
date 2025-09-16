@@ -1,89 +1,4 @@
-<!-- Etapa 6: Descripción del Servicio -->
-<div class="stage-title">Etapa 6: Descripción del Servicio y Sugerencias</div>
-<div class="stage-instruction">Complete la descripción final del servicio realizado</div>
-
-<form method="POST" action="<?php echo e(route("technician.service.checklist.submit", $service)); ?>" data-stage="description" id="checklistForm">
-    <?php echo csrf_field(); ?>
-    <input type="hidden" name="next_stage" value="completed">
-    <input type="hidden" name="current_stage" value="description">    
-    <div class="form-group">
-        <label>Descripción del Servicio y Sugerencias</label>
-        <textarea name="service_description" rows="8" 
-                  placeholder="Describa el servicio realizado, resultados obtenidos, recomendaciones para el cliente, próximos pasos, sugerencias de mejora, etc..."><?php echo e($service->checklist_data["description"]["service_description"] ?? ""); ?></textarea>
-        <p class="field-help">Incluya una descripción completa del servicio, resultados obtenidos, recomendaciones y sugerencias para el cliente.</p>
-    </div>
-    
-    <!-- Resumen del Checklist -->
-    <div class="checklist-summary">
-        <h5>Resumen del Checklist</h5>
-        <div class="summary-grid">
-            <div class="summary-item">
-                <span class="summary-label">Producto Aplicado:</span>
-                <p class="summary-value"><?php echo e($service->checklist_data["products"]["applied_product"] ?? "No especificado"); ?></p>
-            </div>
-            <div class="summary-item">
-                <span class="summary-label">Sitios Tratados:</span>
-                <p class="summary-value"><?php echo e(Str::limit($service->checklist_data["sites"]["treated_sites"] ?? "No especificado", 50)); ?></p>
-            </div>
-            <div class="summary-item">
-                <span class="summary-label">Observaciones:</span>
-                <p class="summary-value"><?php echo e(count($service->checklist_data["observations"] ?? [])); ?> registradas</p>
-            </div>
-            <div class="summary-item">
-                <span class="summary-label">Resultados:</span>
-                <p class="summary-value"><?php echo e(count($service->checklist_data["results"]["observed_results"] ?? [])); ?> tipos encontrados</p>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Campos de Firma Digital -->
-    <div class="signatures-section">
-        <h5>Firmas Digitales de Confirmación</h5>
-        <div class="signatures-grid">
-            <div class="signature-group">
-                <label>Firma del Técnico</label>
-                <div class="signature-pad">
-                    <canvas id="technicianSignature" width="280" height="120"></canvas>
-                    <div class="signature-controls">
-                        <button type="button" class="clear-signature" data-canvas="technicianSignature">Limpiar</button>
-                        <span class="signature-status" id="technicianStatus">Sin firma</span>
-                    </div>
-                </div>
-                <p class="signature-help">Dibuje su firma en el área superior</p>
-                <input type="hidden" name="technician_signature" id="technicianSignatureData">
-            </div>
-            
-            <div class="signature-group">
-                <label>Firma del Cliente</label>
-                <div class="signature-pad">
-                    <canvas id="clientSignature" width="280" height="120"></canvas>
-                    <div class="signature-controls">
-                        <button type="button" class="clear-signature" data-canvas="clientSignature">Limpiar</button>
-                        <span class="signature-status" id="clientStatus">Sin firma</span>
-                    </div>
-                </div>
-                <p class="signature-help">Dibuje su firma en el área superior</p>
-                <input type="hidden" name="client_signature" id="clientSignatureData">
-            </div>
-        </div>
-        
-        <div class="signature-date">
-            <label>Fecha de Finalización</label>
-            <input type="date" name="completion_date" 
-                   value="<?php echo e($service->checklist_data["description"]["completion_date"] ?? date("Y-m-d")); ?>"
-                   required>
-        </div>
-    </div>
-    
-    <div class="buttons-container">
-        <a href="<?php echo e(route("technician.service.checklist.submit", $service)); ?>" class="back-button">
-            <span class="arrow">←</span> Anterior
-        </a>
-        <button type="submit" class="next-button" id="finalizeButton" disabled>
-            Finalizar Checklist ✓
-        </button>
-    </div>
-</form>
+<?php $__env->startSection('css'); ?>
 
 <style>
 .checklist-summary {
@@ -323,7 +238,99 @@
     }
 }
 </style>
+<?php $__env->stopSection(); ?>
 
+<?php $__env->startSection('content'); ?>
+
+<!-- Etapa 6: Descripción del Servicio -->
+<div class="stage-title">Etapa 6: Descripción del Servicio y Sugerencias</div>
+<div class="stage-instruction">Complete la descripción final del servicio realizado</div>
+
+<form method="POST" action="<?php echo e(route("technician.service.checklist.submit", $service)); ?>" data-stage="description" id="checklistForm">
+    <?php echo csrf_field(); ?>
+    <input type="hidden" name="next_stage" value="completed">
+    <input type="hidden" name="current_stage" value="description">    
+    <div class="form-group">
+        <label>Descripción del Servicio y Sugerencias</label>
+        <textarea name="service_description" rows="8" 
+                  placeholder="Describa el servicio realizado, resultados obtenidos, recomendaciones para el cliente, próximos pasos, sugerencias de mejora, etc..."><?php echo e($service->checklist_data["description"]["service_description"] ?? ""); ?></textarea>
+        <p class="field-help">Incluya una descripción completa del servicio, resultados obtenidos, recomendaciones y sugerencias para el cliente.</p>
+    </div>
+    
+    <!-- Resumen del Checklist -->
+    <div class="checklist-summary">
+        <h5>Resumen del Checklist</h5>
+        <div class="summary-grid">
+            <div class="summary-item">
+                <span class="summary-label">Producto Aplicado:</span>
+                <p class="summary-value"><?php echo e($service->checklist_data["products"]["applied_product"] ?? "No especificado"); ?></p>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Sitios Tratados:</span>
+                <p class="summary-value"><?php echo e(Str::limit($service->checklist_data["sites"]["treated_sites"] ?? "No especificado", 50)); ?></p>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Observaciones:</span>
+                <p class="summary-value"><?php echo e(count($service->checklist_data["observations"] ?? [])); ?> registradas</p>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Resultados:</span>
+                <p class="summary-value"><?php echo e(count($service->checklist_data["results"]["observed_results"] ?? [])); ?> tipos encontrados</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Campos de Firma Digital -->
+    <div class="signatures-section">
+        <h5>Firmas Digitales de Confirmación</h5>
+        <div class="signatures-grid">
+            <div class="signature-group">
+                <label>Firma del Técnico</label>
+                <div class="signature-pad">
+                    <canvas id="technicianSignature" width="280" height="120"></canvas>
+                    <div class="signature-controls">
+                        <button type="button" class="clear-signature" data-canvas="technicianSignature">Limpiar</button>
+                        <span class="signature-status" id="technicianStatus">Sin firma</span>
+                    </div>
+                </div>
+                <p class="signature-help">Dibuje su firma en el área superior</p>
+                <input type="hidden" name="technician_signature" id="technicianSignatureData">
+            </div>
+            
+            <div class="signature-group">
+                <label>Firma del Cliente</label>
+                <div class="signature-pad">
+                    <canvas id="clientSignature" width="280" height="120"></canvas>
+                    <div class="signature-controls">
+                        <button type="button" class="clear-signature" data-canvas="clientSignature">Limpiar</button>
+                        <span class="signature-status" id="clientStatus">Sin firma</span>
+                    </div>
+                </div>
+                <p class="signature-help">Dibuje su firma en el área superior</p>
+                <input type="hidden" name="client_signature" id="clientSignatureData">
+            </div>
+        </div>
+        
+        <div class="signature-date">
+            <label>Fecha de Finalización</label>
+            <input type="date" name="completion_date" 
+                   value="<?php echo e($service->checklist_data["description"]["completion_date"] ?? date("Y-m-d")); ?>"
+                   required>
+        </div>
+    </div>
+    
+    <div class="buttons-container">
+        <a href="<?php echo e(route("technician.service.checklist.stage", ["service" => $service, "stage" => "sites"])); ?>" class="back-button">
+            <span class="arrow">←</span> Anterior
+        </a>
+        <button type="submit" class="next-button" id="finalizeButton" disabled>
+            Finalizar Checklist ✓
+        </button>
+    </div>
+</form>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Configuración de canvas para firmas
@@ -527,4 +534,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-<?php /**PATH /var/www/html/pest-controller/resources/views/technician/checklist-stages/description.blade.php ENDPATH**/ ?>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app-tec', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /media/kike/Linux/pest/resources/views/technician/checklist-stages/description.blade.php ENDPATH**/ ?>

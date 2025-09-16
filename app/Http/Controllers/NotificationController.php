@@ -16,6 +16,11 @@ class NotificationController extends Controller
             ->active()
             ->orderBy('created_at', 'desc');
 
+        // Si es técnico, solo mostrar sus notificaciones
+        if (Auth::user()->hasRole('technician')) {
+            $query->where('user_id', Auth::id());
+        }
+
         // Filtros
         if ($request->filled('type')) {
             $query->byType($request->type);
@@ -36,17 +41,24 @@ class NotificationController extends Controller
         $notifications = $query->paginate(15);
 
         // Estadísticas
+        $baseQuery = SystemNotification::active();
+        if (Auth::user() && Auth::user()->hasRole('technician')) {
+            $baseQuery->where('user_id', Auth::id());
+        }
+
         $stats = [
-            'total' => SystemNotification::active()->count(),
-            'unread' => SystemNotification::active()->unread()->count(),
-            'read' => SystemNotification::active()->read()->count(),
-            'urgent' => SystemNotification::active()->byPriority('urgent')->unread()->count(),
-            'high' => SystemNotification::active()->byPriority('high')->unread()->count(),
-            'medium' => SystemNotification::active()->byPriority('medium')->unread()->count(),
-            'low' => SystemNotification::active()->byPriority('low')->unread()->count(),
+            'total' => (clone $baseQuery)->count(),
+            'unread' => (clone $baseQuery)->unread()->count(),
+            'read' => (clone $baseQuery)->read()->count(),
+            'urgent' => (clone $baseQuery)->byPriority('urgent')->unread()->count(),
+            'high' => (clone $baseQuery)->byPriority('high')->unread()->count(),
+            'medium' => (clone $baseQuery)->byPriority('medium')->unread()->count(),
+            'low' => (clone $baseQuery)->byPriority('low')->unread()->count(),
         ];
 
-        return view('admin.notification-center', compact('notifications', 'stats'));
+        $viewName = Auth::user() && Auth::user()->hasRole('technician') ? 'technician.notifications.index' : 'admin.notification-center';
+        
+        return view($viewName, compact('notifications', 'stats'));
     }
 
     public function show(SystemNotification $notification)
@@ -69,7 +81,14 @@ class NotificationController extends Controller
 
     public function markAllAsRead()
     {
-        SystemNotification::active()->unread()->update([
+        $query = SystemNotification::active()->unread();
+        
+        // Si es técnico, solo marcar sus notificaciones
+        if (Auth::user() && Auth::user()->hasRole('technician')) {
+            $query->where('user_id', Auth::id());
+        }
+        
+        $query->update([
             'is_read' => true,
             'read_at' => now(),
         ]);
@@ -120,18 +139,31 @@ class NotificationController extends Controller
 
     public function getUnreadCount()
     {
-        $count = SystemNotification::active()->unread()->count();
+        $query = SystemNotification::active()->unread();
+        
+        // Si es técnico, solo contar sus notificaciones
+        if (Auth::user() && Auth::user()->hasRole('technician')) {
+            $query->where('user_id', Auth::id());
+        }
+        
+        $count = $query->count();
         return response()->json(['count' => $count]);
     }
 
     public function getRecentNotifications()
     {
-        $notifications = SystemNotification::active()
+        $query = SystemNotification::active()
             ->unread()
             ->with(['user', 'service'])
             ->orderBy('created_at', 'desc')
-            ->limit(5)
-            ->get();
+            ->limit(5);
+            
+        // Si es técnico, solo mostrar sus notificaciones
+        if (Auth::user() && Auth::user()->hasRole('technician')) {
+            $query->where('user_id', Auth::id());
+        }
+
+        $notifications = $query->get();
 
         return response()->json(['notifications' => $notifications]);
     }

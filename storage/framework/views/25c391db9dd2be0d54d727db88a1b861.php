@@ -1,127 +1,4 @@
-<!-- Updated: 2024-09-14 20:58 - COMPLETE RESTORATION -->
-<!-- Etapa 4: Observaciones Detalladas -->
-<div class="stage-title">Etapa 4: Observaciones Detalladas</div>
-<div class="stage-instruction">Registre observaciones específicas con fotos</div>
-
-<div class="observations-container">
-    <!-- Observaciones Guardadas (Acordeón) -->
-    <div class="saved-observations" id="savedObservations">
-        <?php if(isset($service->checklist_data["observations"]) && count($service->checklist_data["observations"]) > 0): ?>
-            <?php $__currentLoopData = $service->checklist_data["observations"]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $observation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <div class="observation-item" data-index="<?php echo e($index); ?>">
-                    <div class="observation-header" onclick="toggleObservation(<?php echo e($index); ?>)">
-                        <div class="observation-summary">
-                            <span class="observation-code"><?php echo e($observation['cebadera_code'] ?? 'N/A'); ?></span>
-                            <span class="observation-number">Obs #<?php echo e($observation['observation_number'] ?? ($index + 1)); ?></span>
-                            <span class="observation-preview"><?php echo e(Str::limit($observation['detail'] ?? 'Sin detalle', 50)); ?></span>
-                        </div>
-                        <div class="observation-actions">
-                            <span class="observation-date"><?php echo e(isset($observation['created_at']) ? \Carbon\Carbon::parse($observation['created_at'])->format('d/m/Y H:i') : 'Ahora'); ?></span>
-                            <span class="toggle-icon" id="toggleIcon<?php echo e($index); ?>">▼</span>
-                        </div>
-                    </div>
-                    <div class="observation-content" id="observationContent<?php echo e($index); ?>" style="display: none;">
-                        <div class="observation-details">
-                            <div class="detail-row">
-                                <label>Código de la Cebadera:</label>
-                                <span><?php echo e($observation['cebadera_code'] ?? 'N/A'); ?></span>
-                            </div>
-                            <div class="detail-row">
-                                <label>Número de Observación:</label>
-                                <span><?php echo e($observation['observation_number'] ?? ($index + 1)); ?></span>
-                            </div>
-                            <div class="detail-row">
-                                <label>Detalle:</label>
-                                <span><?php echo e($observation['detail'] ?? 'Sin detalle'); ?></span>
-                            </div>
-                            <?php if(isset($observation['photo']) && $observation['photo']): ?>
-                                <div class="detail-row">
-                                    <label>Foto:</label>
-                                    <div class="observation-photo">
-                                        <img src="<?php echo e($observation['photo']); ?>" alt="Foto de observación" style="max-width: 200px; max-height: 150px; border-radius: 8px;">
-                                    </div>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                        <div class="observation-actions-bottom">
-                            <button type="button" class="btn-edit" onclick="editObservation(<?php echo e($index); ?>)">Editar</button>
-                            <button type="button" class="btn-delete" onclick="deleteObservation(<?php echo e($index); ?>)">Eliminar</button>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        <?php else: ?>
-            <div class="no-observations">
-                <p>No hay observaciones guardadas aún.</p>
-            </div>
-        <?php endif; ?>
-    </div>
-
-    <!-- Formulario para Agregar Nueva Observación -->
-    <div class="add-observation-section">
-        <div class="section-title">
-            <h3>Agregar Nueva Observación</h3>
-            <button type="button" class="toggle-form-btn" onclick="toggleAddForm()">
-                <span id="toggleFormIcon">▼</span>
-            </button>
-        </div>
-        
-        <form method="GET" action="<?php echo e(route("technician.service.checklist.submit", $service)); ?>" enctype="multipart/form-data" class="observation-form" id="addObservationFormNEW" style="display: none;">
-            <?php echo csrf_field(); ?>
-            <input type="hidden" name="current_stage" value="observations">
-            <input type="hidden" name="next_stage" value="observations">
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="cebadera_code">Código de la Cebadera (N° CE)</label>
-                    <input type="text" id="cebadera_code" name="cebadera_code" placeholder="Ej: CE-001" required>
-                </div>
-                <div class="form-group">
-                    <label for="observation_number">Número de Observación (N° OBS)</label>
-                    <input type="number" id="observation_number" name="observation_number" value="<?php echo e((isset($service->checklist_data["observations"]) ? count($service->checklist_data["observations"]) : 0) + 1); ?>" min="1" required>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label for="detail">Detalle de la Observación</label>
-                <textarea id="detail" name="detail" placeholder="Describa detalladamente la observación..." rows="4" required></textarea>
-            </div>
-            
-            <div class="form-group">
-                <label for="photo">Foto de la Estación/Cebadera</label>
-                <div class="file-upload">
-                    <input type="file" id="photo" name="photo" accept="image/jpeg,image/png,image/gif" onchange="previewPhoto(this)">
-                    <label for="photo" class="file-label">
-                        <span class="file-text">Seleccionar archivo</span>
-                        <span class="file-info">Sin archivos seleccionados</span>
-                    </label>
-                    <div class="file-requirements">Formatos permitidos: JPG, PNG, GIF. Máximo 2MB</div>
-                </div>
-                <div class="photo-preview" id="photoPreview" style="display: none;">
-                    <img id="previewImg" src="" alt="Vista previa" style="max-width: 200px; max-height: 150px; border-radius: 8px;">
-                </div>
-            </div>
-            
-            <div class="form-group">
-            
-            <div class="form-actions">
-                <button type="submit" class="btn-save">Guardar Observación</button>
-                <button type="button" class="btn-cancel" onclick="toggleAddForm()">Cancelar</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Botones de Navegación -->
-<div class="navigation-buttons">
-    <a href="<?php echo e(route("technician.service.checklist.stage", ["service" => $service, "stage" => "results"])); ?>" class="back-button">
-        <span class="arrow">←</span> Anterior
-    </a>
-    <a href="<?php echo e(route("technician.service.checklist.stage", ["service" => $service, "stage" => "sites"])); ?>" class="next-button">
-        Siguiente <span class="arrow">→</span>
-    </a>
-</div>
-
+<?php $__env->startSection('css'); ?>
 <style>
 .navigation-buttons {
     display: flex;
@@ -589,7 +466,137 @@
     }
 }
 </style>
+<?php $__env->stopSection(); ?>
 
+<?php $__env->startSection('content'); ?>
+
+<!-- Updated: 2024-09-14 20:58 - COMPLETE RESTORATION -->
+<!-- Etapa 4: Observaciones Detalladas -->
+<div class="stage-title">Etapa 4: Observaciones Detalladas</div>
+<div class="stage-instruction">Registre observaciones específicas con fotos</div>
+
+<div class="observations-container">
+    <!-- Observaciones Guardadas (Acordeón) -->
+    <div class="saved-observations" id="savedObservations">
+        <?php if(isset($service->checklist_data["observations"]) && count($service->checklist_data["observations"]) > 0): ?>
+            <?php $__currentLoopData = $service->checklist_data["observations"]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $observation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <div class="observation-item" data-index="<?php echo e($index); ?>">
+                    <div class="observation-header" onclick="toggleObservation(<?php echo e($index); ?>)">
+                        <div class="observation-summary">
+                            <span class="observation-code"><?php echo e($observation['cebadera_code'] ?? 'N/A'); ?></span>
+                            <span class="observation-number">Obs #<?php echo e($observation['observation_number'] ?? ($index + 1)); ?></span>
+                            <span class="observation-preview"><?php echo e(Str::limit($observation['detail'] ?? 'Sin detalle', 50)); ?></span>
+                        </div>
+                        <div class="observation-actions">
+                            <span class="observation-date"><?php echo e(isset($observation['created_at']) ? \Carbon\Carbon::parse($observation['created_at'])->format('d/m/Y H:i') : 'Ahora'); ?></span>
+                            <span class="toggle-icon" id="toggleIcon<?php echo e($index); ?>">▼</span>
+                        </div>
+                    </div>
+                    <div class="observation-content" id="observationContent<?php echo e($index); ?>" style="display: none;">
+                        <div class="observation-details">
+                            <div class="detail-row">
+                                <label>Código de la Cebadera:</label>
+                                <span><?php echo e($observation['cebadera_code'] ?? 'N/A'); ?></span>
+                            </div>
+                            <div class="detail-row">
+                                <label>Número de Observación:</label>
+                                <span><?php echo e($observation['observation_number'] ?? ($index + 1)); ?></span>
+                            </div>
+                            <div class="detail-row">
+                                <label>Detalle:</label>
+                                <span><?php echo e($observation['detail'] ?? 'Sin detalle'); ?></span>
+                            </div>
+                            <?php if(isset($observation['photo']) && $observation['photo']): ?>
+                                <div class="detail-row">
+                                    <label>Foto:</label>
+                                    <div class="observation-photo">
+                                        <img src="<?php echo e(asset($observation['photo'])); ?>" alt="Foto de observación" style="max-width: 200px; max-height: 150px; border-radius: 8px;">
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="observation-actions-bottom">
+                            <button type="button" class="btn-edit" onclick="editObservation(<?php echo e($index); ?>)">Editar</button>
+                            <button type="button" class="btn-delete" onclick="deleteObservation(<?php echo e($index); ?>)">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php else: ?>
+            <div class="no-observations">
+                <p>No hay observaciones guardadas aún.</p>
+            </div>
+        <?php endif; ?>
+    </div>
+
+    <!-- Formulario para Agregar Nueva Observación -->
+    <div class="add-observation-section">
+        <div class="section-title">
+            <h3>Agregar Nueva Observación</h3>
+            <button type="button" class="toggle-form-btn" onclick="toggleAddForm()">
+                <span id="toggleFormIcon">▼</span>
+            </button>
+        </div>
+        
+        <form method="POST" action="<?php echo e(route("technician.service.checklist.submit", $service)); ?>" enctype="multipart/form-data" class="observation-form" id="addObservationFormNEW" style="display: none;">
+            <?php echo csrf_field(); ?>
+            <input type="hidden" name="current_stage" value="observations">
+            <input type="hidden" name="next_stage" value="observations">
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="cebadera_code">Código de la Cebadera (N° CE)</label>
+                    <input type="text" id="cebadera_code" name="cebadera_code" placeholder="Ej: CE-001" required>
+                </div>
+                <div class="form-group">
+                    <label for="observation_number">Número de Observación (N° OBS)</label>
+                    <input type="number" id="observation_number" name="observation_number" value="<?php echo e((isset($service->checklist_data["observations"]) ? count($service->checklist_data["observations"]) : 0) + 1); ?>" min="1" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="detail">Detalle de la Observación</label>
+                <textarea id="detail" name="detail" placeholder="Describa detalladamente la observación..." rows="4" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="photo">Foto de la Estación/Cebadera</label>
+                <div class="file-upload">
+                    <input type="file" id="photo" name="photo" accept="image/jpeg,image/png,image/gif" onchange="previewPhoto(this)">
+                    <label for="photo" class="file-label">
+                        <span class="file-text">Seleccionar archivo</span>
+                        <span class="file-info">Sin archivos seleccionados</span>
+                    </label>
+                    <div class="file-requirements">Formatos permitidos: JPG, PNG, GIF. Máximo 2MB</div>
+                </div>
+                <div class="photo-preview" id="photoPreview" style="display: none;">
+                    <img id="previewImg" src="" alt="Vista previa" style="max-width: 200px; max-height: 150px; border-radius: 8px;">
+                </div>
+            </div>
+            
+            <div class="form-group">
+            
+            <div class="form-actions">
+                <button type="submit" class="btn-save">Guardar Observación</button>
+                <button type="button" class="btn-cancel" onclick="toggleAddForm()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Botones de Navegación -->
+<div class="navigation-buttons">
+    <a href="<?php echo e(route("technician.service.checklist.stage", ["service" => $service, "stage" => "results"])); ?>" class="back-button">
+        <span class="arrow">←</span> Anterior
+    </a>
+    <a href="<?php echo e(route("technician.service.checklist.stage", ["service" => $service, "stage" => "sites"])); ?>" class="next-button">
+        Siguiente <span class="arrow">→</span>
+    </a>
+</div>
+<?php $__env->stopSection(); ?>
+
+
+<?php $__env->startSection('scripts'); ?>
 <script>
 function toggleObservation(index) {
     const content = document.getElementById('observationContent' + index);
@@ -660,4 +667,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-<?php /**PATH /var/www/html/pest-controller/resources/views/technician/checklist-stages/observations.blade.php ENDPATH**/ ?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app-tec', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /media/kike/Linux/pest/resources/views/technician/checklist-stages/observations.blade.php ENDPATH**/ ?>

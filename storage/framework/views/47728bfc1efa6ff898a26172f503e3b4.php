@@ -311,4 +311,4 @@
     </script>
 </body>
 </html>
-<?php /**PATH /var/www/html/pest-controller/resources/views/auth/login.blade.php ENDPATH**/ ?>
+<?php /**PATH /media/kike/Linux/pest/resources/views/auth/login.blade.php ENDPATH**/ ?>

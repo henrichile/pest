@@ -352,4 +352,4 @@
         });
     </script>
 </body>
-</html><?php /**PATH /var/www/html/pest-controller/resources/views/technician/capture-location-simple.blade.php ENDPATH**/ ?>
+</html><?php /**PATH /media/kike/Linux/pest/resources/views/technician/capture-location-simple.blade.php ENDPATH**/ ?>

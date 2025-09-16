@@ -1,3 +1,40 @@
+<?php $__env->startSection('css'); ?>
+<style>
+    .checkbox-group {
+        margin: 20px 0;
+    }
+
+    .checkbox-item {
+        margin-bottom: 12px;
+    }
+
+    .checkbox-item label {
+        margin-left: 8px;
+    }
+
+    .buttons-container {
+        margin-top: 20px;
+    }
+
+    .next-button {
+        background: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .next-button:hover {
+        background: #218838;
+    }
+</style>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+
 <!-- Etapa 1: Check de Puntos -->
 <div class="stage-title">Etapa 1: Check de Puntos</div>
 <div class="stage-instruction">Marque los puntos que correspondan</div>
@@ -70,4 +107,5 @@
         </button>
     </div>
 </form>
-<?php /**PATH /var/www/html/pest-controller/resources/views/technician/checklist-stages/points.blade.php ENDPATH**/ ?>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app-tec', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /media/kike/Linux/pest/resources/views/technician/checklist-stages/points.blade.php ENDPATH**/ ?>

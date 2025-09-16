@@ -78,7 +78,7 @@
                             </svg>
                             Realizar Checklist
                         </a>
-                        <a href="<?php echo e(route("service.checklist-details", $service)); ?>" 
+                        <a href="<?php echo e(route("technician.service.checklist-details", $service)); ?>" 
                            class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -103,7 +103,7 @@
                         </div>
                     </div>
                     <div class="flex space-x-3">
-                        <a href="<?php echo e(route("service.checklist-details", $service)); ?>" 
+                        <a href="<?php echo e(route("technician.service.checklist-details", $service)); ?>" 
                            class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -218,4 +218,4 @@
 </div>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make("layouts.app", array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /var/www/html/pest-controller/resources/views/technician/service-detail.blade.php ENDPATH**/ ?>
+<?php echo $__env->make("layouts.app", array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /media/kike/Linux/pest/resources/views/technician/service-detail.blade.php ENDPATH**/ ?>

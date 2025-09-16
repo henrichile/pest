@@ -1,3 +1,16 @@
+<?php $__env->startSection('css'); ?>
+<style>
+    .field-help {
+        font-size: 12px;
+        color: #666;
+        margin-top: 5px;
+        font-style: italic;
+    }
+</style>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+
 <!-- Etapa 5: Sitios Tratados -->
 <div class="stage-title">Etapa 5: Sitios Tratados</div>
 <div class="stage-instruction">Describa los sitios donde se realizó el tratamiento</div>
@@ -14,7 +27,7 @@
     </div>
     
     <div class="buttons-container">
-        <a href="<?php echo e(route("technician.service.checklist.submit", $service)); ?>" class="back-button">
+        <a href="<?php echo e(route("technician.service.checklist.stage", ["service" => $service, "stage" => "observations"])); ?>" class="back-button">
             <span class="arrow">←</span> Anterior
         </a>
         <button type="submit" class="next-button">
@@ -23,12 +36,6 @@
     </div>
 </form>
 
-<style>
-.field-help {
-    font-size: 12px;
-    color: #666;
-    margin-top: 5px;
-    font-style: italic;
-}
-</style>
-<?php /**PATH /var/www/html/pest-controller/resources/views/technician/checklist-stages/sites.blade.php ENDPATH**/ ?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app-tec', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /media/kike/Linux/pest/resources/views/technician/checklist-stages/sites.blade.php ENDPATH**/ ?>

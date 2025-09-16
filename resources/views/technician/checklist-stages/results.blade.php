@@ -1,3 +1,7 @@
+@extends('layouts.app-tec')
+
+@section('content')
+
 <!-- Etapa 3: Resultados Observados -->
 <div class="stage-title">Etapa 3: Resultados Observados</div>
 <div class="stage-instruction">Marque los resultados encontrados</div>
@@ -48,7 +52,7 @@
     </div>
     
     <div class="buttons-container">
-        <a href="{{ route("technician.service.checklist.submit", $service) }}" class="back-button">
+        <a href="{{ route("technician.service.checklist.stage", ["service" => $service, "stage" => "products"]) }}" class="back-button">
             <span class="arrow">←</span> Anterior
         </a>
         <button type="submit" class="next-button">
@@ -56,3 +60,4 @@
         </button>
     </div>
 </form>
+@endsection

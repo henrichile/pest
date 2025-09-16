@@ -1,3 +1,5 @@
+<?php $__env->startSection('content'); ?>
+
 <!-- Etapa 2: Productos Aplicados -->
 <div class="stage-title">Etapa 2: Productos Aplicados</div>
 <div class="stage-instruction">Seleccione el producto utilizado</div>
@@ -33,7 +35,7 @@
     </div>
     
     <div class="buttons-container">
-        <a href="<?php echo e(route("technician.service.checklist.submit", $service)); ?>" class="back-button">
+        <a href="<?php echo e(route("technician.service.checklist.stage", ["service" => $service, "stage" => "points"])); ?>" class="back-button">
             <span class="arrow">←</span> Anterior
         </a>
         <button type="submit" class="next-button">
@@ -41,4 +43,6 @@
         </button>
     </div>
 </form>
-<?php /**PATH /var/www/html/pest-controller/resources/views/technician/checklist-stages/products.blade.php ENDPATH**/ ?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app-tec', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /media/kike/Linux/pest/resources/views/technician/checklist-stages/products.blade.php ENDPATH**/ ?>
