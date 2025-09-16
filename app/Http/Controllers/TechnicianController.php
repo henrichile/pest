@@ -37,11 +37,20 @@ class TechnicianController extends Controller
             ->where('scheduled_date', '<', now())
             ->count();
 
+        // Próximos servicios asignados (pendientes y en progreso)
+        $assignedServices = Service::where('assigned_to', $user->id)
+            ->whereIn('status', ['pendiente', 'en_progreso'])
+            ->with(['client', 'serviceType', 'site'])
+            ->orderBy('scheduled_date', 'asc')
+            ->limit(5)
+            ->get();
+
         return view('technician.dashboard', compact(
             'completedToday', 
             'pendingServices', 
             'inProgressServices', 
-            'overdueServices'
+            'overdueServices',
+            'assignedServices'
         ));
     }
 
