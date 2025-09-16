@@ -1,8 +1,5 @@
 @extends('layouts.app-tec')
 
-<<<<<<< Updated upstream
-@section('css')
-=======
 <form method="POST" action="{{ route("technician.service.checklist.submit", $service) }}" data-stage="description" id="checklistForm">
     @csrf
     <input type="hidden" name="next_stage" value="completed">
@@ -85,7 +82,6 @@
         </button>
     </div>
 </form>
->>>>>>> Stashed changes
 
 <style>
 .checklist-summary {
