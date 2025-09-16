@@ -6,7 +6,7 @@
 <div class="stage-title">Etapa 2: Productos Aplicados</div>
 <div class="stage-instruction">Seleccione el producto utilizado</div>
 
-<form method="POST" action="{{ route("technician.service.checklist.submit", $service) }}" data-stage="products">
+<form method="POST" action="{{ route("technician.service.checklist.stage", ["service" => $service, "stage" => "points"]) }}" data-stage="products">
     @csrf
     <input type="hidden" name="next_stage" value="results">
     <input type="hidden" name="current_stage" value="products">    

@@ -194,7 +194,7 @@ class TechnicianController extends Controller
         $service->load(["client", "serviceType"]);
         return view("technician.checklist-stages." . $stage, compact("service"));
         //return view("technician.checklist-staged", compact("service"));
-    }
+      }
     public function saveChecklistStage(Request $request, Service $service)
     {
         // Verificar permisos

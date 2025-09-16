@@ -29,7 +29,11 @@
     </div>
     
     <div class="buttons-container">
+<<<<<<< Updated upstream
         <a href="{{ route("technician.service.checklist.stage", ["service" => $service, "stage" => "observations"]) }}" class="back-button">
+=======
+        <a href="{{ route("technician.service.checklist.stage", ["service" => $service, "stage" => "results"]) }}" class="back-button">
+>>>>>>> Stashed changes
             <span class="arrow">←</span> Anterior
         </a>
         <button type="submit" class="next-button">
