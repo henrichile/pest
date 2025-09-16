@@ -22,10 +22,19 @@
         }
         
         .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 24px;
             font-weight: bold;
             color: #1a472a;
             margin-bottom: 10px;
+        }
+        
+        .logo-image {
+            width: 60px;
+            height: 36px;
+            margin-right: 15px;
         }
         
         .title {
@@ -224,7 +233,10 @@
 </head>
 <body>
     <div class="header">
-        <div class="logo">PEST CONTROLLER</div>
+        <div class="logo">
+            <img src="{{ public_path('images/logo.svg') }}" alt="Logo Pest Controller" class="logo-image">
+            PEST CONTROLLER
+        </div>
         <div class="title">REPORTE DE SERVICIO COMPLETADO</div>
         @if(isset($qrCode))
         <div class="qr-code">
@@ -362,7 +374,10 @@
             @if(isset($observation['photo']) && $observation['photo'])
             <div class="observation-detail">
                 <strong>Fotografía:</strong><br>
-                <img src="{{ storage_path('app/public/') . str_replace('storage/', '', $observation['photo']) }}" alt="Foto de observación" class="observation-photo">
+                @php
+                    $photoPath = public_path($observation['photo']);
+                @endphp
+                <img src="{{ $photoPath }}" alt="Foto de observación" class="observation-photo">
             </div>
             @endif
         </div>
