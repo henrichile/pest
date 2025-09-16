@@ -112,9 +112,6 @@
                                             </p>
                                             <p class="text-sm text-gray-500 truncate">
                                                 {{ $service->serviceType->name ?? 'Servicio General' }}
-                                                @if($service->site)
-                                                    - {{ $service->site->name }}
-                                                @endif
                                             </p>
                                             <p class="text-xs text-gray-400">
                                                 {{ $service->scheduled_date ? \Carbon\Carbon::parse($service->scheduled_date)->format('d/m/Y H:i') : 'Sin fecha programada' }}

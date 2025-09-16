@@ -40,7 +40,7 @@ class TechnicianController extends Controller
         // Próximos servicios asignados (pendientes y en progreso)
         $assignedServices = Service::where('assigned_to', $user->id)
             ->whereIn('status', ['pendiente', 'en_progreso'])
-            ->with(['client', 'serviceType', 'site'])
+            ->with(['client', 'serviceType'])
             ->orderBy('scheduled_date', 'asc')
             ->limit(5)
             ->get();
