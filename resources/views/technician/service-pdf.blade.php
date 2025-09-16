@@ -371,14 +371,15 @@
                 <strong>Fotografía:</strong><br>
                 @php
                     // Las fotos se almacenan como 'storage/observations/filename.jpg'
-                    // Necesitamos convertir a ruta absoluta del storage
-                    $relativePath = str_replace('storage/', '', $observation['photo']);
-                    $photoPath = storage_path('app/public/' . $relativePath);
+                    // Convertir a ruta absoluta del storage: storage/app/public/observations/filename.jpg
+                    $photoFileName = basename($observation['photo']); // Extraer solo el nombre del archivo
+                    $photoPath = storage_path('app/public/observations/' . $photoFileName);
                 @endphp
                 @if(file_exists($photoPath))
                     <img src="{{ $photoPath }}" alt="Foto de observación" class="observation-photo">
                 @else
-                    <p class="no-data">Imagen no disponible ({{ $photoPath }})</p>
+                    <p class="no-data">Imagen no disponible: {{ $observation['photo'] }}</p>
+                    <p class="no-data">Ruta buscada: {{ $photoPath }}</p>
                 @endif
             </div>
             @endif
