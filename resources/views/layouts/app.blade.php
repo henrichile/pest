@@ -342,7 +342,7 @@
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": document.querySelector("meta[name="csrf-token"]").getAttribute("content")
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
                 }
             }).then(response => {
                 if (response.ok) {
@@ -361,7 +361,8 @@
                         badge.textContent = data.count;
                     }
                 });
-        }, 30000);        
+        }, 30000);
+        
         // Close sidebar when clicking overlay
         document.getElementById("sidebar-overlay").addEventListener("click", function() {
             const sidebar = document.getElementById("sidebar");
@@ -370,33 +371,7 @@
             sidebar.classList.add("-translate-x-full");
             overlay.classList.add("hidden");
         });
-        
-        // Función para marcar notificaciones como leídas
-        function markAsRead(notificationId) {
-            fetch(`/notifications/${notificationId}/read`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": document.querySelector("meta[name="csrf-token"]").getAttribute("content")
-                }
-            }).then(response => {
-                if (response.ok) {
-                    location.reload();
-                }
-            });
-        }
-        
-        // Auto-refresh del contador de notificaciones cada 30 segundos
-        setInterval(function() {
-            fetch("/notifications/count")
-                .then(response => response.json())
-                .then(data => {
-                    const badge = document.querySelector(".notification-badge");
-                    if (badge) {
-                        badge.textContent = data.count;
-                    }
-                });
-        }, 30000);    </script>
+    </script>
     
     @yield("scripts")
 </body>
