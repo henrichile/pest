@@ -234,7 +234,7 @@
 <body>
     <div class="header">
         <div class="logo">
-            <img src="{{ public_path('images/logo.svg') }}" alt="Logo Pest Controller" class="logo-image">
+            <img src="{{ public_path('images/pestcontroller-logo.png') }}" alt="Logo Pest Controller" class="logo-image">
             PEST CONTROLLER
         </div>
         <div class="title">REPORTE DE SERVICIO COMPLETADO</div>
