@@ -7,7 +7,7 @@
 <div class="space-y-6">
     <!-- Stats Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <a href="{{ route("admin.statistics") }}" class="block bg-white rounded-lg shadow-lg p-6 hover:shadow-xl hover:scale-105 transition-all duration-200 cursor-pointer">
+        <a href="{{ route("admin.services.index") }}" class="block bg-white rounded-lg shadow-lg p-6 hover:shadow-xl hover:scale-105 transition-all duration-200 cursor-pointer">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
                     <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
@@ -124,7 +124,7 @@
     <div class="bg-white rounded-lg shadow-lg p-6">
         <div class="flex items-center justify-between mb-4">
             <h2 class="text-lg font-semibold text-gray-900">Servicios Recientes</h2>
-            <a href="{{ route("admin.statistics") }}" class="text-green-600 hover:text-green-700 text-sm font-medium">Ver todos</a>
+            <a href="{{ route("admin.services.index") }}" class="text-green-600 hover:text-green-700 text-sm font-medium">Ver todos</a>
         </div>
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
