@@ -354,12 +354,20 @@
         // Auto-refresh del contador de notificaciones cada 30 segundos
         setInterval(function() {
             fetch("/notifications/count")
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     const badge = document.querySelector(".notification-badge");
-                    if (badge) {
+                    if (badge && data.count !== undefined) {
                         badge.textContent = data.count;
                     }
+                })
+                .catch(error => {
+                    console.log('Error fetching notification count:', error);
                 });
         }, 30000);
         

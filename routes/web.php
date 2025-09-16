@@ -50,6 +50,11 @@ Route::middleware(['auth'])->group(function () {
         }
         return redirect('/login');
     });
+    
+    // Rutas de notificaciones globales (para todos los usuarios autenticados)
+    Route::get('/notifications/count', [App\Http\Controllers\NotificationController::class, 'getUnreadCount'])->name('notifications.count');
+    Route::get('/api/notifications/unread-count', [App\Http\Controllers\NotificationController::class, 'getUnreadCount'])->name('notifications.unread-count');
+    Route::get('/api/notifications/recent', [App\Http\Controllers\NotificationController::class, 'getRecentNotifications'])->name('notifications.recent');
 });
 
 // Rutas de admin
@@ -83,8 +88,6 @@ Route::middleware(['auth', 'role:super-admin'])->prefix('admin')->name('admin.')
     Route::patch('/notifications/{notification}/mark-read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.mark-read');
     Route::patch('/notifications/{notification}/mark-unread', [App\Http\Controllers\NotificationController::class, 'markAsUnread'])->name('notifications.mark-unread');
     Route::patch('/notifications/mark-all-read', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
-    Route::get('/api/notifications/unread-count', [App\Http\Controllers\NotificationController::class, 'getUnreadCount'])->name('notifications.unread-count');
-    Route::get('/api/notifications/recent', [App\Http\Controllers\NotificationController::class, 'getRecentNotifications'])->name('notifications.recent');
     Route::get('/checklist-management', function() { return view('admin.checklist-management'); })->name('checklist-management');
     // TODO: Arreglar estas rutas cuando el controlador ChecklistManagementController esté disponible
     /*
@@ -124,8 +127,6 @@ Route::middleware(['auth', 'role:technician'])->prefix('technician')->name('tech
     Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
     Route::patch('/notifications/{notification}/mark-read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.mark-read');
     Route::patch('/notifications/mark-all-read', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
-    Route::get('/api/notifications/unread-count', [App\Http\Controllers\NotificationController::class, 'getUnreadCount'])->name('notifications.unread-count');
-    Route::get('/api/notifications/recent', [App\Http\Controllers\NotificationController::class, 'getRecentNotifications'])->name('notifications.recent');
 });
 
 // Rutas adicionales autenticadas
