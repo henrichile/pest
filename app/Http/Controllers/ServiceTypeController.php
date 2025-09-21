@@ -39,6 +39,7 @@ class ServiceTypeController extends Controller
 
     public function show(ServiceType $serviceType)
     {
+        $serviceType->load(['services.client', 'checklistTemplates.items']);
         return view('service-types.show', compact('serviceType'));
     }
 

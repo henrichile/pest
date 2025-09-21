@@ -9,24 +9,24 @@ class ChecklistTemplate extends Model
 {
     use HasFactory;
 
-    protected  = [
+    protected $fillable = [
         'name',
         'description',
         'service_type_id',
         'is_active',
     ];
 
-    protected  = [
+    protected $casts = [
         'is_active' => 'boolean',
     ];
 
     public function serviceType()
     {
-        return ->belongsTo(ServiceType::class);
+        return $this->belongsTo(ServiceType::class);
     }
 
     public function items()
     {
-        return ->hasMany(ChecklistItem::class)->orderBy('order');
+        return $this->hasMany(ChecklistItem::class)->orderBy('order');
     }
 }

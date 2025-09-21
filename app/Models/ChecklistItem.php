@@ -9,7 +9,7 @@ class ChecklistItem extends Model
 {
     use HasFactory;
 
-    protected  = [
+    protected $fillable = [
         'title',
         'description',
         'type',
@@ -19,13 +19,13 @@ class ChecklistItem extends Model
         'checklist_template_id',
     ];
 
-    protected  = [
+    protected $casts = [
         'is_required' => 'boolean',
         'options' => 'array',
     ];
 
     public function template()
     {
-        return ->belongsTo(ChecklistTemplate::class);
+        return $this->belongsTo(ChecklistTemplate::class, 'checklist_template_id');
     }
 }

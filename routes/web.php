@@ -89,6 +89,11 @@ Route::middleware(['auth', 'role:super-admin'])->prefix('admin')->name('admin.')
     Route::patch('/notifications/{notification}/mark-unread', [App\Http\Controllers\NotificationController::class, 'markAsUnread'])->name('notifications.mark-unread');
     Route::patch('/notifications/mark-all-read', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
     Route::get('/checklist-management', function() { return view('admin.checklist-management'); })->name('checklist-management');
+    
+    // Checklist Templates
+    Route::resource('checklist-templates', App\Http\Controllers\ChecklistTemplateController::class);
+    Route::post('/checklist-templates/{checklistTemplate}/duplicate', [App\Http\Controllers\ChecklistTemplateController::class, 'duplicate'])->name('checklist-templates.duplicate');
+    
     // TODO: Arreglar estas rutas cuando el controlador ChecklistManagementController esté disponible
     /*
     Route::post("/checklist-management/templates", [App\Http\Controllers\ChecklistManagementController::class, "createTemplate"])->name("checklist-management.templates.create");

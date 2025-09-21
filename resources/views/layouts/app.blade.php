@@ -144,12 +144,23 @@
                                     </svg>
                                     Centro de Notificaciones
                                 </a>
+                                <a href="{{ route("admin.service-types.index") }}" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-green-800 hover:text-white rounded-lg transition-colors">
+                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                                    </svg>
+                                    Tipos de Servicios
+                                </a>
                                 <a href="{{ route("admin.checklist-management") }}" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-green-700 hover:text-white rounded-lg transition-colors">
                                     <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M3 4a1 1 0 111-1h12a1 1 0 110 2H4a1 1 0 11-1-1zM3 8a1 1 0 111-1h12a1 1 0 110 2H4a1 1 0 11-1-1zM3 12a1 1 0 111-1h12a1 1 0 110 2H4a1 1 0 11-1-1zM3 16a1 1 0 111-1h12a1 1 0 110 2H4a1 1 0 11-1-1z"/>
                                     </svg>
                                     Gestión de Checklist
-                <a href="{{ route("admin.services.index") }}" class="flex items-center px-8 py-2 text-sm text-gray-300 hover:bg-green-800 hover:text-white rounded-lg transition-colors">                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>                    </svg>                    Tipos de Servicios                </a>
+                                </a>
+                                <a href="{{ route("admin.checklist-templates.index") }}" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-green-800 hover:text-white rounded-lg transition-colors">
+                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    Templates de Checklist
                                 </a>
                             </div>
                         </div>
