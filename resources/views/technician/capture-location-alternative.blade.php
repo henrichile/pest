@@ -211,6 +211,7 @@
             <input type="hidden" id="latitude" name="latitude" required>
             <input type="hidden" id="longitude" name="longitude" required>
             <input type="hidden" id="location_accuracy" name="location_accuracy" value="10">
+            <input type="hidden" name="address" value="{{ $service->address ?? 'Ubicación capturada' }}">
             
             <button type="submit" class="start-button">
                 🚀 Iniciar Servicio

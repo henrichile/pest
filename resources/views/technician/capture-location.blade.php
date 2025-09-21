@@ -228,11 +228,12 @@
         
         <div id="coordinates" class="coordinates hidden"></div>
         
-        <form id="locationForm" method="POST" action="{{ route("technician.service.process-location", $service) }}" class="hidden">
+        <form id="locationForm" method="POST" action="{{ route("technician.service.checklist.process-location", $service) }}" class="hidden">
             @csrf
             <input type="hidden" name="latitude" id="latitude">
             <input type="hidden" name="longitude" id="longitude">
             <input type="hidden" name="location_accuracy" id="location_accuracy">
+            <input type="hidden" name="address" value="{{ $service->address ?? 'Ubicación capturada' }}">
             <button type="submit" id="continueBtn" class="continue-button" disabled>
                 ✅ Continuar al Checklist
             </button>
@@ -273,13 +274,14 @@
             locationBtn.innerHTML = "<div class=\"spinner\"></div>Solicitando permisos...";
 
             // Configuración más agresiva para obtener permisos
-n            // Mostrar mensaje de solicitud de permisos
+          // Mostrar mensaje de solicitud de permisos
             coordinatesDiv.innerHTML = "<div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 4px solid #2196f3;"><strong>📍 Solicitando permisos de ubicación...</strong><br>Por favor, permite el acceso a tu ubicación cuando el navegador lo solicite.</div>";
             coordinatesDiv.classList.remove("hidden");
             const options = {
-n                enableHighAccuracy: false,
+                enableHighAccuracy: false,
                 timeout: 10000,
                 maximumAge: 60000
+            };
 
             navigator.geolocation.getCurrentPosition(
                 function(position) {

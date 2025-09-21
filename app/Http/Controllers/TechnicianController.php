@@ -145,12 +145,15 @@ class TechnicianController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'address' => 'required|string|max:255',
+            'location_accuracy' => 'nullable|numeric',
         ]);
 
         // Actualizar servicio con ubicación y cambiar estado
         $service->update([
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
+            'location_accuracy' => $request->location_accuracy,
+            'location_captured_at' => now(),
             'address' => $request->address,
             'status' => 'en_progreso',
             'started_at' => now(),
@@ -252,7 +255,7 @@ class TechnicianController extends Controller
                 if ($request->hasFile('photo')) {
                     $photo = $request->file('photo');
                     $filename = time() . '_' . $photo->getClientOriginalName();
-                    $photo->storeAs('public/observations', $filename);
+                    $photo->storeAs('observations', $filename, 'public');
                     $newObservation['photo'] = 'storage/observations/' . $filename;
                 }
                 

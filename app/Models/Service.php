@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Log;
 
 class Service extends Model
 {
@@ -18,6 +19,10 @@ class Service extends Model
         "service_type_id",
         "scheduled_date",
         "address",
+        "latitude",
+        "longitude", 
+        "location_accuracy",
+        "location_captured_at",
         "priority",
         "status",
         "description",
@@ -56,6 +61,7 @@ class Service extends Model
         "started_at" => "datetime",
         "completed_at" => "datetime",
         "checklist_completed_at" => "datetime",
+        "location_captured_at" => "datetime",
         "observed_results" => "array",
         "checklist_data" => "array",
         "bait_weight" => "decimal:2",
@@ -189,5 +195,63 @@ class Service extends Model
     public function serviceType()
     {
         return $this->belongsTo(ServiceType::class);
+    }
+
+    /**
+     * Generar imagen de mapa del servicio usando Mapbox
+     *
+     * @param int $width Ancho de la imagen
+     * @param int $height Alto de la imagen
+     * @param int $zoom Nivel de zoom
+     * @param string $style Estilo del mapa
+     * @return string|null URL de la imagen o null si no hay coordenadas
+     */
+    public function generateMapImage(
+        int $width = 600, 
+        int $height = 400, 
+        int $zoom = 15, 
+        string $style = 'streets-v11'
+    ): ?string {
+        if (!$this->latitude || !$this->longitude) {
+            return null;
+        }
+
+        try {
+            return \App\Helpers\MapboxHelper::generateMapboxImageUrl(
+                $this->latitude,
+                $this->longitude,
+                $width,
+                $height,
+                $zoom,
+                $style
+            );
+        } catch (\Exception $e) {
+            Log::warning('Error generando mapa para servicio ' . $this->id . ': ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Verificar si el servicio tiene coordenadas para generar mapa
+     *
+     * @return bool
+     */
+    public function hasCoordinates(): bool
+    {
+        return !empty($this->latitude) && !empty($this->longitude);
+    }
+
+    /**
+     * Obtener las coordenadas como string formateado
+     *
+     * @return string|null
+     */
+    public function getCoordinatesString(): ?string
+    {
+        if (!$this->hasCoordinates()) {
+            return null;
+        }
+
+        return "{$this->latitude}, {$this->longitude}";
     }
 }

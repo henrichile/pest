@@ -117,7 +117,7 @@
         }
         
         .signature-section {
-            margin-top: 30px;
+            margin-top: 40px;
             border-top: 2px solid #1a472a;
             padding-top: 20px;
         }
@@ -125,7 +125,7 @@
         .signature-box {
             display: inline-block;
             width: 45%;
-            margin: 10px 2%;
+            margin: 30px 2%;
             text-align: center;
         }
         
@@ -254,18 +254,6 @@
             <span class="info-label">Dirección:</span>
             <span class="info-value">{{ $service->address ?? "N/A" }}</span>
         </div>
-        @if($service->latitude && $service->longitude)
-        <div class="geolocation-info">
-            <div class="info-row">
-                <span class="info-label">Coordenadas GPS:</span>
-                <span class="info-value">{{ $service->latitude }}, {{ $service->longitude }}</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Enlace Google Maps:</span>
-                <span class="info-value">https://maps.google.com/?q={{ $service->latitude }},{{ $service->longitude }}</span>
-            </div>
-        </div>
-        @endif
         <div class="info-row">
             <span class="info-label">Tipo de Servicio:</span>
             <span class="info-value">{{ $service->serviceType->name ?? "N/A" }}</span>
@@ -299,7 +287,44 @@
             </span>
         </div>
     </div>
-    
+            @if($service->latitude && $service->longitude)
+        <div class="geolocation-info">
+                      
+            {{-- Mapa estático de Mapbox --}}
+            @if(App\Helpers\MapboxHelper::isConfigured())
+                @php
+                    try {
+                        $mapImageUrl = App\Helpers\MapboxHelper::generateMapboxImage(
+                            $service->latitude,
+                            $service->longitude,
+                            600,
+                            300,
+                            15
+                        );
+                        
+                        // Convertir URL a ruta física para PDF
+                        if ($mapImageUrl) {
+                            $mapImagePath = public_path(str_replace(url('/'), '', $mapImageUrl));
+                        } else {
+                            $mapImagePath = null;
+                        }
+                    } catch (\Exception $e) {
+                        $mapImageUrl = null;
+                        $mapImagePath = null;
+                    }
+                @endphp
+                
+                @if($mapImagePath && file_exists($mapImagePath))
+                <div class="map-container" style="text-align: center; page-break-inside: avoid;">
+                    <div style="font-weight: bold; margin-bottom: 8px; color: #1a472a;">Ubicación del Servicio :: Coordenadas GPS: <span class="info-value">{{ $service->latitude }}, {{ $service->longitude }}</span></div>
+                    <img src="{{ $mapImagePath }}" alt="Mapa de ubicación del servicio" 
+                         style="max-width: 100%; height: auto; border: 2px solid #1a472a; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </div>
+                @endif
+            @endif
+        </div>
+        @endif
+        <div style="page-break-after: always;"></div>
     {{-- Tipo de Servicio y Hallazgos Técnicos --}}
     @if($service->checklist_data)
         <div class="section">
@@ -406,7 +431,7 @@
         <div class="checklist-item">{{ $service->checklist_data["description"]["content"] }}</div>
     </div>
     @endif
-    
+    <div style="page-break-after: always;"></div>
     {{-- Firmas del Cliente y Técnico --}}
     <div class="signature-section">
         <div class="section-title">Firmas de Confirmación</div>
