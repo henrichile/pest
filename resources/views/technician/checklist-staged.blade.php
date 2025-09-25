@@ -386,6 +386,14 @@
         <div class="service-info">
             <h3>Detalles del Servicio</h3>
             <div class="info-row">
+                <span class="info-label">ID del Servicio:</span>
+                <span class="info-value">{{ $service->id }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Tipo de Servicio:</span>
+                <span class="info-value">{{ ucfirst($service->service_type) }}</span>
+            </div>
+            <div class="info-row">
                 <span class="info-label">Cliente:</span>
                 <span class="info-value">{{ $service->client->name ?? "N/A" }}</span>
             </div>
@@ -404,13 +412,17 @@
             <div class="progress-bar">
                 <div class="progress-fill" style="width: {{ $service->getProgressPercentage() }}%"></div>
             </div>
-            <div class="progress-text">Etapa {{ $service->getStageNumber() }} de 6 - {{ number_format($service->getProgressPercentage(), 1) }}% completado</div>
+            <div class="progress-text">Etapa {{ $service->getStageNumber() }} de {{ $service->getTotalStage() }} - {{ number_format($service->getProgressPercentage(), 1) }}% completado</div>
         </div>
         
         <div class="stage-indicator">
+            @if($service->service_type === 'desratizacion')
             <span class="{{ $service->checklist_stage === 'points' ? 'active' : ($service->getStageNumber() > 1 ? 'completed' : '') }}">Puntos</span>
+            @endif
             <span class="{{ $service->checklist_stage === 'products' ? 'active' : ($service->getStageNumber() > 2 ? 'completed' : '') }}">Productos</span>
+             @if($service->service_type === 'desratizacion' || $service->service_type === 'desinsectacion')
             <span class="{{ $service->checklist_stage === 'results' ? 'active' : ($service->getStageNumber() > 3 ? 'completed' : '') }}">Resultados</span>
+            @endif
             <span class="{{ $service->checklist_stage === 'observations' ? 'active' : ($service->getStageNumber() > 4 ? 'completed' : '') }}">Observaciones</span>
             <span class="{{ $service->checklist_stage === 'sites' ? 'active' : ($service->getStageNumber() > 5 ? 'completed' : '') }}">Sitios</span>
             <span class="{{ $service->checklist_stage === 'description' ? 'active' : ($service->getStageNumber() > 6 ? 'completed' : '') }}">Descripción</span>

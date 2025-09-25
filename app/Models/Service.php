@@ -124,7 +124,7 @@ class Service extends Model
      */
     public function getNextStage(): string
     {
-        $stages = ["points", "products", "results", "observations", "sites", "description"];
+        $stages = $this->getStages($this->service_type);
         $currentIndex = array_search($this->checklist_stage, $stages);
         
         if ($currentIndex !== false && $currentIndex < count($stages) - 1) {
@@ -139,7 +139,7 @@ class Service extends Model
      */
     public function getPreviousStage(): string
     {
-        $stages = ["points", "products", "results", "observations", "sites", "description"];
+        $stages = $this->getStages($this->service_type);
         $currentIndex = array_search($this->checklist_stage, $stages);
         
         if ($currentIndex !== false && $currentIndex > 0) {
@@ -170,7 +170,7 @@ class Service extends Model
      */
     public function getStageNumber(): int
     {
-        $stages = ["points", "products", "results", "observations", "sites", "description"];
+        $stages = $this->getStages($this->service_type);
         $currentIndex = array_search($this->checklist_stage, $stages);
         
         return $currentIndex !== false ? $currentIndex + 1 : 1;
@@ -181,14 +181,33 @@ class Service extends Model
      */
     public function getProgressPercentage(): int
     {
-        $stages = ["points", "products", "results", "observations", "sites", "description"];
+        $stages = $this->getStages($this->service_type);
         $currentIndex = array_search($this->checklist_stage, $stages);
-        
+      
         if ($currentIndex !== false) {
+           
             return round((($currentIndex + 1) / count($stages)) * 100);
         }
         
         return 0;
+    }
+
+    public function getTotalStage(): int
+    {
+        $stages = $this->getStages($this->service_type);
+        return count($stages);
+    }
+
+    public function getStages($type = null) {
+        Log::info("Service type for stages: " . $type);
+        if ($type=='desratizacion') {
+            $stages = ["points", "products", "results", "observations", "sites", "description"];
+        }elseif($type=='desinsectacion') {
+            $stages = ["products","results", "observations", "sites", "description"];
+        }else {
+            $stages = ["products", "observations", "sites", "description"];
+        }
+        return $stages;
     }
 
     /**

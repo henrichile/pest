@@ -7,8 +7,9 @@
         <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-900">Detalles Completos del Checklist</h1>
+                    <h1 class="text-2xl font-bold text-gray-900">Detalles Completos del servicio</h1>
                     <p class="text-gray-600 mt-1">Servicio #{{ $service->id }} - {{ $service->client->name ?? 'Cliente' }}</p>
+                    <p class="text-gray-600">Tipo de Servicio: <strong>{{ ucfirst($service->service_type) }}</strong></p>
                 </div>
                 <a href="{{ route('technician.service.detail', $service) }}" 
                    class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors">
@@ -19,16 +20,15 @@
                 </a>
             </div>
         </div>
-
         @if($service->checklist_data)
             <!-- Etapa 1: Puntos de Control - Oculto para desinsectación -->
-            @if($service->service_type !== 'desinsectacion')
+            @if($service->service_type !== 'desinsectacion' && $service->service_type !== 'desinfeccion')
             <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                 <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                     <svg class="w-6 h-6 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                     </svg>
-                    Etapa 1: Puntos de Control
+                    Puntos de Control
                 </h2>
                 <ul class="space-y-2">
                     @if(isset($service->checklist_data["points"]) && count($service->checklist_data["points"]) > 0)
@@ -54,7 +54,7 @@
                     <svg class="w-6 h-6 text-blue-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
                     </svg>
-                    Etapa 2: Productos Aplicados
+                    Productos Aplicados
                 </h2>
                 <ul class="space-y-2">
                     @if(isset($service->checklist_data["products"]) && count($service->checklist_data["products"]) > 0)
@@ -82,7 +82,7 @@
                     <svg class="w-6 h-6 text-yellow-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
                     </svg>
-                    Etapa 3: Lámparas Ultravioletas
+                    Lámparas Ultravioletas
                 </h2>
                 <div class="space-y-4">
                     <div class="grid md:grid-cols-2 gap-4">
@@ -129,7 +129,7 @@
                     <svg class="w-6 h-6 text-yellow-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
                     </svg>
-                    Etapa 3: Resultados Observados
+                    Resultados Observados
                 </h2>
                 <ul class="space-y-2">
                     @if(isset($service->checklist_data["results"]["observed_results"]) && count($service->checklist_data["results"]["observed_results"]) > 0)
@@ -173,7 +173,7 @@
                     <svg class="w-6 h-6 text-purple-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
                     </svg>
-                    Etapa 4: Observaciones Detalladas
+                    Observaciones Detalladas
                 </h2>
                 <div class="space-y-4">
                     @foreach($service->checklist_data["observations"] as $index => $observation)
@@ -211,7 +211,7 @@
                     <svg class="w-6 h-6 text-indigo-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
                     </svg>
-                    Etapa 5: Sitios Tratados
+                    Sitios Tratados
                 </h2>
                 <p class="text-gray-700">{{ $service->checklist_data["sites"]["treated_sites"] ?? "No especificado" }}</p>
             </div>
@@ -224,7 +224,7 @@
                     <svg class="w-6 h-6 text-red-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
                     </svg>
-                    Etapa 6: Descripción del Servicio
+                    Descripción del Servicio
                 </h2>
                 <p class="text-gray-700">{{ $service->checklist_data["description"]["service_description"] }}</p>
             </div>
