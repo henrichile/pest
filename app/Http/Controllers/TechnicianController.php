@@ -159,8 +159,25 @@ class TechnicianController extends Controller
             'started_at' => now(),
         ]);
 
-        // Definir la siguiente etapa del checklist
-        $nextStage = "points";
+        // Definir la siguiente etapa del checklist basada en service_type
+        switch ($service->service_type) {
+            case 'fumigacion-de-jardines':
+                $nextStage = "points";
+                break;
+            case 'desinfeccion':
+                $nextStage = "products";
+                break;
+            case 'desratizacion':
+                $nextStage = "points";
+                break;
+            case 'desinsectacion':
+                $nextStage = "products";
+                break;
+            default:
+                $nextStage = "points";
+                break;
+        }
+        //dd($nextStage);
         return redirect()->route('technician.service.checklist.stage', ['service' => $service, 'stage' => $nextStage])
             ->with('success', 'Ubicación capturada correctamente. Puedes comenzar el checklist.');
     }
@@ -179,7 +196,33 @@ class TechnicianController extends Controller
 
         $service->load(['client', 'serviceType']);
 
-        return view('technician.checklist-staged', compact('service'));
+        // Preparar variables para la etapa de productos (si es la etapa actual)
+        $products = collect();
+        $stageInstruction = '';
+        
+        if ($service->checklist_stage === 'products') {
+            $serviceTypeMapping = [
+                'desratizacion' => 'desratizacion',
+                'desinsectacion' => 'desinsectacion', 
+                'sanitizacion' => 'sanitizacion',
+                'desinfeccion' => 'desinfeccion',
+                'fumigacion-de-jardines' => 'desinsectacion',
+                'servicios-especiales' => 'sanitizacion'
+            ];
+            
+            $productServiceType = $serviceTypeMapping[$service->service_type] ?? null;
+            
+            if ($productServiceType) {
+                $products = \App\Models\Product::where('service_type', $productServiceType)
+                    ->where('stock', '>', 0)
+                    ->orderBy('name')
+                    ->get();
+            }
+            
+            $stageInstruction = $this->getProductStageInstruction($service->service_type);
+        }
+
+        return view('technician.checklist-staged', compact('service', 'products', 'stageInstruction'));
     }
 
     public function showChecklistStage(Request $request, Service $service, $stage)
@@ -204,7 +247,41 @@ class TechnicianController extends Controller
         $service->update(["checklist_stage" => $stage]);
 
         $service->load(["client", "serviceType"]);
-        return view("technician.checklist-stages." . $stage, compact("service"));
+        
+        // Si es la etapa de productos, cargar productos filtrados por service_type
+        $products = null;
+        $stageInstruction = null;
+        if ($stage === 'products') {
+            // Mapear el service_type del servicio con los valores del enum de productos
+            $serviceTypeMapping = [
+                'desratizacion' => 'desratizacion',
+                'desinsectacion' => 'desinsectacion', 
+                'sanitizacion' => 'sanitizacion',
+                'desinfeccion' => 'desinfeccion',
+                'fumigacion-de-jardines' => 'desinsectacion', // Mapear fumigación a desinsectación
+                'servicios-especiales' => 'sanitizacion' // Mapear servicios especiales a sanitización
+            ];
+            
+            
+
+            $productServiceType = $serviceTypeMapping[$service->service_type] ?? null;
+            
+            if ($productServiceType) {
+                $products = \App\Models\Product::where('service_type', $productServiceType)
+                    ->where('stock', '>', 0) // Solo productos con stock disponible
+                    ->orderBy('name')
+                    ->get();
+            }
+            
+            // Obtener el texto de instrucción específico para el tipo de servicio
+            $stageInstruction = $this->getProductStageInstruction($service->service_type);
+        }
+        
+        // Asegurar que las variables siempre estén definidas
+        $products = $products ?? collect();
+        $stageInstruction = $stageInstruction ?? '';
+        
+        return view("technician.checklist-stages." . $stage, compact("service", "products", "stageInstruction"));
         //return view("technician.checklist-staged", compact("service"));
       }
     public function saveChecklistStage(Request $request, Service $service)
@@ -226,16 +303,32 @@ class TechnicianController extends Controller
                 $checklistData['points'] = $request->input('points', []);
                 break;
             case 'products':
+                $appliedProduct = $request->input('applied_product');
+                $productId = $request->input('product_id'); // ID del producto seleccionado
+                
                 $checklistData['products'] = [
-                    'applied_product' => $request->input('applied_product')
+                    'applied_product' => $appliedProduct,
+                    'product_id' => $productId, // Guardar también el ID para futuras referencias
+                    'applied_at' => now()->format('Y-m-d H:i:s')
                 ];
                 break;
             case 'results':
-                $checklistData['results'] = [
-                    'observed_results' => $request->input('observed_results', []),
-                    'total_installed_points' => $request->input('total_installed_points'),
-                    'total_consumption_activity' => $request->input('total_consumption_activity')
-                ];
+                $resultsData = [];
+                if ($service->service_type === 'desratizacion') {
+                    $resultsData = [
+                        'observed_results' => $request->input('observed_results', []),
+                        'total_installed_points' => $request->input('total_installed_points'),
+                        'total_consumption_activity' => $request->input('total_consumption_activity')
+                    ];
+                }elseif ($service->service_type === 'desinsectacion') {
+                    $resultsData['uv_lamps'] = $request->input('uv_lamps');
+                    $resultsData['tuv'] = $request->input('tuv');
+                    $resultsData['devices_installed'] = $request->input('devices_installed');
+                    $resultsData['devices_existing'] = $request->input('devices_existing');
+                    $resultsData['devices_replaced'] = $request->input('devices_replaced');
+                }
+                
+                $checklistData['results'] = $resultsData;
                 break;
             case 'observations':
                 // Obtener observaciones existentes
@@ -295,6 +388,10 @@ class TechnicianController extends Controller
                 'checklist_data' => $checklistData,
                 'checklist_stage' => $nextStage
             ]);
+
+        if (in_array($nextStage, ["results"]) && count($checklistData['results'] ?? [])===0) {
+            $nextStage = "observations";
+        }    
 
         return redirect()->route('technician.service.checklist.stage', ['service' => $service, 'stage' => $nextStage])
             ->with('success', 'Etapa guardada correctamente');
@@ -374,5 +471,21 @@ class TechnicianController extends Controller
         $service->update(["status" => "finalizado"]);
         
         return redirect()->back()->with("success", "Servicio completado exitosamente");
+    }
+
+    /**
+     * Obtener texto de instrucción específico para la etapa de productos según el tipo de servicio
+     */
+    private function getProductStageInstruction($serviceType)
+    {
+        $instructions = [
+            'desratizacion' => 'Seleccione el rodenticida utilizado para el control de roedores',
+            'desinsectacion' => 'Seleccione el insecticida utilizado para el control de insectos',
+            'sanitizacion' => 'Seleccione el desinfectante utilizado para la sanitización',
+            'fumigacion-de-jardines' => 'Seleccione el producto utilizado para la fumigación de jardines',
+            'servicios-especiales' => 'Seleccione el producto utilizado para este servicio especial'
+        ];
+
+        return $instructions[$serviceType] ?? 'Seleccione el producto utilizado para este servicio';
     }
 }

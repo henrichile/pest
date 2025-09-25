@@ -14,7 +14,7 @@
 @section('content')
 
 <!-- Etapa 5: Sitios Tratados -->
-<div class="stage-title">Etapa 5: Sitios Tratados</div>
+<div class="stage-title">Sitios Tratados</div>
 <div class="stage-instruction">Describa los sitios donde se realizó el tratamiento</div>
 
 <form method="POST" action="{{ route("technician.service.checklist.submit", $service) }}" data-stage="sites">

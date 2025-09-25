@@ -21,8 +21,8 @@
         </div>
 
         @if($service->checklist_data)
-            <!-- Etapa 1: Puntos de Control -->
-            @if(true)
+            <!-- Etapa 1: Puntos de Control - Oculto para desinsectación -->
+            @if($service->service_type !== 'desinsectacion')
             <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                 <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                     <svg class="w-6 h-6 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -30,7 +30,6 @@
                     </svg>
                     Etapa 1: Puntos de Control
                 </h2>
-                </ul>
                 <ul class="space-y-2">
                     @if(isset($service->checklist_data["points"]) && count($service->checklist_data["points"]) > 0)
                         @foreach($service->checklist_data["points"] as $point)
@@ -78,18 +77,65 @@
             <!-- Etapa 3: Resultados Observados -->
             @if(true)
             <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                @if($service->service_type === 'desinsectacion')
+                <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                    <svg class="w-6 h-6 text-yellow-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                    </svg>
+                    Etapa 3: Lámparas Ultravioletas
+                </h2>
+                <div class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="font-medium text-gray-700">Lámparas UV:</span>
+                            <span class="text-gray-900">{{ $service->checklist_data["results"]["uv_lamps"] ?? "N/A" }}</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="font-medium text-gray-700">TUV:</span>
+                            <span class="text-gray-900">{{ $service->checklist_data["results"]["tuv"] ?? "N/A" }}</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="font-medium text-gray-700">Dispositivos Instalados:</span>
+                            <span class="text-gray-900">{{ $service->checklist_data["results"]["devices_installed"] ?? "N/A" }}</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="font-medium text-gray-700">Dispositivos Existentes:</span>
+                            <span class="text-gray-900">{{ $service->checklist_data["results"]["devices_existing"] ?? "N/A" }}</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg md:col-span-2">
+                            <span class="font-medium text-gray-700">Dispositivos Repuestos:</span>
+                            <span class="text-gray-900">{{ $service->checklist_data["results"]["devices_replaced"] ?? "N/A" }}</span>
+                        </div>
+                    </div>
+                    
+                    @if(isset($service->checklist_data["results"]["observed_results"]) && count($service->checklist_data["results"]["observed_results"]) > 0)
+                    <div class="mt-6">
+                        <h3 class="font-medium text-gray-900 mb-3">Resultados Observados:</h3>
+                        <ul class="space-y-2">
+                            @foreach($service->checklist_data["results"]["observed_results"] ?? [] as $result)
+                            <li class="flex items-center text-gray-700">
+                                <svg class="w-4 h-4 text-yellow-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>             
+                                </svg>
+                                {{ is_string($result) ? $result : json_encode($result) }}
+                            </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+                </div>
+                @else
                 <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                     <svg class="w-6 h-6 text-yellow-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
                     </svg>
                     Etapa 3: Resultados Observados
                 </h2>
-                </ul>
                 <ul class="space-y-2">
                     @if(isset($service->checklist_data["results"]["observed_results"]) && count($service->checklist_data["results"]["observed_results"]) > 0)
+                        @foreach($service->checklist_data["results"]["observed_results"] ?? [] as $result)
                         <li class="flex items-center text-gray-700">
                             <svg class="w-4 h-4 text-yellow-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        @foreach($service->checklist_data["results"]["observed_results"] ?? [] as $result)
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>             
                             </svg>
                             {{ is_string($result) ? $result : json_encode($result) }}
@@ -99,6 +145,24 @@
                         <li class="text-gray-500 italic">No hay resultados observados registrados</li>
                     @endif
                 </ul>
+                
+                @if(isset($service->checklist_data["results"]["total_installed_points"]) || isset($service->checklist_data["results"]["total_consumption_activity"]))
+                <div class="mt-6 grid md:grid-cols-2 gap-4">
+                    @if(isset($service->checklist_data["results"]["total_installed_points"]))
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <span class="font-medium text-gray-700">Puntos Totales:</span>
+                        <span class="text-gray-900">{{ $service->checklist_data["results"]["total_installed_points"] }}</span>
+                    </div>
+                    @endif
+                    @if(isset($service->checklist_data["results"]["total_consumption_activity"]))
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <span class="font-medium text-gray-700">Consumo:</span>
+                        <span class="text-gray-900">{{ $service->checklist_data["results"]["total_consumption_activity"] }}g</span>
+                    </div>
+                    @endif
+                </div>
+                @endif
+                @endif
             </div>
             @endif
 

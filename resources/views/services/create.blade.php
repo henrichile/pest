@@ -8,6 +8,16 @@
             <p class="text-gray-600">Complete los datos del nuevo servicio</p>
         </div>
 
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('admin.services.store') }}" class="space-y-6">
             @csrf
             
@@ -31,15 +41,15 @@
 
                 <!-- Tipo de Servicio -->
                 <div>
-                    <label for="service_type_id" class="block text-sm font-medium text-gray-700 mb-2">Tipo de Servicio *</label>
-                    <select id="service_type_id" name="service_type_id" required
-                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 @error('service_type_id') border-red-500 @enderror">
+                    <label for="service_type" class="block text-sm font-medium text-gray-700 mb-2">Tipo de Servicio *</label>
+                    <select id="service_type" name="service_type" required
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 @error('service_type') border-red-500 @enderror">
                         <option value="">Seleccione el tipo</option>
                         @foreach($serviceTypes as $serviceType)
-                            <option value="{{ $serviceType->id }}" {{ old('service_type_id') == $serviceType->id ? 'selected' : '' }}>{{ $serviceType->name }}</option>
+                            <option value="{{ $serviceType->slug }}" {{ old('service_type') == $serviceType->slug ? 'selected' : '' }}>{{ $serviceType->name }}</option>
                         @endforeach
                     </select>
-                    @error('service_type_id')
+                    @error('service_type')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>

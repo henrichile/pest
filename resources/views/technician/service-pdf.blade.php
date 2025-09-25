@@ -325,8 +325,8 @@
         </div>
         @endif
         <div style="page-break-after: always;"></div>
-    {{-- Tipo de Servicio y Hallazgos Técnicos --}}
-    @if($service->checklist_data)
+    {{-- Tipo de Servicio y Hallazgos Técnicos - Oculto para desinsectación --}}
+    @if($service->checklist_data && $service->service_type !== 'desinsectacion')
         <div class="section">
             <div class="section-title">Hallazgos Técnicos - Puntos de Control</div>
             <ul class="points-list">
@@ -339,9 +339,41 @@
                 @endif
             </ul>
         </div>
+    @endif
         
         @if(isset($service->checklist_data["results"]) && count($service->checklist_data["results"]) > 0)
         <div class="section">
+            @if($service->service_type === 'desinsectacion')
+            <div class="section-title">Lámparas Ultravioletas</div>
+            <div class="technical-findings">
+                <div class="checklist-item" style="margin-bottom: 8px;">
+                    <strong>Lámparas UV:</strong> {{ $service->checklist_data["results"]["uv_lamps"] ?? "N/A" }}
+                </div>
+                <div class="checklist-item" style="margin-bottom: 8px;">
+                    <strong>TUV:</strong> {{ $service->checklist_data["results"]["tuv"] ?? "N/A" }}
+                </div>
+                <div class="checklist-item" style="margin-bottom: 8px;">
+                    <strong>Dispositivos Instalados:</strong> {{ $service->checklist_data["results"]["devices_installed"] ?? "N/A" }}
+                </div>
+                <div class="checklist-item" style="margin-bottom: 8px;">
+                    <strong>Dispositivos Existentes:</strong> {{ $service->checklist_data["results"]["devices_existing"] ?? "N/A" }}
+                </div>
+                <div class="checklist-item" style="margin-bottom: 8px;">
+                    <strong>Dispositivos Repuestos:</strong> {{ $service->checklist_data["results"]["devices_replaced"] ?? "N/A" }}
+                </div>
+                
+                @if(isset($service->checklist_data["results"]["observed_results"]) && count($service->checklist_data["results"]["observed_results"]) > 0)
+                <div style="margin-top: 15px;">
+                    <strong>Resultados Observados:</strong>
+                    <ul class="points-list" style="margin-top: 5px;">
+                        @foreach($service->checklist_data["results"]["observed_results"] as $result)
+                        <li>{{ $result }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+            </div>
+            @else
             <div class="section-title">Hallazgos Técnicos - Resultados Observados</div>
             <div class="technical-findings">
                 <ul class="points-list">
@@ -353,7 +385,23 @@
                         <li>No hay resultados observados registrados</li>
                     @endif
                 </ul>
+                
+                @if(isset($service->checklist_data["results"]["total_installed_points"]) || isset($service->checklist_data["results"]["total_consumption_activity"]))
+                <div style="margin-top: 15px;">
+                    @if(isset($service->checklist_data["results"]["total_installed_points"]))
+                    <div class="checklist-item" style="margin-bottom: 8px;">
+                        <strong>Puntos Totales:</strong> {{ $service->checklist_data["results"]["total_installed_points"] }}
+                    </div>
+                    @endif
+                    @if(isset($service->checklist_data["results"]["total_consumption_activity"]))
+                    <div class="checklist-item" style="margin-bottom: 8px;">
+                        <strong>Consumo:</strong> {{ $service->checklist_data["results"]["total_consumption_activity"] }}g
+                    </div>
+                    @endif
+                </div>
+                @endif
             </div>
+            @endif
         </div>
         @endif
     
@@ -414,7 +462,6 @@
         <div class="observation-item">No hay observaciones registradas</div>
     @endif
     </div>
-    @endif
     
     {{-- Sitios Tratados --}}
     @if($service->checklist_data && isset($service->checklist_data["sites"]["treated_sites"]) && !empty($service->checklist_data["sites"]["treated_sites"]))

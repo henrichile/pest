@@ -474,7 +474,7 @@
 
 <!-- Updated: 2024-09-14 20:58 - COMPLETE RESTORATION -->
 <!-- Etapa 4: Observaciones Detalladas -->
-<div class="stage-title">Etapa 4: Observaciones Detalladas</div>
+<div class="stage-title">Observaciones Detalladas</div>
 <div class="stage-instruction">Registre observaciones específicas con fotos</div>
 
 <div class="observations-container">
@@ -494,15 +494,21 @@
                             <span class="toggle-icon" id="toggleIcon{{ $index }}">▼</span>
                         </div>
                     </div>
+                    {{ "tipo: ".$service->service_type }}
                     <div class="observation-content" id="observationContent{{ $index }}" style="display: none;">
                         <div class="observation-details">
                             <div class="detail-row">
-                                <label>Código de la Cebadera:</label>
-                                <span>{{ $observation['cebadera_code'] ?? 'N/A' }}</span>
+                                
+                                @if($service->service_type === 'desratizacion')
+                                    <label>Código de la Cebadera:</label>
+                                    <span>{{ $observation['cebadera_code'] ?? 'N/A' }}</span>
+                                @elseif($service->service_type === 'desinsectacion' || $service->service_type === 'sanitizacion' || $service->service_type === 'fumigacion-de-jardines' || $service->service_type === 'servicios-especiales' || $service->service_type === 'desinsectacion')
+                                    <label>Lugar tratado:</label>
+                                @endif
                             </div>
                             <div class="detail-row">
-                                <label>Número de Observación:</label>
-                                <span>{{ $observation['observation_number'] ?? ($index + 1) }}</span>
+                                    <label>Número de Observación:</label>
+                                    <span>{{ $observation['observation_number'] ?? ($index + 1) }}</span>
                             </div>
                             <div class="detail-row">
                                 <label>Detalle:</label>
@@ -547,11 +553,17 @@
             
             <div class="form-row">
                 <div class="form-group">
-                    <label for="cebadera_code">Código de la Cebadera (N° CE)</label>
+                     
+                    @if($service->service_type === 'desratizacion')
+                        <label>Código de la Cebadera:</label>
+                        <span>{{ $observation['cebadera_code'] ?? 'N/A' }}</span>
+                    @elseif($service->service_type === 'desinsectacion' || $service->service_type === 'sanitizacion' || $service->service_type === 'fumigacion-de-jardines' || $service->service_type === 'servicios-especiales' || $service->service_type === 'desinfeccion')
+                        <label>Lugar tratado o estación:</label>
+                    @endif
                     <input type="text" id="cebadera_code" name="cebadera_code" placeholder="Ej: CE-001" required>
                 </div>
                 <div class="form-group">
-                    <label for="observation_number">Número de Observación (N° OBS)</label>
+                    <label for="observation_number">N° de Observación</label>
                     <input type="number" id="observation_number" name="observation_number" value="{{ (isset($service->checklist_data["observations"]) ? count($service->checklist_data["observations"]) : 0) + 1 }}" min="1" required>
                 </div>
             </div>

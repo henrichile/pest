@@ -38,7 +38,7 @@
 @section('content')
 
 <!-- Etapa 1: Check de Puntos -->
-<div class="stage-title">Etapa 1: Check de Puntos</div>
+<div class="stage-title">Check de Puntos</div>
 <div class="stage-instruction">Marque los puntos que correspondan</div>
 
 <form method="POST" action="{{ route("technician.service.checklist.submit", $service) }}" data-stage="points">

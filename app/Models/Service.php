@@ -13,6 +13,26 @@ class Service extends Model
 {
     use HasFactory;
 
+    protected static function boot()
+    {
+        parent::boot();
+        
+        // Mantener consistencia entre service_type y service_type_id
+        static::saving(function ($service) {
+            // Si hay service_type_id, sincronizar service_type desde la relación
+            if ($service->service_type_id && $service->serviceType) {
+                $service->service_type = $service->serviceType->slug;
+            }
+            // Si hay service_type pero no service_type_id, buscar y asignar el ID
+            elseif ($service->service_type && !$service->service_type_id) {
+                $serviceType = ServiceType::where('slug', $service->service_type)->first();
+                if ($serviceType) {
+                    $service->service_type_id = $serviceType->id;
+                }
+            }
+        });
+    }
+
     protected $fillable = [
         "client_id",
         "service_type",

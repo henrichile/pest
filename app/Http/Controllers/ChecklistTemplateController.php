@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\ChecklistTemplate;
 use App\Models\ChecklistItem;
+use App\Models\ChecklistStage;
 use App\Models\ServiceType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ChecklistTemplateController extends Controller
 {
@@ -24,7 +26,7 @@ class ChecklistTemplateController extends Controller
     {
         $this->checkSuperAdmin();
         
-        $templates = ChecklistTemplate::with(['serviceType', 'items'])
+        $templates = ChecklistTemplate::with(['serviceType', 'stages.items'])
             ->orderBy('created_at', 'desc')
             ->get();
             
@@ -37,25 +39,33 @@ class ChecklistTemplateController extends Controller
         
         $serviceTypes = ServiceType::where('is_active', true)->get();
         
-        return view('admin.checklist-templates.create', compact('serviceTypes'));
+        return view('admin.checklist-templates.create-staged', compact('serviceTypes'));
     }
 
     public function store(Request $request)
     {
         $this->checkSuperAdmin();
         
+        // Debug: Ver qué datos están llegando
+        Log::info('Datos recibidos en store:', $request->all());
+        
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'service_type_id' => 'required|exists:service_types,id',
-            'items' => 'required|array|min:1',
-            'items.*.title' => 'required|string|max:255',
-            'items.*.description' => 'nullable|string',
-            'items.*.type' => 'required|in:text,number,select,checkbox,file',
-            'items.*.options' => 'nullable|string',
-            'items.*.is_required' => 'boolean',
+            'stages' => 'required|array|min:1',
+            'stages.*.name' => 'required|string|max:255',
+            'stages.*.description' => 'nullable|string',
+            'stages.*.is_required' => 'boolean',
+            'stages.*.items' => 'required|array|min:1',
+            'stages.*.items.*.title' => 'required|string|max:255',
+            'stages.*.items.*.description' => 'nullable|string',
+            'stages.*.items.*.type' => 'required|in:text,number,select,checkbox,file',
+            'stages.*.items.*.options' => 'nullable|string',
+            'stages.*.items.*.is_required' => 'boolean',
         ]);
 
+        // Crear el template
         $template = ChecklistTemplate::create([
             'name' => $request->name,
             'description' => $request->description,
@@ -63,18 +73,31 @@ class ChecklistTemplateController extends Controller
             'is_active' => true,
         ]);
 
-        foreach ($request->items as $index => $item) {
-            ChecklistItem::create([
-                'title' => $item['title'],
-                'description' => $item['description'] ?? null,
-                'type' => $item['type'],
-                'options' => $item['type'] === 'select' && !empty($item['options']) 
-                    ? json_encode(explode(',', $item['options'])) 
-                    : null,
-                'is_required' => $item['is_required'] ?? false,
-                'order' => $index + 1,
+        // Crear las etapas y sus items
+        foreach ($request->stages as $stageIndex => $stageData) {
+            $stage = ChecklistStage::create([
                 'checklist_template_id' => $template->id,
+                'name' => $stageData['name'],
+                'description' => $stageData['description'] ?? null,
+                'order_index' => $stageIndex,
+                'is_required' => $stageData['is_required'] ?? true,
             ]);
+
+            foreach ($stageData['items'] as $itemIndex => $itemData) {
+                ChecklistItem::create([
+                    'checklist_template_id' => $template->id,
+                    'checklist_stage_id' => $stage->id,
+                    'title' => $itemData['title'],
+                    'description' => $itemData['description'] ?? null,
+                    'type' => $itemData['type'],
+                    'options' => $itemData['type'] === 'select' && !empty($itemData['options']) 
+                        ? explode(',', $itemData['options']) 
+                        : null,
+                    'is_required' => $itemData['is_required'] ?? true,
+                    'order' => $itemIndex, // Para compatibilidad con el campo anterior
+                    'order_index' => $itemIndex,
+                ]);
+            }
         }
 
         return redirect()->route('admin.checklist-templates.index')
@@ -85,9 +108,9 @@ class ChecklistTemplateController extends Controller
     {
         $this->checkSuperAdmin();
         
-        $checklistTemplate->load(['serviceType', 'items']);
+        $checklistTemplate->load(['serviceType', 'stages.items']);
         
-        return view('admin.checklist-templates.show', compact('checklistTemplate'));
+        return view('admin.checklist-templates.show-staged', compact('checklistTemplate'));
     }
 
     public function edit(ChecklistTemplate $checklistTemplate)

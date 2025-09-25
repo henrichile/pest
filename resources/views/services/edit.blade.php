@@ -10,6 +10,17 @@
             <h2 class="text-xl font-semibold text-gray-900">Editar Servicio</h2>
             <p class="text-gray-600">Modifica los datos del servicio</p>
         </div>
+        
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+ 
 
         <form method="POST" action="{{ route("admin.services.update", $service) }}" class="space-y-6">
             @csrf

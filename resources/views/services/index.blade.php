@@ -39,9 +39,9 @@
                 <label class="block text-sm font-medium text-gray-700 mb-2">Tipo</label>
                 <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
                     <option value="">Todos los tipos</option>
-                    <option value="desratizacion">Sanitización</option>
-                    <option value="desinsectacion">Desinsectación</option>
-                    <option value="sanitizacion">Sanitización</option>
+                    @foreach($serviceTypes as $type)
+                        <option value="{{ $type->id }}">{{ $type->name }}</option>
+                    @endforeach
                 </select>
             </div>
             <div>
@@ -88,6 +88,7 @@
                                 @elseif($service->service_type == "desinsectacion") bg-yellow-100 text-yellow-800
                                 @else bg-blue-100 text-blue-800
                                 @endif">
+
                                 {{ ucfirst($service->service_type) }}
                             </span>
                         </td>
@@ -95,7 +96,7 @@
                             {{ $service->scheduled_date->format("d/m/Y H:i") }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                                 {{ ucfirst(str_replace("_", " ", $service->status)) }}
                             </span>
                         </td>

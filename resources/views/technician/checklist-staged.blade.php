@@ -422,7 +422,7 @@
             @if(($service->checklist_stage ?? "points") === "points")
                 @include("technician.checklist-stages.points")
             @elseif($service->checklist_stage === "products")
-                @include("technician.checklist-stages.products")
+                @include("technician.checklist-stages.products", ['products' => $products ?? collect(), 'stageInstruction' => $stageInstruction ?? ''])
             @elseif($service->checklist_stage === "results")
                 @include("technician.checklist-stages.results")
             @elseif($service->checklist_stage === "observations")

@@ -33,7 +33,7 @@ class ServiceTypeController extends Controller
             'is_active' => true,
         ]);
 
-        return redirect()->route('service-types.index')
+        return redirect()->route('admin.service-types.index')
             ->with('success', 'Tipo de servicio creado exitosamente');
     }
 
@@ -63,14 +63,14 @@ class ServiceTypeController extends Controller
             'is_active' => $request->boolean('is_active'),
         ]);
 
-        return redirect()->route('service-types.index')
+        return redirect()->route('admin.service-types.index')
             ->with('success', 'Tipo de servicio actualizado exitosamente');
     }
 
     public function destroy(ServiceType $serviceType)
     {
         $serviceType->delete();
-        return redirect()->route('service-types.index')
+        return redirect()->route('admin.service-types.index')
             ->with('success', 'Tipo de servicio eliminado exitosamente');
     }
 }

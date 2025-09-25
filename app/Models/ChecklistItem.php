@@ -16,7 +16,9 @@ class ChecklistItem extends Model
         'options',
         'is_required',
         'order',
+        'order_index',
         'checklist_template_id',
+        'checklist_stage_id',
     ];
 
     protected $casts = [
@@ -27,5 +29,13 @@ class ChecklistItem extends Model
     public function template()
     {
         return $this->belongsTo(ChecklistTemplate::class, 'checklist_template_id');
+    }
+
+    /**
+     * Relación con ChecklistStage
+     */
+    public function stage()
+    {
+        return $this->belongsTo(ChecklistStage::class, 'checklist_stage_id');
     }
 }

@@ -150,18 +150,7 @@
                                     </svg>
                                     Tipos de Servicios
                                 </a>
-                                <a href="{{ route("admin.checklist-management") }}" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-green-700 hover:text-white rounded-lg transition-colors">
-                                    <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M3 4a1 1 0 111-1h12a1 1 0 110 2H4a1 1 0 11-1-1zM3 8a1 1 0 111-1h12a1 1 0 110 2H4a1 1 0 11-1-1zM3 12a1 1 0 111-1h12a1 1 0 110 2H4a1 1 0 11-1-1zM3 16a1 1 0 111-1h12a1 1 0 110 2H4a1 1 0 11-1-1z"/>
-                                    </svg>
-                                    Gestión de Checklist
-                                </a>
-                                <a href="{{ route("admin.checklist-templates.index") }}" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-green-800 hover:text-white rounded-lg transition-colors">
-                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                    Templates de Checklist
-                                </a>
+                                
                             </div>
                         </div>
                     @endif

@@ -9,6 +9,7 @@ use App\Models\ServiceType;
 use App\Models\User;
 use App\Models\SystemNotification;
 use App\Notifications\ServiceAssignedNotification;
+use App\Http\Requests\ServiceUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -16,8 +17,9 @@ class ServiceController extends Controller
 {
     public function index()
     {
+        $serviceTypes = ServiceType::all();
         $services = Service::with("client", "assignedUser", "serviceType")->orderBy("created_at", "desc")->paginate(10);
-        return view("services.index", compact("services"));
+        return view("services.index", compact("services", "serviceTypes"));
     }
 
     public function create()
@@ -32,23 +34,13 @@ class ServiceController extends Controller
         return view("services.create", compact("clients", "products", "serviceTypes", "technicians"));
     }
 
-    public function store(Request $request)
+    public function store(ServiceUpdateRequest $request)
     {
         Log::info("ServiceController@store called", ["request" => $request->all()]);
-        
-        $request->validate([
-            "client_id" => "required|exists:clients,id",
-            "service_type_id" => "required|exists:service_types,id",
-            "scheduled_date" => "required|date",
-            "address" => "required|string|max:255",
-            "priority" => "required|in:alta,media,baja",
-            "description" => "nullable|string",
-            "assigned_to" => "nullable|exists:users,id",
-        ]);
 
         $service = Service::create([
             "client_id" => $request->client_id,
-            "service_type_id" => $request->service_type_id,
+            "service_type" => $request->service_type,
             "scheduled_date" => $request->scheduled_date,
             "address" => $request->address,
             "priority" => $request->priority,
@@ -101,26 +93,15 @@ class ServiceController extends Controller
         return view("services.edit", compact("service", "clients", "products", "serviceTypes", "technicians"));
     }
 
-    public function update(Request $request, Service $service)
+    public function update(ServiceUpdateRequest $request, Service $service)
     {
-        $request->validate([
-            "client_id" => "required|exists:clients,id",
-            "service_type_id" => "required|exists:service_types,id",
-            "scheduled_date" => "required|date",
-            "address" => "required|string|max:255",
-            "priority" => "required|in:alta,media,baja",
-            "description" => "nullable|string",
-            "assigned_to" => "nullable|exists:users,id",
-        ]);
-
+        Log::info("ServiceController@update called", ["request" => $request->all()]);
         $oldAssignedTo = $service->assigned_to;
-        
         $service->update($request->all());
 
         // Si se cambió la asignación del técnico
         if ($oldAssignedTo != $request->assigned_to && $request->assigned_to) {
             $service->load('assignedUser', 'client', 'serviceType');
-            
             // Notificación Laravel nativa
             $service->assignedUser->notify(new ServiceAssignedNotification($service));
             

@@ -501,7 +501,8 @@
             </div>
         </div>
 
-        <!-- Checklist Results -->
+        @if($service->service_type !== 'desinsectacion')
+        <!-- Checklist Results - Oculto para desinsectación -->
         <div class="section">
             <div class="section-title">✅ Checklist Técnico</div>
             <div class="checklist-grid">
@@ -543,6 +544,7 @@
                 @endif
             </div>
         </div>
+        @endif
 
         <!-- Products and Results -->
         <div class="section">
@@ -560,6 +562,29 @@
                 
                 @if(isset($checklistData["results"]))
                 <div>
+                    @if($service->service_type === 'desinsectacion')
+                    <div style="font-weight: bold; color: #1a472a; margin-bottom: 8px; font-size: 10px;">Lámparas Ultravioletas</div>
+                    <div class="checklist-item">
+                        <span class="checklist-label">Lámparas UV:</span>
+                        <span class="checklist-value">{{ $checklistData["results"]["uv_lamps"] ?? "N/A" }}</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="checklist-label">TUV:</span>
+                        <span class="checklist-value">{{ $checklistData["results"]["tuv"] ?? "N/A" }}</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="checklist-label">Dispositivos Instalados:</span>
+                        <span class="checklist-value">{{ $checklistData["results"]["devices_installed"] ?? "N/A" }}</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="checklist-label">Dispositivos Existentes:</span>
+                        <span class="checklist-value">{{ $checklistData["results"]["devices_existing"] ?? "N/A" }}</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="checklist-label">Dispositivos Repuestos:</span>
+                        <span class="checklist-value">{{ $checklistData["results"]["devices_replaced"] ?? "N/A" }}</span>
+                    </div>
+                    @else
                     <div style="font-weight: bold; color: #1a472a; margin-bottom: 8px; font-size: 10px;">Resultados</div>
                     <div class="checklist-item">
                         <span class="checklist-label">Puntos Totales:</span>
@@ -569,6 +594,7 @@
                         <span class="checklist-label">Consumo:</span>
                         <span class="checklist-value">{{ $checklistData["results"]["total_consumption_activity"] ?? "N/A" }}g</span>
                     </div>
+                    @endif
                 </div>
                 @endif
             </div>

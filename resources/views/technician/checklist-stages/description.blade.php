@@ -3,7 +3,7 @@
 @section('content')
 
 <!-- Etapa 6: Descripción del Servicio -->
-<div class="stage-title">Etapa 6: Descripción del Servicio y Sugerencias</div>
+<div class="stage-title">Descripción del Servicio y Sugerencias</div>
 <div class="stage-instruction">Complete la descripción final del servicio realizado</div>
 
 <form method="POST" action="{{ route("technician.service.checklist.submit", $service) }}" data-stage="description" id="checklistForm">
