@@ -766,8 +766,54 @@ function previewEditPhoto(input) {
 
 function deleteObservation(index) {
     if (confirm('¿Estás seguro de que quieres eliminar esta observación?')) {
-        // Implementar funcionalidad de eliminación
-        alert('Funcionalidad de eliminación en desarrollo');
+        // Obtener serviceId de múltiples fuentes posibles
+        let serviceId = '{{ $service->id ?? "undefined" }}';
+        
+        // Si serviceId es "undefined", intentar obtenerlo de otras fuentes
+        if (serviceId === 'undefined' || serviceId === '') {
+            // Intentar obtenerlo de la URL actual
+            const currentUrl = window.location.href;
+            const urlMatch = currentUrl.match(/\/technician\/services\/(\d+)\/checklist/);
+            if (urlMatch && urlMatch[1]) {
+                serviceId = urlMatch[1];
+            }
+        }
+        
+        // Validar que tenemos serviceId
+        if (!serviceId || serviceId === 'undefined' || serviceId === '') {
+            alert('Error: No se pudo obtener el ID del servicio. Por favor, recarga la página.');
+            return;
+        }
+        
+        // Hacer petición AJAX para eliminar
+        fetch(`/technician/services/${serviceId}/checklist/observations/${index}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(`HTTP ${response.status}: ${text}`);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                alert(data.message || 'Observación eliminada exitosamente');
+                // Recargar la página para mostrar los cambios
+                window.location.reload();
+            } else {
+                throw new Error(data.message || 'Error al eliminar la observación');
+            }
+        })
+        .catch(error => {
+            console.error('Error al eliminar observación:', error);
+            alert('Error al eliminar la observación: ' + (error.message || 'Error desconocido'));
+        });
     }
 }
 
