@@ -83,6 +83,31 @@ class TechnicianController extends Controller
         return view('technician.service-detail', compact('service'));
     }
 
+    public function showChecklistDetails(Service $service)
+    {
+        // Verificar permisos
+        if ($service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
+            abort(403, "No tienes permisos para ver este servicio");
+        }
+
+        $service->load(['client', 'serviceType', 'assignedUser']);
+
+        // Obtener datos del checklist
+        $checklistData = $service->checklist_data ?? [];
+
+        // Preparar datos para la vista
+        $checklistStages = [
+            'points' => $checklistData['points'] ?? [],
+            'products' => $checklistData['products'] ?? [],
+            'results' => $checklistData['results'] ?? [],
+            'observations' => $checklistData['observations'] ?? [],
+            'sites' => $checklistData['sites'] ?? [],
+            'description' => $checklistData['description'] ?? ''
+        ];
+
+        return view('technician.service-checklist-details', compact('service', 'checklistStages'));
+    }
+
     public function startService(Service $service)
     {
         // Verificar permisos
@@ -282,6 +307,243 @@ class TechnicianController extends Controller
         return view("technician.checklist-stages." . $stage, compact("service", "products", "stageInstruction"));
     }
 
+
+     public function saveChecklistStage(Request $request, Service $service)
+    {
+        // Verificar permisos
+        if ($service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
+            return response()->json(['success' => false, 'message' => 'No tienes permisos para modificar este servicio'], 403);
+        }
+
+        // Verificar estado del servicio
+        if ($service->status !== "en_progreso") {
+            return response()->json(['success' => false, 'message' => 'El servicio debe estar en progreso para guardar datos'], 403);
+        }
+
+        // Obtener la etapa actual del formulario
+        $stage = $request->input('stage') ?? $request->input('data_stage') ?? 'unknown';
+        
+        // Validar que la etapa sea válida
+        $validStages = ["points", "products", "results", "observations", "sites", "description"];
+        if (!in_array($stage, $validStages)) {
+            return response()->json(['success' => false, 'message' => 'Etapa no válida'], 400);
+        }
+
+        try {
+            // Obtener datos existentes del checklist
+            $checklistData = $service->checklist_data ?? [];
+
+            // Procesar datos según la etapa
+            switch ($stage) {
+                case 'points':
+                    $checklistData['points'] = $this->processPointsData($request);
+                    break;
+                case 'products':
+                    $checklistData['products'] = $this->processProductsData($request);
+                    break;
+                case 'results':
+                    $checklistData['results'] = $this->processResultsData($request);
+                    break;
+                case 'observations':
+                    $checklistData['observations'] = $this->processObservationsData($request);
+                    break;
+                case 'sites':
+                    $checklistData['sites'] = $this->processSitesData($request);
+                    break;
+                case 'description':
+                    $checklistData['description'] = $this->processDescriptionData($request);
+                    break;
+            }
+
+            if ($stage === 'products') {
+                // Mapear el service_type del servicio con los valores del enum de productos
+                $serviceTypeMapping = [
+                    'desratizacion' => 'desratizacion',
+                    'desinsectacion' => 'desinsectacion', 
+                    'sanitizacion' => 'sanitizacion',
+                    'desinfeccion' => 'desinfeccion',
+                    'fumigacion-de-jardines' => 'desinsectacion',
+                    'servicios-especiales' => 'sanitizacion'
+                ];
+                
+                $productServiceType = $serviceTypeMapping[$service->service_type] ?? null;
+                
+                if ($productServiceType) {
+                    $products = \App\Models\Product::where('service_type', $productServiceType)
+                        ->where('stock', '>', 0)
+                        ->orderBy('name')
+                        ->get();
+                }
+                
+                $stageInstruction = $this->getProductStageInstruction($service->service_type);
+            }
+
+            // Actualizar la base de datos
+            $service->update(['checklist_data' => $checklistData]);
+
+            // Determinar la siguiente etapa
+            $nextStage = $this->getNextStage($stage, $service->service_type);
+
+             // Asegurar que las variables siempre estén definidas
+            $products = $products ?? collect();
+            $stageInstruction = $stageInstruction ?? '';
+        
+            return view("technician.checklist-stages." . $stage, compact("service", "products", "stageInstruction"));
+        }catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al guardar los datos del checklist'], 500);
+        }
+    }
+
+    private function processPointsData(Request $request)
+    {
+        $points = [];
+        $pointsData = $request->input('points', []);
+        
+        foreach ($pointsData as $point) {
+            if (!empty($point['address']) || !empty($point['latitude']) || !empty($point['longitude'])) {
+                $points[] = [
+                    'address' => $point['address'] ?? '',
+                    'latitude' => $point['latitude'] ?? null,
+                    'longitude' => $point['longitude'] ?? null,
+                    'notes' => $point['notes'] ?? '',
+                    'created_at' => now()->format('Y-m-d H:i:s')
+                ];
+            }
+        }
+        
+        return $points;
+    }
+
+    private function processProductsData(Request $request)
+    {
+        $products = [];
+        $productsData = $request->input('products', []);
+        
+        foreach ($productsData as $productId => $productData) {
+            if (isset($productData['used']) && $productData['used'] === '1') {
+                $products[] = [
+                    'product_id' => $productId,
+                    'name' => $productData['name'] ?? '',
+                    'quantity' => $productData['quantity'] ?? 1,
+                    'unit' => $productData['unit'] ?? 'unidad',
+                    'notes' => $productData['notes'] ?? '',
+                    'used_at' => now()->format('Y-m-d H:i:s')
+                ];
+            }
+        }
+        
+        return $products;
+    }
+
+    private function processResultsData(Request $request)
+    {
+        return [
+            'efficacy' => $request->input('efficacy', ''),
+            'observations' => $request->input('observations', ''),
+            'recommendations' => $request->input('recommendations', ''),
+            'next_service_date' => $request->input('next_service_date', ''),
+            'completed_at' => now()->format('Y-m-d H:i:s')
+        ];
+    }
+
+    private function processObservationsData(Request $request)
+    {
+        $observations = [];
+        
+        // Si es una nueva observación desde el formulario
+        if ($request->has('cebadera_code') || $request->has('detail')) {
+            $newObservation = [
+                'cebadera_code' => $request->input('cebadera_code', ''),
+                'observation_number' => $request->input('observation_number', 1),
+                'detail' => $request->input('detail', ''),
+                'complementary' => $request->input('complementary', ''),
+                'created_at' => now()->format('Y-m-d H:i:s')
+            ];
+
+            // Manejar foto si se subió
+            if ($request->hasFile('photo')) {
+                $photo = $request->file('photo');
+                $filename = time() . '_' . uniqid();
+                
+                // Comprimir y guardar la imagen
+                $compressedImagePath = ImageHelper::compressAndStoreImage($photo, 'observations', $filename);
+                
+                if ($compressedImagePath) {
+                    $newObservation['photo'] = $compressedImagePath;
+                } else {
+                    $originalFilename = time() . '_' . $photo->getClientOriginalName();
+                    $photo->storeAs('observations', $originalFilename, 'public');
+                    $newObservation['photo'] = 'storage/observations/' . $originalFilename;
+                }
+            }
+
+            $observations[] = $newObservation;
+        }
+
+        // Si hay observaciones adicionales desde checkboxes o campos múltiples
+        $additionalObservations = $request->input('observations', []);
+        if (is_array($additionalObservations)) {
+            foreach ($additionalObservations as $obs) {
+                if (!empty($obs['detail'])) {
+                    $observations[] = [
+                        'cebadera_code' => $obs['cebadera_code'] ?? '',
+                        'observation_number' => $obs['observation_number'] ?? count($observations) + 1,
+                        'detail' => $obs['detail'],
+                        'complementary' => $obs['complementary'] ?? '',
+                        'created_at' => now()->format('Y-m-d H:i:s')
+                    ];
+                }
+            }
+        }
+
+        return $observations;
+    }
+
+    private function processSitesData(Request $request)
+    {
+        $sites = [];
+        $sitesData = $request->input('sites', []);
+        
+        foreach ($sitesData as $site) {
+            if (!empty($site['name']) || !empty($site['address'])) {
+                $sites[] = [
+                    'name' => $site['name'] ?? '',
+                    'address' => $site['address'] ?? '',
+                    'type' => $site['type'] ?? '',
+                    'area' => $site['area'] ?? '',
+                    'notes' => $site['notes'] ?? '',
+                    'created_at' => now()->format('Y-m-d H:i:s')
+                ];
+            }
+        }
+        
+        return $sites;
+    }
+
+    private function processDescriptionData(Request $request)
+    {
+        return [
+            'description' => $request->input('description', ''),
+            'additional_notes' => $request->input('additional_notes', ''),
+            'completion_notes' => $request->input('completion_notes', ''),
+            'completed_at' => now()->format('Y-m-d H:i:s')
+        ];
+    }
+
+    private function getNextStage($currentStage, $serviceType)
+    {
+        $stageFlow = [
+            'points' => 'products',
+            'products' => 'results',
+            'results' => 'observations',
+            'observations' => 'sites',
+            'sites' => 'description',
+            'description' => null // Final stage
+        ];
+
+        return $stageFlow[$currentStage] ?? null;
+    }
+
     public function handleObservation(Service $service, $index)
     {
         // Verificar permisos
@@ -328,7 +590,7 @@ class TechnicianController extends Controller
             if ($service->status !== "en_progreso") {
                 return response()->json(['success' => false, 'message' => 'El servicio debe estar en progreso para modificar observaciones'], 403);
             }
-         
+
             // Validar datos de entrada
             $request->validate([
                 'cebadera_code' => 'nullable|string|max:255',
