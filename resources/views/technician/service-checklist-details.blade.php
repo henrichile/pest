@@ -195,7 +195,7 @@
                         @if(isset($observation['photo']) && $observation['photo'])
                         <div class="mt-3">
                             <img src="{{ asset($observation['photo']) }}" alt="Foto de observación" 
-                                 class="max-w-xs rounded-lg border border-gray-200" style="width: 300px; height: 300px; object-fit: cover;">
+                                 class="max-w-xs rounded-lg border border-gray-200" style="width: 100%; object-fit: cover;">
                         </div>
                         @endif
                     </div>

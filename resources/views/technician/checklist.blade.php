@@ -172,10 +172,10 @@
         
         <!-- Descripción del servicio y sugerencias -->
         <div class="bg-white rounded-lg shadow-lg p-6">
-            <h4 class="text-lg font-semibold text-gray-900 mb-4">Descripción del servicio y sugerencias</h4>
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">Descripción del servicio</h4>
             <textarea name="service_description" rows="6" 
                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                      placeholder="Descripción del servicio realizado y sugerencias...">{{ old("service_description", $service->description) }}</textarea>
+                      placeholder="Descripción del servicio realizado...">{{ old("service_description", $service->description) }}</textarea>
         </div>
 
         <!-- Sugerencias del servicio -->
