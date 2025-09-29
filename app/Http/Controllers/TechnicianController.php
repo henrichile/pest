@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ImageHelper;
+use App\Models\Service;
+use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class TechnicianController extends Controller
 {
