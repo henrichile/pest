@@ -178,7 +178,7 @@ class TechnicianController extends Controller
                 $nextStage = "points";
                 break;
         }
-        //dd($nextStage);
+
         return redirect()->route('technician.service.checklist.stage', ['service' => $service, 'stage' => $nextStage])
             ->with('success', 'Ubicación capturada correctamente. Puedes comenzar el checklist.');
     }
@@ -259,22 +259,19 @@ class TechnicianController extends Controller
                 'desinsectacion' => 'desinsectacion', 
                 'sanitizacion' => 'sanitizacion',
                 'desinfeccion' => 'desinfeccion',
-                'fumigacion-de-jardines' => 'desinsectacion', // Mapear fumigación a desinsectación
-                'servicios-especiales' => 'sanitizacion' // Mapear servicios especiales a sanitización
+                'fumigacion-de-jardines' => 'desinsectacion',
+                'servicios-especiales' => 'sanitizacion'
             ];
             
-            
-
             $productServiceType = $serviceTypeMapping[$service->service_type] ?? null;
             
             if ($productServiceType) {
                 $products = \App\Models\Product::where('service_type', $productServiceType)
-                    ->where('stock', '>', 0) // Solo productos con stock disponible
+                    ->where('stock', '>', 0)
                     ->orderBy('name')
                     ->get();
             }
             
-            // Obtener el texto de instrucción específico para el tipo de servicio
             $stageInstruction = $this->getProductStageInstruction($service->service_type);
         }
         
@@ -283,206 +280,211 @@ class TechnicianController extends Controller
         $stageInstruction = $stageInstruction ?? '';
         
         return view("technician.checklist-stages." . $stage, compact("service", "products", "stageInstruction"));
-        //return view("technician.checklist-staged", compact("service"));
-      }
-    public function saveChecklistStage(Request $request, Service $service)
+    }
+
+    public function handleObservation(Service $service, $index)
     {
         // Verificar permisos
         if ($service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
             abort(403, "No tienes permisos para acceder a este servicio");
-        }
-
-        $currentStage = $request->input('current_stage');
-        $nextStage = $request->input('next_stage');
-
-        // Obtener datos existentes del checklist
-        $checklistData = $service->checklist_data ?? [];
-
-        // Guardar datos de la etapa actual
-        switch ($currentStage) {
-            case 'points':
-                $checklistData['points'] = $request->input('points', []);
-                break;
-            case 'products':
-                $appliedProduct = $request->input('applied_product');
-                $productId = $request->input('product_id'); // ID del producto seleccionado
-                
-                $checklistData['products'] = [
-                    'applied_product' => $appliedProduct,
-                    'product_id' => $productId, // Guardar también el ID para futuras referencias
-                    'applied_at' => now()->format('Y-m-d H:i:s')
-                ];
-                break;
-            case 'results':
-                $resultsData = [];
-                if ($service->service_type === 'desratizacion') {
-                    $resultsData = [
-                        'observed_results' => $request->input('observed_results', []),
-                        'total_installed_points' => $request->input('total_installed_points'),
-                        'total_consumption_activity' => $request->input('total_consumption_activity')
-                    ];
-                }elseif ($service->service_type === 'desinsectacion') {
-                    $resultsData['uv_lamps'] = $request->input('uv_lamps');
-                    $resultsData['tuv'] = $request->input('tuv');
-                    $resultsData['devices_installed'] = $request->input('devices_installed');
-                    $resultsData['devices_existing'] = $request->input('devices_existing');
-                    $resultsData['devices_replaced'] = $request->input('devices_replaced');
-                }
-                
-                $checklistData['results'] = $resultsData;
-                break;
-            case 'observations':
-                // Obtener observaciones existentes
-                $existingObservations = $service->checklist_data["observations"] ?? [];
-                Log::info("Existing observations: " . json_encode($existingObservations));
-                
-                // Crear nueva observación
-                $newObservation = [
-                    'cebadera_code' => $request->input('cebadera_code'),
-                    'observation_number' => $request->input('observation_number'),
-                    'detail' => $request->input('detail'),
-                    'complementary' => $request->input('complementary'),
-                    'created_at' => now()->format('Y-m-d H:i:s')
-                ];
-                
-                // Manejar foto si se subió
-                if ($request->hasFile('photo')) {
-                    $photo = $request->file('photo');
-                    $filename = time() . '_' . uniqid();
-
-                    // Comprimir y guardar la imagen
-                    $compressedImagePath = ImageHelper::compressAndStoreImage($photo, 'observations', $filename);
-
-                    if ($compressedImagePath) {
-                        $newObservation['photo'] = $compressedImagePath;
-                    } else {
-                        Log::warning('No se pudo comprimir la imagen, guardando original');
-                        $originalFilename = time() . '_' . $photo->getClientOriginalName();
-                        $photo->storeAs('observations', $originalFilename, 'public');
-                        $newObservation['photo'] = 'storage/observations/' . $originalFilename;
-                    }
-                }
-                
-                // Agregar nueva observación al array
-                $existingObservations[] = $newObservation;
-                $checklistData['observations'] = $existingObservations;
-                break;
-            case 'sites':
-                $checklistData['sites'] = [
-                    'treated_sites' => $request->input('treated_sites', '')
-                ];
-                break;
-            case 'description':
-                $checklistData['description'] = [
-                    'service_description' => $request->input('service_description', ''),
-                    'service_sugerencia' => $request->input('service_sugerencia', ''),
-                    'technician_signature' => $request->input('technician_signature'),
-                    'client_signature' => $request->input('client_signature'),
-                    'completion_date' => now()->format('Y-m-d H:i:s')
-                ];
-                break;
-        }
-
-        // Si es la etapa final, marcar como completado
-        if ($nextStage === "completed") {
-            $service->update([
-                'checklist_data' => $checklistData,
-                'status' => 'finalizado',
-                'checklist_completed_at' => now(),
-            ]);
-
-            return redirect()->route('technician.service.detail', $service)
-                ->with('success', 'Checklist completado exitosamente');
-        }
-
-        // Actualizar datos del checklist y etapa actual
-        $service->update([
-                'checklist_data' => $checklistData,
-                'checklist_stage' => $nextStage
-            ]);
-
-        if (in_array($nextStage, ["results"]) && count($checklistData['results'] ?? [])===0) {
-            $nextStage = "observations";
-        }    
-
-        return redirect()->route('technician.service.checklist.stage', ['service' => $service, 'stage' => $nextStage])
-            ->with('success', 'Etapa guardada correctamente');
-    }
-
-    public function generatePDF(Service $service)
-    {
-        // Verificar permisos
-        if ($service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
-            abort(403, "No tienes permisos para acceder a este servicio");
-        }
-
-        // Verificar que el servicio esté completado
-        if ($service->status !== 'finalizado') {
-            abort(403, "Solo se pueden generar PDFs de servicios completados");
-        }
-
-        $service->load(['client', 'serviceType', 'assignedUser']);
-
-        // Generar ID de validación único
-        $validationId = 'PC-' . $service->id . '-' . now()->format('YmdHis') . '-' . substr(md5($service->id . now()), 0, 8);
-        
-        // Generar hash de integridad
-        $integrityData = $service->id . $service->client->name . $service->checklist_completed_at . json_encode($service->checklist_data);
-        $integrityHash = hash('sha256', $integrityData);
-        
-        // Generar QR Code
-        $qrData = json_encode([
-            'service_id' => $service->id,
-            'validation_id' => $validationId,
-            'integrity_hash' => $integrityHash,
-            'generated_at' => now()->toISOString(),
-            'client' => $service->client->name,
-            'technician' => $service->assignedUser->name ?? 'N/A'
-        ]);
-        
-        $qrCode = base64_encode(file_get_contents('https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' . urlencode($qrData)));
-        
-        // Guardar información de trazabilidad en la base de datos
-        $service->update([
-            'pdf_generated_at' => now(),
-            'pdf_validation_id' => $validationId,
-            'pdf_integrity_hash' => $integrityHash
-        ]);
-
-        $pdf = Pdf::loadView('technician.service-pdf', compact('service', 'validationId', 'integrityHash', 'qrCode'));
-        
-        $filename = "servicio-{$service->id}-{$service->client->name}-{$validationId}.pdf";
-        
-        return $pdf->download($filename);
-    }
-    public function showChecklistDetails(Service $service)
-    {
-        // Verificar permisos
-        if ($service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
-            abort(403, "No tienes permisos para acceder a este servicio");
-        }
-
-        $service->load(["client", "serviceType", "assignedUser"]);
-
-        return view("technician.service-checklist-details", compact("service"));
-    }
-
-    public function completeService(Service $service)
-    {
-        // Verificar permisos
-        if ($service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
-            abort(403, "No tienes permisos para completar este servicio");
         }
 
         // Verificar estado del servicio
         if ($service->status !== "en_progreso") {
-            return redirect()->back()->with("error", "Este servicio no puede ser completado");
+            return redirect()->back()->with("error", "Este servicio debe estar en progreso para editar observaciones");
         }
 
-        // Actualizar estado
-        $service->update(["status" => "finalizado"]);
-        
-        return redirect()->back()->with("success", "Servicio completado exitosamente");
+        // Redirigir a la página de observations con el índice específico para editar
+        return redirect()->route('technician.service.checklist.stage', ['service' => $service, 'stage' => 'observations'])
+            ->with('edit_observation_index', $index);
+    }
+
+    public function editObservation(Service $service, $index)
+    {
+        // Verificar permisos
+        if ($service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
+            abort(403, "No tienes permisos para acceder a este servicio");
+        }
+
+        // Verificar estado del servicio
+        if ($service->status !== "en_progreso") {
+            return redirect()->back()->with("error", "Este servicio debe estar en progreso para editar observaciones");
+        }
+
+        // Redirigir a la página de observations con el índice específico
+        return redirect()->route('technician.service.checklist.stage', ['service' => $service, 'stage' => 'observations'])
+            ->with('edit_observation_index', $index);
+    }
+
+    public function updateObservation(Request $request, Service $service, $index)
+    {
+        try {
+            // Verificar permisos
+            if ($service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
+                return response()->json(['success' => false, 'message' => 'No tienes permisos para editar esta observación'], 403);
+            }
+
+            // Verificar estado del servicio
+            if ($service->status !== "en_progreso") {
+                return response()->json(['success' => false, 'message' => 'El servicio debe estar en progreso para modificar observaciones'], 403);
+            }
+         
+            // Validar datos de entrada
+            $request->validate([
+                'cebadera_code' => 'nullable|string|max:255',
+                'observation_number' => 'nullable|integer|min:1',
+                'detail' => 'required|string|max:1000',
+                'complementary' => 'nullable|string|max:500',
+            ]);
+
+            // Obtener datos existentes del checklist
+            $checklistData = $service->checklist_data ?? [];
+
+            // Verificar que existan observaciones
+            if (!isset($checklistData['observations']) || !is_array($checklistData['observations'])) {
+                return response()->json(['success' => false, 'message' => 'No hay observaciones para editar'], 404);
+            }
+
+            // Verificar que el índice sea válido
+            if (!isset($checklistData['observations'][$index])) {
+                return response()->json(['success' => false, 'message' => 'Observación no encontrada'], 404);
+            }
+
+            // Obtener la observación actual
+            $currentObservation = $checklistData['observations'][$index];
+
+            // Preparar los datos actualizados
+            $updatedObservation = [
+                'cebadera_code' => $request->input('cebadera_code', $currentObservation['cebadera_code'] ?? ''),
+                'observation_number' => $request->input('observation_number', $currentObservation['observation_number'] ?? ($index + 1)),
+                'detail' => $request->input('detail'),
+                'complementary' => $request->input('complementary', $currentObservation['complementary'] ?? ''),
+                'updated_at' => now()->format('Y-m-d H:i:s')
+            ];
+
+            // Manejar nueva foto si se subió
+            if ($request->hasFile('photo')) {
+                $photo = $request->file('photo');
+                $filename = time() . '_' . uniqid();
+
+                // Comprimir y guardar la nueva imagen
+                $compressedImagePath = ImageHelper::compressAndStoreImage($photo, 'observations', $filename);
+
+                if ($compressedImagePath) {
+                    $updatedObservation['photo'] = $compressedImagePath;
+
+                    // Eliminar la foto anterior si existe
+                    if (isset($currentObservation['photo']) && !empty($currentObservation['photo'])) {
+                        $oldPhotoPath = storage_path('app/public/' . $currentObservation['photo']);
+                        if (file_exists($oldPhotoPath)) {
+                            try {
+                                unlink($oldPhotoPath);
+                            } catch (\Exception $e) {
+                                Log::warning('No se pudo eliminar la foto anterior: ' . $oldPhotoPath . '. Error: ' . $e->getMessage());
+                            }
+                        }
+                    }
+                } else {
+                    Log::warning('No se pudo comprimir la nueva imagen, guardando original');
+                    $originalFilename = time() . '_' . $photo->getClientOriginalName();
+                    $photo->storeAs('observations', $originalFilename, 'public');
+                    $updatedObservation['photo'] = 'storage/observations/' . $originalFilename;
+                }
+            } else {
+                // Mantener la foto actual si no se sube una nueva
+                $updatedObservation['photo'] = $currentObservation['photo'] ?? null;
+            }
+
+            // Actualizar la observación en el array
+            $checklistData['observations'][$index] = $updatedObservation;
+
+            // Actualizar la base de datos
+            $service->update(['checklist_data' => $checklistData]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Observación actualizada exitosamente',
+                'observation' => $updatedObservation
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error de validación: ' . implode(', ', $e->errors()['detail'] ?? ['Datos inválidos'])
+            ], 422);
+
+        } catch (\Exception $e) {
+            Log::error('Error al actualizar observación: ' . $e->getMessage() . ' en línea ' . $e->getLine() . ' del archivo ' . $e->getFile());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error interno del servidor. No se pudo actualizar la observación.'
+            ], 500);
+        }
+    }
+
+    public function deleteObservation(Service $service, $index)
+    {
+        // Verificar permisos
+        if ($service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
+            return response()->json(['success' => false, 'message' => 'No tienes permisos para eliminar esta observación'], 403);
+        }
+
+        // Verificar estado del servicio
+        if ($service->status !== "en_progreso") {
+            return response()->json(['success' => false, 'message' => 'El servicio debe estar en progreso para modificar observaciones'], 403);
+        }
+
+        // Obtener datos existentes del checklist
+        $checklistData = $service->checklist_data ?? [];
+
+        // Verificar que existan observaciones
+        if (!isset($checklistData['observations']) || !is_array($checklistData['observations'])) {
+            return response()->json(['success' => false, 'message' => 'No hay observaciones para eliminar'], 404);
+        }
+
+        // Verificar que el índice sea válido
+        if (!isset($checklistData['observations'][$index])) {
+            return response()->json(['success' => false, 'message' => 'Observación no encontrada'], 404);
+        }
+
+        // Obtener la observación antes de eliminarla (para el archivo físico)
+        $observation = $checklistData['observations'][$index];
+
+        // Eliminar el archivo físico si existe
+        if (isset($observation['photo']) && !empty($observation['photo'])) {
+            $photoPath = storage_path('app/public/' . $observation['photo']);
+            if (file_exists($photoPath)) {
+                try {
+                    unlink($photoPath);
+                } catch (\Exception $e) {
+                    Log::warning('No se pudo eliminar el archivo físico de la observación: ' . $photoPath . '. Error: ' . $e->getMessage());
+                    // Continuar con la eliminación de la observación aunque no se pueda eliminar el archivo
+                }
+            }
+        }
+
+        // Eliminar la observación del array
+        unset($checklistData['observations'][$index]);
+
+        // Reindexar el array para mantener índices numéricos consecutivos
+        $checklistData['observations'] = array_values($checklistData['observations']);
+
+        // Actualizar la base de datos
+        try {
+            $service->update(['checklist_data' => $checklistData]);
+        } catch (\Exception $e) {
+            Log::error('Error al actualizar servicio después de eliminar observación: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error interno del servidor. La observación fue eliminada del archivo pero no se pudo actualizar la base de datos.'
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Observación eliminada exitosamente',
+            'remaining_observations' => count($checklistData['observations'])
+        ]);
     }
 
     /**

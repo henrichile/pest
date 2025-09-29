@@ -2,50 +2,6 @@
 
 @section('css')
 <style>
-.navigation-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 40px;
-    padding-top: 25px;
-    border-top: 3px solid #2d5a27;
-    gap: 15px;
-}
-
-.back-button, .next-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 24px;
-    border-radius: 25px;
-    font-weight: 600;
-    font-size: 1em;
-    transition: all 0.2s ease;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    color: white;
-}
-
-.back-button {
-    background: #6c757d;
-}
-
-.back-button:hover {
-    background: #5a6268;
-}
-
-.next-button {
-    background: #2d5a27;
-}
-
-.next-button:hover {
-    background: #1a3d1a;
-}
-
-.arrow {
-    font-size: 1.1em;
-    font-weight: bold;
-}
 .observations-container {
     max-width: 800px;
     margin: 0 auto;
@@ -352,7 +308,6 @@
 }
 
 .file-text {
-    display: block;
     font-weight: 700;
     color: #2d5a27;
     margin-bottom: 8px;
@@ -384,7 +339,6 @@
 }
 
 .form-actions {
-    display: flex;
     gap: 20px;
     justify-content: flex-end;
     margin-top: 30px;
@@ -409,10 +363,10 @@
 }
 
 .btn-save:hover {
-    background: linear-gradient(135deg, #1a3d1a 0%, #0f2410 100%);
-    border-color: #1a3d1a;
+    background: #0a4d14;
+    border-color: #0a4d14;
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(45, 90, 39, 0.4);
+    box-shadow: 0 6px 20px rgba(12, 206, 28, 0.4);
 }
 
 .btn-cancel {
@@ -428,11 +382,56 @@
     box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
 }
 
-    font-size: 1.2em;
-    font-weight: bold;
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Responsive */
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: #2d5a27;
+    color: white;
+    border-radius: 12px 12px 0 0;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.3em;
+}
+
+.close {
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: #ccc;
+}
+
 @media (max-width: 768px) {
     .form-row {
         grid-template-columns: 1fr;
@@ -467,76 +466,10 @@
         width: 100%;
     }
 }
-@media (max-width: 480px) {
-    .observation-header{
-        display: grid !important;
-    }
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-    
-    .observation-summary {
-        display: grid !important;
-    
-    }
-
-    .observation-code{
-        width: 270px !important;
-        clear: both;
-    }
-
-    .observation-number{
-        width: 270px !important;
-        clear: both;
-    }
-
-    .observation-preview {
-        width: 270px !important;
-        margin-bottom: 5PX;
-        clear: both;
-    }
-
-    
-    .observation-actions {
-        flex-direction: row;
-        align-items: center;
-        gap: 110px;
-    }
-    
-    .detail-row {
-        flex-direction: row;
-    }
-    
-    .detail-row label {
-        min-width: auto;
-        margin-bottom: 8px;
-    }
-    
-    .form-actions {
-        flex-direction: row;
-    }
-    
-    .btn-save, .btn-cancel {
-        width: 100%;
-    }
-
-    .observation-actions-bottom {
-    gap: 12px;
-    justify-content: flex-end;
-    padding-top: 20px;
-    border-top: 2px solid #e9ecef;
-}
-}
 </style>
 @endsection
 
 @section('content')
-
-<!-- Updated: 2024-09-14 20:58 - COMPLETE RESTORATION -->
-<!-- Etapa 4: Observaciones Detalladas -->
-<div class="stage-title">Observaciones Detalladas</div>
-<div class="stage-instruction">Registre observaciones específicas con fotos</div>
-
 <div class="observations-container">
     <!-- Observaciones Guardadas (Acordeón) -->
     <div class="saved-observations" id="savedObservations">
@@ -557,7 +490,6 @@
                     <div class="observation-content" id="observationContent{{ $index }}" style="display: none;">
                         <div class="observation-details">
                             <div class="detail-row">
-                                
                                 @if($service->service_type === 'desratizacion')
                                     <label>Código de la Cebadera:</label>
                                     <span>{{ $observation['cebadera_code'] ?? 'N/A' }}</span>
@@ -607,12 +539,12 @@
         
         <form method="POST" action="{{ route("technician.service.checklist.submit", $service) }}" enctype="multipart/form-data" class="observation-form" id="addObservationFormNEW" style="display: none;">
             @csrf
+            @method('POST')
             <input type="hidden" name="current_stage" value="observations">
             <input type="hidden" name="next_stage" value="observations">
             
             <div class="form-row">
                 <div class="form-group">
-                     
                     @if($service->service_type === 'desratizacion')
                         <label>Código de la Cebadera:</label>
                         <span>{{ $observation['cebadera_code'] ?? 'N/A' }}</span>
@@ -647,8 +579,6 @@
                 </div>
             </div>
             
-            <div class="form-group">
-            
             <div class="form-actions">
                 <button type="submit" class="btn-save">Guardar</button>
                 <button type="button" class="btn-cancel" onclick="toggleAddForm()">Cancelar</button>
@@ -657,17 +587,62 @@
     </div>
 </div>
 
-<!-- Botones de Navegación -->
-<div class="navigation-buttons">
-    <a href="{{ route("technician.service.checklist.stage", ["service" => $service, "stage" => "results"]) }}" class="back-button">
-        <span class="arrow">←</span> Anterior
-    </a>
-    <a href="{{ route("technician.service.checklist.stage", ["service" => $service, "stage" => "sites"]) }}" class="next-button">
-        Siguiente <span class="arrow">→</span>
-    </a>
+<!-- Modal para Editar Observación -->
+<div id="editModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Editar Observación</h3>
+            <span class="close" onclick="closeEditModal()">&times;</span>
+        </div>
+        <form id="editObservationForm" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('POST')
+            <input type="hidden" id="editObservationIndex" name="observation_index">
+
+            <div class="form-row">
+                <div class="form-group">
+                    @if($service->service_type === 'desratizacion')
+                        <label>Código de la Cebadera:</label>
+                    @else
+                        <label>Lugar tratado o estación:</label>
+                    @endif
+                    <input type="text" id="editCebaderaCode" name="cebadera_code" required>
+                </div>
+                <div class="form-group">
+                    <label for="editObservationNumber">N° de Observación</label>
+                    <input type="number" id="editObservationNumber" name="observation_number" min="1" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="editDetail">Detalle de la Observación</label>
+                <textarea id="editDetail" name="detail" rows="4" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="editPhoto">Foto de la Estación/Cebadera (opcional)</label>
+                <div class="file-upload">
+                    <input type="file" id="editPhoto" name="photo" accept="image/jpeg,image/png,image/gif" onchange="previewEditPhoto(this)">
+                    <label for="editPhoto" class="file-label">
+                        <span class="file-text">Seleccionar nuevo archivo</span>
+                        <span class="file-info">Sin archivos seleccionados</span>
+                    </label>
+                    <div class="file-requirements">Formatos permitidos: JPG, PNG, GIF. Máximo 2MB</div>
+                </div>
+                <div class="photo-preview" id="editPhotoPreview" style="display: none;">
+                    <img id="editPreviewImg" src="" alt="Vista previa" style="max-width: 200px; max-height: 150px; border-radius: 8px;">
+                </div>
+                <div id="currentPhotoInfo" style="margin-top: 10px; font-size: 0.9em; color: #666;"></div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-save">Guardar Cambios</button>
+                <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancelar</button>
+            </div>
+        </form>
+    </div>
 </div>
 @endsection
-
 
 @section('scripts')
 <script>
@@ -721,8 +696,72 @@ function previewPhoto(input) {
 }
 
 function editObservation(index) {
-    // Implementar funcionalidad de edición
-    alert('Funcionalidad de edición en desarrollo');
+    // Obtener los datos de la observación desde el DOM
+    const observationItem = document.querySelector(`[data-index="${index}"]`);
+    const header = observationItem.querySelector('.observation-header');
+    const cebaderaCode = header.querySelector('.observation-code')?.textContent || '';
+    const observationNumber = header.querySelector('.observation-number')?.textContent.replace('Obs #', '') || '';
+    const detail = observationItem.querySelector('.observation-content .detail-row:last-child span')?.textContent || '';
+    
+    // Obtener información de la foto actual si existe
+    const currentPhoto = observationItem.querySelector('.observation-photo img');
+    const currentPhotoSrc = currentPhoto ? currentPhoto.src : '';
+    const currentPhotoInfo = document.getElementById('currentPhotoInfo');
+    
+    // Llenar el formulario del modal
+    document.getElementById('editObservationIndex').value = index;
+    document.getElementById('editCebaderaCode').value = cebaderaCode;
+    document.getElementById('editObservationNumber').value = observationNumber;
+    document.getElementById('editDetail').value = detail;
+    
+    // Mostrar información de la foto actual
+    if (currentPhotoSrc) {
+        const photoName = currentPhotoSrc.split('/').pop();
+        currentPhotoInfo.innerHTML = `<i>📷 Foto actual: ${photoName}</i>`;
+    } else {
+        currentPhotoInfo.innerHTML = '<i>No hay foto actual</i>';
+    }
+    
+    // Limpiar preview de nueva foto
+    document.getElementById('editPhotoPreview').style.display = 'none';
+    document.querySelector('#editModal .file-info').textContent = 'Sin archivos seleccionados';
+    
+    // Mostrar el modal
+    document.getElementById('editModal').style.display = 'flex';
+    // Cerrar todas las observaciones abiertas
+    document.querySelectorAll('.observation-content').forEach(item => {
+        item.style.display = 'none';
+    });
+}
+
+function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+    
+    // Limpiar el formulario
+    document.getElementById('editObservationForm').reset();
+    document.getElementById('editPhotoPreview').style.display = 'none';
+    document.getElementById('currentPhotoInfo').innerHTML = '';
+}
+
+function previewEditPhoto(input) {
+    const preview = document.getElementById('editPhotoPreview');
+    const previewImg = document.getElementById('editPreviewImg');
+    const fileInfo = input.parentElement.querySelector('.file-info');
+    
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            previewImg.src = e.target.result;
+            preview.style.display = 'block';
+            fileInfo.textContent = input.files[0].name;
+        };
+        
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        preview.style.display = 'none';
+        fileInfo.textContent = 'Sin archivos seleccionados';
+    }
 }
 
 function deleteObservation(index) {
@@ -732,12 +771,137 @@ function deleteObservation(index) {
     }
 }
 
+// Configurar el envío del formulario de edición
+document.getElementById('editObservationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const index = document.getElementById('editObservationIndex').value;
+
+    // Obtener serviceId de múltiples fuentes posibles
+    let serviceId = '{{ $service->id ?? "undefined" }}';
+
+    // Si serviceId es "undefined", intentar obtenerlo de otras fuentes
+    if (serviceId === 'undefined' || serviceId === '' || serviceId === '0') {
+        // Intentar obtenerlo de la URL actual
+        const currentUrl = window.location.href;
+        const urlMatch = currentUrl.match(/\/technician\/services\/(\d+)\/checklist/);
+        if (urlMatch && urlMatch[1]) {
+            serviceId = urlMatch[1];
+        } else {
+            // Intentar obtenerlo de un campo oculto si existe
+            const hiddenServiceId = document.querySelector('input[name="service_id"]');
+            if (hiddenServiceId) {
+                serviceId = hiddenServiceId.value;
+            }
+        }
+    }
+
+    // Validar que tenemos valores válidos
+    if (!serviceId || serviceId === 'undefined' || serviceId === '' || serviceId === '0') {
+        alert('Error: No se pudo obtener el ID del servicio. Por favor, recarga la página.');
+        return;
+    }
+
+    if (!index || index === '' || index === 'undefined') {
+        alert('Error: Índice de observación no válido. Por favor, recarga la página.');
+        return;
+    }
+
+    console.log('Editando observación:', { serviceId, index }); // Debug
+
+    // Mostrar indicador de carga
+    const submitBtn = this.querySelector('.btn-save');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Guardando...';
+    submitBtn.disabled = true;
+    console.log('Editando observación:', formData); // Debug
+    // Hacer petición AJAX
+    fetch(`/technician/services/${serviceId}/checklist/observations/${index}`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+        }
+    })
+    .then(response => {
+        // Verificar si la respuesta es exitosa
+        if (!response.ok) {
+            return response.text().then(text => {
+                throw new Error(`HTTP ${response.status}: ${text}`);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            // Cerrar modal
+            closeEditModal();
+
+            // Mostrar mensaje de éxito
+            alert(data.message || 'Observación actualizada exitosamente');
+
+            // Recargar la página para mostrar los cambios
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        } else {
+            console.error(data.message || 'Error al actualizar la observación');
+            throw new Error(data.message || 'Error al actualizar la observación');
+        }
+    })
+    .catch(error => {
+        console.error('Error completo:', error);
+
+        // Obtener el mensaje de error de manera segura
+        let errorMessage = 'Error desconocido';
+
+        if (error.message) {
+            if (typeof error.message === 'string') {
+                errorMessage = error.message;
+            } else if (typeof error.message === 'object') {
+                errorMessage = JSON.stringify(error.message);
+            } else {
+                errorMessage = String(error.message);
+            }
+        } else if (error.status) {
+            errorMessage = `Error HTTP ${error.status}: ${error.statusText || 'Sin detalles'}`;
+        } else if (typeof error === 'string') {
+            errorMessage = error;
+        } else {
+            errorMessage = 'Error interno del navegador';
+        }
+
+        // Si el error es de parsing JSON, mostrar más detalles
+        if (errorMessage.includes('JSON.parse') || errorMessage.includes('Unexpected token')) {
+            alert('Error: El servidor devolvió una respuesta no válida. Esto podría deberse a un error interno. Por favor, recarga la página e intenta nuevamente.');
+        } else {
+            alert('Error al actualizar la observación: ' + errorMessage);
+        }
+
+        // Restaurar el botón
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    });
+});
+
 // Auto-expandir la primera observación si solo hay una
 document.addEventListener('DOMContentLoaded', function() {
     const observations = document.querySelectorAll('.observation-item');
     if (observations.length === 1) {
         toggleObservation(0);
     }
+
+    // Verificar si hay un índice específico para editar desde la URL
+    @if(session('edit_observation_index') !== null)
+        const editIndex = {{ session('edit_observation_index') }};
+        if (editIndex >= 0 && editIndex < observations.length) {
+            // Pequeño delay para asegurar que el DOM esté listo
+            setTimeout(() => {
+                editObservation(editIndex);
+            }, 500);
+        }
+    @endif
 });
 </script>
 @endsection

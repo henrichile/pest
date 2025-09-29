@@ -127,6 +127,10 @@ Route::middleware(['auth', 'role:technician'])->prefix('technician')->name('tech
     Route::post('/services/{service}/checklist/process-location', [App\Http\Controllers\TechnicianController::class, 'processLocation'])->name('service.checklist.process-location');
     Route::post('/services/{service}/checklist/submit', [App\Http\Controllers\TechnicianController::class, 'saveChecklistStage'])->name('service.checklist.submit');
     Route::get('/services/{service}/checklist/{stage}', [App\Http\Controllers\TechnicianController::class, 'showChecklistStage'])->where('stage', 'points|products|results|observations|sites|description')->name('service.checklist.stage');
+    Route::get('/services/{service}/checklist/observations/{index}', [App\Http\Controllers\TechnicianController::class, 'handleObservation'])->name('service.checklist.observation.handle');
+    Route::delete('/services/{service}/checklist/observations/{index}', [App\Http\Controllers\TechnicianController::class, 'deleteObservation'])->name('service.checklist.observation.delete');
+    Route::post('/services/{service}/checklist/observations/{index}', [App\Http\Controllers\TechnicianController::class, 'updateObservation'])->name('service.checklist.observation.update');
+    Route::get('/services/{service}/checklist/observations/{index}/edit', [App\Http\Controllers\TechnicianController::class, 'editObservation'])->name('service.checklist.observation.edit');
     
     // Notificaciones para técnicos
     Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
