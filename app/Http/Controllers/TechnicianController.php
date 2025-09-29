@@ -2,12 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Service;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Helpers\ImageHelper;
 
 class TechnicianController extends Controller
 {
@@ -347,9 +342,19 @@ class TechnicianController extends Controller
                 // Manejar foto si se subió
                 if ($request->hasFile('photo')) {
                     $photo = $request->file('photo');
-                    $filename = time() . '_' . $photo->getClientOriginalName();
-                    $photo->storeAs('observations', $filename, 'public');
-                    $newObservation['photo'] = 'storage/observations/' . $filename;
+                    $filename = time() . '_' . uniqid();
+
+                    // Comprimir y guardar la imagen
+                    $compressedImagePath = ImageHelper::compressAndStoreImage($photo, 'observations', $filename);
+
+                    if ($compressedImagePath) {
+                        $newObservation['photo'] = $compressedImagePath;
+                    } else {
+                        Log::warning('No se pudo comprimir la imagen, guardando original');
+                        $originalFilename = time() . '_' . $photo->getClientOriginalName();
+                        $photo->storeAs('observations', $originalFilename, 'public');
+                        $newObservation['photo'] = 'storage/observations/' . $originalFilename;
+                    }
                 }
                 
                 // Agregar nueva observación al array
