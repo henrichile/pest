@@ -178,6 +178,14 @@
                       placeholder="Descripción del servicio realizado y sugerencias...">{{ old("service_description", $service->description) }}</textarea>
         </div>
 
+        <!-- Sugerencias del servicio -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">Sugerencias</h4>
+            <textarea name="service_sugerencia" rows="4" 
+                      class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                      placeholder="Ingrese sus sugerencias adicionales para el servicio...">{{ old("service_sugerencia", $service->service_sugerencia) }}</textarea>
+        </div>
+
         <!-- Botones de Acción -->
         <div class="flex justify-end space-x-4">
             <a href="{{ route("technician.service.show", $service) }}" 

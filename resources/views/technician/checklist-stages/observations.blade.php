@@ -393,7 +393,7 @@
 }
 
 .btn-save, .btn-cancel {
-    padding: 15px 30px;
+    padding: 15px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
@@ -403,9 +403,9 @@
 }
 
 .btn-save {
-    background: #6c757d;
+    background: #0cce1c;
     color: white;
-    border: 2px solid #2d5a27;
+    border: 2px solid #0e5c04;
 }
 
 .btn-save:hover {
@@ -467,6 +467,66 @@
         width: 100%;
     }
 }
+@media (max-width: 480px) {
+    .observation-header{
+        display: grid !important;
+    }
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .observation-summary {
+        display: grid !important;
+    
+    }
+
+    .observation-code{
+        width: 270px !important;
+        clear: both;
+    }
+
+    .observation-number{
+        width: 270px !important;
+        clear: both;
+    }
+
+    .observation-preview {
+        width: 270px !important;
+        margin-bottom: 5PX;
+        clear: both;
+    }
+
+    
+    .observation-actions {
+        flex-direction: row;
+        align-items: center;
+        gap: 110px;
+    }
+    
+    .detail-row {
+        flex-direction: row;
+    }
+    
+    .detail-row label {
+        min-width: auto;
+        margin-bottom: 8px;
+    }
+    
+    .form-actions {
+        flex-direction: row;
+    }
+    
+    .btn-save, .btn-cancel {
+        width: 100%;
+    }
+
+    .observation-actions-bottom {
+    gap: 12px;
+    justify-content: flex-end;
+    padding-top: 20px;
+    border-top: 2px solid #e9ecef;
+}
+}
 </style>
 @endsection
 
@@ -494,7 +554,6 @@
                             <span class="toggle-icon" id="toggleIcon{{ $index }}">▼</span>
                         </div>
                     </div>
-                    {{ "tipo: ".$service->service_type }}
                     <div class="observation-content" id="observationContent{{ $index }}" style="display: none;">
                         <div class="observation-details">
                             <div class="detail-row">
@@ -591,7 +650,7 @@
             <div class="form-group">
             
             <div class="form-actions">
-                <button type="submit" class="btn-save">Guardar Observación</button>
+                <button type="submit" class="btn-save">Guardar</button>
                 <button type="button" class="btn-cancel" onclick="toggleAddForm()">Cancelar</button>
             </div>
         </form>

@@ -25,7 +25,7 @@
         .container {
             background: white;
             border-radius: 20px;
-            padding: 40px;
+            padding: 10px !important;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             max-width: 600px;
             width: 100%;
@@ -351,7 +351,7 @@
         }
         
         .stage-indicator span {
-            padding: 5px 10px;
+            padding: 5px;
             border-radius: 15px;
             background: #f0f0f0;
         }

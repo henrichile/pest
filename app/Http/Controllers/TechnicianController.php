@@ -364,6 +364,7 @@ class TechnicianController extends Controller
             case 'description':
                 $checklistData['description'] = [
                     'service_description' => $request->input('service_description', ''),
+                    'service_sugerencia' => $request->input('service_sugerencia', ''),
                     'technician_signature' => $request->input('technician_signature'),
                     'client_signature' => $request->input('client_signature'),
                     'completion_date' => now()->format('Y-m-d H:i:s')

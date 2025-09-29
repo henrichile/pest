@@ -11,10 +11,15 @@
     <input type="hidden" name="next_stage" value="completed">
     <input type="hidden" name="current_stage" value="description">    
     <div class="form-group">
-        <label>Descripción del Servicio y Sugerencias</label>
+        <label>Descripción del Servicio</label>
         <textarea name="service_description" rows="8" 
-                  placeholder="Describa el servicio realizado, resultados obtenidos, recomendaciones para el cliente, próximos pasos, sugerencias de mejora, etc...">{{ $service->checklist_data["description"]["service_description"] ?? "" }}</textarea>
-        <p class="field-help">Incluya una descripción completa del servicio, resultados obtenidos, recomendaciones y sugerencias para el cliente.</p>
+                  placeholder="Describa el servicio realizado, resultados obtenidos.">{{ $service->checklist_data["description"]["service_description"] ?? "" }}</textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Sugerencias</label>
+        <textarea name="service_sugerencia" rows="6" 
+                  placeholder="Recomendaciones para el cliente, próximos pasos, sugerencias de mejora, etc...">{{ $service->checklist_data["description"]["service_sugerencia"] ?? "" }}</textarea>
     </div>
     
     <!-- Resumen del Checklist -->
@@ -84,7 +89,7 @@
             <span class="arrow">←</span> Anterior
         </a>
         <button type="submit" class="next-button" id="finalizeButton" disabled>
-            Finalizar Checklist ✓
+            Finalizar ✓
         </button>
     </div>
 </form>
@@ -312,8 +317,8 @@
 
 @media (max-width: 480px) {
     .signature-pad canvas {
-        max-width: 200px;
-        height: 80px;
+        max-width: 100%;
+        height: 120px;
     }
     
     .signature-controls {

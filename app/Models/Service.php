@@ -71,6 +71,7 @@ class Service extends Model
         "physical_spare_check",
         "applied_product",
         "service_description",
+        "service_sugerencia",
         // Campos de etapas
         "checklist_stage",
         "checklist_data",
