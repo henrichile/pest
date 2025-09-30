@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Helpers\ImageHelper;
 
 class TechnicianController extends Controller
 {
@@ -324,12 +325,17 @@ class TechnicianController extends Controller
         }
 
         // Obtener la etapa actual del formulario
-        $stage = $request->input('stage') ?? $request->input('data_stage') ?? 'unknown';
+        $stage = $request->input('current_stage')?? $request->input('stage')?? $request->input('data_stage') ?? 'unknown';
+        if($stage==="unknown"){
+            $stage="points";
+        }
+        //dd($stage);
         // Validar que la etapa sea válida
         $validStages = ["points", "products", "results", "observations", "sites", "description"];
         if (!in_array($stage, $validStages)) {
-            return response()->json(['success' => false, 'message' => 'Etapa no válida'], 400);
+            return response()->json(['success' => false, 'message' => 'Etapa no válida ('.$stage.')'], 400);
         }
+        //dd("paso");
 
         try {
             $nextStage = ($request->input('next_stage') ?? $request->input('data_next_stage') ?? $this->getNextStage($stage, $service->service_type));
@@ -396,6 +402,7 @@ class TechnicianController extends Controller
                 $service->update(["status" => "finalizado"]);
                 return redirect()->route("technician.service.detail", $service);
             }
+
 
             return view("technician.checklist-stages." .$nextStage, compact("service", "products", "stageInstruction"));
         }catch (\Exception $e) {
