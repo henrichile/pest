@@ -116,6 +116,19 @@
                             <a href="{{ route("admin.services.edit", $service) }}" 
                                class="text-blue-600 hover:text-blue-900">Editar</a>
                             @endcan
+                            @can("delete-services")
+                            <form action="{{ route("admin.services.destroy", $service) }}" 
+                                  method="POST" 
+                                  class="inline-block"
+                                  onsubmit="return confirm('¿Estás seguro de que deseas eliminar este servicio? Esta acción no se puede deshacer.')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" 
+                                        class="text-red-600 hover:text-red-900 focus:outline-none">
+                                    Eliminar
+                                </button>
+                            </form>
+                            @endcan
                         </td>
                     </tr>
                     @empty

@@ -765,6 +765,53 @@ class TechnicianController extends Controller
         ]);
     }
 
+    public function generatePDF(Service $service)
+    {
+        // Verificar permisos
+        if ($service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
+            abort(403, "No tienes permisos para acceder a este servicio");
+        }
+
+        // Verificar que el servicio esté completado
+        if ($service->status !== 'finalizado') {
+            abort(403, "Solo se pueden generar PDFs de servicios completados");
+        }
+
+        $service->load(['client', 'serviceType', 'assignedUser']);
+
+        // Generar ID de validación único
+        $validationId = 'PC-' . $service->id . '-' . now()->format('YmdHis') . '-' . substr(md5($service->id . now()), 0, 8);
+
+        // Generar hash de integridad
+        $integrityData = $service->id . $service->client->name . $service->checklist_completed_at . json_encode($service->checklist_data);
+        $integrityHash = hash('sha256', $integrityData);
+
+        // Generar QR Code
+        $qrData = json_encode([
+            'service_id' => $service->id,
+            'validation_id' => $validationId,
+            'integrity_hash' => $integrityHash,
+            'generated_at' => now()->toISOString(),
+            'client' => $service->client->name,
+            'technician' => $service->assignedUser->name ?? 'N/A'
+        ]);
+
+        $qrCode = base64_encode(file_get_contents('https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' . urlencode($qrData)));
+
+        // Guardar información de trazabilidad en la base de datos
+        $service->update([
+            'pdf_generated_at' => now(),
+            'pdf_validation_id' => $validationId,
+            'pdf_integrity_hash' => $integrityHash
+        ]);
+
+        $pdf = Pdf::loadView('technician.service-pdf', compact('service', 'validationId', 'integrityHash', 'qrCode'));
+
+        $filename = "servicio-{$service->id}-{$service->client->name}-{$validationId}.pdf";
+
+        return $pdf->download($filename);
+    }
+
     /**
      * Obtener texto de instrucción específico para la etapa de productos según el tipo de servicio
      */
