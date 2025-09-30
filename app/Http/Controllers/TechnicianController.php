@@ -278,6 +278,7 @@ class TechnicianController extends Controller
         // Si es la etapa de productos, cargar productos filtrados por service_type
         $products = null;
         $stageInstruction = null;
+        
         if ($stage === 'products') {
             // Mapear el service_type del servicio con los valores del enum de productos
             $serviceTypeMapping = [
@@ -324,7 +325,6 @@ class TechnicianController extends Controller
 
         // Obtener la etapa actual del formulario
         $stage = $request->input('stage') ?? $request->input('data_stage') ?? 'unknown';
-        
         // Validar que la etapa sea válida
         $validStages = ["points", "products", "results", "observations", "sites", "description"];
         if (!in_array($stage, $validStages)) {
@@ -363,7 +363,7 @@ class TechnicianController extends Controller
                     break;
             }
 
-            if ($stage === 'products') {
+            if ($nextStage === 'products') {
                 // Mapear el service_type del servicio con los valores del enum de productos
                 $serviceTypeMapping = [
                     'desratizacion' => 'desratizacion',
@@ -384,7 +384,6 @@ class TechnicianController extends Controller
                 }
                 
             }
-
             // Actualizar la base de datos
             $service->update(['checklist_data' => $checklistData]);
             $stageInstruction = $this->getProductStageInstruction($service->service_type);
