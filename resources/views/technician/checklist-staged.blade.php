@@ -450,7 +450,11 @@
             <button onclick="history.back()" class="back-button">
                 <span class="arrow">←</span> Volver al Servicio
             </button>
+            <a href="/technician/services/{{$service->id}}/checklist/{{ $nextStage}}" class="back-button">
+                <span class="arrow">→</span> Siguiente
+            </a>
         </div>
+
     </div>
 
     <script>

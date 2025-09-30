@@ -18,6 +18,7 @@
 <div class="stage-instruction">Describa los sitios donde se realizó el tratamiento</div>
 
 <form method="POST" action="{{ route("technician.service.checklist.submit", $service) }}" data-stage="sites">
+    <input type="hidden" name="stage" value="sites">
     @csrf
     <input type="hidden" name="next_stage" value="description">
     <input type="hidden" name="current_stage" value="sites">    

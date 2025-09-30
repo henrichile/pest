@@ -7,6 +7,7 @@
 <div class="stage-instruction">{{ $stageInstruction ?? 'Seleccione el producto utilizado para este servicio' }}</div>
 
 <form method="POST" action="{{ route("technician.service.checklist.submit", $service) }}" data-stage="products">
+    <input type="hidden" name="stage" value="products">
     @csrf
     <input type="hidden" name="next_stage" value="results">
     <input type="hidden" name="current_stage" value="products">    

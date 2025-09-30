@@ -42,6 +42,7 @@
 <div class="stage-instruction">Marque los puntos que correspondan</div>
 
 <form method="POST" action="{{ route("technician.service.checklist.submit", $service) }}" data-stage="points">
+    <input type="hidden" name="stage" value="points">
     @csrf
     <input type="hidden" name="next_stage" value="products">
     <input type="hidden" name="current_stage" value="points">    

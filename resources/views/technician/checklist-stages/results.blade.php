@@ -7,6 +7,7 @@
 <div class="stage-instruction">Marque los resultados encontrados</div>
 
 <form method="POST" action="{{ route("technician.service.checklist.submit", $service) }}" data-stage="results">
+    <input type="hidden" name="stage" value="results">
     @csrf
     <input type="hidden" name="next_stage" value="observations">
     <input type="hidden" name="current_stage" value="results">    

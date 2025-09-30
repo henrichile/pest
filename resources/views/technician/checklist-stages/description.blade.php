@@ -7,6 +7,7 @@
 <div class="stage-instruction">Complete la descripción final del servicio realizado</div>
 
 <form method="POST" action="{{ route("technician.service.checklist.submit", $service) }}" data-stage="description" id="checklistForm">
+    <input type="hidden" name="stage" value="description">
     @csrf
     <input type="hidden" name="next_stage" value="completed">
     <input type="hidden" name="current_stage" value="description">    

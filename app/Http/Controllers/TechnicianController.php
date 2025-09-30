@@ -225,6 +225,7 @@ class TechnicianController extends Controller
         // Preparar variables para la etapa de productos (si es la etapa actual)
         $products = collect();
         $stageInstruction = '';
+        $nextStage = $this->getNextStage($service->checklist_stage, $service->service_type);
         
         if ($service->checklist_stage === 'products') {
             $serviceTypeMapping = [
@@ -248,7 +249,7 @@ class TechnicianController extends Controller
             $stageInstruction = $this->getProductStageInstruction($service->service_type);
         }
 
-        return view('technician.checklist-staged', compact('service', 'products', 'stageInstruction'));
+        return view('technician.checklist-staged', compact('service', 'products', 'stageInstruction', 'nextStage'));
     }
 
     public function showChecklistStage(Request $request, Service $service, $stage)
@@ -303,8 +304,9 @@ class TechnicianController extends Controller
         // Asegurar que las variables siempre estén definidas
         $products = $products ?? collect();
         $stageInstruction = $stageInstruction ?? '';
-        
-        return view("technician.checklist-stages." . $stage, compact("service", "products", "stageInstruction"));
+        $nextStage = $this->getNextStage($service->checklist_stage, $service->service_type);
+       
+        return view("technician.checklist-stages." . $stage, compact("service", "products", "stageInstruction", "nextStage"));
     }
 
 
@@ -330,10 +332,16 @@ class TechnicianController extends Controller
         }
 
         try {
+            $nextStage = ($request->input('next_stage') ?? $request->input('data_next_stage') ?? $this->getNextStage($stage, $service->service_type));
             // Obtener datos existentes del checklist
             $checklistData = $service->checklist_data ?? [];
 
             // Procesar datos según la etapa
+                    // Actualizar la etapa actual del servicio
+            $service->update(["checklist_stage" => $stage]);
+
+            $service->load(["client", "serviceType"]);
+
             switch ($stage) {
                 case 'points':
                     $checklistData['points'] = $this->processPointsData($request);
@@ -375,22 +383,24 @@ class TechnicianController extends Controller
                         ->get();
                 }
                 
-                $stageInstruction = $this->getProductStageInstruction($service->service_type);
             }
 
             // Actualizar la base de datos
             $service->update(['checklist_data' => $checklistData]);
-
+            $stageInstruction = $this->getProductStageInstruction($service->service_type);
             // Determinar la siguiente etapa
-            $nextStage = $this->getNextStage($stage, $service->service_type);
-
              // Asegurar que las variables siempre estén definidas
             $products = $products ?? collect();
             $stageInstruction = $stageInstruction ?? '';
-        
-            return view("technician.checklist-stages." . $stage, compact("service", "products", "stageInstruction"));
+            $nextStage = ($nextStage!==null || $nextStage!=="")?$nextStage:$stage;
+            if($nextStage==="completed"){
+                $service->update(["status" => "finalizado"]);
+                return redirect()->route("technician.service.detail", $service);
+            }
+
+            return view("technician.checklist-stages." .$nextStage, compact("service", "products", "stageInstruction"));
         }catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Error al guardar los datos del checklist'], 500);
+            return response()->json(['success' => false, 'message' => 'Error al guardar los datos del checklist: ' . $e->getMessage()], 500);
         }
     }
 

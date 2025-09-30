@@ -25,6 +25,7 @@
     <!-- Formulario del Checklist -->
     <form method="POST" action="{{ route("technician.service.checklist.submit", $service) }}" class="space-y-6">
         @csrf
+        @method("post")
         
         <div class="bg-white rounded-lg shadow-lg p-6">
             <!-- Título DESRATIZACIÓN -->
