@@ -567,7 +567,7 @@
                 <div class="form-group">
                     @if($service->service_type === 'desratizacion')
                         <label>Código de la Cebadera:</label>
-                        <span>{{ $observation['cebadera_code'] ?? 'N/A' }}</span>
+                        
                     @elseif($service->service_type === 'desinsectacion' || $service->service_type === 'sanitizacion' || $service->service_type === 'fumigacion-de-jardines' || $service->service_type === 'servicios-especiales' || $service->service_type === 'desinfeccion')
                         <label>Lugar tratado o estación:</label>
                     @endif

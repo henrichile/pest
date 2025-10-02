@@ -359,7 +359,10 @@ class TechnicianController extends Controller
                     $checklistData['results'] = $this->processResultsData($request);
                     break;
                 case 'observations':
-                    $checklistData['observations'] = $this->processObservationsData($request);
+                    // IMPORTANTE: Agregar nuevas observaciones a las existentes, no reemplazar
+                    $existingObservations = $checklistData['observations'] ?? [];
+                    $newObservations = $this->processObservationsData($request);
+                    $checklistData['observations'] = array_merge($existingObservations, $newObservations);
                     break;
                 case 'sites':
                     $checklistData['sites'] = $this->processSitesData($request);
@@ -404,7 +407,9 @@ class TechnicianController extends Controller
             }
 
 
-            return view("technician.checklist-stages." .$nextStage, compact("service", "products", "stageInstruction"));
+            //return view("technician.checklist-stages." .$nextStage, compact("service", "products", "stageInstruction"));
+            return redirect()->route('technician.service.checklist.stage', ['service' => $service, 'stage' => $nextStage])
+                ->with('success', 'Datos de la etapa guardados correctamente.');
         }catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Error al guardar los datos del checklist: ' . $e->getMessage()], 500);
         }
@@ -432,34 +437,74 @@ class TechnicianController extends Controller
 
     private function processProductsData(Request $request)
     {
-        $products = [];
-        $productsData = $request->input('products', []);
+        $data = [];
         
-        foreach ($productsData as $productId => $productData) {
-            if (isset($productData['used']) && $productData['used'] === '1') {
-                $products[] = [
-                    'product_id' => $productId,
-                    'name' => $productData['name'] ?? '',
-                    'quantity' => $productData['quantity'] ?? 1,
-                    'unit' => $productData['unit'] ?? 'unidad',
-                    'notes' => $productData['notes'] ?? '',
-                    'used_at' => now()->format('Y-m-d H:i:s')
-                ];
-            }
+        // Capturar el producto seleccionado del radio button
+        if ($request->has('applied_product')) {
+            $data['applied_product'] = $request->input('applied_product');
         }
         
-        return $products;
+        // Capturar el ID del producto si está disponible
+        if ($request->has('product_id')) {
+            $data['product_id'] = $request->input('product_id');
+        }
+        
+        // Capturar cantidad si está disponible
+        if ($request->has('quantity')) {
+            $data['quantity'] = $request->input('quantity');
+        }
+        
+        $data['applied_at'] = now()->format('Y-m-d H:i:s');
+        
+        return $data;
     }
 
     private function processResultsData(Request $request)
     {
-        return [
-            'efficacy' => $request->input('efficacy', ''),
-            'observations' => $request->input('observations', ''),
-            'recommendations' => $request->input('recommendations', ''),
-            'next_service_date' => $request->input('next_service_date', ''),
-            'completed_at' => now()->format('Y-m-d H:i:s')
-        ];
+        $data = [];
+        
+        // Campos comunes
+        if ($request->has('efficacy')) {
+            $data['efficacy'] = $request->input('efficacy');
+        }
+        
+        // Campos para desratización
+        if ($request->has('observed_results')) {
+            $data['observed_results'] = $request->input('observed_results', []);
+        }
+        
+        if ($request->has('total_installed_points')) {
+            $data['total_installed_points'] = $request->input('total_installed_points');
+        }
+        
+        if ($request->has('total_consumption_activity')) {
+            $data['total_consumption_activity'] = $request->input('total_consumption_activity');
+        }
+        
+        // Campos para desinsectación
+        if ($request->has('uv_lamps')) {
+            $data['uv_lamps'] = $request->input('uv_lamps');
+        }
+        
+        if ($request->has('tuv')) {
+            $data['tuv'] = $request->input('tuv');
+        }
+        
+        if ($request->has('devices_installed')) {
+            $data['devices_installed'] = $request->input('devices_installed');
+        }
+        
+        if ($request->has('devices_existing')) {
+            $data['devices_existing'] = $request->input('devices_existing');
+        }
+        
+        if ($request->has('devices_replaced')) {
+            $data['devices_replaced'] = $request->input('devices_replaced');
+        }
+        
+        $data['completed_at'] = now()->format('Y-m-d H:i:s');
+        
+        return $data;
     }
 
     private function processObservationsData(Request $request)
@@ -517,33 +562,37 @@ class TechnicianController extends Controller
 
     private function processSitesData(Request $request)
     {
-        $sites = [];
-        $sitesData = $request->input('sites', []);
+        $data = [];
         
-        foreach ($sitesData as $site) {
-            if (!empty($site['name']) || !empty($site['address'])) {
-                $sites[] = [
-                    'name' => $site['name'] ?? '',
-                    'address' => $site['address'] ?? '',
-                    'type' => $site['type'] ?? '',
-                    'area' => $site['area'] ?? '',
-                    'notes' => $site['notes'] ?? '',
-                    'created_at' => now()->format('Y-m-d H:i:s')
-                ];
-            }
+        // Capturar el campo de sitios tratados
+        if ($request->has('treated_sites')) {
+            $data['treated_sites'] = $request->input('treated_sites');
         }
         
-        return $sites;
+        $data['completed_at'] = now()->format('Y-m-d H:i:s');
+        
+        return $data;
     }
 
     private function processDescriptionData(Request $request)
     {
-        return [
-            'description' => $request->input('description', ''),
-            'additional_notes' => $request->input('additional_notes', ''),
-            'completion_notes' => $request->input('completion_notes', ''),
+        $data = [
+            'service_description' => $request->input('service_description', ''),
+            'service_sugerencia' => $request->input('service_sugerencia', ''),
+            'completion_date' => $request->input('completion_date', now()->format('Y-m-d')),
             'completed_at' => now()->format('Y-m-d H:i:s')
         ];
+
+        // Guardar firmas digitales si están presentes
+        if ($request->input('technician_signature')) {
+            $data['technician_signature'] = $request->input('technician_signature');
+        }
+        
+        if ($request->input('client_signature')) {
+            $data['client_signature'] = $request->input('client_signature');
+        }
+
+        return $data;
     }
 
     private function getNextStage($currentStage, $serviceType)
@@ -597,6 +646,8 @@ class TechnicianController extends Controller
     public function updateObservation(Request $request, Service $service, $index)
     {
         try {
+            Log::info('updateObservation llamado', ['service_id' => $service->id, 'index' => $index]);
+            
             // Verificar permisos
             if ($service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
                 return response()->json(['success' => false, 'message' => 'No tienes permisos para editar esta observación'], 403);
@@ -637,6 +688,7 @@ class TechnicianController extends Controller
                 'observation_number' => $request->input('observation_number', $currentObservation['observation_number'] ?? ($index + 1)),
                 'detail' => $request->input('detail'),
                 'complementary' => $request->input('complementary', $currentObservation['complementary'] ?? ''),
+                'created_at' => $currentObservation['created_at'] ?? now()->format('Y-m-d H:i:s'), // Preservar fecha de creación
                 'updated_at' => now()->format('Y-m-d H:i:s')
             ];
 
@@ -653,13 +705,20 @@ class TechnicianController extends Controller
 
                     // Eliminar la foto anterior si existe
                     if (isset($currentObservation['photo']) && !empty($currentObservation['photo'])) {
-                        $oldPhotoPath = storage_path('app/public/' . $currentObservation['photo']);
+                        $photoPath = $currentObservation['photo'];
+                        // Eliminar 'storage/' del inicio si existe
+                        $photoPath = preg_replace('/^storage\//', '', $photoPath);
+                        $oldPhotoPath = storage_path('app/public/' . $photoPath);
+                        
                         if (file_exists($oldPhotoPath)) {
                             try {
                                 unlink($oldPhotoPath);
+                                Log::info('Foto anterior eliminada: ' . $oldPhotoPath);
                             } catch (\Exception $e) {
                                 Log::warning('No se pudo eliminar la foto anterior: ' . $oldPhotoPath . '. Error: ' . $e->getMessage());
                             }
+                        } else {
+                            Log::warning('Foto anterior no encontrada: ' . $oldPhotoPath);
                         }
                     }
                 } else {
@@ -702,6 +761,8 @@ class TechnicianController extends Controller
 
     public function deleteObservation(Service $service, $index)
     {
+        Log::info('deleteObservation llamado', ['service_id' => $service->id, 'index' => $index]);
+        
         // Verificar permisos
         if ($service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
             return response()->json(['success' => false, 'message' => 'No tienes permisos para eliminar esta observación'], 403);
@@ -730,14 +791,21 @@ class TechnicianController extends Controller
 
         // Eliminar el archivo físico si existe
         if (isset($observation['photo']) && !empty($observation['photo'])) {
-            $photoPath = storage_path('app/public/' . $observation['photo']);
-            if (file_exists($photoPath)) {
+            $photoPath = $observation['photo'];
+            // Eliminar 'storage/' del inicio si existe
+            $photoPath = preg_replace('/^storage\//', '', $photoPath);
+            $fullPhotoPath = storage_path('app/public/' . $photoPath);
+            
+            if (file_exists($fullPhotoPath)) {
                 try {
-                    unlink($photoPath);
+                    unlink($fullPhotoPath);
+                    Log::info('Foto de observación eliminada: ' . $fullPhotoPath);
                 } catch (\Exception $e) {
-                    Log::warning('No se pudo eliminar el archivo físico de la observación: ' . $photoPath . '. Error: ' . $e->getMessage());
+                    Log::warning('No se pudo eliminar el archivo físico de la observación: ' . $fullPhotoPath . '. Error: ' . $e->getMessage());
                     // Continuar con la eliminación de la observación aunque no se pueda eliminar el archivo
                 }
+            } else {
+                Log::warning('Foto de observación no encontrada: ' . $fullPhotoPath);
             }
         }
 

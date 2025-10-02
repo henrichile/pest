@@ -294,6 +294,7 @@
             @if(App\Helpers\MapboxHelper::isConfigured())
                 @php
                     try {
+                        // Generar la imagen de Mapbox y obtener la URL
                         $mapImageUrl = App\Helpers\MapboxHelper::generateMapboxImage(
                             $service->latitude,
                             $service->longitude,
@@ -303,14 +304,34 @@
                         );
                         
                         // Convertir URL a ruta física para PDF
+                        // La URL es: http://localhost/storage/maps/filename.png
+                        // Necesitamos: /path/to/public/storage/maps/filename.png
+
                         if ($mapImageUrl) {
-                            $mapImagePath = public_path(str_replace(url('/'), '', $mapImageUrl));
+                            // Extraer la parte 'storage/maps/filename.png'
+                            if (preg_match('#storage/maps/(.+)$#', $mapImageUrl, $matches)) {
+                                $mapImagePath = public_path('storage/maps/' . $matches[1]);
+                                \Log::error('Mapa para PDF', [
+                                    'url' => $mapImageUrl,
+                                    'path' => $mapImagePath,
+                                    'exists' => file_exists($mapImagePath)
+                                ]);
+                            } else {
+                                $mapImagePath = null;
+                                \Log::error('No se pudo extraer el path del mapa', ['url' => $mapImageUrl]);
+                            }
                         } else {
                             $mapImagePath = null;
+                            \Log::error('generateMapboxImage retornó null');
                         }
                     } catch (\Exception $e) {
                         $mapImageUrl = null;
                         $mapImagePath = null;
+                        Log::error('Error generando mapa para PDF: ' . $e->getMessage(), [
+                            'lat' => $service->latitude,
+                            'lng' => $service->longitude,
+                            'trace' => $e->getTraceAsString()
+                        ]);
                     }
                 @endphp
                 
@@ -320,7 +341,25 @@
                     <img src="{{ $mapImagePath }}" alt="Mapa de ubicación del servicio" 
                          style="max-width: 100%; height: auto; border: 2px solid #1a472a; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                 </div>
+                @else
+                <div style="padding: 10px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 4px; margin: 10px 0;">
+                    <p style="margin: 0; color: #856404;">
+                        <strong>⚠️ Mapa no disponible</strong><br>
+                        Coordenadas GPS: {{ $service->latitude }}, {{ $service->longitude }}
+                        @if($mapImagePath)
+                            <br><small>Archivo no encontrado: {{ basename($mapImagePath ?? 'N/A') }}</small>
+                        @endif
+                    </p>
+                </div>
                 @endif
+            @else
+                <div style="padding: 10px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
+                    <p style="margin: 0; color: #721c24;">
+                        <strong>⚠️ Mapbox no está configurado</strong><br>
+                        No se puede generar el mapa de ubicación del servicio.  Por favor, contacte al administrador.
+                    </p>
+                </div>          
+
             @endif
         </div>
         @endif
