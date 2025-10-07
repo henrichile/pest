@@ -12,7 +12,7 @@
             color: #333;
             line-height: 1.4;
         }
-        
+
         .header {
             text-align: center;
             margin-bottom: 30px;
@@ -20,25 +20,25 @@
             padding-bottom: 20px;
             position: relative;
         }
-        
+
         .logo {
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 15px;
         }
-        
+
         .logo-image {
             width: 120px;
             height: 72px;
         }
-        
+
         .title {
             font-size: 20px;
             font-weight: bold;
             color: #333;
         }
-        
+
         .qr-code {
             position: absolute;
             top: 0;
@@ -47,35 +47,35 @@
             height: 80px;
             border: 1px solid #ddd;
         }
-        
+
         .service-info {
             background: #f8f9fa;
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
         }
-        
+
         .info-row {
             display: flex;
             justify-content: space-between;
             margin-bottom: 8px;
             padding: 5px 0;
         }
-        
+
         .info-label {
             font-weight: bold;
             color: #1a472a;
         }
-        
+
         .info-value {
             color: #333;
         }
-        
+
         .section {
             margin-bottom: 25px;
             page-break-inside: avoid;
         }
-        
+
         .section-title {
             font-size: 16px;
             font-weight: bold;
@@ -84,12 +84,12 @@
             border-bottom: 1px solid #ddd;
             padding-bottom: 5px;
         }
-        
+
         .checklist-item {
             margin-bottom: 8px;
             padding: 5px 0;
         }
-        
+
         .observation-item {
             background: #f8f9fa;
             padding: 15px;
@@ -97,17 +97,17 @@
             border-radius: 8px;
             border-left: 4px solid #1a472a;
         }
-        
+
         .observation-header {
             font-weight: bold;
             color: #1a472a;
             margin-bottom: 8px;
         }
-        
+
         .observation-detail {
             margin-bottom: 8px;
         }
-        
+
         .observation-photo {
             max-width: 200px;
             max-height: 150px;
@@ -115,38 +115,38 @@
             margin-top: 10px;
             border: 1px solid #ddd;
         }
-        
+
         .signature-section {
             margin-top: 40px;
             border-top: 2px solid #1a472a;
             padding-top: 20px;
         }
-        
+
         .signature-box {
             display: inline-block;
             width: 45%;
             margin: 30px 2%;
             text-align: center;
         }
-        
+
         .signature-image {
             max-width: 200px;
             max-height: 80px;
             border: 1px solid #ddd;
             margin-bottom: 5px;
         }
-        
+
         .signature-line {
             border-bottom: 1px solid #333;
             height: 40px;
             margin-bottom: 5px;
         }
-        
+
         .signature-label {
             font-size: 12px;
             color: #666;
         }
-        
+
         .footer {
             margin-top: 40px;
             text-align: center;
@@ -155,7 +155,7 @@
             border-top: 1px solid #ddd;
             padding-top: 20px;
         }
-        
+
         .status-badge {
             display: inline-block;
             padding: 4px 8px;
@@ -163,61 +163,61 @@
             font-size: 12px;
             font-weight: bold;
         }
-        
+
         .status-finalizado {
             background: #d4edda;
             color: #155724;
         }
-        
+
         .priority-alta {
             background: #f8d7da;
             color: #721c24;
         }
-        
+
         .priority-media {
             background: #fff3cd;
             color: #856404;
         }
-        
+
         .priority-baja {
             background: #d1ecf1;
             color: #0c5460;
         }
-        
+
         .points-list {
             margin-left: 20px;
         }
-        
+
         .points-list li {
             margin-bottom: 5px;
         }
-        
+
         .no-data {
             color: #666;
             font-style: italic;
         }
-        
+
         .geolocation-info {
             background: #e8f5e8;
             padding: 10px;
             border-radius: 5px;
             margin-top: 10px;
         }
-        
+
         .product-info {
             background: #fff3cd;
             padding: 10px;
             border-radius: 5px;
             margin-bottom: 10px;
         }
-        
+
         .technical-findings {
             background: #f8d7da;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 15px;
         }
-        
+
         .validation-info {
             background: #d1ecf1;
             padding: 10px;
@@ -239,7 +239,7 @@
         </div>
         @endif
     </div>
-    
+
     {{-- Datos del Cliente, Sitio y Dirección Geolocalizada --}}
     <div class="service-info">
         <div class="info-row">
@@ -258,6 +258,12 @@
             <span class="info-label">Tipo de Servicio:</span>
             <span class="info-value">{{ $service->serviceType->name ?? "N/A" }}</span>
         </div>
+        @if($service->service_type === 'servicios-especiales' && $service->special_service_title)
+        <div class="info-row">
+            <span class="info-label">Título del Servicio:</span>
+            <span class="info-value" style="font-weight: bold; color: #059669;">{{ $service->special_service_title }}</span>
+        </div>
+        @endif
         <div class="info-row">
             <span class="info-label">Técnico Asignado:</span>
             <span class="info-value">{{ $service->assignedUser->name ?? "N/A" }}</span>
@@ -289,7 +295,7 @@
     </div>
             @if($service->latitude && $service->longitude)
         <div class="geolocation-info">
-                      
+
             {{-- Mapa estático de Mapbox --}}
             @if(App\Helpers\MapboxHelper::isConfigured())
                 @php
@@ -302,7 +308,7 @@
                             300,
                             15
                         );
-                        
+
                         // Convertir URL a ruta física para PDF
                         // La URL es: http://localhost/storage/maps/filename.png
                         // Necesitamos: /path/to/public/storage/maps/filename.png
@@ -334,11 +340,11 @@
                         ]);
                     }
                 @endphp
-                
+
                 @if($mapImagePath && file_exists($mapImagePath))
                 <div class="map-container" style="text-align: center; page-break-inside: avoid;">
                     <div style="font-weight: bold; margin-bottom: 8px; color: #1a472a;">Ubicación del Servicio :: Coordenadas GPS: <span class="info-value">{{ $service->latitude }}, {{ $service->longitude }}</span></div>
-                    <img src="{{ $mapImagePath }}" alt="Mapa de ubicación del servicio" 
+                    <img src="{{ $mapImagePath }}" alt="Mapa de ubicación del servicio"
                          style="max-width: 100%; height: auto; border: 2px solid #1a472a; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                 </div>
                 @else
@@ -358,7 +364,7 @@
                         <strong>⚠️ Mapbox no está configurado</strong><br>
                         No se puede generar el mapa de ubicación del servicio.  Por favor, contacte al administrador.
                     </p>
-                </div>          
+                </div>
 
             @endif
         </div>
@@ -379,7 +385,7 @@
             </ul>
         </div>
     @endif
-        
+
         @if(isset($service->checklist_data["results"]) && count($service->checklist_data["results"]) > 0)
         <div class="section">
             @if($service->service_type === 'desinsectacion')
@@ -400,7 +406,7 @@
                 <div class="checklist-item" style="margin-bottom: 8px;">
                     <strong>Dispositivos Repuestos:</strong> {{ $service->checklist_data["results"]["devices_replaced"] ?? "N/A" }}
                 </div>
-                
+
                 @if(isset($service->checklist_data["results"]["observed_results"]) && count($service->checklist_data["results"]["observed_results"]) > 0)
                 <div style="margin-top: 15px;">
                     <strong>Resultados Observados:</strong>
@@ -424,7 +430,7 @@
                         <li>No hay resultados observados registrados</li>
                     @endif
                 </ul>
-                
+
                 @if(isset($service->checklist_data["results"]["total_installed_points"]) || isset($service->checklist_data["results"]["total_consumption_activity"]))
                 <div style="margin-top: 15px;">
                     @if(isset($service->checklist_data["results"]["total_installed_points"]))
@@ -443,13 +449,27 @@
             @endif
         </div>
         @endif
-    
+
     {{-- Insumos Utilizados (Producto + Lote) --}}
     @if($service->checklist_data && isset($service->checklist_data["products"]["applied_product"]))
     <div class="section">
         <div class="section-title">Insumos Utilizados</div>
         <div class="product-info">
             <strong>Producto:</strong> {{ $service->checklist_data["products"]["applied_product"] }}
+
+            @if(in_array($service->service_type, ['desinfeccion', 'sanitizacion','desinsectacion','fumigacion-de-jardines']))
+                @if(isset($service->checklist_data["products"]["dosis"]) || isset($service->checklist_data["products"]["agua"]))
+                    <br><br>
+                    <div style="margin-top: 8px; padding: 10px; background-color: #f0f9f0; border-left: 3px solid #2c5530;">
+                        @if(isset($service->checklist_data["products"]["dosis"]))
+                            <strong>Dosis aplicada:</strong> {{ $service->checklist_data["products"]["dosis"] }} cc
+                        @endif
+                        @if(isset($service->checklist_data["products"]["agua"]))
+                            <br><strong>Agua aplicada:</strong> {{ $service->checklist_data["products"]["agua"] }} litros
+                        @endif
+                    </div>
+                @endif
+            @endif
         </div>
     @else
         <div class="section">
@@ -457,7 +477,7 @@
             <div class="product-info">No hay productos aplicados registrados</div>
         </div>
     @endif
-    
+
     {{-- Observaciones con Imágenes --}}
     @if($service->checklist_data && isset($service->checklist_data["observations"]) && count($service->checklist_data["observations"]) > 0)
     <div class="section">
@@ -501,7 +521,7 @@
         <div class="observation-item">No hay observaciones registradas</div>
     @endif
     </div>
-    
+
     {{-- Sitios Tratados --}}
     @if($service->checklist_data && isset($service->checklist_data["sites"]["treated_sites"]) && !empty($service->checklist_data["sites"]["treated_sites"]))
     <div class="section">
@@ -509,7 +529,7 @@
         <div class="checklist-item">{{ $service->checklist_data["sites"]["treated_sites"] }}</div>
     </div>
     @endif
-    
+
     {{-- Descripción del Servicio --}}
     @if($service->checklist_data && isset($service->checklist_data["description"]["content"]))
     <div class="section">
@@ -521,7 +541,7 @@
     {{-- Firmas del Cliente y Técnico --}}
     <div class="signature-section">
         <div class="section-title">Firmas de Confirmación</div>
-        
+
         @if($service->checklist_data && isset($service->checklist_data["description"]["technician_signature"]) && $service->checklist_data["description"]["technician_signature"])
         <div class="signature-box">
             <div class="signature-label">Firma del Técnico</div>
@@ -534,7 +554,7 @@
             <div class="signature-label">Firma del Técnico</div>
         </div>
         @endif
-        
+
         @if($service->checklist_data && isset($service->checklist_data["description"]["client_signature"]) && $service->checklist_data["description"]["client_signature"])
         <div class="signature-box">
             <div class="signature-label">Firma del Cliente</div>
@@ -547,13 +567,13 @@
             <div class="signature-label">Firma del Cliente</div>
         </div>
         @endif
-        
+
         <div style="clear: both;"></div>
         <div style="margin-top: 20px; text-align: center;">
             <div class="signature-label">Fecha de Finalización: {{ $service->checklist_completed_at ? $service->checklist_completed_at->format("d/m/Y H:i") : date("d/m/Y H:i") }}</div>
         </div>
     </div>
-    
+
     {{-- Información de Validación y Trazabilidad --}}
     <div class="validation-info">
         <div class="section-title">Información de Validación</div>
@@ -570,7 +590,7 @@
             <span class="info-value">{{ now()->format("d/m/Y H:i:s") }}</span>
         </div>
     </div>
-    
+
     <div class="footer">
         <p>Este documento fue generado automáticamente por el sistema Pest Controller</p>
         <p>Servicio completado por: {{ $service->assignedUser->name ?? "Técnico asignado" }}</p>

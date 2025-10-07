@@ -36,7 +36,7 @@
             <!-- Acciones del Servicio -->
             <div class="mb-8">
                 <h2 class="text-xl font-semibold text-gray-800 mb-4">Acciones del Servicio</h2>
-                
+
                 @if($service->status == "pendiente")
                 <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
                     <div class="flex items-center">
@@ -51,7 +51,7 @@
                     <div class="mt-4">
                         <form method="POST" action="{{ route("technician.service.start", $service) }}" class="inline">
                             @csrf
-                            <button type="submit" 
+                            <button type="submit"
                                     class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -59,7 +59,7 @@
                                 Iniciar Servicio
                             </button>
                         </form>
-                        
+
                     </div>
                 </div>
                 @elseif($service->status == "en_progreso")
@@ -74,14 +74,14 @@
                         </div>
                     </div>
                     <div class="mt-4 flex space-x-3">
-                        <a href="{{ route("technician.service.checklist", $service) }}" 
+                        <a href="{{ route("technician.service.checklist", $service) }}"
                            class="inline-flex items-center px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                             </svg>
                             Realizar Checklist
                         </a>
-                        <a href="{{ route("technician.service.checklist-details", $service) }}" 
+                        <a href="{{ route("technician.service.checklist-details", $service) }}"
                            class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -106,7 +106,7 @@
                         </div>
                     </div>
                     <div class="flex space-x-3">
-                        <a href="{{ route("technician.service.checklist-details", $service) }}" 
+                        <a href="{{ route("technician.service.checklist-details", $service) }}"
                            class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -114,18 +114,18 @@
                             </svg>
                             Ver Observaciones Detalladas
                         </a>
-                        
+
                         <!-- Botón para Generar PDF -->
                         <a href="{{ route("technician.service.pdf", $service) }}" class="inline">
-                            
-                            <span 
+
+                            <span
                                     class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                 </svg>
                                 Generar PDF
                             </span></a>
-                        
+
                     </div>
                 </div>
                 @endif
@@ -140,6 +140,17 @@
                             <span class="text-gray-600">Tipo:</span>
                             <span class="font-medium">{{ $service->serviceType->name ?? ucfirst(str_replace('-', ' ', $service->service_type)) ?? "Sanitización" }}</span>
                         </div>
+
+                        @if($service->service_type === 'servicios-especiales' && $service->special_service_title)
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Servicio Especial:</span>
+                            <span class="font-semibold text-green-700 flex items-center">
+                                <span class="mr-1">🏷️</span>
+                                {{ $service->special_service_title }}
+                            </span>
+                        </div>
+                        @endif
+
                         <div class="flex justify-between">
                             <span class="text-gray-600">Prioridad:</span>
                             <span class="font-medium">{{ ucfirst($service->priority ?? "Media") }}</span>
@@ -162,7 +173,7 @@
                         @endif
                     </div>
                 </div>
-                
+
                 <div>
                     <h3 class="text-lg font-semibold text-gray-800 mb-3">Estadísticas</h3>
                     <div class="space-y-2">
@@ -204,7 +215,7 @@
         <!-- Footer -->
         <div class="bg-gray-50 px-6 py-4 border-t">
             <div class="flex justify-between items-center">
-                <a href="{{ route("technician.services") }}" 
+                <a href="{{ route("technician.services") }}"
                    class="inline-flex items-center px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>

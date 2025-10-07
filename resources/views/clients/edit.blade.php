@@ -11,10 +11,10 @@
             <p class="text-gray-600">Modifica la información del cliente</p>
         </div>
 
-        <form method="POST" action="{{ route("clients.update", $client) }}" class="space-y-6">
+        <form method="POST" action="{{ route("admin.clients.update", $client) }}" class="space-y-6">
             @csrf
             @method("PUT")
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Nombre -->
                 <div>
@@ -103,11 +103,11 @@
 
             <!-- Botones -->
             <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200">
-                <a href="{{ route("clients.show", $client) }}" 
+                <a href="{{ route("admin.clients.show", $client) }}"
                    class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
                     Cancelar
                 </a>
-                <button type="submit" 
+                <button type="submit"
                         class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
                     Actualizar Cliente
                 </button>

@@ -16,7 +16,7 @@ class Service extends Model
     protected static function boot()
     {
         parent::boot();
-        
+
         // Mantener consistencia entre service_type y service_type_id
         static::saving(function ($service) {
             // Si hay service_type_id, sincronizar service_type desde la relación
@@ -36,11 +36,12 @@ class Service extends Model
     protected $fillable = [
         "client_id",
         "service_type",
+        "special_service_title", // Título para servicios especiales
         "service_type_id",
         "scheduled_date",
         "address",
         "latitude",
-        "longitude", 
+        "longitude",
         "location_accuracy",
         "location_captured_at",
         "priority",
@@ -127,11 +128,11 @@ class Service extends Model
     {
         $stages = $this->getStages($this->service_type);
         $currentIndex = array_search($this->checklist_stage, $stages);
-        
+
         if ($currentIndex !== false && $currentIndex < count($stages) - 1) {
             return $stages[$currentIndex + 1];
         }
-        
+
         return $this->checklist_stage;
     }
 
@@ -142,11 +143,11 @@ class Service extends Model
     {
         $stages = $this->getStages($this->service_type);
         $currentIndex = array_search($this->checklist_stage, $stages);
-        
+
         if ($currentIndex !== false && $currentIndex > 0) {
             return $stages[$currentIndex - 1];
         }
-        
+
         return $this->checklist_stage;
     }
 
@@ -173,7 +174,7 @@ class Service extends Model
     {
         $stages = $this->getStages($this->service_type);
         $currentIndex = array_search($this->checklist_stage, $stages);
-        
+
         return $currentIndex !== false ? $currentIndex + 1 : 1;
     }
 
@@ -184,12 +185,12 @@ class Service extends Model
     {
         $stages = $this->getStages($this->service_type);
         $currentIndex = array_search($this->checklist_stage, $stages);
-      
+
         if ($currentIndex !== false) {
-           
+
             return round((($currentIndex + 1) / count($stages)) * 100);
         }
-        
+
         return 0;
     }
 
@@ -205,6 +206,9 @@ class Service extends Model
             $stages = ["points", "products", "results", "observations", "sites", "description"];
         }elseif($type=='desinsectacion') {
             $stages = ["products","results", "observations", "sites", "description"];
+        }elseif($type=='servicios-especiales') {
+            // Servicios especiales: solo observations, sites, description
+            $stages = ["observations", "sites", "description"];
         }else {
             $stages = ["products", "observations", "sites", "description"];
         }
@@ -224,7 +228,7 @@ class Service extends Model
             "sites" => "Sitios Tratados",
             "description" => "Descripción del Servicio"
         ];
-        
+
         return $stageNames[$this->checklist_stage] ?? "Etapa Desconocida";
     }
     public function photos()
@@ -247,9 +251,9 @@ class Service extends Model
      * @return string|null URL de la imagen o null si no hay coordenadas
      */
     public function generateMapImage(
-        int $width = 600, 
-        int $height = 400, 
-        int $zoom = 15, 
+        int $width = 600,
+        int $height = 400,
+        int $zoom = 15,
         string $style = 'streets-v11'
     ): ?string {
         if (!$this->latitude || !$this->longitude) {

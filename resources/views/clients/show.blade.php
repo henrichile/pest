@@ -18,7 +18,7 @@
                 </span>
             </div>
         </div>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
                 <h3 class="text-sm font-medium text-gray-500">RUT</h3>
@@ -91,7 +91,7 @@
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-lg font-semibold text-gray-900">Historial de Servicios</h3>
             @can("create-services")
-            <a href="{{ route("services.create") }}?client_id={{ $client->id }}" 
+            <a href="{{ route("admin.services.create") }}?client_id={{ $client->id }}"
                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors">
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path>
@@ -100,7 +100,7 @@
             </a>
             @endcan
         </div>
-        
+
         @if($client->services->count() > 0)
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
@@ -148,7 +148,7 @@
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <a href="{{ route("services.show", $service) }}" 
+                            <a href="{{ route("admin.services.show", $service) }}"
                                class="text-green-600 hover:text-green-900">Ver</a>
                         </td>
                     </tr>
@@ -163,21 +163,21 @@
 
     <!-- Actions -->
     <div class="flex justify-between items-center">
-        <a href="{{ route("clients.index") }}" 
+        <a href="{{ route("admin.clients.index") }}"
            class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
             Volver a Clientes
         </a>
-        
+
         <div class="flex space-x-4">
             @can("edit-clients")
-            <a href="{{ route("clients.edit", $client) }}" 
+            <a href="{{ route("admin.clients.edit", $client) }}"
                class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
                 Editar Cliente
             </a>
             @endcan
-            
+
             @can("create-services")
-            <a href="{{ route("services.create") }}?client_id={{ $client->id }}" 
+            <a href="{{ route("admin.services.create") }}?client_id={{ $client->id }}"
                class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
                 Nuevo Servicio
             </a>

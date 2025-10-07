@@ -27,8 +27,8 @@ class ServiceController extends Controller
         $clients = Client::all();
         $serviceTypes = ServiceType::all();
         $products = Product::all();
-        $technicians = User::whereHas("roles", function($query) { 
-            $query->where("name", "technician"); 
+        $technicians = User::whereHas("roles", function($query) {
+            $query->where("name", "technician");
         })->get();
 
         return view("services.create", compact("clients", "products", "serviceTypes", "technicians"));
@@ -41,6 +41,7 @@ class ServiceController extends Controller
         $service = Service::create([
             "client_id" => $request->client_id,
             "service_type" => $request->service_type,
+            "special_service_title" => $request->special_service_title, // Título para servicios especiales
             "scheduled_date" => $request->scheduled_date,
             "address" => $request->address,
             "priority" => $request->priority,
@@ -52,10 +53,10 @@ class ServiceController extends Controller
         // Enviar notificación si hay un técnico asignado
         if ($service->assigned_to) {
             $service->load('assignedUser', 'client', 'serviceType');
-            
+
             // Notificación Laravel nativa
             $service->assignedUser->notify(new ServiceAssignedNotification($service));
-            
+
             // Notificación en el sistema
             SystemNotification::create([
                 'title' => 'Nuevo Servicio Asignado',
@@ -86,8 +87,8 @@ class ServiceController extends Controller
         $clients = Client::all();
         $serviceTypes = ServiceType::all();
         $products = Product::all();
-        $technicians = User::whereHas("roles", function($query) { 
-            $query->where("name", "technician"); 
+        $technicians = User::whereHas("roles", function($query) {
+            $query->where("name", "technician");
         })->get();
 
         return view("services.edit", compact("service", "clients", "products", "serviceTypes", "technicians"));
@@ -104,7 +105,7 @@ class ServiceController extends Controller
             $service->load('assignedUser', 'client', 'serviceType');
             // Notificación Laravel nativa
             $service->assignedUser->notify(new ServiceAssignedNotification($service));
-            
+
             // Notificación en el sistema
             SystemNotification::create([
                 'title' => 'Servicio Reasignado',

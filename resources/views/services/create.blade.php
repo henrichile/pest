@@ -20,7 +20,7 @@
 
         <form method="POST" action="{{ route('admin.services.store') }}" class="space-y-6">
             @csrf
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Cliente -->
                 <div>
@@ -52,6 +52,21 @@
                     @error('service_type')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
+                </div>
+
+                <!-- Título del Servicio Especial (solo visible para servicios-especiales) -->
+                <div id="special-service-title-container" style="display: none;">
+                    <label for="special_service_title" class="block text-sm font-medium text-gray-700 mb-2">
+                        Título del Servicio Especial *
+                    </label>
+                    <input type="text" id="special_service_title" name="special_service_title"
+                           value="{{ old('special_service_title') }}"
+                           placeholder="Ej: Desinfección COVID-19, Fumigación de Bodega, etc."
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 @error('special_service_title') border-red-500 @enderror">
+                    @error('special_service_title')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                    <p class="text-sm text-gray-500 mt-1">Este título aparecerá en el detalle y PDF del servicio</p>
                 </div>
 
                 <!-- Fecha Programada -->
@@ -122,11 +137,11 @@
 
             <!-- Botones -->
             <div class="flex justify-end space-x-4 mt-6">
-                <a href="{{ route('admin.services.index') }}" 
+                <a href="{{ route('admin.services.index') }}"
                    class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
                     Cancelar
                 </a>
-                <button type="submit" 
+                <button type="submit"
                         class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
                     Crear Servicio
                 </button>
@@ -134,4 +149,37 @@
         </form>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const serviceTypeSelect = document.getElementById('service_type');
+    const specialTitleContainer = document.getElementById('special-service-title-container');
+    const specialTitleInput = document.getElementById('special_service_title');
+
+    function toggleSpecialServiceTitle() {
+        const selectedValue = serviceTypeSelect.value;
+
+        console.log('Service type seleccionado:', selectedValue); // Debug
+
+        if (selectedValue === 'servicios-especiales') {
+            console.log('Mostrando campo de título especial'); // Debug
+            specialTitleContainer.style.display = 'block';
+            specialTitleInput.setAttribute('required', 'required');
+        } else {
+            console.log('Ocultando campo de título especial'); // Debug
+            specialTitleContainer.style.display = 'none';
+            specialTitleInput.removeAttribute('required');
+            specialTitleInput.value = ''; // Limpiar el valor
+        }
+    }
+
+    // Ejecutar al cargar la página
+    toggleSpecialServiceTitle();
+
+    // Ejecutar cuando cambia el select
+    serviceTypeSelect.addEventListener('change', toggleSpecialServiceTitle);
+});
+</script>
 @endsection

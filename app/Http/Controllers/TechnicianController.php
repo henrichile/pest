@@ -16,23 +16,23 @@ class TechnicianController extends Controller
     public function dashboard()
     {
         $user = auth()->user();
-        
+
         // Servicios completados hoy
         $completedToday = Service::where('assigned_to', $user->id)
             ->where('status', 'finalizado')
             ->whereDate('checklist_completed_at', today())
             ->count();
-            
+
         // Servicios pendientes
         $pendingServices = Service::where('assigned_to', $user->id)
             ->where('status', 'pendiente')
             ->count();
-            
+
         // Servicios en progreso
         $inProgressServices = Service::where('assigned_to', $user->id)
             ->where('status', 'en_progreso')
             ->count();
-            
+
         // Servicios vencidos
         $overdueServices = Service::where('assigned_to', $user->id)
             ->where('status', 'pendiente')
@@ -48,9 +48,9 @@ class TechnicianController extends Controller
             ->get();
 
         return view('technician.dashboard', compact(
-            'completedToday', 
-            'pendingServices', 
-            'inProgressServices', 
+            'completedToday',
+            'pendingServices',
+            'inProgressServices',
             'overdueServices',
             'assignedServices'
         ));
@@ -80,7 +80,7 @@ class TechnicianController extends Controller
         }
 
         $service->load(['client', 'serviceType', 'assignedUser']);
-        
+
         return view('technician.service-detail', compact('service'));
     }
 
@@ -188,6 +188,9 @@ class TechnicianController extends Controller
 
         // Definir la siguiente etapa del checklist basada en service_type
         switch ($service->service_type) {
+            case 'servicios-especiales':
+                $nextStage = "observations";
+                break;
             case 'fumigacion-de-jardines':
                 $nextStage = "points";
                 break;
@@ -226,31 +229,33 @@ class TechnicianController extends Controller
         // Preparar variables para la etapa de productos (si es la etapa actual)
         $products = collect();
         $stageInstruction = '';
+
         $nextStage = $this->getNextStage($service->checklist_stage, $service->service_type);
-        
+        $previousStage = $this->getPreviousStage($service->checklist_stage, $service->service_type);
+
         if ($service->checklist_stage === 'products') {
             $serviceTypeMapping = [
                 'desratizacion' => 'desratizacion',
-                'desinsectacion' => 'desinsectacion', 
+                'desinsectacion' => 'desinsectacion',
                 'sanitizacion' => 'sanitizacion',
                 'desinfeccion' => 'desinfeccion',
                 'fumigacion-de-jardines' => 'desinsectacion',
                 'servicios-especiales' => 'sanitizacion'
             ];
-            
+
             $productServiceType = $serviceTypeMapping[$service->service_type] ?? null;
-            
+
             if ($productServiceType) {
                 $products = \App\Models\Product::where('service_type', $productServiceType)
                     ->where('stock', '>', 0)
                     ->orderBy('name')
                     ->get();
             }
-            
+
             $stageInstruction = $this->getProductStageInstruction($service->service_type);
         }
 
-        return view('technician.checklist-staged', compact('service', 'products', 'stageInstruction', 'nextStage'));
+        return view('technician.checklist-staged', compact('service', 'products', 'stageInstruction', 'nextStage', 'previousStage'));
     }
 
     public function showChecklistStage(Request $request, Service $service, $stage)
@@ -271,44 +276,53 @@ class TechnicianController extends Controller
             abort(404, "Etapa no válida");
         }
 
+        // ✅ NUEVO: Para sanitización, saltarse la etapa de results
+        if (($service->service_type === 'sanitizacion' || $service->service_type === 'desinfeccion')  && $stage === 'results') {
+            return redirect()->route('technician.service.checklist.stage', [
+                'service' => $service,
+                'stage' => 'observations'
+            ])->with('info', 'La etapa de resultados no aplica para servicios de sanitización');
+        }
+
         // Actualizar la etapa actual del servicio
         $service->update(["checklist_stage" => $stage]);
 
         $service->load(["client", "serviceType"]);
-        
+
         // Si es la etapa de productos, cargar productos filtrados por service_type
         $products = null;
         $stageInstruction = null;
-        
+
         if ($stage === 'products') {
             // Mapear el service_type del servicio con los valores del enum de productos
             $serviceTypeMapping = [
                 'desratizacion' => 'desratizacion',
-                'desinsectacion' => 'desinsectacion', 
+                'desinsectacion' => 'desinsectacion',
                 'sanitizacion' => 'sanitizacion',
                 'desinfeccion' => 'desinfeccion',
                 'fumigacion-de-jardines' => 'desinsectacion',
                 'servicios-especiales' => 'sanitizacion'
             ];
-            
+
             $productServiceType = $serviceTypeMapping[$service->service_type] ?? null;
-            
+
             if ($productServiceType) {
                 $products = \App\Models\Product::where('service_type', $productServiceType)
                     ->where('stock', '>', 0)
                     ->orderBy('name')
                     ->get();
             }
-            
+
             $stageInstruction = $this->getProductStageInstruction($service->service_type);
         }
-        
+
         // Asegurar que las variables siempre estén definidas
         $products = $products ?? collect();
         $stageInstruction = $stageInstruction ?? '';
         $nextStage = $this->getNextStage($service->checklist_stage, $service->service_type);
-       
-        return view("technician.checklist-stages." . $stage, compact("service", "products", "stageInstruction", "nextStage"));
+        $previousStage = $this->getPreviousStage($service->checklist_stage, $service->service_type);
+
+        return view("technician.checklist-stages." . $stage, compact("service", "products", "stageInstruction", "nextStage", "previousStage"));
     }
 
 
@@ -329,16 +343,25 @@ class TechnicianController extends Controller
         if($stage==="unknown"){
             $stage="points";
         }
-        //dd($stage);
+
         // Validar que la etapa sea válida
         $validStages = ["points", "products", "results", "observations", "sites", "description"];
         if (!in_array($stage, $validStages)) {
             return response()->json(['success' => false, 'message' => 'Etapa no válida ('.$stage.')'], 400);
         }
-        //dd("paso");
 
         try {
             $nextStage = ($request->input('next_stage') ?? $request->input('data_next_stage') ?? $this->getNextStage($stage, $service->service_type));
+
+
+            // ✅ NUEVO: Si es sanitización y se intenta procesar results, omitir y pasar a observations
+            if (($service->service_type === 'sanitizacion' || $service->service_type === 'desinfeccion') && $stage === 'results') {
+                return redirect()->route('technician.service.checklist.stage', [
+                    'service' => $service,
+                    'stage' => 'observations'
+                ]);
+            }
+
             // Obtener datos existentes del checklist
             $checklistData = $service->checklist_data ?? [];
 
@@ -376,22 +399,22 @@ class TechnicianController extends Controller
                 // Mapear el service_type del servicio con los valores del enum de productos
                 $serviceTypeMapping = [
                     'desratizacion' => 'desratizacion',
-                    'desinsectacion' => 'desinsectacion', 
+                    'desinsectacion' => 'desinsectacion',
                     'sanitizacion' => 'sanitizacion',
                     'desinfeccion' => 'desinfeccion',
                     'fumigacion-de-jardines' => 'desinsectacion',
                     'servicios-especiales' => 'sanitizacion'
                 ];
-                
+
                 $productServiceType = $serviceTypeMapping[$service->service_type] ?? null;
-                
+
                 if ($productServiceType) {
                     $products = \App\Models\Product::where('service_type', $productServiceType)
                         ->where('stock', '>', 0)
                         ->orderBy('name')
                         ->get();
                 }
-                
+
             }
             // Actualizar la base de datos
             $service->update(['checklist_data' => $checklistData]);
@@ -419,7 +442,7 @@ class TechnicianController extends Controller
     {
         $points = [];
         $pointsData = $request->input('points', []);
-        
+
         foreach ($pointsData as $point) {
             if (!empty($point['address']) || !empty($point['latitude']) || !empty($point['longitude'])) {
                 $points[] = [
@@ -431,86 +454,95 @@ class TechnicianController extends Controller
                 ];
             }
         }
-        
+
         return $points;
     }
 
     private function processProductsData(Request $request)
     {
         $data = [];
-        
+
         // Capturar el producto seleccionado del radio button
         if ($request->has('applied_product')) {
             $data['applied_product'] = $request->input('applied_product');
         }
-        
+
         // Capturar el ID del producto si está disponible
         if ($request->has('product_id')) {
             $data['product_id'] = $request->input('product_id');
         }
-        
+
         // Capturar cantidad si está disponible
         if ($request->has('quantity')) {
             $data['quantity'] = $request->input('quantity');
         }
-        
+
+        // Capturar dosis y agua para desinfección y sanitización
+        if ($request->has('dosis')) {
+            $data['dosis'] = $request->input('dosis');
+        }
+
+        if ($request->has('agua')) {
+            $data['agua'] = $request->input('agua');
+        }
+
         $data['applied_at'] = now()->format('Y-m-d H:i:s');
-        
+
         return $data;
     }
 
     private function processResultsData(Request $request)
     {
         $data = [];
-        
+
         // Campos comunes
         if ($request->has('efficacy')) {
             $data['efficacy'] = $request->input('efficacy');
         }
-        
+
         // Campos para desratización
         if ($request->has('observed_results')) {
             $data['observed_results'] = $request->input('observed_results', []);
         }
-        
+
         if ($request->has('total_installed_points')) {
             $data['total_installed_points'] = $request->input('total_installed_points');
         }
-        
+
         if ($request->has('total_consumption_activity')) {
             $data['total_consumption_activity'] = $request->input('total_consumption_activity');
         }
-        
+
         // Campos para desinsectación
         if ($request->has('uv_lamps')) {
             $data['uv_lamps'] = $request->input('uv_lamps');
         }
-        
+
         if ($request->has('tuv')) {
             $data['tuv'] = $request->input('tuv');
         }
-        
+
         if ($request->has('devices_installed')) {
             $data['devices_installed'] = $request->input('devices_installed');
         }
-        
+
         if ($request->has('devices_existing')) {
             $data['devices_existing'] = $request->input('devices_existing');
         }
-        
+
         if ($request->has('devices_replaced')) {
             $data['devices_replaced'] = $request->input('devices_replaced');
         }
-        
+
         $data['completed_at'] = now()->format('Y-m-d H:i:s');
-        
+
         return $data;
     }
 
     private function processObservationsData(Request $request)
     {
         $observations = [];
-        
+
         // Si es una nueva observación desde el formulario
         if ($request->has('cebadera_code') || $request->has('detail')) {
             $newObservation = [
@@ -525,10 +557,10 @@ class TechnicianController extends Controller
             if ($request->hasFile('photo')) {
                 $photo = $request->file('photo');
                 $filename = time() . '_' . uniqid();
-                
+
                 // Comprimir y guardar la imagen
                 $compressedImagePath = ImageHelper::compressAndStoreImage($photo, 'observations', $filename);
-                
+
                 if ($compressedImagePath) {
                     $newObservation['photo'] = $compressedImagePath;
                 } else {
@@ -563,14 +595,14 @@ class TechnicianController extends Controller
     private function processSitesData(Request $request)
     {
         $data = [];
-        
+
         // Capturar el campo de sitios tratados
         if ($request->has('treated_sites')) {
             $data['treated_sites'] = $request->input('treated_sites');
         }
-        
+
         $data['completed_at'] = now()->format('Y-m-d H:i:s');
-        
+
         return $data;
     }
 
@@ -587,7 +619,7 @@ class TechnicianController extends Controller
         if ($request->input('technician_signature')) {
             $data['technician_signature'] = $request->input('technician_signature');
         }
-        
+
         if ($request->input('client_signature')) {
             $data['client_signature'] = $request->input('client_signature');
         }
@@ -597,6 +629,30 @@ class TechnicianController extends Controller
 
     private function getNextStage($currentStage, $serviceType)
     {
+        // Flujo especial para servicios especiales: observations → sites → description
+        if ($serviceType === 'servicios-especiales') {
+            $stageFlow = [
+                'observations' => 'sites',
+                'sites' => 'description',
+                'description' => null // Final stage
+            ];
+
+            return $stageFlow[$currentStage] ?? null;
+        }
+
+        // Flujo especial para sanitización/desinfección: products → observations (saltarse results)
+        if ($serviceType === 'sanitizacion' || $serviceType === 'desinfeccion') {
+            $stageFlow = [
+                'products' => 'observations',
+                'observations' => 'sites',
+                'sites' => 'description',
+                'description' => null // Final stage
+            ];
+
+            return $stageFlow[$currentStage] ?? null;
+        }
+
+        // Flujo estándar para otros tipos de servicio
         $stageFlow = [
             'points' => 'products',
             'products' => 'results',
@@ -604,6 +660,44 @@ class TechnicianController extends Controller
             'observations' => 'sites',
             'sites' => 'description',
             'description' => null // Final stage
+        ];
+
+        return $stageFlow[$currentStage] ?? null;
+    }
+
+    private function getPreviousStage($currentStage, $serviceType)
+    {
+        // Flujo especial para servicios especiales: observations → sites → description
+        if ($serviceType === 'servicios-especiales') {
+            $stageFlow = [
+                'sites' => 'observations',
+                'description' => 'sites',
+                'observations' => null // Primera etapa
+            ];
+
+            return $stageFlow[$currentStage] ?? null;
+        }
+
+        // Flujo especial para sanitización/desinfección: products → observations (saltarse results)
+        if ($serviceType === 'sanitizacion' || $serviceType === 'desinfeccion') {
+            $stageFlow = [
+                'observations' => 'products',
+                'sites' => 'observations',
+                'description' => 'sites',
+                'products' => null // Primera etapa
+            ];
+
+            return $stageFlow[$currentStage] ?? null;
+        }
+
+        // Flujo estándar para otros tipos de servicio
+        $stageFlow = [
+            'products' => 'points',
+            'results' => 'products',
+            'observations' => 'results',
+            'sites' => 'observations',
+            'description' => 'sites',
+            'points' => null // Primera etapa
         ];
 
         return $stageFlow[$currentStage] ?? null;
@@ -647,7 +741,7 @@ class TechnicianController extends Controller
     {
         try {
             Log::info('updateObservation llamado', ['service_id' => $service->id, 'index' => $index]);
-            
+
             // Verificar permisos
             if ($service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
                 return response()->json(['success' => false, 'message' => 'No tienes permisos para editar esta observación'], 403);
@@ -709,7 +803,7 @@ class TechnicianController extends Controller
                         // Eliminar 'storage/' del inicio si existe
                         $photoPath = preg_replace('/^storage\//', '', $photoPath);
                         $oldPhotoPath = storage_path('app/public/' . $photoPath);
-                        
+
                         if (file_exists($oldPhotoPath)) {
                             try {
                                 unlink($oldPhotoPath);
@@ -762,7 +856,7 @@ class TechnicianController extends Controller
     public function deleteObservation(Service $service, $index)
     {
         Log::info('deleteObservation llamado', ['service_id' => $service->id, 'index' => $index]);
-        
+
         // Verificar permisos
         if ($service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
             return response()->json(['success' => false, 'message' => 'No tienes permisos para eliminar esta observación'], 403);
@@ -795,7 +889,7 @@ class TechnicianController extends Controller
             // Eliminar 'storage/' del inicio si existe
             $photoPath = preg_replace('/^storage\//', '', $photoPath);
             $fullPhotoPath = storage_path('app/public/' . $photoPath);
-            
+
             if (file_exists($fullPhotoPath)) {
                 try {
                     unlink($fullPhotoPath);

@@ -23,7 +23,7 @@
                 </span>
             </div>
         </div>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
                 <h3 class="text-sm font-medium text-gray-500">Tipo de Servicio</h3>
@@ -36,6 +36,15 @@
                         {{ ucfirst($service->service_type) }}
                     </span>
                 </p>
+
+                @if($service->service_type === 'servicios-especiales' && $service->special_service_title)
+                    <div class="mt-2">
+                        <p class="text-sm text-gray-600 flex items-center">
+                            <span class="mr-1">🏷️</span>
+                            <span class="font-semibold text-green-700">{{ $service->special_service_title }}</span>
+                        </p>
+                    </div>
+                @endif
             </div>
             <div>
                 <h3 class="text-sm font-medium text-gray-500">Prioridad</h3>
@@ -154,20 +163,20 @@
 
     <!-- Actions -->
     <div class="flex justify-between items-center">
-        <a href="{{ route("admin.services.index") }}" 
+        <a href="{{ route("admin.services.index") }}"
            class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
             Volver a Servicios
         </a>
-        
+
         <div class="flex space-x-4">
             @can("edit-services")
-            <a href="{{ route("admin.services.edit", $service) }}" 
+            <a href="{{ route("admin.services.edit", $service) }}"
                class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
                 Editar Servicio
             </a>
             @endcan
-            
-            
+
+
         </div>
     </div>
 </div>

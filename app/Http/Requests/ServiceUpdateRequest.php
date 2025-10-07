@@ -24,6 +24,7 @@ class ServiceUpdateRequest extends FormRequest
         return [
             "client_id"         => "required|exists:clients,id",
             "service_type"      => "required|exists:service_types,slug",
+            "special_service_title" => "required_if:service_type,servicios-especiales|nullable|string|max:255",
             "scheduled_date"    => "required|date",
             "address"           => "required|string|max:255",
             "priority"          => "required|in:alta,media,baja",
@@ -37,6 +38,7 @@ class ServiceUpdateRequest extends FormRequest
         return [
             "client_id.required"        => "El campo cliente es obligatorio.",
             "service_type.required"  => "El campo tipo de servicio es obligatorio.",
+            "special_service_title.required_if" => "El título del servicio especial es obligatorio.",
             "scheduled_date.required"   => "El campo fecha programada es obligatorio.",
             "address.required"          => "El campo dirección es obligatorio.",
             "priority.required"         => "El campo prioridad es obligatorio.",

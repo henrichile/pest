@@ -29,7 +29,7 @@
                 @endif
             </div>
         </div>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
                 <h3 class="text-sm font-medium text-gray-500">Rol</h3>
@@ -125,7 +125,7 @@
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-lg font-semibold text-gray-900">Servicios Asignados</h3>
         </div>
-        
+
         @if($user->services()->count() > 0)
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
@@ -177,7 +177,7 @@
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <a href="{{ route("services.show", $service) }}" 
+                            <a href="{{ route("admin.services.show", $service) }}"
                                class="text-green-600 hover:text-green-900">Ver</a>
                         </td>
                     </tr>
@@ -192,21 +192,21 @@
 
     <!-- Actions -->
     <div class="flex justify-between items-center">
-        <a href="{{ route("admin.users.index") }}" 
+        <a href="{{ route("admin.users.index") }}"
            class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
             Volver a Usuarios
         </a>
-        
+
         <div class="flex space-x-4">
-            <a href="{{ route("admin.users.edit", $user) }}" 
+            <a href="{{ route("admin.users.edit", $user) }}"
                class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
                 Editar Usuario
             </a>
-            
+
             @if($user->id !== auth()->id())
             <form method="POST" action="{{ route("admin.users.toggle-status", $user) }}" class="inline">
                 @csrf
-                <button type="submit" 
+                <button type="submit"
                         class="px-6 py-2 {{ $user->email_verified_at ? "bg-yellow-600 hover:bg-yellow-700" : "bg-green-600 hover:bg-green-700" }} text-white rounded-lg transition-colors">
                     {{ $user->email_verified_at ? "Desactivar" : "Activar" }}
                 </button>

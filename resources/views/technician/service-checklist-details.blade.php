@@ -7,7 +7,7 @@
         <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <a href="{{ route('technician.service.detail', $service) }}" 
+                    <a href="{{ route('technician.service.detail', $service) }}"
                             class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -17,8 +17,13 @@
                     <h1 class="text-2xl font-bold text-gray-900">Detalles Completos del servicio</h1>
                     <p class="text-gray-600 mt-1">Servicio #{{ $service->id }} - {{ $service->client->name ?? 'Cliente' }}</p>
                     <p class="text-gray-600">Tipo de Servicio: <strong>{{ ucfirst($service->service_type) }}</strong></p>
+                    @if($service->service_type === 'servicios-especiales' && $service->special_service_title)
+                    <p class="text-green-700 font-semibold text-lg mt-2">
+                        📋 {{ $service->special_service_title }}
+                    </p>
+                    @endif
                 </div>
-               
+
             </div>
         </div>
         @if($service->checklist_data)
@@ -36,7 +41,7 @@
                         @foreach($service->checklist_data["points"] as $point)
                         <li class="flex items-center text-gray-700">
                             <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>             
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             {{ $point }}
                         </li>
@@ -57,20 +62,74 @@
                     </svg>
                     Productos Aplicados
                 </h2>
+
+                {{-- ✅ Dosis y Agua para desinfección y sanitización --}}
+                @if(in_array($service->service_type, ['desinfeccion', 'sanitizacion']) && isset($service->checklist_data["products"]))
+                    @php
+                        $productsData = $service->checklist_data["products"];
+                        $hasDosisOrAgua = isset($productsData['dosis']) || isset($productsData['agua']);
+                    @endphp
+
+                    @if($hasDosisOrAgua)
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+                        <div class="grid md:grid-cols-2 gap-4">
+                            @if(isset($productsData['dosis']))
+                            <div class="flex items-center justify-between">
+                                <span class="font-semibold text-gray-700">
+                                    <svg class="w-5 h-5 inline-block mr-2 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"></path>
+                                    </svg>
+                                    Dosis:
+                                </span>
+                                <span class="text-gray-900 font-medium">{{ $productsData['dosis'] }} cc</span>
+                            </div>
+                            @endif
+
+                            @if(isset($productsData['agua']))
+                            <div class="flex items-center justify-between">
+                                <span class="font-semibold text-gray-700">
+                                    <svg class="w-5 h-5 inline-block mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    Agua:
+                                </span>
+                                <span class="text-gray-900 font-medium">{{ $productsData['agua'] }} Lts</span>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
+                @endif
+
                 <ul class="space-y-2">
                     @if(isset($service->checklist_data["products"]) && count($service->checklist_data["products"]) > 0)
-                        @foreach($service->checklist_data["products"] as $product)
-                        <li class="flex items-center text-gray-700">
-                            <svg class="w-4 h-4 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>             
-                            </svg>
-                            {{ $product }}
-                        </li>
-                        @endforeach
+                        @php
+                            $productsData = $service->checklist_data["products"];
+                            // Si es un array con claves 'productos', usar ese array
+                            $productsList = isset($productsData['productos']) ? $productsData['productos'] : $productsData;
+                            // Filtrar las claves 'dosis' y 'agua' si existen en el nivel raíz
+                            if (is_array($productsList)) {
+                                $productsList = array_filter($productsList, function($key) {
+                                    return !in_array($key, ['dosis', 'agua']);
+                                }, ARRAY_FILTER_USE_KEY);
+                            }
+                        @endphp
+
+                        @if(count($productsList) > 0)
+                            @foreach($productsList as $product)
+                            <li class="flex items-center text-gray-700">
+                                <svg class="w-4 h-4 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                {{ $product }}
+                            </li>
+                            @endforeach
+                        @else
+                            <li class="text-gray-500 italic">No hay productos aplicados registrados</li>
+                        @endif
                     @else
                         <li class="text-gray-500 italic">No hay productos aplicados registrados</li>
                     @endif
-                </ul>
                 </ul>
             </div>
             @endif
@@ -108,7 +167,7 @@
                             <span class="text-gray-900">{{ $service->checklist_data["results"]["devices_replaced"] ?? "N/A" }}</span>
                         </div>
                     </div>
-                    
+
                     @if(isset($service->checklist_data["results"]["observed_results"]) && count($service->checklist_data["results"]["observed_results"]) > 0)
                     <div class="mt-6">
                         <h3 class="font-medium text-gray-900 mb-3">Resultados Observados:</h3>
@@ -116,7 +175,7 @@
                             @foreach($service->checklist_data["results"]["observed_results"] ?? [] as $result)
                             <li class="flex items-center text-gray-700">
                                 <svg class="w-4 h-4 text-yellow-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>             
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                                 </svg>
                                 {{ is_string($result) ? $result : json_encode($result) }}
                             </li>
@@ -137,7 +196,7 @@
                         @foreach($service->checklist_data["results"]["observed_results"] ?? [] as $result)
                         <li class="flex items-center text-gray-700">
                             <svg class="w-4 h-4 text-yellow-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>             
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             {{ is_string($result) ? $result : json_encode($result) }}
                         </li>
@@ -146,7 +205,7 @@
                         <li class="text-gray-500 italic">No hay resultados observados registrados</li>
                     @endif
                 </ul>
-                
+
                 @if(isset($service->checklist_data["results"]["total_installed_points"]) || isset($service->checklist_data["results"]["total_consumption_activity"]))
                 <div class="mt-6 grid md:grid-cols-2 gap-4">
                     @if(isset($service->checklist_data["results"]["total_installed_points"]))
@@ -195,7 +254,7 @@
                         <p class="text-gray-700 mb-3">{{ $observation['detail'] ?? 'No especificado' }}</p>
                         @if(isset($observation['photo']) && $observation['photo'])
                         <div class="mt-3">
-                            <img src="{{ asset($observation['photo']) }}" alt="Foto de observación" 
+                            <img src="{{ asset($observation['photo']) }}" alt="Foto de observación"
                                  class="max-w-xs rounded-lg border border-gray-200" style="width: 100%; object-fit: cover;">
                         </div>
                         @endif
@@ -257,18 +316,18 @@
                     @if(isset($service->checklist_data["description"]["technician_signature"]) && $service->checklist_data["description"]["technician_signature"])
                     <div class="text-center">
                         <h3 class="font-semibold text-gray-900 mb-2">Firma del Técnico</h3>
-                        <img src="{{ $service->checklist_data["description"]["technician_signature"] }}" 
-                             alt="Firma del Técnico" 
+                        <img src="{{ $service->checklist_data["description"]["technician_signature"] }}"
+                             alt="Firma del Técnico"
                              class="max-w-xs mx-auto border border-gray-200 rounded-lg">
                         <p class="text-sm text-gray-600 mt-2">{{ $service->assignedUser->name ?? "Técnico" }}</p>
                     </div>
                     @endif
-                    
+
                     @if(isset($service->checklist_data["description"]["client_signature"]) && $service->checklist_data["description"]["client_signature"])
                     <div class="text-center">
                         <h3 class="font-semibold text-gray-900 mb-2">Firma del Cliente</h3>
-                        <img src="{{ $service->checklist_data["description"]["client_signature"] }}" 
-                             alt="Firma del Cliente" 
+                        <img src="{{ $service->checklist_data["description"]["client_signature"] }}"
+                             alt="Firma del Cliente"
                              class="max-w-xs mx-auto border border-gray-200 rounded-lg">
                         <p class="text-sm text-gray-600 mt-2">{{ $service->client->name ?? "Cliente" }}</p>
                     </div>
