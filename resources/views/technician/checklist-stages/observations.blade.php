@@ -571,7 +571,24 @@
                     @elseif($service->service_type === 'desinsectacion' || $service->service_type === 'sanitizacion' || $service->service_type === 'fumigacion-de-jardines' || $service->service_type === 'servicios-especiales' || $service->service_type === 'desinfeccion')
                         <label>Lugar tratado o estación:</label>
                     @endif
-                    <input type="text" id="cebadera_code" name="cebadera_code" placeholder="Ej: CE-001" required>
+                    @php
+                        // Generar el siguiente código de cebadera automáticamente
+                        $existingObservations = $service->checklist_data["observations"] ?? [];
+                        $maxNumber = 0;
+                        foreach ($existingObservations as $obs) {
+                            if (isset($obs['cebadera_code']) && !empty($obs['cebadera_code'])) {
+                                if (preg_match('/CE-(\d+)/i', $obs['cebadera_code'], $matches)) {
+                                    $number = (int)$matches[1];
+                                    if ($number > $maxNumber) {
+                                        $maxNumber = $number;
+                                    }
+                                }
+                            }
+                        }
+                        $nextCode = sprintf('CE-%03d', $maxNumber + 1);
+                    @endphp
+                    <input type="text" id="cebadera_code" name="cebadera_code" value="{{ $nextCode }}" placeholder="Ej: CE-001">
+                    <small style="color: #666; font-size: 0.85em;">Se asignará automáticamente si se deja vacío</small>
                 </div>
                 <div class="form-group">
                     <label for="observation_number">N° de Observación</label>
@@ -690,6 +707,31 @@ function toggleObservation(index) {
     }
 }
 
+function generateNextCebaderaCode() {
+    // Obtener todas las observaciones existentes
+    const observationItems = document.querySelectorAll('.observation-item');
+    let maxNumber = 0;
+    
+    observationItems.forEach(item => {
+        const codeElement = item.querySelector('.observation-code');
+        if (codeElement) {
+            const code = codeElement.textContent.trim();
+            // Extraer el número del código (ej: CE-001 -> 1)
+            const match = code.match(/CE-(\d+)/i);
+            if (match) {
+                const number = parseInt(match[1]);
+                if (number > maxNumber) {
+                    maxNumber = number;
+                }
+            }
+        }
+    });
+    
+    // Generar el siguiente código
+    const nextNumber = maxNumber + 1;
+    return `CE-${String(nextNumber).padStart(3, '0')}`;
+}
+
 function toggleAddForm() {
     const form = document.getElementById('addObservationFormNEW');
     const icon = document.getElementById('toggleFormIcon');
@@ -697,6 +739,11 @@ function toggleAddForm() {
     if (form.style.display === 'none') {
         form.style.display = 'block';
         icon.textContent = '▲';
+        // Actualizar el código de cebadera con el siguiente disponible
+        const cebaderaInput = document.getElementById('cebadera_code');
+        if (cebaderaInput) {
+            cebaderaInput.value = generateNextCebaderaCode();
+        }
     } else {
         form.style.display = 'none';
         icon.textContent = '▼';

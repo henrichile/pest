@@ -384,7 +384,7 @@ class TechnicianController extends Controller
                 case 'observations':
                     // IMPORTANTE: Agregar nuevas observaciones a las existentes, no reemplazar
                     $existingObservations = $checklistData['observations'] ?? [];
-                    $newObservations = $this->processObservationsData($request);
+                    $newObservations = $this->processObservationsData($request, $existingObservations);
                     $checklistData['observations'] = array_merge($existingObservations, $newObservations);
                     break;
                 case 'sites':
@@ -539,14 +539,48 @@ class TechnicianController extends Controller
         return $data;
     }
 
-    private function processObservationsData(Request $request)
+    /**
+     * Genera el siguiente código de cebadera basándose en las observaciones existentes
+     * Formato: CE-001, CE-002, CE-003, etc.
+     */
+    private function generateNextCebaderaCode($existingObservations)
+    {
+        $maxNumber = 0;
+        
+        // Buscar el número más alto en los códigos existentes
+        foreach ($existingObservations as $observation) {
+            if (isset($observation['cebadera_code']) && !empty($observation['cebadera_code'])) {
+                // Extraer el número del código (ej: CE-001 -> 1)
+                if (preg_match('/CE-(\d+)/i', $observation['cebadera_code'], $matches)) {
+                    $number = (int)$matches[1];
+                    if ($number > $maxNumber) {
+                        $maxNumber = $number;
+                    }
+                }
+            }
+        }
+        
+        // Generar el siguiente código
+        $nextNumber = $maxNumber + 1;
+        return sprintf('CE-%03d', $nextNumber);
+    }
+
+    private function processObservationsData(Request $request, $existingObservations = [])
     {
         $observations = [];
 
         // Si es una nueva observación desde el formulario
         if ($request->has('cebadera_code') || $request->has('detail')) {
+            // Obtener el código de cebadera del request o generar uno automáticamente
+            $cebaderaCode = trim($request->input('cebadera_code', ''));
+            
+            // Si no se proporcionó un código o está vacío, generar uno automáticamente
+            if (empty($cebaderaCode)) {
+                $cebaderaCode = $this->generateNextCebaderaCode($existingObservations);
+            }
+            
             $newObservation = [
-                'cebadera_code' => $request->input('cebadera_code', ''),
+                'cebadera_code' => $cebaderaCode,
                 'observation_number' => $request->input('observation_number', 1),
                 'detail' => $request->input('detail', ''),
                 'complementary' => $request->input('complementary', ''),
@@ -578,8 +612,14 @@ class TechnicianController extends Controller
         if (is_array($additionalObservations)) {
             foreach ($additionalObservations as $obs) {
                 if (!empty($obs['detail'])) {
+                    // Generar código automáticamente si no se proporciona
+                    $cebaderaCode = trim($obs['cebadera_code'] ?? '');
+                    if (empty($cebaderaCode)) {
+                        $cebaderaCode = $this->generateNextCebaderaCode(array_merge($existingObservations, $observations));
+                    }
+                    
                     $observations[] = [
-                        'cebadera_code' => $obs['cebadera_code'] ?? '',
+                        'cebadera_code' => $cebaderaCode,
                         'observation_number' => $obs['observation_number'] ?? count($observations) + 1,
                         'detail' => $obs['detail'],
                         'complementary' => $obs['complementary'] ?? '',
