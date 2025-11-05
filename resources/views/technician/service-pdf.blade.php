@@ -310,6 +310,9 @@
             {{-- Mapa estático de Mapbox --}}
             @if(App\Helpers\MapboxHelper::isConfigured())
                 @php
+                    $mapImagePath = null;
+                    $mapError = null;
+                    
                     try {
                         // Generar la imagen de Mapbox y obtener la URL
                         $mapImageUrl = App\Helpers\MapboxHelper::generateMapboxImage(
@@ -320,63 +323,89 @@
                             15
                         );
 
-                        // Convertir URL a ruta física para PDF
-                        // La URL es: http://localhost/storage/maps/filename.png
-                        // Necesitamos: /path/to/public/storage/maps/filename.png
-
                         if ($mapImageUrl) {
-                            // Extraer la parte 'storage/maps/filename.png' de la URL
+                            // Extraer el nombre del archivo de la URL
                             // La URL puede ser: http://domain/storage/maps/filename.png o /storage/maps/filename.png
                             if (preg_match('#storage/maps/(.+)$#', $mapImageUrl, $matches)) {
                                 $mapFileName = $matches[1];
-                                // Intentar primero con public_path (si el symlink está configurado)
-                                $mapImagePath = public_path('storage/maps/' . $mapFileName);
                                 
-                                // Si no existe ahí, intentar con storage_path
-                                if (!file_exists($mapImagePath)) {
-                                    $mapImagePath = storage_path('app/public/maps/' . $mapFileName);
+                                // Usar Storage para obtener la ruta absoluta del archivo
+                                // Esto es más confiable que construir manualmente las rutas
+                                $storagePath = 'maps/' . $mapFileName;
+                                
+                                if (\Storage::disk('public')->exists($storagePath)) {
+                                    // Obtener la ruta absoluta del archivo usando Storage
+                                    $mapImagePath = \Storage::disk('public')->path($storagePath);
+                                    
+                                    // Verificar que el archivo existe y es accesible
+                                    if (file_exists($mapImagePath) && is_readable($mapImagePath)) {
+                                        \Log::info('Mapa para PDF - Archivo encontrado', [
+                                            'filename' => $mapFileName,
+                                            'path' => $mapImagePath,
+                                            'size' => filesize($mapImagePath)
+                                        ]);
+                                    } else {
+                                        $mapError = "Archivo existe en Storage pero no es accesible";
+                                        $mapImagePath = null;
+                                        \Log::warning('Mapa para PDF - Archivo no accesible', [
+                                            'filename' => $mapFileName,
+                                            'path' => $mapImagePath
+                                        ]);
+                                    }
+                                } else {
+                                    // Fallback: intentar con rutas manuales
+                                    $mapImagePath = public_path('storage/maps/' . $mapFileName);
+                                    if (!file_exists($mapImagePath)) {
+                                        $mapImagePath = storage_path('app/public/maps/' . $mapFileName);
+                                    }
+                                    
+                                    if (!file_exists($mapImagePath)) {
+                                        $mapError = "Archivo generado pero no encontrado: {$mapFileName}";
+                                        \Log::warning('Mapa para PDF - Archivo no encontrado en ninguna ubicación', [
+                                            'url' => $mapImageUrl,
+                                            'filename' => $mapFileName,
+                                            'storage_path' => $storagePath,
+                                            'public_path' => public_path('storage/maps/' . $mapFileName),
+                                            'storage_absolute' => storage_path('app/public/maps/' . $mapFileName)
+                                        ]);
+                                        $mapImagePath = null;
+                                    }
                                 }
-                                
-                                \Log::info('Mapa para PDF', [
-                                    'url' => $mapImageUrl,
-                                    'filename' => $mapFileName,
-                                    'path_public' => public_path('storage/maps/' . $mapFileName),
-                                    'path_storage' => storage_path('app/public/maps/' . $mapFileName),
-                                    'path_used' => $mapImagePath,
-                                    'exists' => file_exists($mapImagePath)
-                                ]);
                             } else {
-                                $mapImagePath = null;
-                                \Log::warning('No se pudo extraer el path del mapa', ['url' => $mapImageUrl]);
+                                $mapError = "No se pudo extraer el nombre del archivo de la URL";
+                                \Log::warning('Mapa para PDF - URL no válida', ['url' => $mapImageUrl]);
                             }
                         } else {
-                            $mapImagePath = null;
-                            \Log::warning('generateMapboxImage retornó null');
+                            $mapError = "No se pudo generar la imagen del mapa";
+                            \Log::warning('Mapa para PDF - generateMapboxImage retornó null');
                         }
                     } catch (\Exception $e) {
-                        $mapImageUrl = null;
-                        $mapImagePath = null;
-                        Log::error('Error generando mapa para PDF: ' . $e->getMessage(), [
+                        $mapError = "Error: " . $e->getMessage();
+                        \Log::error('Error generando mapa para PDF', [
                             'lat' => $service->latitude,
                             'lng' => $service->longitude,
+                            'error' => $e->getMessage(),
                             'trace' => $e->getTraceAsString()
                         ]);
                     }
                 @endphp
 
-                @if($mapImagePath && file_exists($mapImagePath))
-                <div class="map-container" style="text-align: center; page-break-inside: avoid;">
+                @if($mapImagePath && file_exists($mapImagePath) && is_readable($mapImagePath))
+                <div class="map-container" style="text-align: center; page-break-inside: avoid; margin: 15px 0;">
                     <div style="font-weight: bold; margin-bottom: 8px; color: #1a472a;">Ubicación del Servicio :: Coordenadas GPS: <span class="info-value">{{ $service->latitude }}, {{ $service->longitude }}</span></div>
                     <img src="{{ $mapImagePath }}" alt="Mapa de ubicación del servicio"
-                         style="max-width: 100%; height: auto; border: 2px solid #1a472a; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                         style="max-width: 100%; height: auto; border: 2px solid #1a472a; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: block; margin: 0 auto;">
                 </div>
                 @else
-                <div style="padding: 10px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 4px; margin: 10px 0;">
+                <div style="padding: 15px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 4px; margin: 15px 0;">
                     <p style="margin: 0; color: #856404;">
                         <strong>⚠️ Mapa no disponible</strong><br>
                         Coordenadas GPS: {{ $service->latitude }}, {{ $service->longitude }}
+                        @if($mapError)
+                            <br><small style="font-size: 11px;">{{ $mapError }}</small>
+                        @endif
                         @if($mapImagePath)
-                            <br><small>Archivo no encontrado: {{ basename($mapImagePath ?? 'N/A') }}</small>
+                            <br><small style="font-size: 10px;">Ruta intentada: {{ basename($mapImagePath) }}</small>
                         @endif
                     </p>
                 </div>
@@ -526,28 +555,76 @@
                 <strong>Fotografía:</strong><br>
                 @php
                     // Las fotos se almacenan como 'storage/observations/filename.jpg' o 'storage/observations/filename_compressed.jpg'
-                    // Convertir a ruta absoluta del storage: storage/app/public/observations/filename.jpg
+                    // Usar Storage para obtener la ruta absoluta del archivo (más confiable)
                     $photoPath = $observation['photo'];
+                    $fullPhotoPath = null;
+                    $photoError = null;
                     
-                    // Si la ruta empieza con 'storage/', remover ese prefijo
-                    if (strpos($photoPath, 'storage/') === 0) {
-                        $photoPath = str_replace('storage/', '', $photoPath);
-                    }
-                    
-                    // Construir la ruta absoluta
-                    $fullPhotoPath = storage_path('app/public/' . $photoPath);
-                    
-                    // Si no existe, intentar con public_path (por si el symlink está mal configurado)
-                    if (!file_exists($fullPhotoPath)) {
-                        $fullPhotoPath = public_path('storage/' . $photoPath);
+                    try {
+                        // Remover 'storage/' del inicio si existe (solo del inicio, no de toda la cadena)
+                        $storagePath = preg_replace('/^storage\//', '', $photoPath);
+                        
+                        // Verificar que la ruta existe en el disco public
+                        if (\Storage::disk('public')->exists($storagePath)) {
+                            // Obtener la ruta absoluta del archivo usando Storage
+                            $fullPhotoPath = \Storage::disk('public')->path($storagePath);
+                            
+                            // Verificar que el archivo existe y es accesible
+                            if (file_exists($fullPhotoPath) && is_readable($fullPhotoPath)) {
+                                \Log::info('Imagen para PDF - Archivo encontrado', [
+                                    'photo' => $photoPath,
+                                    'storage_path' => $storagePath,
+                                    'full_path' => $fullPhotoPath,
+                                    'size' => filesize($fullPhotoPath)
+                                ]);
+                            } else {
+                                $photoError = "Archivo existe en Storage pero no es accesible";
+                                $fullPhotoPath = null;
+                                \Log::warning('Imagen para PDF - Archivo no accesible', [
+                                    'photo' => $photoPath,
+                                    'storage_path' => $storagePath,
+                                    'full_path' => $fullPhotoPath
+                                ]);
+                            }
+                        } else {
+                            // Fallback: intentar con rutas manuales
+                            $fullPhotoPath = storage_path('app/public/' . $storagePath);
+                            if (!file_exists($fullPhotoPath)) {
+                                $fullPhotoPath = public_path('storage/' . $storagePath);
+                            }
+                            
+                            if (!file_exists($fullPhotoPath)) {
+                                $photoError = "Archivo no encontrado: {$photoPath}";
+                                \Log::warning('Imagen para PDF - Archivo no encontrado en ninguna ubicación', [
+                                    'photo' => $photoPath,
+                                    'storage_path' => $storagePath,
+                                    'storage_absolute' => storage_path('app/public/' . $storagePath),
+                                    'public_path' => public_path('storage/' . $storagePath)
+                                ]);
+                                $fullPhotoPath = null;
+                            }
+                        }
+                    } catch (\Exception $e) {
+                        $photoError = "Error: " . $e->getMessage();
+                        \Log::error('Error obteniendo imagen para PDF', [
+                            'photo' => $photoPath,
+                            'error' => $e->getMessage(),
+                            'trace' => $e->getTraceAsString()
+                        ]);
+                        $fullPhotoPath = null;
                     }
                 @endphp
-                @if(file_exists($fullPhotoPath))
+                @if($fullPhotoPath && file_exists($fullPhotoPath) && is_readable($fullPhotoPath))
                     <img src="{{ $fullPhotoPath }}" alt="Foto de observación" class="observation-photo">
                 @else
                     <p class="no-data">⚠️ Imagen no disponible</p>
                     <p class="no-data" style="font-size: 10px;">Ruta original: {{ $observation['photo'] }}</p>
-                    <p class="no-data" style="font-size: 10px;">Ruta buscada: {{ $fullPhotoPath }}</p>
+                    @if($fullPhotoPath)
+                        <p class="no-data" style="font-size: 10px;">Ruta buscada: {{ $fullPhotoPath }}</p>
+                    @endif
+                    @if($photoError)
+                        <p class="no-data" style="font-size: 10px;">Error: {{ $photoError }}</p>
+                    @endif
                 @endif
             </div>
             @endif
