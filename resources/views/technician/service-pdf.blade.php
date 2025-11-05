@@ -555,54 +555,71 @@
                 <strong>Fotografía:</strong><br>
                 @php
                     // Las fotos se almacenan como 'storage/observations/filename.jpg' o 'storage/observations/filename_compressed.jpg'
-                    // Usar Storage para obtener la ruta absoluta del archivo (más confiable)
+                    // Para DomPDF, es más confiable usar base64 data URI en lugar de rutas de archivo
                     $photoPath = $observation['photo'];
-                    $fullPhotoPath = null;
+                    $photoBase64 = null;
                     $photoError = null;
+                    $photoMimeType = 'image/jpeg'; // Por defecto
                     
                     try {
                         // Remover 'storage/' del inicio si existe (solo del inicio, no de toda la cadena)
                         $storagePath = preg_replace('/^storage\//', '', $photoPath);
                         
-                        // Verificar que la ruta existe en el disco public
+                        // Obtener la ruta absoluta del archivo
+                        $fullPhotoPath = null;
+                        
+                        // Primero intentar con Storage
                         if (\Storage::disk('public')->exists($storagePath)) {
-                            // Obtener la ruta absoluta del archivo usando Storage
                             $fullPhotoPath = \Storage::disk('public')->path($storagePath);
-                            
-                            // Verificar que el archivo existe y es accesible
-                            if (file_exists($fullPhotoPath) && is_readable($fullPhotoPath)) {
-                                \Log::info('Imagen para PDF - Archivo encontrado', [
-                                    'photo' => $photoPath,
-                                    'storage_path' => $storagePath,
-                                    'full_path' => $fullPhotoPath,
-                                    'size' => filesize($fullPhotoPath)
-                                ]);
-                            } else {
-                                $photoError = "Archivo existe en Storage pero no es accesible";
-                                $fullPhotoPath = null;
-                                \Log::warning('Imagen para PDF - Archivo no accesible', [
-                                    'photo' => $photoPath,
-                                    'storage_path' => $storagePath,
-                                    'full_path' => $fullPhotoPath
-                                ]);
-                            }
                         } else {
                             // Fallback: intentar con rutas manuales
                             $fullPhotoPath = storage_path('app/public/' . $storagePath);
                             if (!file_exists($fullPhotoPath)) {
                                 $fullPhotoPath = public_path('storage/' . $storagePath);
                             }
+                        }
+                        
+                        // Si encontramos el archivo, leerlo y convertir a base64
+                        if ($fullPhotoPath && file_exists($fullPhotoPath) && is_readable($fullPhotoPath)) {
+                            // Detectar el tipo MIME basado en la extensión del archivo
+                            $extension = strtolower(pathinfo($fullPhotoPath, PATHINFO_EXTENSION));
+                            $mimeTypes = [
+                                'jpg' => 'image/jpeg',
+                                'jpeg' => 'image/jpeg',
+                                'png' => 'image/png',
+                                'gif' => 'image/gif',
+                                'webp' => 'image/webp'
+                            ];
+                            $photoMimeType = $mimeTypes[$extension] ?? 'image/jpeg';
                             
-                            if (!file_exists($fullPhotoPath)) {
-                                $photoError = "Archivo no encontrado: {$photoPath}";
-                                \Log::warning('Imagen para PDF - Archivo no encontrado en ninguna ubicación', [
+                            // Leer el archivo y convertir a base64
+                            $imageData = file_get_contents($fullPhotoPath);
+                            if ($imageData !== false) {
+                                $photoBase64 = 'data:' . $photoMimeType . ';base64,' . base64_encode($imageData);
+                                
+                                \Log::info('Imagen para PDF - Convertida a base64', [
                                     'photo' => $photoPath,
                                     'storage_path' => $storagePath,
-                                    'storage_absolute' => storage_path('app/public/' . $storagePath),
-                                    'public_path' => public_path('storage/' . $storagePath)
+                                    'full_path' => $fullPhotoPath,
+                                    'size' => filesize($fullPhotoPath),
+                                    'mime_type' => $photoMimeType,
+                                    'base64_length' => strlen($photoBase64)
                                 ]);
-                                $fullPhotoPath = null;
+                            } else {
+                                $photoError = "No se pudo leer el archivo";
+                                \Log::warning('Imagen para PDF - No se pudo leer el archivo', [
+                                    'photo' => $photoPath,
+                                    'full_path' => $fullPhotoPath
+                                ]);
                             }
+                        } else {
+                            $photoError = "Archivo no encontrado: {$photoPath}";
+                            \Log::warning('Imagen para PDF - Archivo no encontrado', [
+                                'photo' => $photoPath,
+                                'storage_path' => $storagePath,
+                                'storage_absolute' => storage_path('app/public/' . $storagePath),
+                                'public_path' => public_path('storage/' . $storagePath)
+                            ]);
                         }
                     } catch (\Exception $e) {
                         $photoError = "Error: " . $e->getMessage();
@@ -611,17 +628,13 @@
                             'error' => $e->getMessage(),
                             'trace' => $e->getTraceAsString()
                         ]);
-                        $fullPhotoPath = null;
                     }
                 @endphp
-                @if($fullPhotoPath && file_exists($fullPhotoPath) && is_readable($fullPhotoPath))
-                    <img src="{{ $fullPhotoPath }}" alt="Foto de observación" class="observation-photo">
+                @if($photoBase64)
+                    <img src="{{ $photoBase64 }}" alt="Foto de observación" class="observation-photo">
                 @else
                     <p class="no-data">⚠️ Imagen no disponible</p>
                     <p class="no-data" style="font-size: 10px;">Ruta original: {{ $observation['photo'] }}</p>
-                    @if($fullPhotoPath)
-                        <p class="no-data" style="font-size: 10px;">Ruta buscada: {{ $fullPhotoPath }}</p>
-                    @endif
                     @if($photoError)
                         <p class="no-data" style="font-size: 10px;">Error: {{ $photoError }}</p>
                     @endif
