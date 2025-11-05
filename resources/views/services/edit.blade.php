@@ -34,7 +34,9 @@
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 @error("client_id") border-red-500 @enderror">
                         <option value="">Seleccione un cliente</option>
                         @foreach($clients as $client)
-                        <option value="{{ $client->id }}" {{ old("client_id", $service->client_id) == $client->id ? "selected" : "" }}>
+                        <option value="{{ $client->id }}" 
+                                data-address="{{ $client->address ?? '' }}"
+                                {{ old("client_id", $service->client_id) == $client->id ? "selected" : "" }}>
                             {{ $client->name }} - {{ $client->rut }}
                         </option>
                         @endforeach
@@ -152,4 +154,31 @@
         </form>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const clientSelect = document.getElementById('client_id');
+    const addressInput = document.getElementById('address');
+
+    // Función para llenar automáticamente la dirección cuando se selecciona un cliente
+    function fillClientAddress() {
+        const selectedOption = clientSelect.options[clientSelect.selectedIndex];
+        const clientAddress = selectedOption.getAttribute('data-address');
+        
+        if (clientAddress && clientAddress.trim() !== '') {
+            // Llenar automáticamente la dirección del cliente seleccionado
+            // El usuario puede editarla manualmente si lo desea
+            addressInput.value = clientAddress;
+        } else {
+            // Si no hay dirección, dejar el campo vacío
+            addressInput.value = '';
+        }
+    }
+
+    // Llenar la dirección cuando el usuario cambie el cliente
+    clientSelect.addEventListener('change', fillClientAddress);
+});
+</script>
 @endsection

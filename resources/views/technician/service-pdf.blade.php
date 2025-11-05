@@ -230,7 +230,18 @@
 <body>
     <div class="header">
         <div class="logo">
-            <img src="{{ public_path('images/pestcontroller-logo.png') }}" alt="Logo Pest Controller" class="logo-image">
+            @php
+                $logoPath = public_path('images/pestcontroller-logo.png');
+                // Si no existe en public/images, intentar en public/images/
+                if (!file_exists($logoPath)) {
+                    $logoPath = base_path('public/images/pestcontroller-logo.png');
+                }
+            @endphp
+            @if(file_exists($logoPath))
+                <img src="{{ $logoPath }}" alt="Logo Pest Controller" class="logo-image">
+            @else
+                <div style="font-size: 18px; font-weight: bold; color: #1a472a;">PEST CONTROLLER</div>
+            @endif
         </div>
         <div class="title">REPORTE DE SERVICIO COMPLETADO</div>
         @if(isset($qrCode))
@@ -314,21 +325,33 @@
                         // Necesitamos: /path/to/public/storage/maps/filename.png
 
                         if ($mapImageUrl) {
-                            // Extraer la parte 'storage/maps/filename.png'
+                            // Extraer la parte 'storage/maps/filename.png' de la URL
+                            // La URL puede ser: http://domain/storage/maps/filename.png o /storage/maps/filename.png
                             if (preg_match('#storage/maps/(.+)$#', $mapImageUrl, $matches)) {
-                                $mapImagePath = public_path('storage/maps/' . $matches[1]);
-                                \Log::error('Mapa para PDF', [
+                                $mapFileName = $matches[1];
+                                // Intentar primero con public_path (si el symlink está configurado)
+                                $mapImagePath = public_path('storage/maps/' . $mapFileName);
+                                
+                                // Si no existe ahí, intentar con storage_path
+                                if (!file_exists($mapImagePath)) {
+                                    $mapImagePath = storage_path('app/public/maps/' . $mapFileName);
+                                }
+                                
+                                \Log::info('Mapa para PDF', [
                                     'url' => $mapImageUrl,
-                                    'path' => $mapImagePath,
+                                    'filename' => $mapFileName,
+                                    'path_public' => public_path('storage/maps/' . $mapFileName),
+                                    'path_storage' => storage_path('app/public/maps/' . $mapFileName),
+                                    'path_used' => $mapImagePath,
                                     'exists' => file_exists($mapImagePath)
                                 ]);
                             } else {
                                 $mapImagePath = null;
-                                \Log::error('No se pudo extraer el path del mapa', ['url' => $mapImageUrl]);
+                                \Log::warning('No se pudo extraer el path del mapa', ['url' => $mapImageUrl]);
                             }
                         } else {
                             $mapImagePath = null;
-                            \Log::error('generateMapboxImage retornó null');
+                            \Log::warning('generateMapboxImage retornó null');
                         }
                     } catch (\Exception $e) {
                         $mapImageUrl = null;
@@ -502,16 +525,29 @@
             <div class="observation-detail">
                 <strong>Fotografía:</strong><br>
                 @php
-                    // Las fotos se almacenan como 'storage/observations/filename.jpg'
+                    // Las fotos se almacenan como 'storage/observations/filename.jpg' o 'storage/observations/filename_compressed.jpg'
                     // Convertir a ruta absoluta del storage: storage/app/public/observations/filename.jpg
-                    $photoFileName = basename($observation['photo']); // Extraer solo el nombre del archivo
-                    $photoPath = storage_path('app/public/observations/' . $photoFileName);
+                    $photoPath = $observation['photo'];
+                    
+                    // Si la ruta empieza con 'storage/', remover ese prefijo
+                    if (strpos($photoPath, 'storage/') === 0) {
+                        $photoPath = str_replace('storage/', '', $photoPath);
+                    }
+                    
+                    // Construir la ruta absoluta
+                    $fullPhotoPath = storage_path('app/public/' . $photoPath);
+                    
+                    // Si no existe, intentar con public_path (por si el symlink está mal configurado)
+                    if (!file_exists($fullPhotoPath)) {
+                        $fullPhotoPath = public_path('storage/' . $photoPath);
+                    }
                 @endphp
-                @if(file_exists($photoPath))
-                    <img src="{{ $photoPath }}" alt="Foto de observación" class="observation-photo">
+                @if(file_exists($fullPhotoPath))
+                    <img src="{{ $fullPhotoPath }}" alt="Foto de observación" class="observation-photo">
                 @else
-                    <p class="no-data">Imagen no disponible: {{ $observation['photo'] }}</p>
-                    <p class="no-data">Ruta buscada: {{ $photoPath }}</p>
+                    <p class="no-data">⚠️ Imagen no disponible</p>
+                    <p class="no-data" style="font-size: 10px;">Ruta original: {{ $observation['photo'] }}</p>
+                    <p class="no-data" style="font-size: 10px;">Ruta buscada: {{ $fullPhotoPath }}</p>
                 @endif
             </div>
             @endif
@@ -545,7 +581,12 @@
         @if($service->checklist_data && isset($service->checklist_data["description"]["technician_signature"]) && $service->checklist_data["description"]["technician_signature"])
         <div class="signature-box">
             <div class="signature-label">Firma del Técnico</div>
-            <img src="{{ $service->checklist_data["description"]["technician_signature"] }}" alt="Firma del Técnico" class="signature-image">
+            @php
+                $techSignature = $service->checklist_data["description"]["technician_signature"];
+                // Las firmas se guardan como base64 data URI
+                // DomPDF puede manejar data URIs directamente
+            @endphp
+            <img src="{{ $techSignature }}" alt="Firma del Técnico" class="signature-image">
             <div class="signature-label">{{ $service->assignedUser->name ?? "Técnico" }}</div>
         </div>
         @else
@@ -558,7 +599,12 @@
         @if($service->checklist_data && isset($service->checklist_data["description"]["client_signature"]) && $service->checklist_data["description"]["client_signature"])
         <div class="signature-box">
             <div class="signature-label">Firma del Cliente</div>
-            <img src="{{ $service->checklist_data["description"]["client_signature"] }}" alt="Firma del Cliente" class="signature-image">
+            @php
+                $clientSignature = $service->checklist_data["description"]["client_signature"];
+                // Las firmas se guardan como base64 data URI
+                // DomPDF puede manejar data URIs directamente
+            @endphp
+            <img src="{{ $clientSignature }}" alt="Firma del Cliente" class="signature-image">
             <div class="signature-label">{{ $service->client->name ?? "Cliente" }}</div>
         </div>
         @else

@@ -84,6 +84,15 @@ class PDFHistoryController extends Controller
 
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('technician.service-pdf', compact('service', 'validationId', 'integrityHash', 'qrCode'));
         
+        // Configurar opciones de DomPDF para manejar imágenes correctamente
+        $pdf->setPaper('A4', 'portrait');
+        $pdf->setOptions([
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => true, // Necesario para cargar imágenes desde rutas del sistema
+            'defaultFont' => 'Arial',
+            'isPhpEnabled' => true, // Necesario para funciones PHP en las vistas
+        ]);
+        
         $filename = "servicio-{$service->id}-{$service->client->name}-{$validationId}-REGENERADO.pdf";
         
         return $pdf->download($filename);
