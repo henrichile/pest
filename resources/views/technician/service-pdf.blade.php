@@ -567,10 +567,18 @@
     @endif
 
     {{-- Descripción del Servicio --}}
-    @if($service->checklist_data && isset($service->checklist_data["description"]["content"]))
+    @if($service->checklist_data && isset($service->checklist_data["description"]["service_description"]) && !empty($service->checklist_data["description"]["service_description"]))
     <div class="section">
         <div class="section-title">Descripción del Servicio</div>
-        <div class="checklist-item">{{ $service->checklist_data["description"]["content"] }}</div>
+        <div class="checklist-item" style="white-space: pre-wrap; text-align: justify;">{{ $service->checklist_data["description"]["service_description"] }}</div>
+    </div>
+    @endif
+
+    {{-- Sugerencias del Servicio --}}
+    @if($service->checklist_data && isset($service->checklist_data["description"]["service_sugerencia"]) && !empty($service->checklist_data["description"]["service_sugerencia"]))
+    <div class="section">
+        <div class="section-title">Sugerencias y Recomendaciones</div>
+        <div class="checklist-item" style="white-space: pre-wrap; text-align: justify;">{{ $service->checklist_data["description"]["service_sugerencia"] }}</div>
     </div>
     @endif
     <div style="page-break-after: always;"></div>
