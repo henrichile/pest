@@ -592,9 +592,16 @@ function getTechnicianRoute($routeName, ...$params) {
             </header>
 
             <!-- Page content -->
-            <main class="pt-20 md:pt-3 py-3 md:py-3 flex-1" style="background: #f9fafb; min-height: calc(100vh - 4rem);">
+            <main class="flex-1" style="background: #f9fafb; min-height: calc(100vh - 4rem); padding-top: 80px;">
+                <style>
+                    @media (min-width: 768px) {
+                        main {
+                            padding-top: 0.75rem !important;
+                        }
+                    }
+                </style>
 
-                <div class="px-3 sm:px-4 md:px-6 lg:px-8 max-w-full">
+                <div class="px-3 sm:px-4 md:px-6 lg:px-8 max-w-full py-3 md:py-3">
                     @if(session('error'))
                         <div class="mb-4 rounded-md bg-red-50 p-4">
                             <div class="flex">
