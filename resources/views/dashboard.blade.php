@@ -18,15 +18,15 @@
         flex-shrink: 0 !important;
         overflow: visible !important;
     }
-    
+
     #notification-button {
         padding: 8px !important;
     }
-    
+
     #user-menu-button {
         padding: 0 !important;
     }
-    
+
     #notification-button svg {
         width: 24px !important;
         height: 24px !important;
@@ -37,7 +37,7 @@
         display: block !important;
         flex-shrink: 0 !important;
     }
-    
+
     #user-menu-button > div {
         width: 40px !important;
         height: 40px !important;
@@ -47,12 +47,12 @@
         max-height: 40px !important;
         box-sizing: border-box !important;
     }
-    
+
     #user-menu-button > div > span {
         font-size: 14px !important;
         line-height: 1 !important;
     }
-    
+
     /* Prevenir cualquier tamaño grande que pueda venir de otros estilos */
     .notification-dropdown button,
     .user-menu-dropdown button {
@@ -63,7 +63,7 @@
         max-width: 40px !important;
         max-height: 40px !important;
     }
-    
+
     /* Iconos dentro del menú de usuario - CRÍTICO */
     .user-menu-icon {
         width: 20px !important;
@@ -74,7 +74,7 @@
         max-height: 20px !important;
         flex-shrink: 0 !important;
     }
-    
+
     /* Avatar del menú de usuario */
     .user-menu-avatar {
         width: 48px !important;
@@ -86,7 +86,7 @@
         object-fit: cover !important;
         border-radius: 50% !important;
     }
-    
+
     /* Todos los SVG dentro del menú de usuario */
     .user-menu svg {
         width: 20px !important;
@@ -96,7 +96,7 @@
         max-width: 20px !important;
         max-height: 20px !important;
     }
-    
+
     /* Asegurar que el layout del título y buscador funcione correctamente */
     @media (min-width: 768px) {
         .dashboard-header-row {
@@ -107,17 +107,17 @@
             width: 100% !important;
             max-width: 100% !important;
         }
-        
+
         .dashboard-title-container {
             flex-shrink: 0 !important;
             flex-grow: 0 !important;
         }
-        
+
         .dashboard-search-container {
             flex-shrink: 0 !important;
             flex-grow: 0 !important;
         }
-        
+
         /* Asegurar que el input del buscador tenga un ancho fijo */
         #global-search-input-desktop {
             width: 224px !important;
@@ -139,7 +139,7 @@
                 setTimeout(function() {
                     const nb = document.getElementById('notification-button');
                     const umb = document.getElementById('user-menu-button');
-                    
+
                     if (nb) {
                         nb.style.setProperty('width', '40px', 'important');
                         nb.style.setProperty('height', '40px', 'important');
@@ -149,7 +149,7 @@
                         nb.style.setProperty('max-height', '40px', 'important');
                         nb.style.setProperty('padding', '8px', 'important');
                         nb.style.setProperty('box-sizing', 'border-box', 'important');
-                        
+
                         const svg = nb.querySelector('svg');
                         if (svg) {
                             svg.style.setProperty('width', '24px', 'important');
@@ -160,7 +160,7 @@
                             svg.style.setProperty('max-height', '24px', 'important');
                         }
                     }
-                    
+
                     if (umb) {
                         umb.style.setProperty('width', '40px', 'important');
                         umb.style.setProperty('height', '40px', 'important');
@@ -170,7 +170,7 @@
                         umb.style.setProperty('max-height', '40px', 'important');
                         umb.style.setProperty('padding', '0', 'important');
                         umb.style.setProperty('box-sizing', 'border-box', 'important');
-                        
+
                         const div = umb.querySelector('div');
                         if (div) {
                             div.style.setProperty('width', '40px', 'important');
@@ -179,7 +179,7 @@
                             div.style.setProperty('min-height', '40px', 'important');
                             div.style.setProperty('max-width', '40px', 'important');
                             div.style.setProperty('max-height', '40px', 'important');
-                            
+
                             const span = div.querySelector('span');
                             if (span) {
                                 span.style.setProperty('font-size', '14px', 'important');
@@ -187,7 +187,7 @@
                             }
                         }
                     }
-                    
+
                     // Corregir iconos dentro del menú de usuario
                     const userMenuIcons = document.querySelectorAll('.user-menu-icon');
                     userMenuIcons.forEach(function(icon) {
@@ -198,7 +198,7 @@
                         icon.style.setProperty('max-width', '20px', 'important');
                         icon.style.setProperty('max-height', '20px', 'important');
                     });
-                    
+
                     // Corregir avatar del menú de usuario
                     const userMenuAvatar = document.querySelector('.user-menu-avatar');
                     if (userMenuAvatar) {
@@ -212,14 +212,14 @@
                 }, i * 10);
             }
         }
-        
+
         // Ejecutar inmediatamente
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', forceIconSizes);
         } else {
             forceIconSizes();
         }
-        
+
         // También usar MutationObserver (solo si document.body existe)
         if (typeof MutationObserver !== 'undefined' && document.body) {
             try {
@@ -240,11 +240,11 @@
         if (mainMenuButton) {
             mainMenuButton.style.display = 'none';
         }
-        
+
         // Asegurar que los iconos tengan el tamaño correcto inmediatamente
         const notificationButton = document.getElementById('notification-button');
         const userMenuButton = document.getElementById('user-menu-button');
-        
+
         if (notificationButton) {
             notificationButton.style.width = '40px';
             notificationButton.style.height = '40px';
@@ -253,7 +253,7 @@
             notificationButton.style.maxWidth = '40px';
             notificationButton.style.maxHeight = '40px';
             notificationButton.style.padding = '8px';
-            
+
             const notificationSvg = notificationButton.querySelector('svg');
             if (notificationSvg) {
                 notificationSvg.style.width = '24px';
@@ -264,7 +264,7 @@
                 notificationSvg.style.maxHeight = '24px';
             }
         }
-        
+
         if (userMenuButton) {
             userMenuButton.style.width = '40px';
             userMenuButton.style.height = '40px';
@@ -273,7 +273,7 @@
             userMenuButton.style.maxWidth = '40px';
             userMenuButton.style.maxHeight = '40px';
             userMenuButton.style.padding = '0';
-            
+
             const userMenuDiv = userMenuButton.querySelector('div');
             if (userMenuDiv) {
                 userMenuDiv.style.width = '40px';
@@ -286,11 +286,11 @@
         }
     });
 </script>
-<div class="space-y-4 sm:space-y-6">
+<div class="space-y-4 sm:space-y-6" style="padding-top: 80px;">
     <!-- Header con hamburguesa, título, buscador e iconos -->
     <div class="mb-4 sm:mb-6">
-        <!-- Primera fila móvil: Hamburguesa + Iconos (misma altura) -->
-        <div class="md:hidden mb-4 flex items-center justify-between pt-12">
+        <!-- Primera fila móvil: Hamburguesa + Iconos (oculta en móvil, visible en desktop) -->
+        <div class="hidden md:flex mb-4 items-center justify-between pt-12">
             <!-- Hamburguesa (izquierda) -->
             <button id="dashboard-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50;">
                 <svg id="dashboard-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
@@ -300,7 +300,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            
+
             <!-- Iconos de notificaciones y usuario (derecha) -->
             <div class="flex items-center gap-x-2 flex-shrink-0">
                 <!-- Notifications -->
@@ -315,7 +315,7 @@
                         </span>
                         @endif
                     </button>
-                    
+
                     <!-- Dropdown Menu -->
                     <div class="notification-menu" id="notification-menu-mobile">
                         <div class="notification-menu-header">
@@ -361,7 +361,7 @@
                             <span class="text-white font-medium" style="font-size: 14px !important; line-height: 1 !important;">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
                         </div>
                     </button>
-                    
+
                     <!-- User Menu -->
                     <div class="user-menu" id="user-menu-mobile">
                         <div class="user-menu-header">
@@ -402,7 +402,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Fila principal desktop: Título + Buscador + Iconos (todo en la misma línea) -->
         <div class="hidden md:flex md:items-center md:justify-between gap-4 mb-4 dashboard-header-row">
             <!-- Título Dashboard -->
@@ -414,23 +414,23 @@
                     {{ now()->locale('es')->isoFormat('dddd, D [de] MMMM') }}
                 </p>
             </div>
-            
+
             <!-- Buscador al lado derecho del título -->
             <div class="relative global-search-container dashboard-search-container flex-shrink-0" style="min-width: 0;">
                 <div class="relative">
                     <svg class="absolute" style="left: 10px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #9ca3af; pointer-events: none; z-index: 1;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    <input 
-                        type="text" 
-                        id="global-search-input-desktop" 
-                        placeholder="Buscar servicios, clientes..." 
+                    <input
+                        type="text"
+                        id="global-search-input-desktop"
+                        placeholder="Buscar servicios, clientes..."
                         class="w-56 pr-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all text-sm sm:text-base"
                         style="background: white; color: #111827; padding-left: 36px; font-size: 14px;"
                         autocomplete="off"
                     />
                 </div>
-                
+
                 <!-- Search Results Dropdown -->
                 <div id="search-results-desktop" class="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto hidden" style="box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);">
                     <div id="search-results-content-desktop" class="p-2">
@@ -438,7 +438,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Iconos de notificaciones y usuario (desktop) -->
             <div class="flex items-center gap-x-2 sm:gap-x-4 flex-shrink-0">
                 <!-- Notifications -->
@@ -453,7 +453,7 @@
                         </span>
                         @endif
                     </button>
-                    
+
                     <!-- Dropdown Menu -->
                     <div class="notification-menu" id="notification-menu">
                         <div class="notification-menu-header">
@@ -499,7 +499,7 @@
                             <span class="text-white font-medium" style="font-size: 14px !important; line-height: 1 !important;">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
                         </div>
                     </button>
-                    
+
                     <!-- User Menu -->
                     <div class="user-menu" id="user-menu">
                         <div class="user-menu-header">
@@ -539,7 +539,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Fila móvil: Título + Buscador -->
         <div class="md:hidden flex flex-col gap-4">
             <!-- Título Dashboard -->
@@ -551,23 +551,23 @@
                     {{ now()->locale('es')->isoFormat('dddd, D [de] MMMM') }}
                 </p>
             </div>
-            
+
             <!-- Buscador móvil (debajo del título) -->
             <div class="relative global-search-container w-full" style="min-width: 0;">
                 <div class="relative">
                     <svg class="absolute" style="left: 10px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #9ca3af; pointer-events: none; z-index: 1;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    <input 
-                        type="text" 
-                        id="global-search-input-mobile" 
-                        placeholder="Buscar servicios, clientes..." 
+                    <input
+                        type="text"
+                        id="global-search-input-mobile"
+                        placeholder="Buscar servicios, clientes..."
                         class="w-full pr-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all text-sm sm:text-base"
                         style="background: white; color: #111827; padding-left: 36px; font-size: 14px;"
                         autocomplete="off"
                     />
                 </div>
-                
+
                 <!-- Search Results Dropdown -->
                 <div id="search-results-mobile" class="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto hidden" style="box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);">
                     <div id="search-results-content-mobile" class="p-2">
@@ -577,12 +577,12 @@
             </div>
         </div>
     </div>
-    
+
     <style>
                 .notification-dropdown {
                     position: relative;
                 }
-                
+
                 /* Área invisible de transición para facilitar el movimiento del mouse */
                 .notification-dropdown::before {
                     content: '';
@@ -593,7 +593,7 @@
                     height: 12px;
                     z-index: 999;
                 }
-                
+
                 .notification-menu {
                     position: absolute;
                     top: calc(100% + 12px);
@@ -611,20 +611,20 @@
                     transform: translateY(-10px);
                     transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
                 }
-                
+
                 @media (max-width: 640px) {
                     .notification-menu {
                         width: calc(100vw - 1rem);
                         right: 0.5rem;
                     }
                 }
-                
+
                 .notification-menu.show {
                     opacity: 1;
                     visibility: visible;
                     transform: translateY(0);
                 }
-                
+
                 .notification-menu-header {
                     display: flex;
                     justify-content: space-between;
@@ -633,12 +633,12 @@
                     border-bottom: 1px solid #e5e7eb;
                     background: #f9fafb;
                 }
-                
+
                 .notification-menu-content {
                     max-height: 400px;
                     overflow-y: auto;
                 }
-                
+
                 .notification-item {
                     display: flex;
                     align-items: flex-start;
@@ -648,38 +648,38 @@
                     position: relative;
                     cursor: pointer;
                 }
-                
+
                 .notification-item:hover {
                     background: #f9fafb;
                 }
-                
+
                 .notification-item.unread {
                     background: #f0fdf4;
                 }
-                
+
                 .notification-item.unread:hover {
                     background: #dcfce7;
                 }
-                
+
                 .notification-item-content {
                     flex: 1;
                     min-width: 0;
                 }
-                
+
                 .notification-item-header {
                     display: flex;
                     justify-content: space-between;
                     align-items: flex-start;
                     margin-bottom: 4px;
                 }
-                
+
                 .notification-time {
                     color: #9ca3af;
                     font-size: 12px;
                     white-space: nowrap;
                     margin-left: 12px;
                 }
-                
+
                 .notification-dot {
                     width: 8px;
                     height: 8px;
@@ -689,35 +689,35 @@
                     margin-top: 6px;
                     flex-shrink: 0;
                 }
-                
+
                 .notification-empty {
                     padding: 40px 20px;
                     text-align: center;
                 }
-                
+
                 /* Scrollbar styling */
                 .notification-menu-content::-webkit-scrollbar {
                     width: 6px;
                 }
-                
+
                 .notification-menu-content::-webkit-scrollbar-track {
                     background: #f1f1f1;
                 }
-                
+
                 .notification-menu-content::-webkit-scrollbar-thumb {
                     background: #cbd5e1;
                     border-radius: 3px;
                 }
-                
+
                 .notification-menu-content::-webkit-scrollbar-thumb:hover {
                     background: #94a3b8;
                 }
-                
+
                 /* Estilos del menú de usuario */
                 .user-menu-dropdown {
                     position: relative;
                 }
-                
+
                 /* Área invisible de transición para facilitar el movimiento del mouse */
                 .user-menu-dropdown::before {
                     content: '';
@@ -728,7 +728,7 @@
                     height: 12px;
                     z-index: 999;
                 }
-                
+
                 .user-menu {
                     position: absolute !important;
                     top: calc(100% + 12px) !important;
@@ -746,32 +746,32 @@
                     transform: translateY(-10px) !important;
                     transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease !important;
                 }
-                
+
                 @media (max-width: 640px) {
                     .user-menu {
                         width: calc(100vw - 1rem) !important;
                         right: 0.5rem !important;
                     }
                 }
-                
+
                 .user-menu.show {
                     opacity: 1 !important;
                     visibility: visible !important;
                     transform: translateY(0) !important;
                 }
-                
+
                 .user-menu-header {
                     padding: 20px !important;
                     border-bottom: 1px solid #e5e7eb !important;
                     background: #f9fafb !important;
                 }
-                
+
                 .user-menu-profile {
                     display: flex !important;
                     align-items: center !important;
                     gap: 12px !important;
                 }
-                
+
                 .user-menu-avatar {
                     width: 48px !important;
                     height: 48px !important;
@@ -783,12 +783,12 @@
                     border-radius: 50% !important;
                     flex-shrink: 0 !important;
                 }
-                
+
                 .user-menu-info {
                     flex: 1 !important;
                     min-width: 0 !important;
                 }
-                
+
                 .user-menu-name {
                     font-size: 15px !important;
                     font-weight: 600 !important;
@@ -798,7 +798,7 @@
                     overflow: hidden !important;
                     text-overflow: ellipsis !important;
                 }
-                
+
                 .user-menu-email {
                     font-size: 13px !important;
                     color: #6b7280 !important;
@@ -806,11 +806,11 @@
                     overflow: hidden !important;
                     text-overflow: ellipsis !important;
                 }
-                
+
                 .user-menu-content {
                     padding: 8px 0 !important;
                 }
-                
+
                 .user-menu-item {
                     display: flex !important;
                     align-items: center !important;
@@ -827,20 +827,20 @@
                     width: 100% !important;
                     text-align: left !important;
                 }
-                
+
                 .user-menu-item:hover {
                     background: #f9fafb !important;
                 }
-                
+
                 .user-menu-item-danger {
                     color: #ef4444 !important;
                 }
-                
+
                 .user-menu-item-danger:hover {
                     background: #fef2f2 !important;
                     color: #dc2626 !important;
                 }
-                
+
                 .user-menu-icon {
                     width: 20px !important;
                     height: 20px !important;
@@ -852,56 +852,56 @@
                     color: currentColor !important;
                 }
             </style>
-            
+
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     const dropdown = document.getElementById('notification-dropdown');
                     const button = document.getElementById('notification-button');
                     const menu = document.getElementById('notification-menu');
-                    
+
                     if (dropdown && button && menu) {
                         let hideTimeout = null;
                         let showTimeout = null;
-                        
+
                         // Función para mostrar el menú
                         function showMenu() {
                             if (hideTimeout) {
                                 clearTimeout(hideTimeout);
                                 hideTimeout = null;
                             }
-                            
+
                             if (showTimeout) {
                                 clearTimeout(showTimeout);
                             }
-                            
+
                             showTimeout = setTimeout(function() {
                                 menu.classList.add('show');
                                 showTimeout = null;
                             }, 50); // Pequeño delay para suavizar la transición
                         }
-                        
+
                         // Función para ocultar el menú
                         function hideMenu() {
                             if (showTimeout) {
                                 clearTimeout(showTimeout);
                                 showTimeout = null;
                             }
-                            
+
                             if (hideTimeout) {
                                 clearTimeout(hideTimeout);
                             }
-                            
+
                             // Delay antes de ocultar para permitir movimiento del mouse
                             hideTimeout = setTimeout(function() {
                                 menu.classList.remove('show');
                                 hideTimeout = null;
                             }, 200); // 200ms de delay
                         }
-                        
+
                         // Mostrar cuando el mouse entra en el dropdown o el menú
                         dropdown.addEventListener('mouseenter', showMenu);
                         menu.addEventListener('mouseenter', showMenu);
-                        
+
                         // Ocultar cuando el mouse sale del dropdown o el menú
                         dropdown.addEventListener('mouseleave', function(e) {
                             // Solo ocultar si el mouse no va hacia el menú
@@ -909,14 +909,14 @@
                                 hideMenu();
                             }
                         });
-                        
+
                         menu.addEventListener('mouseleave', function(e) {
                             // Solo ocultar si el mouse no va hacia el botón
                             if (!dropdown.contains(e.relatedTarget)) {
                                 hideMenu();
                             }
                         });
-                        
+
                         // Mark as read on click
                         const notificationItems = document.querySelectorAll('.notification-item');
                         notificationItems.forEach(item => {
@@ -957,63 +957,63 @@
                     }
                 });
             </script>
-            
+
             <script>
                 // Menú de usuario
                 document.addEventListener('DOMContentLoaded', function() {
                     const userDropdown = document.getElementById('user-menu-dropdown');
                     const userButton = document.getElementById('user-menu-button');
                     const userMenu = document.getElementById('user-menu');
-                    
+
                     if (userDropdown && userButton && userMenu) {
                         let hideTimeout = null;
                         let showTimeout = null;
-                        
+
                         // Función para mostrar el menú
                         function showUserMenu() {
                             if (hideTimeout) {
                                 clearTimeout(hideTimeout);
                                 hideTimeout = null;
                             }
-                            
+
                             if (showTimeout) {
                                 clearTimeout(showTimeout);
                             }
-                            
+
                             showTimeout = setTimeout(function() {
                                 userMenu.classList.add('show');
                                 showTimeout = null;
                             }, 50);
                         }
-                        
+
                         // Función para ocultar el menú
                         function hideUserMenu() {
                             if (showTimeout) {
                                 clearTimeout(showTimeout);
                                 showTimeout = null;
                             }
-                            
+
                             if (hideTimeout) {
                                 clearTimeout(hideTimeout);
                             }
-                            
+
                             hideTimeout = setTimeout(function() {
                                 userMenu.classList.remove('show');
                                 hideTimeout = null;
                             }, 200);
                         }
-                        
+
                         // Mostrar cuando el mouse entra en el dropdown o el menú
                         userDropdown.addEventListener('mouseenter', showUserMenu);
                         userMenu.addEventListener('mouseenter', showUserMenu);
-                        
+
                         // Ocultar cuando el mouse sale del dropdown o el menú
                         userDropdown.addEventListener('mouseleave', function(e) {
                             if (!userMenu.contains(e.relatedTarget)) {
                                 hideUserMenu();
                             }
                         });
-                        
+
                         userMenu.addEventListener('mouseleave', function(e) {
                             if (!userDropdown.contains(e.relatedTarget)) {
                                 hideUserMenu();
@@ -1022,7 +1022,7 @@
                     }
                 });
             </script>
-            
+
             <script>
                 // Funcionalidad para botones móviles de notificaciones y usuario
                 document.addEventListener('DOMContentLoaded', function() {
@@ -1030,11 +1030,11 @@
                     const mobileNotificationDropdown = document.getElementById('notification-dropdown-mobile');
                     const mobileNotificationButton = document.getElementById('notification-button-mobile');
                     const mobileNotificationMenu = document.getElementById('notification-menu-mobile');
-                    
+
                     if (mobileNotificationDropdown && mobileNotificationButton && mobileNotificationMenu) {
                         let hideTimeout = null;
                         let showTimeout = null;
-                        
+
                         function showMobileNotificationMenu() {
                             if (hideTimeout) {
                                 clearTimeout(hideTimeout);
@@ -1048,7 +1048,7 @@
                                 showTimeout = null;
                             }, 50);
                         }
-                        
+
                         function hideMobileNotificationMenu() {
                             if (showTimeout) {
                                 clearTimeout(showTimeout);
@@ -1062,7 +1062,7 @@
                                 hideTimeout = null;
                             }, 200);
                         }
-                        
+
                         mobileNotificationButton.addEventListener('click', function(e) {
                             e.stopPropagation();
                             if (mobileNotificationMenu.classList.contains('show')) {
@@ -1071,23 +1071,23 @@
                                 showMobileNotificationMenu();
                             }
                         });
-                        
+
                         document.addEventListener('click', function(e) {
                             if (!mobileNotificationDropdown.contains(e.target)) {
                                 hideMobileNotificationMenu();
                             }
                         });
                     }
-                    
+
                     // Usuario móvil
                     const mobileUserDropdown = document.getElementById('user-menu-dropdown-mobile');
                     const mobileUserButton = document.getElementById('user-menu-button-mobile');
                     const mobileUserMenu = document.getElementById('user-menu-mobile');
-                    
+
                     if (mobileUserDropdown && mobileUserButton && mobileUserMenu) {
                         let hideTimeout = null;
                         let showTimeout = null;
-                        
+
                         function showMobileUserMenu() {
                             if (hideTimeout) {
                                 clearTimeout(hideTimeout);
@@ -1101,7 +1101,7 @@
                                 showTimeout = null;
                             }, 50);
                         }
-                        
+
                         function hideMobileUserMenu() {
                             if (showTimeout) {
                                 clearTimeout(showTimeout);
@@ -1115,7 +1115,7 @@
                                 hideTimeout = null;
                             }, 200);
                         }
-                        
+
                         mobileUserButton.addEventListener('click', function(e) {
                             e.stopPropagation();
                             if (mobileUserMenu.classList.contains('show')) {
@@ -1124,7 +1124,7 @@
                                 showMobileUserMenu();
                             }
                         });
-                        
+
                         document.addEventListener('click', function(e) {
                             if (!mobileUserDropdown.contains(e.target)) {
                                 hideMobileUserMenu();
@@ -1283,7 +1283,7 @@
                         <span class="text-xs dark:text-white" style="color: #6b7280;">Otros Servicios</span>
                                         </div>
                                     </div>
-                
+
                 <!-- Resumen por Tipo de Servicio -->
                 <div class="mt-6">
                     <h4 class="text-base font-semibold mb-4 dark:text-white" style="color: #111827;">RESUMEN POR TIPO DE SERVICIO</h4>
@@ -1511,7 +1511,7 @@
         // Get chart data from PHP
         const chartLabels = @json($stats['chart_labels'] ?? []);
         const chartDatasets = @json($stats['chart_datasets'] ?? []);
-        
+
         // Ensure canvas fills container - wait for DOM to be ready
         setTimeout(() => {
             const container = ctx.parentElement;
@@ -1522,7 +1522,7 @@
                 ctx.style.height = containerHeight + 'px';
             }
         }, 100);
-        
+
         // Calculate max value for Y axis
         let maxValue = 1;
         chartDatasets.forEach(dataset => {
@@ -1530,19 +1530,19 @@
             if (datasetMax > maxValue) maxValue = datasetMax;
         });
         const yAxisMax = Math.ceil(maxValue * 1.1);
-        
+
         // Get current theme
         const isDark = document.documentElement.classList.contains('dark');
         const gridColor = isDark ? '#374151' : '#e5e7eb';
         const tickColor = isDark ? '#9ca3af' : '#6b7280';
         const chartBgColor = isDark ? '#1f2937' : '#f9fafb';
-        
+
         // Update chart container background
         const chartContainer = document.getElementById('chart-container');
         if (chartContainer) {
             chartContainer.style.background = chartBgColor;
         }
-        
+
         // Update colors on theme change
         const darkModeObserver = new MutationObserver(() => {
             const newIsDark = document.documentElement.classList.contains('dark');
@@ -1550,23 +1550,23 @@
             const newTickColor = newIsDark ? '#9ca3af' : '#6b7280';
             const newChartBgColor = newIsDark ? '#1f2937' : '#f9fafb';
             const newTextColor = newIsDark ? '#e5e7eb' : '#111827';
-            
+
             if (chartContainer) {
                 chartContainer.style.background = newChartBgColor;
             }
-            
+
             // Update statistics text colors
             const statisticsTexts = document.querySelectorAll('.statistics-text, .statistics-number, #statistics-title');
             statisticsTexts.forEach(el => {
                 el.style.color = newTextColor;
             });
-            
+
             // Update legend text colors
             const legendTexts = document.querySelectorAll('.mt-4.flex span');
             legendTexts.forEach(el => {
                 el.style.color = newIsDark ? '#9ca3af' : '#6b7280';
             });
-            
+
             if (window.chartInstance) {
                 window.chartInstance.options.scales.x.grid.color = newGridColor;
                 window.chartInstance.options.scales.x.ticks.color = newTickColor;
@@ -1579,7 +1579,7 @@
             attributes: true,
             attributeFilter: ['class']
         });
-        
+
         // Manejar cambio de período
         const periodFilter = document.getElementById('periodFilter');
         if (periodFilter) {
@@ -1590,7 +1590,7 @@
                 window.location.href = url.toString();
             });
         }
-        
+
         window.chartInstance = new Chart(ctx, {
         type: 'line',
         data: {
@@ -1692,7 +1692,7 @@
             }
         });
     }
-    
+
     // Global Search Functionality
     (function() {
         // Obtener inputs de búsqueda (desktop y móvil)
@@ -1704,7 +1704,7 @@
         const searchResultsMobile = document.getElementById('search-results-mobile');
         const searchResultsContentDesktop = document.getElementById('search-results-content-desktop');
         const searchResultsContentMobile = document.getElementById('search-results-content-mobile');
-        
+
         // Función para obtener los elementos activos según el tamaño de pantalla
         function getActiveSearchElements() {
             if (window.innerWidth >= 768) {
@@ -1721,14 +1721,14 @@
                 };
             }
         }
-        
+
         const searchResults = searchResultsDesktop || searchResultsMobile;
         const searchResultsContent = searchResultsContentDesktop || searchResultsContentMobile;
         let searchTimeout = null;
         let currentSearch = '';
-        
+
         if (!searchInput) return;
-        
+
         // Iconos por tipo
         const typeIcons = {
             'service': '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>',
@@ -1737,7 +1737,7 @@
             'pest': '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>',
             'technician': '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>'
         };
-        
+
         const typeLabels = {
             'service': 'Servicio',
             'client': 'Cliente',
@@ -1745,23 +1745,23 @@
             'pest': 'Plaga',
             'technician': 'Técnico'
         };
-        
+
         function renderResults(data, contentContainer) {
             if (!contentContainer) {
                 const active = getActiveSearchElements();
                 contentContainer = active.content;
             }
-            
+
             if (!data || Object.keys(data).length === 0) {
                 if (contentContainer) {
                     contentContainer.innerHTML = '<div class="p-4 text-center text-gray-500">No se encontraron resultados</div>';
                 }
                 return;
             }
-            
+
             let html = '';
             let hasResults = false;
-            
+
             // Servicios
             if (data.services && data.services.length > 0) {
                 hasResults = true;
@@ -1777,7 +1777,7 @@
                 });
                 html += '</div>';
             }
-            
+
             // Clientes
             if (data.clients && data.clients.length > 0) {
                 hasResults = true;
@@ -1793,7 +1793,7 @@
                 });
                 html += '</div>';
             }
-            
+
             // Productos
             if (data.products && data.products.length > 0) {
                 hasResults = true;
@@ -1809,7 +1809,7 @@
                 });
                 html += '</div>';
             }
-            
+
             // Plagas
             if (data.pests && data.pests.length > 0) {
                 hasResults = true;
@@ -1825,7 +1825,7 @@
                 });
                 html += '</div>';
             }
-            
+
             // Técnicos
             if (data.technicians && data.technicians.length > 0) {
                 hasResults = true;
@@ -1841,32 +1841,32 @@
                 });
                 html += '</div>';
             }
-            
+
             if (!hasResults) {
                 html = '<div class="p-4 text-center text-gray-500">No se encontraron resultados</div>';
             }
-            
+
             if (contentContainer) {
                 contentContainer.innerHTML = html;
             }
         }
-        
+
         function performSearch(query, resultsContainer, contentContainer) {
             if (!resultsContainer || !contentContainer) {
                 const active = getActiveSearchElements();
                 resultsContainer = active.results;
                 contentContainer = active.content;
             }
-            
+
             if (query.length < 2) {
                 if (resultsContainer) {
                     resultsContainer.classList.add('hidden');
                 }
                 return;
             }
-            
+
             currentSearch = query;
-            
+
             fetch(`{{ route('admin.search') }}?q=${encodeURIComponent(query)}`, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
@@ -1895,39 +1895,39 @@
                 }
             });
         }
-        
+
         // Función para inicializar event listeners en un input
         function initializeSearchListeners(input, results, content) {
             if (!input || !results || !content) return;
-            
+
             input.addEventListener('input', function(e) {
                 const query = e.target.value.trim();
-                
+
                 clearTimeout(searchTimeout);
-                
+
                 if (query.length < 2) {
                     results.classList.add('hidden');
                     return;
                 }
-                
+
                 searchTimeout = setTimeout(() => {
                     performSearch(query, results, content);
                 }, 300);
             });
-            
+
             input.addEventListener('focus', function() {
                 if (input.value.trim().length >= 2 && !results.classList.contains('hidden')) {
                     results.classList.remove('hidden');
                 }
             });
-            
+
             // Cerrar resultados al hacer clic fuera
             document.addEventListener('click', function(e) {
                 if (!e.target.closest('.global-search-container')) {
                     results.classList.add('hidden');
                 }
             });
-            
+
             // Manejar tecla Escape
             input.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
@@ -1936,16 +1936,16 @@
                 }
             });
         }
-        
+
         // Inicializar listeners para desktop y móvil
         if (searchInputDesktop && searchResultsDesktop && searchResultsContentDesktop) {
             initializeSearchListeners(searchInputDesktop, searchResultsDesktop, searchResultsContentDesktop);
         }
-        
+
         if (searchInputMobile && searchResultsMobile && searchResultsContentMobile) {
             initializeSearchListeners(searchInputMobile, searchResultsMobile, searchResultsContentMobile);
         }
-        
+
         // Actualizar listeners al cambiar tamaño de ventana
         let resizeTimeout;
         window.addEventListener('resize', function() {
@@ -1958,32 +1958,32 @@
             }, 250);
         });
     })();
-    
+
     // Dashboard Mobile Menu Button
     (function() {
         function initDashboardMenu() {
             const dashboardMenuButton = document.getElementById('dashboard-mobile-menu-button');
             const sidebar = document.getElementById('sidebar');
             const mobileOverlay = document.getElementById('mobile-overlay');
-            
+
             if (!dashboardMenuButton) {
                 console.warn('Botón de menú móvil del dashboard no encontrado');
                 setTimeout(initDashboardMenu, 100);
                 return;
             }
-            
+
             if (!sidebar) {
                 console.error('Sidebar no encontrado');
                 return;
             }
-            
+
             function openMobileMenu() {
                 console.log('Abriendo menú móvil...');
-                
+
                 // Primero, remover todas las clases que puedan estar afectando
                 sidebar.classList.remove('-translate-x-full');
                 sidebar.classList.add('translate-x-0');
-                
+
                 // Crear un style tag para sobrescribir el CSS crítico
                 let styleTag = document.getElementById('mobile-menu-override-style');
                 if (!styleTag) {
@@ -2005,7 +2005,7 @@
                         height: 100vh !important;
                     }
                 `;
-                
+
                 // También aplicar estilos inline como respaldo
                 sidebar.style.cssText = `
                     display: flex !important;
@@ -2019,7 +2019,7 @@
                     width: 288px !important;
                     height: 100vh !important;
                 `;
-                
+
                 // Verificar estilos aplicados
                 const computedStyle = window.getComputedStyle(sidebar);
                 console.log('Transform aplicado:', computedStyle.transform);
@@ -2028,7 +2028,7 @@
                 console.log('Z-index:', computedStyle.zIndex);
                 console.log('Left:', computedStyle.left);
                 console.log('Width:', computedStyle.width);
-                
+
                 // Mostrar overlay
                 if (mobileOverlay) {
                     mobileOverlay.classList.remove('hidden');
@@ -2038,75 +2038,75 @@
                         z-index: 9998 !important;
                     `;
                 }
-                
+
                 // Cambiar iconos
                 const menuIcon = document.getElementById('dashboard-menu-icon');
                 const closeIcon = document.getElementById('dashboard-close-icon');
                 if (menuIcon) menuIcon.classList.add('hidden');
                 if (closeIcon) closeIcon.classList.remove('hidden');
-                
+
                 // Bloquear scroll del body
                 document.body.style.overflow = 'hidden';
-                
+
                 console.log('Menú móvil abierto - Sidebar visible:', sidebar.classList.contains('translate-x-0'));
             }
-            
+
             function closeMobileMenu() {
                 console.log('Cerrando menú móvil...');
                 // Agregar clase que oculta el sidebar
                 sidebar.classList.add('-translate-x-full');
                 // Remover clase que muestra el sidebar
                 sidebar.classList.remove('translate-x-0');
-                
+
                 // Remover el style tag de override
                 const styleTag = document.getElementById('mobile-menu-override-style');
                 if (styleTag) {
                     styleTag.remove();
                 }
-                
+
                 // Asegurar que el sidebar esté oculto
                 sidebar.style.cssText = `
                     transform: translateX(-100%) !important;
                 `;
-                
+
                 // Ocultar overlay
                 if (mobileOverlay) {
                     mobileOverlay.classList.add('hidden');
                     mobileOverlay.style.display = 'none';
                 }
-                
+
                 // Cambiar iconos
                 const menuIcon = document.getElementById('dashboard-menu-icon');
                 const closeIcon = document.getElementById('dashboard-close-icon');
                 if (menuIcon) menuIcon.classList.remove('hidden');
                 if (closeIcon) closeIcon.classList.add('hidden');
-                
+
                 // Restaurar scroll del body
                 document.body.style.overflow = '';
-                
+
                 console.log('Menú móvil cerrado');
             }
-            
+
             function toggleMobileMenu() {
                 // Verificar si el menú está abierto
                 const computedStyle = window.getComputedStyle(sidebar);
                 const transform = computedStyle.transform;
-                const isOpen = sidebar.classList.contains('translate-x-0') || 
-                              transform === 'matrix(1, 0, 0, 1, 0, 0)' || 
+                const isOpen = sidebar.classList.contains('translate-x-0') ||
+                              transform === 'matrix(1, 0, 0, 1, 0, 0)' ||
                               transform === 'none' ||
                               sidebar.style.transform === 'translateX(0)' ||
                               sidebar.style.transform.includes('translateX(0)');
                 console.log('Estado del menú:', isOpen ? 'abierto' : 'cerrado');
                 console.log('Transform computed:', transform);
                 console.log('Transform style:', sidebar.style.transform);
-                
+
                 if (isOpen) {
                     closeMobileMenu();
                 } else {
                     openMobileMenu();
                 }
             }
-            
+
             // Event listener para el botón
             dashboardMenuButton.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -2114,14 +2114,14 @@
                 console.log('Botón de menú móvil clickeado');
                 toggleMobileMenu();
             });
-            
+
             // Event listener para el overlay (cerrar al hacer clic fuera)
             if (mobileOverlay) {
                 mobileOverlay.addEventListener('click', function() {
                     closeMobileMenu();
                 });
             }
-            
+
             // Cerrar menú al hacer clic en un enlace del sidebar (solo en móvil)
             const sidebarLinks = sidebar.querySelectorAll('a');
             sidebarLinks.forEach(link => {
@@ -2132,7 +2132,7 @@
                 });
             });
         }
-        
+
         // Inicializar cuando el DOM esté listo
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initDashboardMenu);
@@ -2140,14 +2140,14 @@
             initDashboardMenu();
         }
     })();
-    
+
     // Actualizar colores en modo oscuro
     (function() {
         function updateDarkModeColors() {
-            const isDark = document.documentElement.classList.contains('dark') || 
+            const isDark = document.documentElement.classList.contains('dark') ||
                           localStorage.getItem('darkMode') === 'true' ||
                           (localStorage.getItem('darkMode') === null && window.matchMedia('(prefers-color-scheme: dark)').matches);
-            
+
             if (isDark) {
                 // Actualizar todos los elementos con estilos inline de color
                 const elementsToUpdate = document.querySelectorAll('[style*="color: #111827"], [style*="color: #6b7280"]');
@@ -2160,7 +2160,7 @@
                         }
                     }
                 });
-                
+
                 // Actualizar elementos con clases específicas
                 const statisticsTexts = document.querySelectorAll('.statistics-text');
                 const statisticsNumbers = document.querySelectorAll('.statistics-number');
@@ -2176,10 +2176,10 @@
                 });
             }
         }
-        
+
         // Ejecutar al cargar
         updateDarkModeColors();
-        
+
         // Observar cambios en el modo oscuro
         const observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
@@ -2188,12 +2188,12 @@
                 }
             });
         });
-        
+
         observer.observe(document.documentElement, {
             attributes: true,
             attributeFilter: ['class']
         });
-        
+
         // También escuchar cambios en localStorage
         window.addEventListener('storage', function(e) {
             if (e.key === 'darkMode') {
