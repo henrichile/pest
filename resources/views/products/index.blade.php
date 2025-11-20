@@ -4,22 +4,51 @@
 @section("page-title", "Gestión de Productos")
 
 @section("content")
-<div class="space-y-6">
-    <!-- Header Actions -->
-    <div class="flex justify-between items-center">
-        <div>
-            <h2 class="text-2xl font-bold text-gray-900">Productos</h2>
-            <p class="text-gray-600">Gestiona el catálogo de productos para control de plagas</p>
+<div class="space-y-4 sm:space-y-6 pt-3 md:pt-0">
+    <!-- Header con hamburguesa y título -->
+    <div class="mb-4 sm:mb-6">
+        <!-- Primera fila: Hamburguesa + Título (móvil) -->
+        <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
+            <!-- Hamburguesa (solo móvil) -->
+            <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50;">
+                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            
+            <!-- Título -->
+            <div class="flex-1">
+                <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
+                    Productos
+                </h2>
+            </div>
         </div>
-        @can("create-products")
-        <a href="{{ route("admin.products.create") }}" 
-           class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path>
-            </svg>
-            <span>Nuevo Producto</span>
-        </a>
-        @endcan
+        
+        <!-- Segunda fila: Título completo (desktop) -->
+        <div class="hidden md:flex md:items-center md:justify-between">
+            <div class="min-w-0 flex-1">
+                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" style="color: #111827; font-weight: 700;">
+                    Productos
+                </h2>
+                <p class="mt-1 text-xs sm:text-sm" style="color: #6b7280;">
+                    Gestiona el catálogo de productos para control de plagas
+                </p>
+            </div>
+            <div class="mt-3 sm:mt-4 md:mt-0 md:ml-4">
+                @can("create-products")
+                <a href="{{ route("admin.products.create") }}" class="inline-flex items-center justify-center w-full sm:w-auto px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium text-white transition-colors" style="background: #22c55e; hover:background: #16a34a;">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                    <span class="hidden sm:inline">Nuevo Producto</span>
+                    <span class="sm:hidden">Nuevo</span>
+                </a>
+                @endcan
+            </div>
+        </div>
     </div>
 
     <!-- Filters -->
@@ -140,4 +169,49 @@
         @endif
     </div>
 </div>
+
+@push('scripts')
+<script>
+    // Page Mobile Menu Button
+    (function() {
+        const pageMenuButton = document.getElementById('page-mobile-menu-button');
+        const mainMenuButton = document.getElementById('mobile-menu-button');
+        const sidebar = document.getElementById('sidebar');
+        const mobileOverlay = document.getElementById('mobile-overlay');
+        
+        function toggleMobileMenu() {
+            if (mainMenuButton) {
+                mainMenuButton.click();
+            } else {
+                const menuIcon = document.getElementById('page-menu-icon');
+                const closeIcon = document.getElementById('page-close-icon');
+                
+                if (sidebar && sidebar.classList.contains('-translate-x-full')) {
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebar.classList.add('translate-x-0');
+                    if (mobileOverlay) mobileOverlay.classList.remove('hidden');
+                    if (menuIcon) menuIcon.classList.add('hidden');
+                    if (closeIcon) closeIcon.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    sidebar.classList.remove('translate-x-0');
+                    sidebar.classList.add('-translate-x-full');
+                    if (mobileOverlay) mobileOverlay.classList.add('hidden');
+                    if (menuIcon) menuIcon.classList.remove('hidden');
+                    if (closeIcon) closeIcon.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
+            }
+        }
+        
+        if (pageMenuButton) {
+            pageMenuButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleMobileMenu();
+            });
+        }
+    })();
+</script>
+@endpush
 @endsection

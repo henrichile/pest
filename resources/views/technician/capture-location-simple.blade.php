@@ -207,6 +207,9 @@
 
         <!-- Estado de error -->
         <div id="error-card" class="status-card hidden">
+            <div class="actions" style="margin-top:1rem">
+                <button type="button" class="btn btn-primary" onclick="retryGeolocation()">Reintentar geolocalización</button>
+            </div>
             <div class="status-icon error">❌</div>
             <div class="status-title">Error al obtener ubicación</div>
             <div class="status-message">No se pudo obtener tu ubicación. Por favor verifica que tengas habilitado el GPS y los permisos de ubicación.</div>
@@ -297,6 +300,13 @@
 
         // Mostrar estado de error
         function showError(message) {
+
+          function retryGeolocation() {
+              document.getElementById("error-card").classList.add("hidden");
+              document.getElementById("loading-card").classList.remove("hidden");
+              setTimeout(getCurrentLocation, 200);
+          }
+
             document.getElementById('loading-card').classList.add('hidden');
             document.getElementById('error-card').classList.remove('hidden');
             document.getElementById('error-card').querySelector('.status-message').textContent = message;
@@ -312,7 +322,7 @@
             // Crear formulario para enviar la ubicación
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = '{{ route("technician.service.checklist.process-location", $service) }}';
+            form.action = '{{ (isset($isTechnicianView) && $isTechnicianView) ? route("admin.technician-view.service.checklist.process-location", $service) : route("technician.service.checklist.process-location", $service) }}';
             
             // Agregar token CSRF
             const csrfToken = document.createElement('input');

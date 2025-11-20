@@ -6,7 +6,13 @@
 <div class="stage-title">Resultados Observados</div>
 <div class="stage-instruction">Marque los resultados encontrados</div>
 
-<form method="POST" action="{{ route("technician.service.checklist.submit", $service) }}" data-stage="results">
+@php
+$isViewingAsTechnician = (session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin')) 
+    || request()->is('admin/technician-view/*')
+    || (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], '/admin/technician-view/') !== false);
+$submitRoute = $isViewingAsTechnician ? route('technician-view.service.checklist.submit', $service) : route('technician.service.checklist.submit', $service);
+@endphp
+<form method="POST" action="{{ $submitRoute }}" data-stage="results">
     <input type="hidden" name="stage" value="results">
     @csrf
     <input type="hidden" name="next_stage" value="observations">

@@ -17,7 +17,7 @@ class ServiceController extends Controller
 {
     public function index()
     {
-        $serviceTypes = ServiceType::all();
+        $serviceTypes = ServiceType::where('is_active', true)->get();
         $services = Service::with("client", "assignedUser", "serviceType")->orderBy("created_at", "desc")->paginate(10);
         return view("services.index", compact("services", "serviceTypes"));
     }
@@ -25,7 +25,7 @@ class ServiceController extends Controller
     public function create()
     {
         $clients = Client::all();
-        $serviceTypes = ServiceType::all();
+        $serviceTypes = ServiceType::where('is_active', true)->get();
         $products = Product::all();
         $technicians = User::whereHas("roles", function($query) {
             $query->where("name", "technician");
@@ -38,7 +38,7 @@ class ServiceController extends Controller
     {
         Log::info("ServiceController@store called", ["request" => $request->all()]);
 
-        $service = Service::create([
+        $serviceData = [
             "client_id" => $request->client_id,
             "service_type" => $request->service_type,
             "special_service_title" => $request->special_service_title, // Título para servicios especiales
@@ -48,7 +48,14 @@ class ServiceController extends Controller
             "description" => $request->description,
             "assigned_to" => $request->assigned_to,
             "status" => "pendiente",
-        ]);
+        ];
+
+        // Solo agregar precio si el usuario es super-admin y el campo está presente
+        if (auth()->check() && auth()->user()->hasRole('super-admin') && $request->filled('price')) {
+            $serviceData["price"] = $request->price;
+        }
+
+        $service = Service::create($serviceData);
 
         // Enviar notificación si hay un técnico asignado
         if ($service->assigned_to) {
@@ -85,7 +92,7 @@ class ServiceController extends Controller
     public function edit(Service $service)
     {
         $clients = Client::all();
-        $serviceTypes = ServiceType::all();
+        $serviceTypes = ServiceType::where('is_active', true)->get();
         $products = Product::all();
         $technicians = User::whereHas("roles", function($query) {
             $query->where("name", "technician");

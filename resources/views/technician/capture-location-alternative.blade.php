@@ -206,7 +206,11 @@
             <p>Por favor, permite el acceso a tu ubicación cuando el navegador lo solicite.</p>
         </div>
         
-        <form id="locationForm" method="POST" action="{{ route("technician.service.checklist.process-location", $service) }}" style="display: none;">
+@php
+$isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
+$processLocationRoute = $isViewingAsTechnician ? route('admin.technician-view.service.checklist.process-location', $service) : route('technician.service.checklist.process-location', $service);
+@endphp
+        <form id="locationForm" method="POST" action="{{ $processLocationRoute }}" style="display: none;">
             @csrf
             <input type="hidden" id="latitude" name="latitude" required>
             <input type="hidden" id="longitude" name="longitude" required>

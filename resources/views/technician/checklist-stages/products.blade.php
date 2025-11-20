@@ -6,7 +6,13 @@
 <div class="stage-title">Productos Aplicados</div>
 <div class="stage-instruction">{{ $stageInstruction ?? 'Seleccione el producto utilizado para este servicio' }}</div>
 
-<form method="POST" action="{{ route("technician.service.checklist.submit", $service) }}" data-stage="products">
+@php
+$isViewingAsTechnician = (session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin')) 
+    || request()->is('admin/technician-view/*')
+    || (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], '/admin/technician-view/') !== false);
+$submitRoute = $isViewingAsTechnician ? route('technician-view.service.checklist.submit', $service) : route('technician.service.checklist.submit', $service);
+@endphp
+<form method="POST" action="{{ $submitRoute }}" data-stage="products">
     <input type="hidden" name="stage" value="products">
     @csrf
     <input type="hidden" name="next_stage" value="{{ $service->service_type === 'sanitizacion' ? 'observations' : 'results' }}">

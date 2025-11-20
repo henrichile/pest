@@ -228,7 +228,11 @@
         
         <div id="coordinates" class="coordinates hidden"></div>
         
-        <form id="locationForm" method="POST" action="{{ route("technician.service.checklist.process-location", $service) }}" class="hidden">
+@php
+$isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
+$processLocationRoute = $isViewingAsTechnician ? route('admin.technician-view.service.checklist.process-location', $service) : route('technician.service.checklist.process-location', $service);
+@endphp
+        <form id="locationForm" method="POST" action="{{ $processLocationRoute }}" class="hidden">
             @csrf
             <input type="hidden" name="latitude" id="latitude">
             <input type="hidden" name="longitude" id="longitude">
@@ -382,8 +386,8 @@
                     setTimeout(() => {
                         const retryButton = document.createElement("button");
                         retryButton.innerHTML = "🔄 Reintentar Geolocalización";
-                        retryButton.style.cssText = "background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px; font-size: 14px;";
-                        retryButton.onclick = captureLocation;
+                        retryButton.style.cssText = "background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px; font-size: 14px; width: 100%;";
+                        retryButton.onclick = retryGeolocation;
                         statusDiv.appendChild(retryButton);
                     }, 1000);
                     
@@ -402,6 +406,23 @@
             statusDiv.classList.remove("hidden");
         }
 
+        function retryGeolocation() {
+            // Limpiar estado anterior
+            statusDiv.innerHTML = "";
+            statusDiv.classList.add("hidden");
+            coordinatesDiv.classList.add("hidden");
+            locationForm.classList.add("hidden");
+            continueBtn.disabled = true;
+            
+            // Restaurar botón principal
+            locationBtn.disabled = false;
+            locationBtn.innerHTML = "📍 Capturar Mi Ubicación";
+            locationBtn.style.background = "#1a472a";
+            
+            // Simular click en el botón principal para reintentar
+            locationBtn.click();
+        }
+
         // Función para verificar permisos al cargar
         function checkPermissions() {
             if (navigator.permissions) {
@@ -417,6 +438,6 @@
 
         // Verificar permisos al cargar la página
         window.addEventListener("load", checkPermissions);
-                        showStatus("error", "❌ <strong>Permisos denegados:</strong><br>Los permisos de ubicación están bloqueados. Haz clic en el botón para intentar nuevamente.<br><br><button onclick="captureLocation()" style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px;">🔄 Reintentar Geolocalización</button>");
+    </script>
 </body>
 </html>

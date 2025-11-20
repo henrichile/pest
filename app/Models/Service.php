@@ -47,6 +47,7 @@ class Service extends Model
         "priority",
         "status",
         "description",
+        "price",
         "assigned_to",
         "started_at",
         "completed_at",
@@ -88,6 +89,7 @@ class Service extends Model
         "checklist_data" => "array",
         "bait_weight" => "decimal:2",
         "total_consumption_activity" => "decimal:2",
+        "price" => "decimal:2",
         // Casts para campos booleanos
         "installed_points_check" => "boolean",
         "existing_points_check" => "boolean",
@@ -156,6 +158,9 @@ class Service extends Model
      */
     public function isLastStage(): bool
     {
+        if ($this->service_type === 'monitoreo-cebaderas') {
+            return $this->checklist_stage === "monitoreo-firma";
+        }
         return $this->checklist_stage === "description";
     }
 
@@ -164,6 +169,9 @@ class Service extends Model
      */
     public function isFirstStage(): bool
     {
+        if ($this->service_type === 'monitoreo-cebaderas') {
+            return $this->checklist_stage === "monitoreo-datos";
+        }
         return $this->checklist_stage === "points";
     }
 
@@ -202,7 +210,9 @@ class Service extends Model
 
     public function getStages($type = null) {
         Log::info("Service type for stages: " . $type);
-        if ($type=='desratizacion') {
+        if ($type=='monitoreo-cebaderas') {
+            $stages = ["monitoreo-datos", "monitoreo-croquis", "monitoreo-completo", "monitoreo-estadisticas", "monitoreo-analisis", "monitoreo-firma"];
+        }elseif($type=='desratizacion') {
             $stages = ["points", "products", "results", "observations", "sites", "description"];
         }elseif($type=='desinsectacion') {
             $stages = ["products","results", "observations", "sites", "description"];
@@ -221,6 +231,12 @@ class Service extends Model
     public function getStageName(): string
     {
         $stageNames = [
+            "monitoreo-datos" => "Datos del Servicio",
+            "monitoreo-croquis" => "Croquis de Cebaderas",
+            "monitoreo-completo" => "Monitoreo Completo",
+            "monitoreo-estadisticas" => "Estadísticas",
+            "monitoreo-analisis" => "Análisis IA",
+            "monitoreo-firma" => "Firma Final",
             "points" => "Check de Puntos",
             "products" => "Productos Aplicados",
             "results" => "Resultados Observados",

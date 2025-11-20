@@ -49,16 +49,147 @@
                         </div>
                     </div>
                     <div class="mt-4">
-                        <form method="POST" action="{{ route("technician.service.start", $service) }}" class="inline">
+                        @php
+                            // Detectar si estamos en modo technician-view de múltiples formas
+                            $isTechnicianView = false;
+                            
+                            // Verificar URL actual
+                            if (request()->is('admin/technician-view/*') || request()->routeIs('technician-view.*')) {
+                                $isTechnicianView = true;
+                            }
+                            
+                            // Verificar sesión
+                            if (!$isTechnicianView && session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin')) {
+                                $isTechnicianView = true;
+                            }
+                            
+                            // Verificar HTTP_REFERER
+                            if (!$isTechnicianView && isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], '/admin/technician-view/') !== false) {
+                                $isTechnicianView = true;
+                            }
+                            
+                            // Verificar ruta actual por nombre
+                            if (!$isTechnicianView && request()->routeIs('admin.technician-view.*')) {
+                                $isTechnicianView = true;
+                            }
+                            
+                            // Generar URL directamente para evitar problemas con route()
+                            if ($isTechnicianView) {
+                                $startUrl = url('/admin/technician-view/services/' . $service->id . '/start');
+                            } else {
+                                try {
+                                    $startUrl = route("technician.service.start", $service);
+                                } catch (\Exception $e) {
+                                    $startUrl = url('/technician/services/' . $service->id . '/start');
+                                }
+                            }
+                        @endphp
+                        <form method="POST" action="{{ $startUrl }}" id="start-service-form-{{ $service->id }}" style="display: inline-block;">
                             @csrf
-                            <button type="submit"
+                            <button type="submit" id="start-service-btn-{{ $service->id }}"
                                     class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                                Iniciar Servicio
+                                <span class="btn-text">Iniciar Servicio</span>
                             </button>
                         </form>
+                        <script>
+                            (function() {
+                                'use strict';
+                                const formId = 'start-service-form-{{ $service->id }}';
+                                const btnId = 'start-service-btn-{{ $service->id }}';
+                                
+                                function initForm() {
+                                    const form = document.getElementById(formId);
+                                    const btn = document.getElementById(btnId);
+                                    
+                                    if (!form || !btn) {
+                                        setTimeout(initForm, 100);
+                                        return;
+                                    }
+                                    
+                                    // Detectar si estamos en modo technician-view desde JavaScript
+                                    const currentUrl = window.location.href;
+                                    const isTechnicianView = currentUrl.includes('/admin/technician-view/') || 
+                                                           currentUrl.includes('technician-view');
+                                    
+                                    // Si estamos en technician-view pero la URL del formulario no lo refleja, corregirla
+                                    if (isTechnicianView && !form.action.includes('/admin/technician-view/')) {
+                                        form.action = '/admin/technician-view/services/{{ $service->id }}/start';
+                                        console.log('URL corregida a:', form.action);
+                                    }
+                                    
+                                    form.addEventListener('submit', function(e) {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        
+                                        console.log('Formulario enviado - Iniciando servicio');
+                                        console.log('URL del formulario:', form.action);
+                                        
+                                        const btnText = btn.querySelector('.btn-text');
+                                        const originalText = btnText ? btnText.textContent : 'Iniciar Servicio';
+                                        
+                                        if (btnText) {
+                                            btnText.textContent = 'Iniciando...';
+                                        }
+                                        btn.disabled = true;
+                                        
+                                        const formData = new FormData(form);
+                                        
+                                        // Asegurar que la URL sea correcta antes de enviar
+                                        let submitUrl = form.action;
+                                        if (currentUrl.includes('/admin/technician-view/') && !submitUrl.includes('/admin/technician-view/')) {
+                                            submitUrl = '/admin/technician-view/services/{{ $service->id }}/start';
+                                        }
+                                        
+                                        fetch(submitUrl, {
+                                            method: 'POST',
+                                            body: formData,
+                                            headers: {
+                                                'X-Requested-With': 'XMLHttpRequest'
+                                            },
+                                            credentials: 'same-origin'
+                                        })
+                                        .then(function(response) {
+                                            console.log('Respuesta recibida:', response.status, response.url);
+                                            
+                                            if (response.redirected) {
+                                                window.location.href = response.url;
+                                            } else if (response.ok) {
+                                                return response.text().then(function(text) {
+                                                    // Buscar redirección en la respuesta
+                                                    const match = text.match(/window\.location\.href\s*=\s*['"]([^'"]+)['"]/);
+                                                    if (match) {
+                                                        window.location.href = match[1];
+                                                    } else {
+                                                        window.location.reload();
+                                                    }
+                                                });
+                                            } else {
+                                                throw new Error('HTTP ' + response.status);
+                                            }
+                                        })
+                                        .catch(function(error) {
+                                            console.error('Error:', error);
+                                            alert('Error al iniciar el servicio: ' + error.message);
+                                            btn.disabled = false;
+                                            if (btnText) {
+                                                btnText.textContent = originalText;
+                                            }
+                                        });
+                                        
+                                        return false;
+                                    });
+                                }
+                                
+                                if (document.readyState === 'loading') {
+                                    document.addEventListener('DOMContentLoaded', initForm);
+                                } else {
+                                    initForm();
+                                }
+                            })();
+                        </script>
 
                     </div>
                 </div>

@@ -16,31 +16,43 @@ class TechnicianController extends Controller
     public function dashboard()
     {
         $user = auth()->user();
+        
+        // Si está en modo "view_as_technician" y es super-admin, mostrar todos los servicios
+        // para que pueda ver cómo funciona el sistema
+        $isViewingAsTechnician = session('view_as_technician', false) && $user->hasRole('super-admin');
+        
+        if ($isViewingAsTechnician) {
+            // Mostrar todos los servicios para que el admin pueda ver el flujo completo
+            $query = Service::query();
+        } else {
+            // Filtrar por técnico asignado
+            $query = Service::where('assigned_to', $user->id);
+        }
 
         // Servicios completados hoy
-        $completedToday = Service::where('assigned_to', $user->id)
+        $completedToday = (clone $query)
             ->where('status', 'finalizado')
             ->whereDate('checklist_completed_at', today())
             ->count();
 
         // Servicios pendientes
-        $pendingServices = Service::where('assigned_to', $user->id)
+        $pendingServices = (clone $query)
             ->where('status', 'pendiente')
             ->count();
 
         // Servicios en progreso
-        $inProgressServices = Service::where('assigned_to', $user->id)
+        $inProgressServices = (clone $query)
             ->where('status', 'en_progreso')
             ->count();
 
         // Servicios vencidos
-        $overdueServices = Service::where('assigned_to', $user->id)
+        $overdueServices = (clone $query)
             ->where('status', 'pendiente')
             ->where('scheduled_date', '<', now())
             ->count();
 
         // Próximos servicios asignados (pendientes y en progreso)
-        $assignedServices = Service::where('assigned_to', $user->id)
+        $assignedServices = (clone $query)
             ->whereIn('status', ['pendiente', 'en_progreso'])
             ->with(['client', 'serviceType'])
             ->orderBy('scheduled_date', 'asc')
@@ -58,10 +70,21 @@ class TechnicianController extends Controller
 
     public function services()
     {
-        $services = Service::where('assigned_to', auth()->id())
-            ->with(['client', 'serviceType', 'assignedUser'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        $user = auth()->user();
+        $isViewingAsTechnician = session('view_as_technician', false) && $user->hasRole('super-admin');
+        
+        if ($isViewingAsTechnician) {
+            // Mostrar todos los servicios para que el admin pueda ver el flujo completo
+            $services = Service::with(['client', 'serviceType', 'assignedUser'])
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+        } else {
+            // Filtrar por técnico asignado
+            $services = Service::where('assigned_to', auth()->id())
+                ->with(['client', 'serviceType', 'assignedUser'])
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+        }
 
         return view('technician.services', compact('services'));
     }
@@ -111,6 +134,19 @@ class TechnicianController extends Controller
 
     public function startService(Service $service)
     {
+        // Si es GET, redirigir al formulario POST
+        if (request()->isMethod('GET')) {
+            // Usar route() con el nombre correcto
+            try {
+                return redirect('/admin/technician-view/services/' . $service->id . '/detail')
+                    ->with('error', 'Por favor, usa el botón "Iniciar Servicio" para iniciar el servicio.');
+            } catch (\Exception $e) {
+                // Fallback si la ruta no existe
+                return redirect('/admin/technician-view/services/' . $service->id . '/detail')
+                    ->with('error', 'Por favor, usa el botón "Iniciar Servicio" para iniciar el servicio.');
+            }
+        }
+
         // Verificar permisos
         if ($service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
             abort(403, "No tienes permisos para iniciar este servicio");
@@ -121,8 +157,18 @@ class TechnicianController extends Controller
             return redirect()->back()->with("error", "Este servicio no puede ser iniciado");
         }
 
+        // Detectar si estamos en modo technician-view (admin viendo como técnico)
+        $isTechnicianView = request()->is('admin/technician-view/*') || 
+                           request()->routeIs('technician-view.*') ||
+                           (request()->header('referer') && strpos(request()->header('referer'), '/admin/technician-view/') !== false);
+
         // Redirigir a página profesional de captura de geolocalización
-        return redirect()->route("technician.service.checklist.location", $service);
+        // Usar URL directa para evitar problemas con route()
+        if ($isTechnicianView) {
+            return redirect('/admin/technician-view/services/' . $service->id . '/checklist/location');
+        }
+        
+        return redirect('/technician/services/' . $service->id . '/checklist/location');
     }
 
     public function showLocationCapture(Service $service)
@@ -137,7 +183,11 @@ class TechnicianController extends Controller
             return redirect()->back()->with("error", "Este servicio no puede ser iniciado");
         }
 
-        return view("technician.capture-location-simple", compact("service"));
+        // Detectar si estamos en modo technician-view
+        $isTechnicianView = request()->is('admin/technician-view/*') || 
+                           request()->routeIs('technician-view.*');
+
+        return view("technician.capture-location-simple", compact("service", "isTechnicianView"));
     }
 
     public function captureLocation(Service $service)
@@ -203,12 +253,25 @@ class TechnicianController extends Controller
             case 'desinsectacion':
                 $nextStage = "products";
                 break;
+            case 'monitoreo-cebaderas':
+                $nextStage = "monitoreo-datos";
+                break;
             default:
                 $nextStage = "points";
                 break;
         }
 
-        return redirect()->route('technician.service.checklist.stage', ['service' => $service, 'stage' => $nextStage])
+        // Detectar si estamos en modo technician-view
+        $isTechnicianView = request()->is('admin/technician-view/*') || 
+                           request()->routeIs('technician-view.*') ||
+                           (request()->header('referer') && strpos(request()->header('referer'), '/admin/technician-view/') !== false);
+
+        if ($isTechnicianView) {
+            return redirect('/admin/technician-view/services/' . $service->id . '/checklist/' . $nextStage)
+                ->with('success', 'Ubicación capturada correctamente. Puedes comenzar el checklist.');
+        }
+
+        return redirect('/technician/services/' . $service->id . '/checklist/' . $nextStage)
             ->with('success', 'Ubicación capturada correctamente. Puedes comenzar el checklist.');
     }
 
@@ -224,7 +287,30 @@ class TechnicianController extends Controller
             return redirect()->back()->with("error", "Este servicio debe estar en progreso para realizar el checklist");
         }
 
+        // Detectar si estamos en modo technician-view
+        $isTechnicianView = request()->is('admin/technician-view/*') || 
+                           request()->routeIs('technician-view.*');
+
+        // Verificar que la ubicación haya sido capturada
+        if (empty($service->latitude) || empty($service->longitude) || !$service->location_captured_at) {
+            if ($isTechnicianView) {
+                return redirect('/admin/technician-view/services/' . $service->id . '/checklist/location')
+                    ->with('warning', 'Debes capturar la ubicación antes de iniciar el checklist.');
+            }
+            return redirect('/technician/services/' . $service->id . '/checklist/location')
+                ->with('warning', 'Debes capturar la ubicación antes de iniciar el checklist.');
+        }
+
         $service->load(['client', 'serviceType']);
+
+        // Si no hay etapa definida, redirigir a la primera etapa
+        if (empty($service->checklist_stage)) {
+            $firstStage = $this->getFirstStage($service->service_type);
+            if ($isTechnicianView) {
+                return redirect('/admin/technician-view/services/' . $service->id . '/checklist/' . $firstStage);
+            }
+            return redirect('/technician/services/' . $service->id . '/checklist/' . $firstStage);
+        }
 
         // Preparar variables para la etapa de productos (si es la etapa actual)
         $products = collect();
@@ -270,18 +356,29 @@ class TechnicianController extends Controller
             return redirect()->back()->with("error", "Este servicio debe estar en progreso para realizar el checklist");
         }
 
-        // Validar que la etapa sea válida
-        $validStages = ["points", "products", "results", "observations", "sites", "description"];
+        // Validar que la etapa sea válida según el tipo de servicio
+        if ($service->service_type === 'monitoreo-cebaderas') {
+            $validStages = ["monitoreo-datos", "monitoreo-croquis", "monitoreo-completo", "monitoreo-estadisticas", "monitoreo-analisis", "monitoreo-firma"];
+        } else {
+            $validStages = ["points", "products", "results", "observations", "sites", "description"];
+        }
+        
         if (!in_array($stage, $validStages)) {
             abort(404, "Etapa no válida");
         }
 
+        // Detectar si estamos en modo technician-view
+        $isTechnicianView = request()->is('admin/technician-view/*') || 
+                           request()->routeIs('technician-view.*');
+
         // ✅ NUEVO: Para sanitización, saltarse la etapa de results
         if (($service->service_type === 'sanitizacion' || $service->service_type === 'desinfeccion')  && $stage === 'results') {
-            return redirect()->route('technician.service.checklist.stage', [
-                'service' => $service,
-                'stage' => 'observations'
-            ])->with('info', 'La etapa de resultados no aplica para servicios de sanitización');
+            if ($isTechnicianView) {
+                return redirect('/admin/technician-view/services/' . $service->id . '/checklist/observations')
+                    ->with('info', 'La etapa de resultados no aplica para servicios de sanitización');
+            }
+            return redirect('/technician/services/' . $service->id . '/checklist/observations')
+                ->with('info', 'La etapa de resultados no aplica para servicios de sanitización');
         }
 
         // Actualizar la etapa actual del servicio
@@ -322,6 +419,11 @@ class TechnicianController extends Controller
         $nextStage = $this->getNextStage($service->checklist_stage, $service->service_type);
         $previousStage = $this->getPreviousStage($service->checklist_stage, $service->service_type);
 
+        // Para monitoreo-cebaderas, usar la vista principal que incluye las etapas
+        if ($service->service_type === 'monitoreo-cebaderas') {
+            return view('technician.checklist-staged', compact('service', 'products', 'stageInstruction', 'nextStage', 'previousStage'));
+        }
+
         return view("technician.checklist-stages." . $stage, compact("service", "products", "stageInstruction", "nextStage", "previousStage"));
     }
 
@@ -333,19 +435,36 @@ class TechnicianController extends Controller
             return response()->json(['success' => false, 'message' => 'No tienes permisos para modificar este servicio'], 403);
         }
 
-        // Verificar estado del servicio
-        if ($service->status !== "en_progreso") {
-            return response()->json(['success' => false, 'message' => 'El servicio debe estar en progreso para guardar datos'], 403);
-        }
+        // Detectar si estamos en modo technician-view
+        $isTechnicianView = request()->is('admin/technician-view/*') || 
+                           request()->routeIs('technician-view.*') ||
+                           (request()->header('referer') && strpos(request()->header('referer'), '/admin/technician-view/') !== false);
 
         // Obtener la etapa actual del formulario
-        $stage = $request->input('current_stage')?? $request->input('stage')?? $request->input('data_stage') ?? 'unknown';
+        $stage = $request->input('checklist_stage') ?? $request->input('current_stage') ?? $request->input('stage') ?? $request->input('data_stage') ?? 'unknown';
+        $nextStage = $request->input('next_stage') ?? $request->input('data_next_stage') ?? null;
+        
+        // Verificar estado del servicio (permitir si se está completando el servicio)
+        $isCompletingService = ($stage === 'monitoreo-firma' || $nextStage === 'completed' || $stage === 'description');
+        if ($service->status !== "en_progreso" && !$isCompletingService) {
+            return response()->json(['success' => false, 'message' => 'El servicio debe estar en progreso para guardar datos'], 403);
+        }
         if($stage==="unknown"){
-            $stage="points";
+            // Determinar etapa por defecto según tipo de servicio
+            if ($service->service_type === 'monitoreo-cebaderas') {
+                $stage = 'monitoreo-datos';
+            } else {
+                $stage = 'points';
+            }
         }
 
-        // Validar que la etapa sea válida
-        $validStages = ["points", "products", "results", "observations", "sites", "description"];
+        // Validar que la etapa sea válida según el tipo de servicio
+        if ($service->service_type === 'monitoreo-cebaderas') {
+            $validStages = ["monitoreo-datos", "monitoreo-croquis", "monitoreo-completo", "monitoreo-estadisticas", "monitoreo-analisis", "monitoreo-firma"];
+        } else {
+            $validStages = ["points", "products", "results", "observations", "sites", "description"];
+        }
+        
         if (!in_array($stage, $validStages)) {
             return response()->json(['success' => false, 'message' => 'Etapa no válida ('.$stage.')'], 400);
         }
@@ -356,10 +475,10 @@ class TechnicianController extends Controller
 
             // ✅ NUEVO: Si es sanitización y se intenta procesar results, omitir y pasar a observations
             if (($service->service_type === 'sanitizacion' || $service->service_type === 'desinfeccion') && $stage === 'results') {
-                return redirect()->route('technician.service.checklist.stage', [
-                    'service' => $service,
-                    'stage' => 'observations'
-                ]);
+                if ($isTechnicianView) {
+                    return redirect('/admin/technician-view/services/' . $service->id . '/checklist/observations');
+                }
+                return redirect('/technician/services/' . $service->id . '/checklist/observations');
             }
 
             // Obtener datos existentes del checklist
@@ -372,6 +491,44 @@ class TechnicianController extends Controller
             $service->load(["client", "serviceType"]);
 
             switch ($stage) {
+                case 'monitoreo-datos':
+                    $checklistData['monitoreo_datos'] = $this->processMonitoreoDatosData($request);
+                    break;
+                case 'monitoreo-croquis':
+                    $checklistData['monitoreo_croquis'] = $this->processMonitoreoCroquisData($request);
+                    break;
+                case 'monitoreo-completo':
+                    $checklistData['monitoreo_completo'] = $this->processMonitoreoCompletoData($request);
+                    break;
+                case 'monitoreo-estadisticas':
+                    $checklistData['monitoreo_estadisticas'] = $this->processMonitoreoEstadisticasData($request);
+                    break;
+                case 'monitoreo-analisis':
+                    $checklistData['monitoreo_analisis'] = $this->processMonitoreoAnalisisData($request);
+                    break;
+                case 'monitoreo-firma':
+                    $checklistData['monitoreo_firma'] = $this->processMonitoreoFirmaData($request);
+                    // Marcar servicio como completado
+                    $service->update([
+                        'checklist_data' => $checklistData,
+                        'status' => 'finalizado',
+                        'checklist_completed_at' => now(),
+                        'completed_at' => now()
+                    ]);
+                    // Redirigir al detalle del servicio
+                    if ($isTechnicianView) {
+                        try {
+                            return redirect('/admin/technician-view/services/' . $service->id . '/detail')
+                                ->with('success', 'Servicio completado exitosamente. Puedes descargar el informe en PDF.');
+                        } catch (\Exception $e) {
+                            // Si la ruta no está disponible, usar URL directa
+                            return redirect('/admin/technician-view/services/' . $service->id . '/detail')
+                                ->with('success', 'Servicio completado exitosamente. Puedes descargar el informe en PDF.');
+                        }
+                    }
+                    return redirect('/technician/services/' . $service->id . '/detail')
+                        ->with('success', 'Servicio completado exitosamente. Puedes descargar el informe en PDF.');
+                    break;
                 case 'points':
                     $checklistData['points'] = $this->processPointsData($request);
                     break;
@@ -416,8 +573,10 @@ class TechnicianController extends Controller
                 }
 
             }
-            // Actualizar la base de datos
-            $service->update(['checklist_data' => $checklistData]);
+            // Actualizar la base de datos (solo si no se completó en monitoreo-firma)
+            if ($stage !== 'monitoreo-firma') {
+                $service->update(['checklist_data' => $checklistData]);
+            }
             $stageInstruction = $this->getProductStageInstruction($service->service_type);
             // Determinar la siguiente etapa
              // Asegurar que las variables siempre estén definidas
@@ -425,13 +584,32 @@ class TechnicianController extends Controller
             $stageInstruction = $stageInstruction ?? '';
             $nextStage = ($nextStage!==null || $nextStage!=="")?$nextStage:$stage;
             if($nextStage==="completed"){
-                $service->update(["status" => "finalizado"]);
-                return redirect()->route("technician.service.detail", $service);
+                $service->update([
+                    "status" => "finalizado",
+                    "checklist_completed_at" => now(),
+                    "completed_at" => now()
+                ]);
+                if ($isTechnicianView) {
+                    try {
+                        return redirect('/admin/technician-view/services/' . $service->id . '/detail')
+                            ->with('success', 'Servicio completado exitosamente. Puedes descargar el informe en PDF.');
+                    } catch (\Exception $e) {
+                        // Si la ruta no está disponible, usar URL directa
+                        return redirect('/admin/technician-view/services/' . $service->id . '/detail')
+                            ->with('success', 'Servicio completado exitosamente. Puedes descargar el informe en PDF.');
+                    }
+                }
+                return redirect('/technician/services/' . $service->id . '/detail')
+                    ->with('success', 'Servicio completado exitosamente. Puedes descargar el informe en PDF.');
             }
 
 
             //return view("technician.checklist-stages." .$nextStage, compact("service", "products", "stageInstruction"));
-            return redirect()->route('technician.service.checklist.stage', ['service' => $service, 'stage' => $nextStage])
+            if ($isTechnicianView) {
+                return redirect('/admin/technician-view/services/' . $service->id . '/checklist/' . $nextStage)
+                    ->with('success', 'Datos de la etapa guardados correctamente.');
+            }
+            return redirect('/technician/services/' . $service->id . '/checklist/' . $nextStage)
                 ->with('success', 'Datos de la etapa guardados correctamente.');
         }catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Error al guardar los datos del checklist: ' . $e->getMessage()], 500);
@@ -667,8 +845,197 @@ class TechnicianController extends Controller
         return $data;
     }
 
+    // Métodos de procesamiento para Monitoreo de Cebaderas
+    private function processMonitoreoDatosData(Request $request)
+    {
+        $data = [
+            'pests_detected' => $request->input('pests_detected', ''),
+            'pests_detected_list' => json_decode($request->input('pests_detected_list', '[]'), true) ?? [],
+            'infestation_level' => $request->input('infestation_level', ''),
+            'technician_observations' => $request->input('technician_observations', ''),
+            'client_recommendations' => $request->input('client_recommendations', ''),
+        ];
+
+        // Procesar fotos si hay
+        if ($request->hasFile('service_photos')) {
+            $photos = [];
+            foreach ($request->file('service_photos') as $photo) {
+                $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
+                $photo->storeAs('services/photos', $filename, 'public');
+                $photos[] = 'storage/services/photos/' . $filename;
+            }
+            $data['service_photos'] = $photos;
+        }
+
+        return $data;
+    }
+
+    private function processMonitoreoCroquisData(Request $request)
+    {
+        $data = [
+            'croquis_notes' => $request->input('croquis_notes', ''),
+        ];
+
+        // Procesar archivo de croquis si hay
+        if ($request->hasFile('croquis_file')) {
+            $file = $request->file('croquis_file');
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('services/croquis', $filename, 'public');
+            $data['croquis_file'] = 'storage/services/croquis/' . $filename;
+        }
+
+        return $data;
+    }
+
+    private function processMonitoreoCompletoData(Request $request)
+    {
+        $data = [
+            'monitoring_date' => $request->input('monitoring_date', date('Y-m-d')),
+            'total_bait_stations' => $request->input('total_bait_stations', 0),
+            'bait_stations' => [],
+            'traps' => [],
+            'general_observations' => $request->input('general_observations', ''),
+            'client_recommendations_monitoring' => $request->input('client_recommendations_monitoring', ''),
+        ];
+
+        // Procesar cebaderas
+        $baitStationsInput = $request->input('bait_stations', []);
+        if (!empty($baitStationsInput)) {
+            foreach ($baitStationsInput as $index => $station) {
+                if (is_array($station)) {
+                    $stationData = [
+                        'code' => $station['code'] ?? '',
+                        'location' => $station['location'] ?? '',
+                        'product_type' => $station['product_type'] ?? '',
+                        'quantity' => $station['quantity'] ?? 0,
+                        'unit' => $station['unit'] ?? 'g',
+                        'observations' => is_array($station['observations'] ?? null) ? $station['observations'] : [],
+                    ];
+
+                    // Procesar fotos de la cebadera si se enviaron
+                    $photos = [];
+                    if ($request->hasFile("bait_stations")) {
+                        $allFiles = $request->file("bait_stations");
+                        if (isset($allFiles[$index]['photos']) && is_array($allFiles[$index]['photos'])) {
+                            foreach ($allFiles[$index]['photos'] as $photo) {
+                                if ($photo && $photo->isValid()) {
+                                    $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
+                                    $photo->storeAs('services/bait-stations', $filename, 'public');
+                                    $photos[] = 'storage/services/bait-stations/' . $filename;
+                                }
+                            }
+                        }
+                    }
+                    $stationData['photos'] = $photos;
+
+                    $data['bait_stations'][] = $stationData;
+                }
+            }
+        }
+
+        // Procesar trampas
+        $trapsInput = $request->input('traps', []);
+        if (!empty($trapsInput)) {
+            foreach ($trapsInput as $index => $trap) {
+                if (is_array($trap)) {
+                    $trapData = [
+                        'code' => $trap['code'] ?? '',
+                        'location' => $trap['location'] ?? '',
+                        'product_type' => $trap['product_type'] ?? '',
+                        'quantity' => $trap['quantity'] ?? 1,
+                        'status' => $trap['status'] ?? '',
+                        'notes' => $trap['notes'] ?? '',
+                    ];
+
+                    // Procesar fotos de la trampa si se enviaron
+                    $photos = [];
+                    if ($request->hasFile("traps")) {
+                        $allFiles = $request->file("traps");
+                        if (isset($allFiles[$index]['photos']) && is_array($allFiles[$index]['photos'])) {
+                            foreach ($allFiles[$index]['photos'] as $photo) {
+                                if ($photo && $photo->isValid()) {
+                                    $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
+                                    $photo->storeAs('services/traps', $filename, 'public');
+                                    $photos[] = 'storage/services/traps/' . $filename;
+                                }
+                            }
+                        }
+                    }
+                    $trapData['photos'] = $photos;
+
+                    $data['traps'][] = $trapData;
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    private function processMonitoreoEstadisticasData(Request $request)
+    {
+        return [
+            'total_monitored' => $request->input('total_monitored', 0),
+            'total_active' => $request->input('total_active', 0),
+            'total_problems' => $request->input('total_problems', 0),
+            'total_traps' => $request->input('total_traps', 0),
+            'total_consumption' => $request->input('total_consumption', 0),
+            'average_consumption_percent' => $request->input('average_consumption_percent', 0),
+            'detected_species' => $request->input('detected_species', ''),
+            'activity_level' => $request->input('activity_level', ''),
+            'executive_summary' => $request->input('executive_summary', ''),
+        ];
+    }
+
+    private function processMonitoreoAnalisisData(Request $request)
+    {
+        return [
+            'ai_analysis_data' => json_decode($request->input('ai_analysis_data', '{}'), true) ?? [],
+            'technician_ai_notes' => $request->input('technician_ai_notes', ''),
+            'ai_analysis_validated' => $request->has('ai_analysis_validated'),
+        ];
+    }
+
+    private function processMonitoreoFirmaData(Request $request)
+    {
+        $data = [
+            'signer_name' => $request->input('signer_name', ''),
+            'signer_position' => $request->input('signer_position', ''),
+            'service_completed' => $request->has('service_completed'),
+        ];
+
+        // Procesar firma del técnico si se proporcionó
+        if ($request->has('technician_signature') && !empty($request->input('technician_signature'))) {
+            $signatureData = $request->input('technician_signature');
+            // Si es una imagen en base64, guardarla
+            if (strpos($signatureData, 'data:image') === 0) {
+                $image = str_replace('data:image/png;base64,', '', $signatureData);
+                $image = str_replace(' ', '+', $image);
+                $imageData = base64_decode($image);
+                $filename = 'signature_' . time() . '_' . uniqid() . '.png';
+                Storage::disk('public')->put('signatures/' . $filename, $imageData);
+                $data['technician_signature'] = 'storage/signatures/' . $filename;
+            }
+        }
+
+        return $data;
+    }
+
     private function getNextStage($currentStage, $serviceType)
     {
+        // Flujo para Monitoreo de Cebaderas: 6 etapas específicas
+        if ($serviceType === 'monitoreo-cebaderas') {
+            $stageFlow = [
+                'monitoreo-datos' => 'monitoreo-croquis',
+                'monitoreo-croquis' => 'monitoreo-completo',
+                'monitoreo-completo' => 'monitoreo-estadisticas',
+                'monitoreo-estadisticas' => 'monitoreo-analisis',
+                'monitoreo-analisis' => 'monitoreo-firma',
+                'monitoreo-firma' => null // Final stage
+            ];
+
+            return $stageFlow[$currentStage] ?? null;
+        }
+
         // Flujo especial para servicios especiales: observations → sites → description
         if ($serviceType === 'servicios-especiales') {
             $stageFlow = [
@@ -707,6 +1074,20 @@ class TechnicianController extends Controller
 
     private function getPreviousStage($currentStage, $serviceType)
     {
+        // Flujo para Monitoreo de Cebaderas: 6 etapas específicas
+        if ($serviceType === 'monitoreo-cebaderas') {
+            $stageFlow = [
+                'monitoreo-croquis' => 'monitoreo-datos',
+                'monitoreo-completo' => 'monitoreo-croquis',
+                'monitoreo-estadisticas' => 'monitoreo-completo',
+                'monitoreo-analisis' => 'monitoreo-estadisticas',
+                'monitoreo-firma' => 'monitoreo-analisis',
+                'monitoreo-datos' => null // Primera etapa
+            ];
+
+            return $stageFlow[$currentStage] ?? null;
+        }
+
         // Flujo especial para servicios especiales: observations → sites → description
         if ($serviceType === 'servicios-especiales') {
             $stageFlow = [
@@ -743,6 +1124,27 @@ class TechnicianController extends Controller
         return $stageFlow[$currentStage] ?? null;
     }
 
+    private function getFirstStage($serviceType)
+    {
+        // Flujo para Monitoreo de Cebaderas: empieza en monitoreo-datos
+        if ($serviceType === 'monitoreo-cebaderas') {
+            return 'monitoreo-datos';
+        }
+
+        // Flujo especial para servicios especiales: empieza en observations
+        if ($serviceType === 'servicios-especiales') {
+            return 'observations';
+        }
+
+        // Flujo especial para sanitización/desinfección: empieza en products
+        if ($serviceType === 'sanitizacion' || $serviceType === 'desinfeccion') {
+            return 'products';
+        }
+
+        // Flujo estándar para otros tipos de servicio: empieza en points
+        return 'points';
+    }
+
     public function handleObservation(Service $service, $index)
     {
         // Verificar permisos
@@ -756,7 +1158,7 @@ class TechnicianController extends Controller
         }
 
         // Redirigir a la página de observations con el índice específico para editar
-        return redirect()->route('technician.service.checklist.stage', ['service' => $service, 'stage' => 'observations'])
+        return redirect('/technician/services/' . $service->id . '/checklist/observations')
             ->with('edit_observation_index', $index);
     }
 
@@ -773,7 +1175,7 @@ class TechnicianController extends Controller
         }
 
         // Redirigir a la página de observations con el índice específico
-        return redirect()->route('technician.service.checklist.stage', ['service' => $service, 'stage' => 'observations'])
+        return redirect('/technician/services/' . $service->id . '/checklist/observations')
             ->with('edit_observation_index', $index);
     }
 
@@ -1014,8 +1416,8 @@ class TechnicianController extends Controller
         $pdf->setOptions([
             'isHtml5ParserEnabled' => true,
             'isRemoteEnabled' => true, // Necesario para cargar imágenes desde rutas del sistema
-            'defaultFont' => 'Arial',
             'isPhpEnabled' => true, // Necesario para funciones PHP en las vistas
+            'defaultFont' => 'Arial',
         ]);
 
         $filename = "servicio-{$service->id}-{$service->client->name}-{$validationId}.pdf";
