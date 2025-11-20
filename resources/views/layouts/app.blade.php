@@ -528,11 +528,11 @@ function getTechnicianRoute($routeName, ...$params) {
         <!-- Main content -->
         <div class="flex-1 flex flex-col min-w-0 overflow-x-hidden">
 
-            <!-- Fixed Header -->
-            <header class="fixed top-0 left-0 right-0 md:left-72 z-30 bg-white border-b border-gray-200" style="width: 100%;">
+            <!-- Fixed Header (solo móvil) -->
+            <header class="md:hidden fixed top-0 left-0 right-0 z-30 bg-white border-b border-gray-200" style="width: 100%;">
                 <div class="w-full px-4 py-3 flex items-center justify-between gap-4">
                     <!-- Left: Mobile Menu Button -->
-                    <button id="header-mobile-menu-button" class="md:hidden flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50; background-color: rgb(255, 255, 255);">
+                    <button id="header-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50; background-color: rgb(255, 255, 255);">
                         <svg id="header-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
                         </svg>
