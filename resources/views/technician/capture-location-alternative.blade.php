@@ -175,7 +175,7 @@
         }
     </style>
 </head>
-<body>
+<body style="padding-top: 80px;">
     <div class="container">
         <div class="logo">PC</div>
         <h1>Iniciar Servicio</h1>

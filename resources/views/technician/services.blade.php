@@ -4,7 +4,7 @@
 @section("page-title", "Mis Servicios")
 
 @section("content")
-<div class="max-w-7xl mx-auto space-y-4 md:space-y-6 px-4 md:px-0">
+<div class="max-w-7xl mx-auto space-y-4 md:space-y-6 px-4 md:px-0" style="padding-top: 80px;">
 
     <!-- Filtros -->
     <div class="bg-white rounded-lg shadow-lg p-4 md:p-6">
