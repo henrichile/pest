@@ -1,6 +1,76 @@
 @extends("layouts.app")
 
 @section("content")
+@php
+    // PRIORIDAD 1: Verificar sesión PRIMERO (más confiable)
+    $isTechnicianViewMode = false;
+    if (auth()->check() && auth()->user()->hasRole('super-admin')) {
+        $viewAsTechnician = session('view_as_technician', false);
+        // También verificar en request()->session() por si acaso
+        if (!$viewAsTechnician && request()->hasSession()) {
+            $viewAsTechnician = request()->session()->get('view_as_technician', false);
+        }
+        if ($viewAsTechnician) {
+            $isTechnicianViewMode = true;
+        }
+    }
+    
+    // PRIORIDAD 2: Verificar URL actual
+    if (!$isTechnicianViewMode) {
+        if (request()->is('admin/technician-view/*') || request()->routeIs('technician-view.*')) {
+            $isTechnicianViewMode = true;
+        }
+    }
+    
+    // PRIORIDAD 3: Verificar ruta actual por nombre
+    if (!$isTechnicianViewMode) {
+        try {
+            $routeName = request()->route()->getName();
+            if ($routeName && (strpos($routeName, 'technician-view') !== false || strpos($routeName, 'admin.technician-view') !== false)) {
+                $isTechnicianViewMode = true;
+            }
+        } catch (\Exception $e) {
+            // Continuar
+        }
+    }
+    
+    // PRIORIDAD 4: Verificar HTTP_REFERER
+    if (!$isTechnicianViewMode && isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], '/admin/technician-view/') !== false) {
+        $isTechnicianViewMode = true;
+    }
+    
+    // PRIORIDAD 5: Usar variable del controlador si está disponible
+    if (!$isTechnicianViewMode && isset($isTechnicianView) && $isTechnicianView) {
+        $isTechnicianViewMode = true;
+    }
+    
+    // Log para debug (solo en desarrollo)
+    if (config('app.debug')) {
+        \Log::info('Service Detail - Technician View Detection', [
+            'isTechnicianViewMode' => $isTechnicianViewMode,
+            'session_view_as_technician' => session('view_as_technician', false),
+            'request_session_view_as_technician' => request()->hasSession() ? request()->session()->get('view_as_technician', false) : 'no_session',
+            'current_url' => request()->url(),
+            'current_path' => request()->path(),
+            'route_name' => request()->route() ? request()->route()->getName() : 'no_route',
+            'is_super_admin' => auth()->check() ? auth()->user()->hasRole('super-admin') : false,
+        ]);
+    }
+@endphp
+@push('scripts')
+<script>
+    // Agregar atributo al body para que JavaScript pueda detectarlo
+    document.addEventListener('DOMContentLoaded', function() {
+        @if($isTechnicianViewMode)
+        document.body.setAttribute('data-technician-view', 'true');
+        document.body.classList.add('technician-view-mode');
+        console.log('✅ Modo technician-view detectado - atributo agregado al body');
+        @else
+        console.log('⚠️ Modo technician-view NO detectado');
+        @endif
+    });
+</script>
+@endpush
 <div class="max-w-4xl mx-auto">
     <div class="bg-white rounded-lg shadow-lg overflow-hidden">
         <!-- Header -->
@@ -50,29 +120,9 @@
                     </div>
                     <div class="mt-4">
                         @php
-                            // Detectar si estamos en modo technician-view de múltiples formas
-                            $isTechnicianView = false;
-
-                            // Verificar URL actual
-                            if (request()->is('admin/technician-view/*') || request()->routeIs('technician-view.*')) {
-                                $isTechnicianView = true;
-                            }
-
-                            // Verificar sesión
-                            if (!$isTechnicianView && session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin')) {
-                                $isTechnicianView = true;
-                            }
-
-                            // Verificar HTTP_REFERER
-                            if (!$isTechnicianView && isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], '/admin/technician-view/') !== false) {
-                                $isTechnicianView = true;
-                            }
-
-                            // Verificar ruta actual por nombre
-                            if (!$isTechnicianView && request()->routeIs('technician-view.*')) {
-                                $isTechnicianView = true;
-                            }
-
+                            // Usar la variable global $isTechnicianViewMode que ya fue detectada arriba
+                            $isTechnicianView = $isTechnicianViewMode;
+                            
                             // Generar URL directamente para evitar problemas con route()
                             if ($isTechnicianView) {
                                 $startUrl = url('/admin/technician-view/services/' . $service->id . '/start');
@@ -99,50 +149,110 @@
                                 'use strict';
                                 const formId = 'start-service-form-{{ $service->id }}';
                                 const btnId = 'start-service-btn-{{ $service->id }}';
-
+                                
                                 function initForm() {
                                     const form = document.getElementById(formId);
                                     const btn = document.getElementById(btnId);
-
+                                    
                                     if (!form || !btn) {
                                         setTimeout(initForm, 100);
                                         return;
                                     }
-
-                                    // Detectar si estamos en modo technician-view desde JavaScript
-                                    const currentUrl = window.location.href;
-                                    const isTechnicianView = currentUrl.includes('/admin/technician-view/') ||
-                                                           currentUrl.includes('technician-view');
-
-                                    // Si estamos en technician-view pero la URL del formulario no lo refleja, corregirla
-                                    if (isTechnicianView && !form.action.includes('/admin/technician-view/')) {
-                                        form.action = '/admin/technician-view/services/{{ $service->id }}/start';
-                                        console.log('URL corregida a:', form.action);
+                                    
+                                    // Función para detectar si estamos en modo technician-view
+                                    function detectTechnicianView() {
+                                        const currentUrl = window.location.href;
+                                        const pathname = window.location.pathname;
+                                        
+                                        console.log('🔍 Detectando modo technician-view...');
+                                        console.log('  - URL completa:', currentUrl);
+                                        console.log('  - Pathname:', pathname);
+                                        
+                                        // PRIORIDAD 1: Verificar atributo del body (más confiable - viene del servidor)
+                                        const body = document.body;
+                                        if (body) {
+                                            const hasAttribute = body.getAttribute('data-technician-view') === 'true';
+                                            const hasClass = body.classList.contains('technician-view-mode');
+                                            console.log('  - Body data-technician-view:', hasAttribute);
+                                            console.log('  - Body class technician-view-mode:', hasClass);
+                                            
+                                            if (hasAttribute || hasClass) {
+                                                console.log('✅ Modo technician-view detectado por atributo del body (PRIORIDAD 1)');
+                                                return true;
+                                            }
+                                        }
+                                        
+                                        // PRIORIDAD 2: Verificar URL actual
+                                        if (currentUrl.includes('/admin/technician-view/') || 
+                                            pathname.includes('/admin/technician-view/') ||
+                                            currentUrl.includes('technician-view')) {
+                                            console.log('✅ Modo technician-view detectado por URL (PRIORIDAD 2)');
+                                            return true;
+                                        }
+                                        
+                                        // PRIORIDAD 3: Verificar si hay algún indicador en localStorage o sessionStorage
+                                        // (por si el servidor guardó algo ahí)
+                                        try {
+                                            const stored = localStorage.getItem('view_as_technician') || sessionStorage.getItem('view_as_technician');
+                                            if (stored === 'true' || stored === '1') {
+                                                console.log('✅ Modo technician-view detectado por storage (PRIORIDAD 3)');
+                                                return true;
+                                            }
+                                        } catch (e) {
+                                            // Ignorar errores de storage
+                                        }
+                                        
+                                        console.log('❌ Modo technician-view NO detectado');
+                                        return false;
                                     }
-
+                                    
+                                    // Detectar y corregir URL inmediatamente
+                                    const isTechnicianView = detectTechnicianView();
+                                    console.log('📋 URL inicial del formulario:', form.action);
+                                    console.log('📋 Modo technician-view detectado:', isTechnicianView);
+                                    
+                                    // FORZAR corrección si detectamos technician-view
+                                    if (isTechnicianView) {
+                                        const correctUrl = '/admin/technician-view/services/{{ $service->id }}/start';
+                                        if (form.action !== correctUrl && !form.action.includes('/admin/technician-view/')) {
+                                            form.action = correctUrl;
+                                            console.log('✅ URL FORZADA a technician-view:', form.action);
+                                        }
+                                    }
+                                    
                                     form.addEventListener('submit', function(e) {
                                         e.preventDefault();
                                         e.stopPropagation();
-
+                                        
+                                        // Re-detectar antes de enviar (por si cambió algo)
+                                        const isTechView = detectTechnicianView();
+                                        let submitUrl = form.action;
+                                        
+                                        // FORZAR URL correcta si estamos en technician-view
+                                        if (isTechView) {
+                                            submitUrl = '/admin/technician-view/services/{{ $service->id }}/start';
+                                            form.action = submitUrl; // Actualizar también el formulario
+                                            console.log('✅ URL FORZADA antes de enviar:', submitUrl);
+                                        } else if (!isTechView && submitUrl.includes('/admin/technician-view/')) {
+                                            // Si NO estamos en technician-view pero la URL lo indica, corregir
+                                            submitUrl = '/technician/services/{{ $service->id }}/start';
+                                            form.action = submitUrl;
+                                            console.log('⚠️ URL corregida a technician normal:', submitUrl);
+                                        }
+                                        
                                         console.log('Formulario enviado - Iniciando servicio');
-                                        console.log('URL del formulario:', form.action);
-
+                                        console.log('URL final:', submitUrl);
+                                        
                                         const btnText = btn.querySelector('.btn-text');
                                         const originalText = btnText ? btnText.textContent : 'Iniciar Servicio';
-
+                                        
                                         if (btnText) {
                                             btnText.textContent = 'Iniciando...';
                                         }
                                         btn.disabled = true;
-
+                                        
                                         const formData = new FormData(form);
-
-                                        // Asegurar que la URL sea correcta antes de enviar
-                                        let submitUrl = form.action;
-                                        if (currentUrl.includes('/admin/technician-view/') && !submitUrl.includes('/admin/technician-view/')) {
-                                            submitUrl = '/admin/technician-view/services/{{ $service->id }}/start';
-                                        }
-
+                                        
                                         fetch(submitUrl, {
                                             method: 'POST',
                                             body: formData,
@@ -153,7 +263,7 @@
                                         })
                                         .then(function(response) {
                                             console.log('Respuesta recibida:', response.status, response.url);
-
+                                            
                                             if (response.redirected) {
                                                 window.location.href = response.url;
                                             } else if (response.ok) {
@@ -178,11 +288,11 @@
                                                 btnText.textContent = originalText;
                                             }
                                         });
-
+                                        
                                         return false;
                                     });
                                 }
-
+                                
                                 if (document.readyState === 'loading') {
                                     document.addEventListener('DOMContentLoaded', initForm);
                                 } else {

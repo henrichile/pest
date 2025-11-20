@@ -1317,7 +1317,8 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Error al activar la vista de técnico. Intenta nuevamente.');
         }
         
-        return redirect()->route('admin.technician-view.dashboard')
+        // Usar URL directa para evitar problemas con route()
+        return redirect(url('/admin/technician-view/dashboard'))
             ->with('success', 'Ahora estás viendo el sistema como técnico.');
     }
 

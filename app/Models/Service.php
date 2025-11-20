@@ -213,7 +213,7 @@ class Service extends Model
         if ($type=='monitoreo-cebaderas') {
             $stages = ["monitoreo-datos", "monitoreo-croquis", "monitoreo-completo", "monitoreo-estadisticas", "monitoreo-analisis", "monitoreo-firma"];
         }elseif($type=='desratizacion') {
-            $stages = ["points", "products", "results", "observations", "sites", "description"];
+            $stages = ["products", "results", "observations", "sites", "description"];
         }elseif($type=='desinsectacion') {
             $stages = ["products","results", "observations", "sites", "description"];
         }elseif($type=='servicios-especiales') {

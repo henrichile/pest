@@ -86,7 +86,12 @@ class TechnicianController extends Controller
                 ->paginate(10);
         }
 
-        return view('technician.services', compact('services'));
+        // Detectar si estamos en modo technician-view
+        $isTechnicianView = request()->is('admin/technician-view/*') || 
+                           request()->routeIs('technician-view.*') ||
+                           (session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin'));
+
+        return view('technician.services', compact('services', 'isTechnicianView'));
     }
 
     public function profile()
@@ -103,8 +108,13 @@ class TechnicianController extends Controller
         }
 
         $service->load(['client', 'serviceType', 'assignedUser']);
+        
+        // Detectar si estamos en modo technician-view
+        $isTechnicianView = request()->is('admin/technician-view/*') || 
+                           request()->routeIs('technician-view.*') ||
+                           (session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin'));
 
-        return view('technician.service-detail', compact('service'));
+        return view('technician.service-detail', compact('service', 'isTechnicianView'));
     }
 
     public function showChecklistDetails(Service $service)
@@ -248,7 +258,7 @@ class TechnicianController extends Controller
                 $nextStage = "products";
                 break;
             case 'desratizacion':
-                $nextStage = "points";
+                $nextStage = "products";
                 break;
             case 'desinsectacion':
                 $nextStage = "products";
@@ -360,7 +370,12 @@ class TechnicianController extends Controller
         if ($service->service_type === 'monitoreo-cebaderas') {
             $validStages = ["monitoreo-datos", "monitoreo-croquis", "monitoreo-completo", "monitoreo-estadisticas", "monitoreo-analisis", "monitoreo-firma"];
         } else {
-            $validStages = ["points", "products", "results", "observations", "sites", "description"];
+            // Desratización ya no incluye "points"
+            if ($service->service_type === 'desratizacion') {
+                $validStages = ["products", "results", "observations", "sites", "description"];
+            } else {
+                $validStages = ["points", "products", "results", "observations", "sites", "description"];
+            }
         }
         
         if (!in_array($stage, $validStages)) {
@@ -453,6 +468,8 @@ class TechnicianController extends Controller
             // Determinar etapa por defecto según tipo de servicio
             if ($service->service_type === 'monitoreo-cebaderas') {
                 $stage = 'monitoreo-datos';
+            } elseif ($service->service_type === 'desratizacion') {
+                $stage = 'products';
             } else {
                 $stage = 'points';
             }
@@ -462,7 +479,12 @@ class TechnicianController extends Controller
         if ($service->service_type === 'monitoreo-cebaderas') {
             $validStages = ["monitoreo-datos", "monitoreo-croquis", "monitoreo-completo", "monitoreo-estadisticas", "monitoreo-analisis", "monitoreo-firma"];
         } else {
-            $validStages = ["points", "products", "results", "observations", "sites", "description"];
+            // Desratización ya no incluye "points"
+            if ($service->service_type === 'desratizacion') {
+                $validStages = ["products", "results", "observations", "sites", "description"];
+            } else {
+                $validStages = ["points", "products", "results", "observations", "sites", "description"];
+            }
         }
         
         if (!in_array($stage, $validStages)) {
@@ -1059,7 +1081,20 @@ class TechnicianController extends Controller
             return $stageFlow[$currentStage] ?? null;
         }
 
-        // Flujo estándar para otros tipos de servicio
+        // Flujo para desratización: products → results → observations → sites → description (sin points)
+        if ($serviceType === 'desratizacion') {
+            $stageFlow = [
+                'products' => 'results',
+                'results' => 'observations',
+                'observations' => 'sites',
+                'sites' => 'description',
+                'description' => null // Final stage
+            ];
+
+            return $stageFlow[$currentStage] ?? null;
+        }
+
+        // Flujo estándar para otros tipos de servicio (que incluyen points)
         $stageFlow = [
             'points' => 'products',
             'products' => 'results',
@@ -1111,7 +1146,20 @@ class TechnicianController extends Controller
             return $stageFlow[$currentStage] ?? null;
         }
 
-        // Flujo estándar para otros tipos de servicio
+        // Flujo para desratización: products → results → observations → sites → description (sin points)
+        if ($serviceType === 'desratizacion') {
+            $stageFlow = [
+                'results' => 'products',
+                'observations' => 'results',
+                'sites' => 'observations',
+                'description' => 'sites',
+                'products' => null // Primera etapa
+            ];
+
+            return $stageFlow[$currentStage] ?? null;
+        }
+
+        // Flujo estándar para otros tipos de servicio (que incluyen points)
         $stageFlow = [
             'products' => 'points',
             'results' => 'products',
@@ -1138,6 +1186,11 @@ class TechnicianController extends Controller
 
         // Flujo especial para sanitización/desinfección: empieza en products
         if ($serviceType === 'sanitizacion' || $serviceType === 'desinfeccion') {
+            return 'products';
+        }
+
+        // Flujo para desratización: empieza en products (sin points)
+        if ($serviceType === 'desratizacion') {
             return 'products';
         }
 

@@ -95,26 +95,66 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <div class="flex items-center space-x-2">
+                                @php
+                                    // PRIORIDAD 1: Verificar sesión PRIMERO (más confiable)
+                                    $isTechView = false;
+                                    if (auth()->check() && auth()->user()->hasRole('super-admin')) {
+                                        $viewAsTechnician = session('view_as_technician', false);
+                                        // También verificar en request()->session() por si acaso
+                                        if (!$viewAsTechnician && request()->hasSession()) {
+                                            $viewAsTechnician = request()->session()->get('view_as_technician', false);
+                                        }
+                                        if ($viewAsTechnician) {
+                                            $isTechView = true;
+                                        }
+                                    }
+                                    
+                                    // PRIORIDAD 2: Verificar URL actual
+                                    if (!$isTechView) {
+                                        if (request()->is('admin/technician-view/*') || request()->routeIs('technician-view.*')) {
+                                            $isTechView = true;
+                                        }
+                                    }
+                                    
+                                    // PRIORIDAD 3: Usar variable del controlador si está disponible
+                                    if (!$isTechView && isset($isTechnicianView) && $isTechnicianView) {
+                                        $isTechView = true;
+                                    }
+                                    
+                                    // Generar URLs correctas
+                                    if ($isTechView) {
+                                        $startUrl = url('/admin/technician-view/services/' . $service->id . '/start');
+                                        $detailUrl = url('/admin/technician-view/services/' . $service->id . '/detail');
+                                        $pdfUrl = url('/admin/technician-view/services/' . $service->id . '/pdf');
+                                    } else {
+                                        try {
+                                            $startUrl = route("technician.service.start", $service);
+                                            $detailUrl = route("technician.service.detail", $service);
+                                            $pdfUrl = route("technician.service.pdf", $service);
+                                        } catch (\Exception $e) {
+                                            $startUrl = url('/technician/services/' . $service->id . '/start');
+                                            $detailUrl = url('/technician/services/' . $service->id . '/detail');
+                                            $pdfUrl = url('/technician/services/' . $service->id . '/pdf');
+                                        }
+                                    }
+                                @endphp
                                 @if($service->status == "pendiente")
-                                <form method="POST" action="{{ route("technician.service.start", $service) }}" class="inline" onsubmit="return startServiceWithLocation(this, {{ $service->id }})">
+                                <form method="POST" action="{{ $startUrl }}" class="inline" id="start-form-{{ $service->id }}">
                                     @csrf
-                                    <input type="hidden" name="latitude" id="latitude_{{ $service->id }}">
-                                    <input type="hidden" name="longitude" id="longitude_{{ $service->id }}">
-                                    <input type="hidden" name="location_accuracy" id="location_accuracy_{{ $service->id }}">
                                     <button type="submit" class="text-blue-600 hover:text-blue-900 font-medium">
                                         Iniciar
                                     </button>
                                 </form>
                                 @elseif($service->status == "en_progreso")
-                                <a href="{{ route("technician.service.detail", $service) }}" class="text-green-600 hover:text-green-900 font-medium">
+                                <a href="{{ $detailUrl }}" class="text-green-600 hover:text-green-900 font-medium">
                                     Completar
                                 </a>
                                 @elseif($service->status == "finalizado")
-                                <a href="{{ route("technician.service.pdf", $service) }}" class="text-blue-600 hover:text-blue-900 font-medium">
+                                <a href="{{ $pdfUrl }}" class="text-blue-600 hover:text-blue-900 font-medium">
                                     📄 Descargar PDF
                                 </a>
                                 @endif
-                                <a href="{{ route("technician.service.detail", $service) }}" class="text-gray-600 hover:text-gray-900 font-medium">
+                                <a href="{{ $detailUrl }}" class="text-gray-600 hover:text-gray-900 font-medium">
                                     Ver
                                 </a>
                             </div>
@@ -140,6 +180,105 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // PRIORIDAD 1: Verificar atributo del body (viene del servidor basado en sesión)
+        let isTechnicianView = false;
+        const body = document.body;
+        if (body) {
+            const hasAttribute = body.getAttribute('data-technician-view') === 'true';
+            const hasClass = body.classList.contains('technician-view-mode');
+            if (hasAttribute || hasClass) {
+                isTechnicianView = true;
+            }
+        }
+        
+        // PRIORIDAD 2: Verificar URL actual
+        if (!isTechnicianView) {
+            isTechnicianView = window.location.href.includes('/admin/technician-view/') || 
+                             window.location.pathname.includes('/admin/technician-view/');
+        }
+        
+        // Agregar atributo al body para detección si no está presente
+        if (isTechnicianView && body) {
+            body.setAttribute('data-technician-view', 'true');
+            body.classList.add('technician-view-mode');
+        }
+        
+        // Manejar todos los formularios de inicio de servicio
+        document.querySelectorAll('form[id^="start-form-"]').forEach(function(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const formId = form.id;
+                const serviceId = formId.replace('start-form-', '');
+                const submitBtn = form.querySelector('button[type="submit"]');
+                
+                // Deshabilitar botón
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Iniciando...';
+                }
+                
+                // FORZAR URL correcta si estamos en technician-view
+                let submitUrl = form.action;
+                if (isTechnicianView) {
+                    submitUrl = '/admin/technician-view/services/' + serviceId + '/start';
+                    form.action = submitUrl;
+                    console.log('✅ URL FORZADA a technician-view:', submitUrl);
+                } else if (!isTechnicianView && submitUrl.includes('/admin/technician-view/')) {
+                    // Si NO estamos en technician-view pero la URL lo indica, corregir
+                    submitUrl = '/technician/services/' + serviceId + '/start';
+                    form.action = submitUrl;
+                    console.log('⚠️ URL corregida a technician normal:', submitUrl);
+                }
+                
+                console.log('Enviando formulario a:', submitUrl);
+                
+                const formData = new FormData(form);
+                
+                fetch(submitUrl, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin'
+                })
+                .then(function(response) {
+                    console.log('Respuesta recibida:', response.status, response.url);
+                    
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                    } else if (response.ok) {
+                        return response.text().then(function(text) {
+                            const match = text.match(/window\.location\.href\s*=\s*['"]([^'"]+)['"]/);
+                            if (match) {
+                                window.location.href = match[1];
+                            } else {
+                                window.location.reload();
+                            }
+                        });
+                    } else {
+                        throw new Error('HTTP ' + response.status);
+                    }
+                })
+                .catch(function(error) {
+                    console.error('Error:', error);
+                    alert('Error al iniciar el servicio: ' + error.message);
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Iniciar';
+                    }
+                });
+            });
+        });
+    });
+</script>
+@endpush
 @endsection
 
 

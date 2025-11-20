@@ -81,8 +81,18 @@ class CheckRole
                     }
                 }
                 
-                // Si está en modo view_as_technician, redirigir a la ruta de admin/technician-view
+                // Si está en modo view_as_technician, permitir acceso o redirigir según el método
                 if ($viewAsTechnician) {
+                    // Para POST requests, permitir el acceso directamente (no redirigir para evitar convertir POST en GET)
+                    if ($request->isMethod('POST')) {
+                        \Log::info('CheckRole: Allowing POST access for super-admin in technician-view mode', [
+                            'path' => $request->path(),
+                            'user_id' => $user->id
+                        ]);
+                        return $next($request);
+                    }
+                    
+                    // Para GET requests, redirigir a la ruta de admin/technician-view
                     $path = $request->path();
                     $newPath = str_replace('technician/', 'admin/technician-view/', $path);
                     
