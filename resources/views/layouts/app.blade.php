@@ -538,52 +538,74 @@ function getTechnicianRoute($routeName, ...$params) {
         <!-- Main content -->
         <div class="flex-1 flex flex-col min-w-0 overflow-x-hidden">
 
-            <!-- Page content -->
-            <main class="py-3 md:py-3 flex-1" style="background: #f9fafb; min-height: calc(100vh - 4rem);">
-                <!-- Banner de advertencia cuando está en modo técnico -->
-                @if(session('view_as_technician') && auth()->check() && auth()->user()->hasRole('super-admin'))
-                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3 sm:p-4 mx-3 sm:mx-4 md:mx-6 lg:mx-8 mb-3 sm:mb-4" style="background: #fef3c7; border-left: 4px solid #f59e0b;">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <svg class="h-5 w-5 text-yellow-400 mr-3" style="color: #f59e0b;" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                </svg>
-                                <div>
-                                    <p class="text-sm font-medium" style="color: #92400e;">
-                                        Estás viendo el sistema como <strong>Técnico</strong>. Los cambios que realices se aplicarán como si fueras un técnico.
-                                    </p>
-                                </div>
-                            </div>
-                            <form action="{{ route('admin.stop-viewing-as-technician') }}" method="POST" class="ml-4">
-                                @csrf
-                                <button type="submit" class="text-sm font-medium underline" style="color: #92400e;">
-                                    Salir de Vista Técnico
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                @endif
+            <!-- Fixed Header -->
+            <header class="fixed top-0 left-0 md:left-72 right-0 z-30 bg-white border-b border-gray-200" style="height: 60px;">
+                <div class="h-full px-4 flex items-center justify-between gap-4">
+                    <!-- Left: Mobile Menu Button -->
+                    <button id="header-mobile-menu-button" class="md:hidden flex-shrink-0 p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                        </svg>
+                    </button>
 
-                <div class="px-3 sm:px-4 md:px-6 lg:px-8 max-w-full">
-                    @if(session('success'))
-                        <div class="mb-4 rounded-md p-4" style="background: #f0fdf4; border: 1px solid #22c55e;">
-                            <div class="flex">
+                    <!-- Center: Success/Status Message -->
+                    <div class="flex-1 max-w-3xl">
+                        @if(session('success'))
+                            <div class="rounded-lg px-4 py-2.5 flex items-center gap-3" style="background: #f0fdf4; border: 1px solid #22c55e;">
                                 <div class="flex-shrink-0">
                                     <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" style="color: #22c55e;">
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                     </svg>
                                 </div>
-                                <div class="ml-3">
-                                    <p class="text-sm font-medium" style="color: #166534;">{{ session('success') }}</p>
-                                </div>
+                                <p class="text-sm font-medium" style="color: #166534;">{{ session('success') }}</p>
                             </div>
-                        </div>
-                    @endif
+                        @elseif(session('view_as_technician') && auth()->check() && auth()->user()->hasRole('super-admin'))
+                            <div class="rounded-lg px-4 py-2.5 flex items-center gap-3" style="background: #fef3c7; border: 1px solid #f59e0b;">
+                                <svg class="h-5 w-5 flex-shrink-0" style="color: #f59e0b;" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                                <p class="text-sm font-medium" style="color: #92400e;">
+                                    Viendo como <strong>Técnico</strong>
+                                </p>
+                            </div>
+                        @endif
+                    </div>
 
+                    <!-- Right: Notifications & User Menu -->
+                    <div class="flex items-center gap-3 flex-shrink-0">
+                        <!-- Notifications -->
+                        <button type="button" class="relative p-2 rounded-full hover:bg-gray-100 transition-colors">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #6b7280;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                            </svg>
+                            @if(auth()->check() && auth()->user()->unreadNotifications()->count() > 0)
+                                <span class="absolute top-1 right-1 flex h-2 w-2">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                </span>
+                            @endif
+                        </button>
+
+                        <!-- User Menu -->
+                        <button type="button" class="flex items-center gap-2 p-1.5 rounded-full hover:bg-gray-100 transition-colors">
+                            <div class="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center">
+                                <span class="text-sm font-medium text-white">
+                                    {{ auth()->check() ? strtoupper(substr(auth()->user()->name, 0, 1)) : 'U' }}
+                                </span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page content -->
+            <main class="pt-16 md:pt-3 py-3 md:py-3 flex-1" style="background: #f9fafb; min-height: calc(100vh - 4rem);">
+
+                <div class="px-3 sm:px-4 md:px-6 lg:px-8 max-w-full">
                     @if(session('error'))
                         <div class="mb-4 rounded-md bg-red-50 p-4">
                             <div class="flex">
-                                <div class="flex-shrink-0">
+                                <div class="shrink-0">
                                     <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                                     </svg>
@@ -822,6 +844,20 @@ function getTechnicianRoute($routeName, ...$params) {
                     ensureDesktopSidebar();
                 }
             });
+
+            // Conectar el botón de hamburguesa del header
+            const headerMobileMenuButton = document.getElementById('header-mobile-menu-button');
+            if (headerMobileMenuButton) {
+                headerMobileMenuButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (sidebar && sidebar.classList.contains('-translate-x-full')) {
+                        openMobileMenu();
+                    } else {
+                        closeMobileMenu();
+                    }
+                });
+            }
         })();
 
         // Dark Mode Toggle Switch
