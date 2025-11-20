@@ -297,7 +297,8 @@
                 {{ now()->locale('es')->isoFormat('dddd, D [de] MMMM') }}
             </p>
         </div>
-        <div class="flex items-center gap-x-4 sm:gap-x-6 md:ml-4 md:mt-0 flex-shrink-0">
+        <!-- Notificaciones y Usuario (solo desktop) -->
+        <div class="hidden md:flex items-center gap-x-4 sm:gap-x-6 md:ml-4 md:mt-0 flex-shrink-0">
             <!-- Notifications -->
             <div class="relative notification-dropdown" id="notification-dropdown" style="margin-right: 8px; overflow: visible;">
                 <button type="button" class="flex items-center justify-center p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 relative" title="Notificaciones" id="notification-button" style="position: relative; overflow: visible;">
