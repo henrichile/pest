@@ -279,16 +279,6 @@ function getTechnicianRoute($routeName, ...$params) {
 </head>
 <body class="h-full" id="body-element" style="overflow-x: hidden; background: #f9fafb;">
     <div id="app" class="flex h-full flex-row">
-        <!-- Mobile Menu Button (oculto por defecto, se muestra solo si la página no tiene su propia hamburguesa) -->
-        <button id="mobile-menu-button" class="md:hidden fixed top-3 left-3 z-50 p-2.5 rounded-lg bg-white border border-gray-300 shadow-lg hover:bg-gray-50 transition-colors" style="z-index: 10001; display: none;">
-            <svg id="menu-icon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-            </svg>
-            <svg id="close-icon" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-        </button>
-
         <!-- Mobile Overlay -->
         <div id="mobile-overlay" class="md:hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-40 hidden" style="z-index: 9998;"></div>
 
@@ -646,7 +636,6 @@ function getTechnicianRoute($routeName, ...$params) {
     <script>
         // Mobile Menu Toggle
         (function() {
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
             const sidebar = document.getElementById('sidebar');
             const mobileOverlay = document.getElementById('mobile-overlay');
 
@@ -776,18 +765,6 @@ function getTechnicianRoute($routeName, ...$params) {
                 if (headerCloseIcon) headerCloseIcon.classList.add('hidden');
             }
 
-            if (mobileMenuButton) {
-                mobileMenuButton.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    if (sidebar && sidebar.classList.contains('-translate-x-full')) {
-                        openMobileMenu();
-                    } else {
-                        closeMobileMenu();
-                    }
-                });
-            }
-
             if (mobileOverlay) {
                 mobileOverlay.addEventListener('click', function() {
                     closeMobileMenu();
@@ -822,9 +799,6 @@ function getTechnicianRoute($routeName, ...$params) {
                     if (mobileOverlay) {
                         mobileOverlay.classList.add('hidden');
                     }
-                    if (mobileMenuButton) {
-                        mobileMenuButton.style.display = 'none';
-                    }
                     document.body.style.overflow = '';
                 } else {
                     // En móvil, restaurar fixed y z-index alto
@@ -833,14 +807,6 @@ function getTechnicianRoute($routeName, ...$params) {
                         sidebar.style.zIndex = '9999';
                         sidebar.style.left = '0';
                         sidebar.style.top = '0';
-                    }
-                    // Mostrar botón de hamburguesa si no hay otro botón en la página
-                    if (mobileMenuButton) {
-                        const dashboardButton = document.getElementById('dashboard-mobile-menu-button');
-                        const pageButton = document.getElementById('page-mobile-menu-button');
-                        if (!dashboardButton && !pageButton) {
-                            mobileMenuButton.style.display = 'block';
-                        }
                     }
                 }
             }
