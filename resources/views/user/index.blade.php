@@ -3,7 +3,7 @@
 @section('title', 'Gestión de Usuarios')
 
 @section('content')
-<div class="space-y-4 sm:space-y-6 pt-12 md:pt-0">
+<div class="space-y-4 sm:space-y-6 pt-12 md:pt-0" style="padding-top: 80px;">
     <!-- Header con hamburguesa y título -->
     <div class="mb-4 sm:mb-6">
         <!-- Primera fila: Hamburguesa + Título (móvil) / Título solo (desktop) -->
@@ -17,7 +17,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            
+
             <!-- Título -->
             <div class="flex-1">
                 <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
@@ -25,7 +25,7 @@
                 </h2>
             </div>
         </div>
-        
+
         <!-- Segunda fila: Título completo (desktop) -->
         <div class="hidden md:block md:flex md:items-center md:justify-between">
             <div class="min-w-0 flex-1">
@@ -37,7 +37,7 @@
                 </p>
             </div>
         </div>
-        
+
         <!-- Botón de acción -->
         <div class="mt-3 sm:mt-4 md:mt-0 md:ml-4 md:flex md:items-center">
             <a href="{{ route('admin.users.create') }}" class="inline-flex items-center justify-center w-full sm:w-auto px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium text-white transition-colors" style="background: #22c55e; hover:background: #16a34a;">
@@ -233,7 +233,7 @@
         const mainMenuButton = document.getElementById('mobile-menu-button');
         const sidebar = document.getElementById('sidebar');
         const mobileOverlay = document.getElementById('mobile-overlay');
-        
+
         function toggleMobileMenu() {
             if (mainMenuButton) {
                 mainMenuButton.click();
@@ -241,7 +241,7 @@
                 // Si no existe el botón principal, usar la lógica directamente
                 const menuIcon = document.getElementById('page-menu-icon');
                 const closeIcon = document.getElementById('page-close-icon');
-                
+
                 if (sidebar && sidebar.classList.contains('-translate-x-full')) {
                     // Abrir
                     sidebar.classList.remove('-translate-x-full');
@@ -261,7 +261,7 @@
                 }
             }
         }
-        
+
         if (pageMenuButton) {
             pageMenuButton.addEventListener('click', function(e) {
                 e.preventDefault();

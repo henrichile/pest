@@ -3,7 +3,7 @@
 @section('title', 'Catálogo de Plagas')
 
 @section('content')
-<div class="space-y-4 sm:space-y-6 pt-12 md:pt-0">
+<div class="space-y-4 sm:space-y-6 pt-12 md:pt-0" style="padding-top: 80px;">
     <!-- Header con hamburguesa y título -->
     <div class="mb-4 sm:mb-6">
         <!-- Primera fila: Hamburguesa + Título (móvil) -->
@@ -17,7 +17,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            
+
             <!-- Título -->
             <div class="flex-1">
                 <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
@@ -25,7 +25,7 @@
                 </h2>
             </div>
         </div>
-        
+
         <!-- Segunda fila: Título completo (desktop) -->
         <div class="hidden md:flex md:items-center md:justify-between">
             <div class="min-w-0 flex-1">
@@ -134,7 +134,7 @@
 <div id="pest-modal" class="fixed hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" style="z-index: 9999; display: none; top: 0; left: 0; right: 0; bottom: 0;">
     <!-- Background overlay -->
     <div class="fixed bg-gray-900 transition-opacity" id="modal-overlay" style="z-index: 9998; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.75) !important;"></div>
-    
+
     <!-- Modal container - Centered -->
     <div class="fixed z-50 flex items-center justify-center p-2 sm:p-4" style="z-index: 10000; pointer-events: none; top: 0; left: 0; right: 0; bottom: 0;" id="modal-container">
         <!-- Modal panel -->
@@ -203,7 +203,7 @@
 <script>
     (function() {
         'use strict';
-        
+
         // Pest data from server
         @php
             $pestsArray = [];
@@ -220,7 +220,7 @@
             $pestsJson = json_encode($pestsArray ?? []);
         @endphp
         const pestsData = {!! $pestsJson !!};
-        
+
         console.log('Pests data loaded:', Object.keys(pestsData).length, 'pests');
 
         function initPestsModal() {
@@ -228,11 +228,11 @@
             const searchInput = document.getElementById('search-input');
             if (searchInput) {
                 let searchTimeout;
-                
+
                 searchInput.addEventListener('input', function() {
                     clearTimeout(searchTimeout);
                     const searchTerm = this.value.trim();
-                    
+
                     searchTimeout = setTimeout(() => {
                         if (searchTerm.length >= 2 || searchTerm.length === 0) {
                             const url = new URL(window.location.href);
@@ -285,7 +285,7 @@
             // Generate recommendations based on pest data
             function generateRecommendations(pest) {
                 const recommendations = [];
-                
+
                 // Recomendaciones basadas en la categoría
                 if (pest.category === 'Arañas') {
                     recommendations.push('Mantener áreas limpias y libres de escombros donde puedan esconderse.');
@@ -335,10 +335,10 @@
             function openModal(pestId) {
                 console.log('Opening modal for pest ID:', pestId, 'Type:', typeof pestId);
                 console.log('Available pests:', Object.keys(pestsData));
-                
+
                 // Convertir a número si es string
                 const id = typeof pestId === 'string' ? parseInt(pestId, 10) : pestId;
-                
+
                 if (!id || !pestsData || !pestsData[id]) {
                     console.error('Pest not found. ID:', id, 'Available:', Object.keys(pestsData));
                     alert('No se encontró la información de la plaga');
@@ -393,7 +393,7 @@
                                 methods = [pest.control_methods];
                             }
                         }
-                        
+
                         methods.forEach(method => {
                             if (method) {
                                 const li = document.createElement('li');
@@ -413,10 +413,10 @@
                 const recommendationsList = document.getElementById('modal-recommendations-list');
                 if (recommendationsDiv && recommendationsList) {
                     recommendationsList.innerHTML = '';
-                    
+
                     // Generar recomendaciones basadas en la información de la plaga
                     const recommendations = generateRecommendations(pest);
-                    
+
                     if (recommendations.length > 0) {
                         recommendations.forEach(rec => {
                             const li = document.createElement('li');
@@ -436,7 +436,7 @@
                     const isMobile = window.innerWidth < 768; // md breakpoint de Tailwind
                     const sidebar = document.getElementById('sidebar');
                     let sidebarWidth = 0;
-                    
+
                     // En desktop, calcular el ancho del sidebar solo si está visible
                     if (!isMobile && sidebar) {
                         const sidebarRect = sidebar.getBoundingClientRect();
@@ -445,7 +445,7 @@
                             sidebarWidth = sidebar.offsetWidth || 288; // 288px = w-72
                         }
                     }
-                    
+
                     // Aplicar estilos según el tamaño de pantalla
                     if (isMobile) {
                         // En móvil: ocupar toda la pantalla
@@ -453,7 +453,7 @@
                         modal.style.top = '0';
                         modal.style.right = '0';
                         modal.style.bottom = '0';
-                        
+
                         const overlay = document.getElementById('modal-overlay');
                         if (overlay) {
                             overlay.style.left = '0';
@@ -461,7 +461,7 @@
                             overlay.style.right = '0';
                             overlay.style.bottom = '0';
                         }
-                        
+
                         const modalContainer = document.getElementById('modal-container');
                         if (modalContainer) {
                             modalContainer.style.left = '0';
@@ -469,7 +469,7 @@
                             modalContainer.style.right = '0';
                             modalContainer.style.bottom = '0';
                         }
-                        
+
                         // En móvil, bloquear el scroll del body
                         document.body.style.overflow = 'hidden';
                     } else {
@@ -478,7 +478,7 @@
                         modal.style.top = '0';
                         modal.style.right = '0';
                         modal.style.bottom = '0';
-                        
+
                         const overlay = document.getElementById('modal-overlay');
                         if (overlay) {
                             overlay.style.left = sidebarWidth + 'px';
@@ -486,7 +486,7 @@
                             overlay.style.right = '0';
                             overlay.style.bottom = '0';
                         }
-                        
+
                         const modalContainer = document.getElementById('modal-container');
                         if (modalContainer) {
                             modalContainer.style.left = sidebarWidth + 'px';
@@ -494,18 +494,18 @@
                             modalContainer.style.right = '0';
                             modalContainer.style.bottom = '0';
                         }
-                        
+
                         // En desktop, solo bloquear el scroll del contenido principal
                         const mainContent = document.querySelector('main');
                         if (mainContent) {
                             mainContent.style.overflow = 'hidden';
                         }
                     }
-                    
+
                     modal.classList.remove('hidden');
                     modal.style.display = 'block';
                     modal.style.zIndex = '9999';
-                    
+
                     // Forzar reflow para asegurar que se muestre
                     void modal.offsetHeight;
                 }
@@ -516,7 +516,7 @@
                     modal.classList.add('hidden');
                     modal.style.display = 'none';
                     modal.style.zIndex = '';
-                    
+
                     // Restaurar scroll
                     document.body.style.overflow = '';
                     const mainContent = document.querySelector('main');
@@ -525,7 +525,7 @@
                     }
                 }
             }
-            
+
             // Ajustar modal al redimensionar la ventana
             let resizeTimeout;
             window.addEventListener('resize', function() {
@@ -536,7 +536,7 @@
                         const isMobile = window.innerWidth < 768;
                         const sidebar = document.getElementById('sidebar');
                         let sidebarWidth = 0;
-                        
+
                         if (!isMobile && sidebar) {
                             const sidebarRect = sidebar.getBoundingClientRect();
                             // Si el sidebar está visible (no está fuera de la pantalla)
@@ -544,7 +544,7 @@
                                 sidebarWidth = sidebar.offsetWidth || 288;
                             }
                         }
-                        
+
                         if (isMobile) {
                             modal.style.left = '0';
                             const overlay = document.getElementById('modal-overlay');
@@ -583,10 +583,10 @@
                         e.preventDefault();
                         e.stopPropagation();
                         e.stopImmediatePropagation();
-                        
+
                         const pestIdAttr = this.getAttribute('data-pest-id');
                         console.log('Card clicked, data-pest-id:', pestIdAttr);
-                        
+
                         if (pestIdAttr) {
                             const pestId = parseInt(pestIdAttr, 10);
                             if (pestId && !isNaN(pestId)) {
@@ -633,21 +633,21 @@
             initPestsModal();
         }
     })();
-    
+
     // Page Mobile Menu Button
     (function() {
         const pageMenuButton = document.getElementById('page-mobile-menu-button');
         const mainMenuButton = document.getElementById('mobile-menu-button');
         const sidebar = document.getElementById('sidebar');
         const mobileOverlay = document.getElementById('mobile-overlay');
-        
+
         function toggleMobileMenu() {
             if (mainMenuButton) {
                 mainMenuButton.click();
             } else {
                 const menuIcon = document.getElementById('page-menu-icon');
                 const closeIcon = document.getElementById('page-close-icon');
-                
+
                 if (sidebar && sidebar.classList.contains('-translate-x-full')) {
                     sidebar.classList.remove('-translate-x-full');
                     sidebar.classList.add('translate-x-0');
@@ -665,7 +665,7 @@
                 }
             }
         }
-        
+
         if (pageMenuButton) {
             pageMenuButton.addEventListener('click', function(e) {
                 e.preventDefault();

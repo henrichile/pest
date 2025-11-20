@@ -3,7 +3,7 @@
 @section('title', 'Configuraciones')
 
 @section('content')
-<div class="space-y-4 sm:space-y-6 pt-12 md:pt-0">
+<div class="space-y-4 sm:space-y-6 pt-12 md:pt-0" style="padding-top: 80px;">
     <!-- Header con hamburguesa y título -->
     <div class="mb-4 sm:mb-6">
         <!-- Primera fila: Hamburguesa + Título (móvil) -->
@@ -17,7 +17,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            
+
             <!-- Título -->
             <div class="flex-1">
                 <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
@@ -25,7 +25,7 @@
                 </h2>
             </div>
         </div>
-        
+
         <!-- Segunda fila: Título completo (desktop) -->
         <div class="hidden md:block">
             <div class="min-w-0 flex-1">
@@ -59,17 +59,17 @@
     <!-- Company Settings -->
     <div class="bg-white border dark:border-gray-700 rounded-lg p-6" style="border: 1px solid #e5e7eb !important;">
         <h3 class="text-lg font-semibold mb-4" style="color: #111827;">Datos de la Empresa</h3>
-        
+
         <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Company Name -->
                 <div>
                     <label for="company_name" class="block text-sm font-medium mb-2" style="color: #374151;">Nombre de la Empresa *</label>
                     <input type="text" id="company_name" name="company_name" value="{{ old('company_name', $settings['company_name'] ?? config('app.name')) }}" required
-                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                            style="border: 1px solid #e5e7eb !important; color: #111827;">
                 </div>
 
@@ -77,7 +77,7 @@
                 <div>
                     <label for="company_rut" class="block text-sm font-medium mb-2" style="color: #374151;">RUT</label>
                     <input type="text" id="company_rut" name="company_rut" value="{{ old('company_rut', $settings['company_rut'] ?? '') }}"
-                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                            style="border: 1px solid #e5e7eb !important; color: #111827;">
                 </div>
 
@@ -85,7 +85,7 @@
                 <div>
                     <label for="company_address" class="block text-sm font-medium mb-2" style="color: #374151;">Dirección</label>
                     <input type="text" id="company_address" name="company_address" value="{{ old('company_address', $settings['company_address'] ?? '') }}"
-                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                            style="border: 1px solid #e5e7eb !important; color: #111827;">
                 </div>
 
@@ -93,7 +93,7 @@
                 <div>
                     <label for="company_phone" class="block text-sm font-medium mb-2" style="color: #374151;">Teléfono</label>
                     <input type="text" id="company_phone" name="company_phone" value="{{ old('company_phone', $settings['company_phone'] ?? '') }}"
-                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                            style="border: 1px solid #e5e7eb !important; color: #111827;">
                 </div>
 
@@ -101,7 +101,7 @@
                 <div>
                     <label for="company_email" class="block text-sm font-medium mb-2" style="color: #374151;">Email</label>
                     <input type="email" id="company_email" name="company_email" value="{{ old('company_email', $settings['company_email'] ?? '') }}"
-                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                            style="border: 1px solid #e5e7eb !important; color: #111827;">
                 </div>
 
@@ -109,11 +109,11 @@
                 <div>
                     <label for="company_logo" class="block text-sm font-medium mb-2" style="color: #374151;">Logo</label>
                     <input type="file" id="company_logo" name="company_logo" accept="image/jpeg,image/png,image/jpg,image/svg+xml"
-                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                            style="border: 1px solid #e5e7eb !important; color: #111827;">
                     <p class="mt-1 text-xs" style="color: #6b7280;">Formatos permitidos: JPEG, PNG, JPG, SVG (máx. 2MB)</p>
                     @if(file_exists(public_path('logo.png')) || file_exists(public_path('logo.jpg')) || file_exists(public_path('logo.svg')))
-                        <p class="mt-2 text-sm" style="color: #22c55e;">Logo actual: 
+                        <p class="mt-2 text-sm" style="color: #22c55e;">Logo actual:
                             @if(file_exists(public_path('logo.png')))
                                 <img src="{{ asset('logo.png') }}" alt="Logo" class="inline-block h-8 mt-1">
                             @elseif(file_exists(public_path('logo.jpg')))
@@ -137,17 +137,17 @@
     <!-- SMTP Settings -->
     <div class="bg-white border dark:border-gray-700 rounded-lg p-6" style="border: 1px solid #e5e7eb !important;">
         <h3 class="text-lg font-semibold mb-4" style="color: #111827;">Configuración SMTP</h3>
-        
+
         <form action="{{ route('admin.settings.smtp') }}" method="POST">
             @csrf
             @method('PUT')
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- SMTP Host -->
                 <div>
                     <label for="smtp_host" class="block text-sm font-medium mb-2" style="color: #374151;">Servidor SMTP *</label>
                     <input type="text" id="smtp_host" name="smtp_host" value="{{ old('smtp_host', config('mail.mailers.smtp.host')) }}" required
-                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                            style="border: 1px solid #e5e7eb !important; color: #111827;">
                 </div>
 
@@ -155,7 +155,7 @@
                 <div>
                     <label for="smtp_port" class="block text-sm font-medium mb-2" style="color: #374151;">Puerto *</label>
                     <input type="number" id="smtp_port" name="smtp_port" value="{{ old('smtp_port', config('mail.mailers.smtp.port')) }}" required min="1" max="65535"
-                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                            style="border: 1px solid #e5e7eb !important; color: #111827;">
                 </div>
 
@@ -163,7 +163,7 @@
                 <div>
                     <label for="smtp_username" class="block text-sm font-medium mb-2" style="color: #374151;">Usuario *</label>
                     <input type="text" id="smtp_username" name="smtp_username" value="{{ old('smtp_username', config('mail.mailers.smtp.username')) }}" required
-                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                            style="border: 1px solid #e5e7eb !important; color: #111827;">
                 </div>
 
@@ -171,7 +171,7 @@
                 <div>
                     <label for="smtp_password" class="block text-sm font-medium mb-2" style="color: #374151;">Contraseña</label>
                     <input type="password" id="smtp_password" name="smtp_password" value="{{ old('smtp_password') }}"
-                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                            style="border: 1px solid #e5e7eb !important; color: #111827;">
                     <p class="mt-1 text-xs" style="color: #6b7280;">Dejar en blanco para mantener la contraseña actual</p>
                 </div>
@@ -180,7 +180,7 @@
                 <div>
                     <label for="smtp_encryption" class="block text-sm font-medium mb-2" style="color: #374151;">Encriptación *</label>
                     <select id="smtp_encryption" name="smtp_encryption" required
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                             style="border: 1px solid #e5e7eb !important; color: #111827;">
                         <option value="" {{ old('smtp_encryption', config('mail.mailers.smtp.encryption')) == '' ? 'selected' : '' }}>Ninguna</option>
                         <option value="tls" {{ old('smtp_encryption', config('mail.mailers.smtp.encryption')) == 'tls' ? 'selected' : '' }}>TLS</option>
@@ -192,7 +192,7 @@
                 <div>
                     <label for="smtp_from_address" class="block text-sm font-medium mb-2" style="color: #374151;">Email Remitente *</label>
                     <input type="email" id="smtp_from_address" name="smtp_from_address" value="{{ old('smtp_from_address', config('mail.from.address')) }}" required
-                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                            style="border: 1px solid #e5e7eb !important; color: #111827;">
                 </div>
 
@@ -200,7 +200,7 @@
                 <div>
                     <label for="smtp_from_name" class="block text-sm font-medium mb-2" style="color: #374151;">Nombre Remitente</label>
                     <input type="text" id="smtp_from_name" name="smtp_from_name" value="{{ old('smtp_from_name', config('mail.from.name')) }}"
-                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                           class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                            style="border: 1px solid #e5e7eb !important; color: #111827;">
                 </div>
             </div>
@@ -222,14 +222,14 @@
         const mainMenuButton = document.getElementById('mobile-menu-button');
         const sidebar = document.getElementById('sidebar');
         const mobileOverlay = document.getElementById('mobile-overlay');
-        
+
         function toggleMobileMenu() {
             if (mainMenuButton) {
                 mainMenuButton.click();
             } else {
                 const menuIcon = document.getElementById('page-menu-icon');
                 const closeIcon = document.getElementById('page-close-icon');
-                
+
                 if (sidebar && sidebar.classList.contains('-translate-x-full')) {
                     sidebar.classList.remove('-translate-x-full');
                     sidebar.classList.add('translate-x-0');
@@ -247,7 +247,7 @@
                 }
             }
         }
-        
+
         if (pageMenuButton) {
             pageMenuButton.addEventListener('click', function(e) {
                 e.preventDefault();

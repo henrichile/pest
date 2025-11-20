@@ -3,7 +3,7 @@
 @section('title', 'Clientes')
 
 @section('content')
-<div class="space-y-4 sm:space-y-6 pt-3 md:pt-0">
+<div class="space-y-4 sm:space-y-6 pt-3 md:pt-0" style="padding-top: 80px;">
     <!-- Header con hamburguesa y título -->
     <div class="mb-4 sm:mb-6">
         <!-- Primera fila: Hamburguesa + Título (móvil) -->
@@ -17,7 +17,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            
+
             <!-- Título -->
             <div class="flex-1">
                 <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
@@ -25,7 +25,7 @@
                 </h2>
             </div>
         </div>
-        
+
         <!-- Segunda fila: Título completo (desktop) -->
         <div class="hidden md:flex md:items-center md:justify-between">
             <div class="min-w-0 flex-1">
@@ -127,7 +127,7 @@
                 </tbody>
             </table>
         </div>
-        
+
         @if($clients->hasPages())
         <div class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6" style="border-top: 1px solid #e5e7eb !important;">
             {{ $clients->links() }}
@@ -144,14 +144,14 @@
         const mainMenuButton = document.getElementById('mobile-menu-button');
         const sidebar = document.getElementById('sidebar');
         const mobileOverlay = document.getElementById('mobile-overlay');
-        
+
         function toggleMobileMenu() {
             if (mainMenuButton) {
                 mainMenuButton.click();
             } else {
                 const menuIcon = document.getElementById('page-menu-icon');
                 const closeIcon = document.getElementById('page-close-icon');
-                
+
                 if (sidebar && sidebar.classList.contains('-translate-x-full')) {
                     sidebar.classList.remove('-translate-x-full');
                     sidebar.classList.add('translate-x-0');
@@ -169,7 +169,7 @@
                 }
             }
         }
-        
+
         if (pageMenuButton) {
             pageMenuButton.addEventListener('click', function(e) {
                 e.preventDefault();

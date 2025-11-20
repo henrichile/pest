@@ -4,7 +4,7 @@
 @section("page-title", "Gestión de Productos")
 
 @section("content")
-<div class="space-y-4 sm:space-y-6 pt-3 md:pt-0">
+<div class="space-y-4 sm:space-y-6 pt-3 md:pt-0" style="padding-top: 80px;">
     <!-- Header con hamburguesa y título -->
     <div class="mb-4 sm:mb-6">
         <!-- Primera fila: Hamburguesa + Título (móvil) -->
@@ -18,7 +18,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            
+
             <!-- Título -->
             <div class="flex-1">
                 <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
@@ -26,7 +26,7 @@
                 </h2>
             </div>
         </div>
-        
+
         <!-- Segunda fila: Título completo (desktop) -->
         <div class="hidden md:flex md:items-center md:justify-between">
             <div class="min-w-0 flex-1">
@@ -135,17 +135,17 @@
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                            <a href="{{ route("admin.products.show", $product) }}" 
+                            <a href="{{ route("admin.products.show", $product) }}"
                                class="text-green-600 hover:text-green-900">Ver</a>
                             @can("edit-products")
-                            <a href="{{ route("admin.products.edit", $product) }}" 
+                            <a href="{{ route("admin.products.edit", $product) }}"
                                class="text-blue-600 hover:text-blue-900">Editar</a>
                             @endcan
                             @can("delete-products")
                             <form method="POST" action="{{ route("admin.products.destroy", $product) }}" class="inline">
                                 @csrf
                                 @method("DELETE")
-                                <button type="submit" class="text-red-600 hover:text-red-900" 
+                                <button type="submit" class="text-red-600 hover:text-red-900"
                                         onclick="return confirm("¿Está seguro de eliminar este producto?")">Eliminar</button>
                             </form>
                             @endcan
@@ -161,7 +161,7 @@
                 </tbody>
             </table>
         </div>
-        
+
         @if($products->hasPages())
         <div class="px-6 py-3 border-t border-gray-200">
             {{ $products->links() }}
@@ -178,14 +178,14 @@
         const mainMenuButton = document.getElementById('mobile-menu-button');
         const sidebar = document.getElementById('sidebar');
         const mobileOverlay = document.getElementById('mobile-overlay');
-        
+
         function toggleMobileMenu() {
             if (mainMenuButton) {
                 mainMenuButton.click();
             } else {
                 const menuIcon = document.getElementById('page-menu-icon');
                 const closeIcon = document.getElementById('page-close-icon');
-                
+
                 if (sidebar && sidebar.classList.contains('-translate-x-full')) {
                     sidebar.classList.remove('-translate-x-full');
                     sidebar.classList.add('translate-x-0');
@@ -203,7 +203,7 @@
                 }
             }
         }
-        
+
         if (pageMenuButton) {
             pageMenuButton.addEventListener('click', function(e) {
                 e.preventDefault();

@@ -3,7 +3,7 @@
 @section('title', 'Reportes')
 
 @section('content')
-<div class="space-y-4 sm:space-y-6 pt-3 md:pt-0">
+<div class="space-y-4 sm:space-y-6 pt-3 md:pt-0" style="padding-top: 80px;">
     <!-- Header con hamburguesa y título -->
     <div class="mb-4 sm:mb-6">
         <!-- Primera fila: Hamburguesa + Título (móvil) -->
@@ -17,7 +17,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            
+
             <!-- Título -->
             <div class="flex-1">
                 <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
@@ -25,7 +25,7 @@
                 </h2>
             </div>
         </div>
-        
+
         <!-- Segunda fila: Título completo (desktop) -->
         <div class="hidden md:flex md:items-center md:justify-between">
             <div class="min-w-0 flex-1">
@@ -389,7 +389,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Botón de hamburguesa para móvil
     const pageMobileMenuButton = document.getElementById('page-mobile-menu-button');
     const mainMobileMenuButton = document.getElementById('mobile-menu-button');
-    
+
     if (pageMobileMenuButton && mainMobileMenuButton) {
         pageMobileMenuButton.addEventListener('click', function(e) {
             e.preventDefault();
@@ -397,13 +397,13 @@ document.addEventListener('DOMContentLoaded', function() {
             mainMobileMenuButton.click();
         });
     }
-    
+
     // Sincronizar iconos
     const pageMenuIcon = document.getElementById('page-menu-icon');
     const pageCloseIcon = document.getElementById('page-close-icon');
     const menuIcon = document.getElementById('menu-icon');
     const closeIcon = document.getElementById('close-icon');
-    
+
     if (pageMenuIcon && pageCloseIcon && menuIcon && closeIcon) {
         // Observar cambios en los iconos principales
         const observer = new MutationObserver(function() {
@@ -415,7 +415,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 pageCloseIcon.classList.add('hidden');
             }
         });
-        
+
         observer.observe(menuIcon, { attributes: true, attributeFilter: ['class'] });
         observer.observe(closeIcon, { attributes: true, attributeFilter: ['class'] });
     }
@@ -427,20 +427,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Dropdown de exportación
     const exportBtn = document.getElementById('exportBtn');
     const exportDropdown = document.getElementById('exportDropdown');
-    
+
     if (exportBtn && exportDropdown) {
         exportBtn.addEventListener('click', function(e) {
             e.stopPropagation();
             exportDropdown.classList.toggle('hidden');
         });
-        
+
         document.addEventListener('click', function(e) {
             if (!exportBtn.contains(e.target) && !exportDropdown.contains(e.target)) {
                 exportDropdown.classList.add('hidden');
             }
         });
     }
-    
+
     // Rangos rápidos
     const quickRangeButtons = document.querySelectorAll('.quick-range-btn');
     quickRangeButtons.forEach(btn => {
@@ -470,7 +470,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             document.getElementById('start_date').value = startDate.toISOString().split('T')[0];
             document.getElementById('end_date').value = endDate.toISOString().split('T')[0];
-            
+
             // Remover selección de otros botones
             quickRangeButtons.forEach(b => {
                 b.style.background = '#f3f4f6';
@@ -567,7 +567,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (temporalCtx) {
         const temporalData = @json($temporalData);
         const months = @json($months);
-        
+
         new Chart(temporalCtx, {
             type: 'line',
             data: {

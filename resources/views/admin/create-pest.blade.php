@@ -3,7 +3,7 @@
 @section('title', 'Crear Nueva Plaga')
 
 @section('content')
-<div class="space-y-4 sm:space-y-6 pt-12 md:pt-0">
+<div class="space-y-4 sm:space-y-6 pt-12 md:pt-0" style="padding-top: 80px;">
     <!-- Header con hamburguesa y título -->
     <div class="mb-4 sm:mb-6">
         <!-- Primera fila: Hamburguesa + Título (móvil) -->
@@ -17,7 +17,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            
+
             <!-- Título -->
             <div class="flex-1">
                 <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
@@ -25,7 +25,7 @@
                 </h2>
             </div>
         </div>
-        
+
         <!-- Segunda fila: Título completo (desktop) -->
         <div class="hidden md:block">
             <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" style="color: #111827; font-weight: 700;">
@@ -208,7 +208,7 @@
             </button>
         `;
         container.appendChild(div);
-        
+
         // Mostrar botones de eliminar en todos los elementos
         updateRemoveButtons('control-methods-container');
     }
@@ -233,7 +233,7 @@
             </button>
         `;
         container.appendChild(div);
-        
+
         // Mostrar botones de eliminar en todos los elementos
         updateRemoveButtons('risks-container');
     }
@@ -261,21 +261,21 @@
         updateRemoveButtons('control-methods-container');
         updateRemoveButtons('risks-container');
     });
-    
+
     // Page Mobile Menu Button
     (function() {
         const pageMenuButton = document.getElementById('page-mobile-menu-button');
         const mainMenuButton = document.getElementById('mobile-menu-button');
         const sidebar = document.getElementById('sidebar');
         const mobileOverlay = document.getElementById('mobile-overlay');
-        
+
         function toggleMobileMenu() {
             if (mainMenuButton) {
                 mainMenuButton.click();
             } else {
                 const menuIcon = document.getElementById('page-menu-icon');
                 const closeIcon = document.getElementById('page-close-icon');
-                
+
                 if (sidebar && sidebar.classList.contains('-translate-x-full')) {
                     sidebar.classList.remove('-translate-x-full');
                     sidebar.classList.add('translate-x-0');
@@ -293,7 +293,7 @@
                 }
             }
         }
-        
+
         if (pageMenuButton) {
             pageMenuButton.addEventListener('click', function(e) {
                 e.preventDefault();
