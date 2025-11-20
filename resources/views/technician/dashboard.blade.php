@@ -24,15 +24,15 @@
         flex-shrink: 0 !important;
         overflow: visible !important;
     }
-    
+
     #notification-button {
         padding: 8px !important;
     }
-    
+
     #user-menu-button {
         padding: 0 !important;
     }
-    
+
     #notification-button svg {
         width: 24px !important;
         height: 24px !important;
@@ -43,7 +43,7 @@
         display: block !important;
         flex-shrink: 0 !important;
     }
-    
+
     #user-menu-button > div {
         width: 40px !important;
         height: 40px !important;
@@ -53,17 +53,17 @@
         max-height: 40px !important;
         box-sizing: border-box !important;
     }
-    
+
     #user-menu-button > div > span {
         font-size: 14px !important;
         line-height: 1 !important;
     }
-    
+
     /* Estilos para los menús dropdown */
     .notification-dropdown {
         position: relative;
     }
-    
+
     .notification-dropdown::before {
         content: '';
         position: absolute;
@@ -73,7 +73,7 @@
         height: 12px;
         z-index: 999;
     }
-    
+
     .notification-menu {
         position: absolute;
         top: calc(100% + 12px);
@@ -91,13 +91,13 @@
         transform: translateY(-10px);
         transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
     }
-    
+
     .notification-menu.show {
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
     }
-    
+
     .notification-menu-header {
         padding: 16px 20px;
         border-bottom: 1px solid #e5e7eb;
@@ -106,13 +106,13 @@
         align-items: center;
         background: #f9fafb;
     }
-    
+
     .notification-menu-content {
         max-height: 400px;
         overflow-y: auto;
         padding: 8px;
     }
-    
+
     .notification-item {
         padding: 12px;
         border-radius: 8px;
@@ -123,34 +123,34 @@
         align-items: flex-start;
         justify-content: space-between;
     }
-    
+
     .notification-item:hover {
         background-color: #f3f4f6;
     }
-    
+
     .notification-item.unread {
         background-color: #f0fdf4;
     }
-    
+
     .notification-item-content {
         flex: 1;
         min-width: 0;
     }
-    
+
     .notification-item-header {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
         margin-bottom: 4px;
     }
-    
+
     .notification-time {
         color: #9ca3af;
         font-size: 12px;
         white-space: nowrap;
         margin-left: 12px;
     }
-    
+
     .notification-dot {
         width: 8px;
         height: 8px;
@@ -160,17 +160,17 @@
         margin-top: 6px;
         flex-shrink: 0;
     }
-    
+
     .notification-empty {
         padding: 40px 20px;
         text-align: center;
     }
-    
+
     /* Estilos del menú de usuario */
     .user-menu-dropdown {
         position: relative;
     }
-    
+
     .user-menu-dropdown::before {
         content: '';
         position: absolute;
@@ -180,7 +180,7 @@
         height: 12px;
         z-index: 999;
     }
-    
+
     .user-menu {
         position: absolute !important;
         top: calc(100% + 12px) !important;
@@ -198,46 +198,46 @@
         transform: translateY(-10px) !important;
         transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease !important;
     }
-    
+
     .user-menu.show {
         opacity: 1 !important;
         visibility: visible !important;
         transform: translateY(0) !important;
     }
-    
+
     .user-menu-header {
         padding: 20px !important;
         border-bottom: 1px solid #e5e7eb !important;
         background: #f9fafb !important;
     }
-    
+
     .user-menu-profile {
         display: flex;
         align-items: center;
         gap: 12px;
     }
-    
+
     .user-menu-info {
         flex: 1;
         min-width: 0;
     }
-    
+
     .user-menu-name {
         font-size: 16px;
         font-weight: 600;
         color: #111827;
         margin-bottom: 4px;
     }
-    
+
     .user-menu-email {
         font-size: 14px;
         color: #6b7280;
     }
-    
+
     .user-menu-content {
         padding: 8px;
     }
-    
+
     .user-menu-item {
         display: flex;
         align-items: center;
@@ -253,31 +253,31 @@
         background: none;
         cursor: pointer;
     }
-    
+
     .user-menu-item:hover {
         background-color: #f3f4f6;
     }
-    
+
     .user-menu-item-danger {
         color: #dc2626;
     }
-    
+
     .user-menu-item-danger:hover {
         background-color: #fef2f2;
     }
-    
+
     .user-menu-icon {
         width: 20px !important;
         height: 20px !important;
         flex-shrink: 0;
     }
-    
+
     .user-menu-divider {
         height: 1px;
         background: #e5e7eb;
         margin: 8px 0;
     }
-    
+
     .user-menu-form {
         margin: 0;
         padding: 0;
@@ -310,7 +310,7 @@
                     </span>
                     @endif
                 </button>
-                
+
                 <!-- Dropdown Menu -->
                 <div class="notification-menu" id="notification-menu" style="opacity: 0; visibility: hidden; transform: translateY(-10px);">
                     <div class="notification-menu-header">
@@ -338,7 +338,7 @@
                                     // Si no hay service_id, intentar buscarlo desde el mensaje
                                     if (!$serviceId && auth()->check() && ($title === 'Nuevo Servicio Asignado' || strpos($message, 'servicio') !== false)) {
                                         $clientName = null;
-                                        
+
                                         // Buscar formato "servicio: [cliente]" - ejemplo: "Se te ha asignado un nuevo servicio: Venta Renta"
                                         if (preg_match('/servicio[:\s]+([^:]+?)(?:\s+el|\s*$)/i', $message, $clientMatches)) {
                                             $clientName = trim($clientMatches[1]);
@@ -347,10 +347,10 @@
                                         elseif (preg_match('/para\s+([^:]+?)\s+el/i', $message, $clientMatches)) {
                                             $clientName = trim($clientMatches[1]);
                                         }
-                                        
+
                                         if ($clientName) {
                                             $clientName = trim($clientName);
-                                            
+
                                             // Buscar el servicio más reciente asignado a este técnico para ese cliente
                                             $service = \App\Models\Service::where('assigned_to', auth()->id())
                                                 ->where('created_at', '<=', $notification->created_at->copy()->addDay())
@@ -359,12 +359,12 @@
                                                 })
                                                 ->orderBy('created_at', 'desc')
                                                 ->first();
-                                            
+
                                             if ($service) {
                                                 $serviceId = $service->id;
                                             }
                                         }
-                                        
+
                                         // Si aún no encontramos el servicio, buscar el más reciente del técnico cerca de la fecha
                                         if (!$serviceId) {
                                             $service = \App\Models\Service::where('assigned_to', auth()->id())
@@ -374,7 +374,7 @@
                                                 ])
                                                 ->orderBy('created_at', 'desc')
                                                 ->first();
-                                            
+
                                             if ($service) {
                                                 $serviceId = $service->id;
                                             }
@@ -387,7 +387,7 @@
                                         $service = \App\Models\Service::where('id', $serviceId)
                                             ->where('assigned_to', auth()->id())
                                             ->first();
-                                        
+
                                         if ($service) {
                                             try {
                                                 $notificationUrl = route('technician.service.detail', $serviceId);
@@ -436,7 +436,7 @@
                         <span class="text-white text-sm font-medium">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
                     </div>
                 </button>
-                
+
                 <!-- User Menu -->
                 <div class="user-menu" id="user-menu" style="opacity: 0; visibility: hidden; transform: translateY(-10px);">
                     <div class="user-menu-header">
@@ -474,78 +474,78 @@
     </div>
 
     <!-- Stats Cards -->
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-6">
+    <div class="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-6">
         <!-- Completados Hoy -->
-        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
-            <div class="p-5">
+        <div class="overflow-hidden rounded-xl bg-white border dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow" style="border: 1px solid #e5e7eb !important;">
+            <div class="p-5 sm:p-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <div class="w-14 h-14 rounded-lg flex items-center justify-center" style="background: #22c55e;">
-                            <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-lg flex items-center justify-center" style="background: #22c55e;">
+                            <svg class="w-6 h-6 sm:w-7 sm:h-7 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1" style="color: #374151;">Completados Hoy</p>
-                        <p class="text-3xl font-bold" style="color: #000000;">{{ $completedToday ?? 0 }}</p>
+                        <p class="text-xs sm:text-sm font-medium mb-1" style="color: #6b7280;">Completados Hoy</p>
+                        <p class="text-2xl sm:text-3xl font-bold" style="color: #000000;">{{ $completedToday ?? 0 }}</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Pendientes -->
-        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
-            <div class="p-5">
+        <div class="overflow-hidden rounded-xl bg-white border dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow" style="border: 1px solid #e5e7eb !important;">
+            <div class="p-5 sm:p-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <div class="w-14 h-14 rounded-lg flex items-center justify-center" style="background: #f59e0b;">
-                            <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-lg flex items-center justify-center" style="background: #f59e0b;">
+                            <svg class="w-6 h-6 sm:w-7 sm:h-7 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1" style="color: #374151;">Pendientes</p>
-                        <p class="text-3xl font-bold" style="color: #000000;">{{ $pendingServices ?? 0 }}</p>
+                        <p class="text-xs sm:text-sm font-medium mb-1" style="color: #6b7280;">Pendientes</p>
+                        <p class="text-2xl sm:text-3xl font-bold" style="color: #000000;">{{ $pendingServices ?? 0 }}</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- En Progreso -->
-        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
-            <div class="p-5">
+        <div class="overflow-hidden rounded-xl bg-white border dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow" style="border: 1px solid #e5e7eb !important;">
+            <div class="p-5 sm:p-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <div class="w-14 h-14 rounded-lg flex items-center justify-center" style="background: #3b82f6;">
-                            <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-lg flex items-center justify-center" style="background: #3b82f6;">
+                            <svg class="w-6 h-6 sm:w-7 sm:h-7 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
                             </svg>
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1" style="color: #374151;">En Progreso</p>
-                        <p class="text-3xl font-bold" style="color: #000000;">{{ $inProgressServices ?? 0 }}</p>
+                        <p class="text-xs sm:text-sm font-medium mb-1" style="color: #6b7280;">En Progreso</p>
+                        <p class="text-2xl sm:text-3xl font-bold" style="color: #000000;">{{ $inProgressServices ?? 0 }}</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Vencidos -->
-        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
-            <div class="p-5">
+        <div class="overflow-hidden rounded-xl bg-white border dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow" style="border: 1px solid #e5e7eb !important;">
+            <div class="p-5 sm:p-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <div class="w-14 h-14 rounded-lg flex items-center justify-center" style="background: #ef4444;">
-                            <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-lg flex items-center justify-center" style="background: #ef4444;">
+                            <svg class="w-6 h-6 sm:w-7 sm:h-7 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                             </svg>
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1" style="color: #374151;">Vencidos</p>
-                        <p class="text-3xl font-bold" style="color: #000000;">{{ $overdueServices ?? 0 }}</p>
+                        <p class="text-xs sm:text-sm font-medium mb-1" style="color: #6b7280;">Vencidos</p>
+                        <p class="text-2xl sm:text-3xl font-bold" style="color: #000000;">{{ $overdueServices ?? 0 }}</p>
                     </div>
                 </div>
             </div>
@@ -630,18 +630,18 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         console.log('Dashboard script loaded');
-        
+
         // Setup notification dropdown
         const notificationDropdown = document.getElementById('notification-dropdown');
         const notificationButton = document.getElementById('notification-button');
         const notificationMenu = document.getElementById('notification-menu');
-        
+
         console.log('Notification elements:', { notificationDropdown, notificationButton, notificationMenu });
-        
+
         if (notificationDropdown && notificationButton && notificationMenu) {
             let hideTimeout = null;
             let showTimeout = null;
-            
+
             function showNotificationMenu() {
                 console.log('Showing notification menu');
                 if (hideTimeout) {
@@ -664,7 +664,7 @@
                     showTimeout = null;
                 }, 10);
             }
-            
+
             function hideNotificationMenu() {
                 console.log('Hiding notification menu');
                 if (showTimeout) {
@@ -685,7 +685,7 @@
                     hideTimeout = null;
                 }, 200);
             }
-            
+
             notificationDropdown.addEventListener('mouseenter', showNotificationMenu);
             notificationButton.addEventListener('mouseenter', showNotificationMenu);
             notificationMenu.addEventListener('mouseenter', showNotificationMenu);
@@ -699,7 +699,7 @@
                     hideNotificationMenu();
                 }
             });
-            
+
             // Mark as read on click
             const notificationItems = document.querySelectorAll('.notification-item');
             notificationItems.forEach(item => {
@@ -736,18 +736,18 @@
                 });
             });
         }
-        
+
         // Setup user menu dropdown
         const userDropdown = document.getElementById('user-menu-dropdown');
         const userButton = document.getElementById('user-menu-button');
         const userMenu = document.getElementById('user-menu');
-        
+
         console.log('User menu elements:', { userDropdown, userButton, userMenu });
-        
+
         if (userDropdown && userButton && userMenu) {
             let hideTimeout = null;
             let showTimeout = null;
-            
+
             function showUserMenu() {
                 console.log('Showing user menu');
                 if (hideTimeout) {
@@ -770,7 +770,7 @@
                     showTimeout = null;
                 }, 10);
             }
-            
+
             function hideUserMenu() {
                 console.log('Hiding user menu');
                 if (showTimeout) {
@@ -791,7 +791,7 @@
                     hideTimeout = null;
                 }, 200);
             }
-            
+
             userDropdown.addEventListener('mouseenter', showUserMenu);
             userButton.addEventListener('mouseenter', showUserMenu);
             userMenu.addEventListener('mouseenter', showUserMenu);
