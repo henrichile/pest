@@ -286,7 +286,7 @@
 @endpush
 
 @section('content')
-<div class="space-y-4 sm:space-y-6 mx-4 sm:mx-6 lg:mx-8 pt-3 md:pt-6">
+<div class="space-y-4 sm:space-y-6 mx-4 sm:mx-6 lg:mx-8 md:pt-6" style="padding-top: 80px;">
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
         <div class="min-w-0 flex-1">
