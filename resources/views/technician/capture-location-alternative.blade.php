@@ -11,7 +11,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background: #000000;
@@ -21,7 +21,7 @@
             justify-content: center;
             padding: 20px;
         }
-        
+
         .container {
             background: white;
             border-radius: 20px;
@@ -31,7 +31,7 @@
             width: 100%;
             text-align: center;
         }
-        
+
         .logo {
             width: 80px;
             height: 80px;
@@ -45,19 +45,19 @@
             font-size: 24px;
             font-weight: bold;
         }
-        
+
         h1 {
             color: #1a472a;
             margin-bottom: 10px;
             font-size: 28px;
         }
-        
+
         .subtitle {
             color: #666;
             margin-bottom: 30px;
             font-size: 16px;
         }
-        
+
         .service-info {
             background: #f8f9fa;
             padding: 20px;
@@ -65,27 +65,27 @@
             margin-bottom: 30px;
             text-align: left;
         }
-        
+
         .service-info h3 {
             color: #1a472a;
             margin-bottom: 10px;
         }
-        
+
         .info-row {
             display: flex;
             justify-content: space-between;
             margin-bottom: 8px;
         }
-        
+
         .info-label {
             font-weight: 600;
             color: #333;
         }
-        
+
         .info-value {
             color: #666;
         }
-        
+
         .status-box {
             background: #e3f2fd;
             border: 2px solid #2196f3;
@@ -94,27 +94,27 @@
             margin-bottom: 30px;
             text-align: left;
         }
-        
+
         .status-box.success {
             background: #e8f5e8;
             border-color: #4caf50;
         }
-        
+
         .status-box.error {
             background: #ffebee;
             border-color: #f44336;
         }
-        
+
         .status-box h4 {
             margin-bottom: 10px;
             display: flex;
             align-items: center;
         }
-        
+
         .status-box p {
             margin-bottom: 10px;
         }
-        
+
         .start-button {
             background: #1a472a;
             color: white;
@@ -128,18 +128,18 @@
             width: 100%;
             margin-bottom: 20px;
         }
-        
+
         .start-button:hover {
             background: #2d5016;
             transform: translateY(-2px);
         }
-        
+
         .start-button:disabled {
             background: #ccc;
             cursor: not-allowed;
             transform: none;
         }
-        
+
         .loading-spinner {
             display: inline-block;
             width: 20px;
@@ -150,12 +150,12 @@
             animation: spin 1s linear infinite;
             margin-right: 10px;
         }
-        
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
+
         .retry-button {
             background: #ff9800;
             color: white;
@@ -169,7 +169,7 @@
             width: 100%;
             margin-bottom: 10px;
         }
-        
+
         .retry-button:hover {
             background: #f57c00;
         }
@@ -180,7 +180,7 @@
         <div class="logo">PC</div>
         <h1>Iniciar Servicio</h1>
         <p class="subtitle">Capturando ubicación automáticamente...</p>
-        
+
         <div class="service-info">
             <h3>Detalles del Servicio</h3>
             <div class="info-row">
@@ -200,15 +200,15 @@
                 <span class="info-value">{{ ucfirst($service->priority ?? "Media") }}</span>
             </div>
         </div>
-        
+
         <div id="statusBox" class="status-box">
             <h4><span class="loading-spinner"></span>Obteniendo ubicación...</h4>
             <p>Por favor, permite el acceso a tu ubicación cuando el navegador lo solicite.</p>
         </div>
-        
+
 @php
 $isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
-$processLocationRoute = $isViewingAsTechnician ? route('admin.technician-view.service.checklist.process-location', $service) : route('technician.service.checklist.process-location', $service);
+$processLocationRoute = $isViewingAsTechnician ? route('technician-view.service.checklist.process-location', $service) : route('technician.service.checklist.process-location', $service);
 @endphp
         <form id="locationForm" method="POST" action="{{ $processLocationRoute }}" style="display: none;">
             @csrf
@@ -216,12 +216,12 @@ $processLocationRoute = $isViewingAsTechnician ? route('admin.technician-view.se
             <input type="hidden" id="longitude" name="longitude" required>
             <input type="hidden" id="location_accuracy" name="location_accuracy" value="10">
             <input type="hidden" name="address" value="{{ $service->address ?? 'Ubicación capturada' }}">
-            
+
             <button type="submit" class="start-button">
                 🚀 Iniciar Servicio
             </button>
         </form>
-        
+
         <button id="retryBtn" class="retry-button" style="display: none;">
             🔄 Intentar Nuevamente
         </button>
@@ -231,14 +231,14 @@ $processLocationRoute = $isViewingAsTechnician ? route('admin.technician-view.se
         const statusBox = document.getElementById("statusBox");
         const locationForm = document.getElementById("locationForm");
         const retryBtn = document.getElementById("retryBtn");
-        
+
         const latitudeInput = document.getElementById("latitude");
         const longitudeInput = document.getElementById("longitude");
         const accuracyInput = document.getElementById("location_accuracy");
 
         function updateStatus(message, type = 'loading') {
             statusBox.className = `status-box ${type}`;
-            
+
             if (type === 'loading') {
                 statusBox.innerHTML = `
                     <h4><span class="loading-spinner"></span>${message}</h4>
@@ -303,7 +303,7 @@ $processLocationRoute = $isViewingAsTechnician ? route('admin.technician-view.se
                             message = "Error desconocido";
                             break;
                     }
-                    
+
                     updateStatus(message, 'error');
                     showRetryButton();
                 },

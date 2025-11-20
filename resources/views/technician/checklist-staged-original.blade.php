@@ -2,24 +2,24 @@
 // Helper function para obtener la ruta correcta según el modo
 function getTechnicianRoute($routeName, ...$params) {
     $isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
-    
+
     if ($isViewingAsTechnician) {
         // Mapear rutas de technician a technician-view
         $routeMap = [
-            'technician.service.detail' => 'admin.technician-view.service.detail',
-            'technician.service.checklist' => 'admin.technician-view.service.checklist',
-            'technician.service.checklist.stage' => 'admin.technician-view.service.checklist.stage',
-            'technician.service.checklist.location' => 'admin.technician-view.service.checklist.location',
-            'technician.service.checklist.process-location' => 'admin.technician-view.service.checklist.process-location',
+            'technician.service.detail' => 'technician-view.service.detail',
+            'technician.service.checklist' => 'technician-view.service.checklist',
+            'technician.service.checklist.stage' => 'technician-view.service.checklist.stage',
+            'technician.service.checklist.location' => 'technician-view.service.checklist.location',
+            'technician.service.checklist.process-location' => 'technician-view.service.checklist.process-location',
             'technician.service.checklist.submit' => 'technician-view.service.checklist.submit',
-            'technician.service.pdf' => 'admin.technician-view.service.pdf',
-            'technician.service.checklist-details' => 'admin.technician-view.service.checklist-details',
+            'technician.service.pdf' => 'technician-view.service.pdf',
+            'technician.service.checklist-details' => 'technician-view.service.checklist-details',
         ];
-        
+
         $mappedRoute = $routeMap[$routeName] ?? $routeName;
         return route($mappedRoute, ...$params);
     }
-    
+
     return route($routeName, ...$params);
 }
 @endphp
@@ -667,7 +667,7 @@ function getTechnicianRoute($routeName, ...$params) {
                 </svg>
                 Detalles del Servicio
             </h3>
-            
+
             <!-- Barra azul de información del cliente -->
             <div class="client-info-bar">
                 <div class="info-item">
@@ -693,7 +693,7 @@ function getTechnicianRoute($routeName, ...$params) {
             <div class="info-row">
                 <span class="info-label">Prioridad:</span>
                 <span class="info-value">
-                    <span style="display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; 
+                    <span style="display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600;
                         @if(strtolower($service->priority ?? 'media') === 'alta') background: #fee; color: #c33;
                         @elseif(strtolower($service->priority ?? 'media') === 'media') background: #fff4e6; color: #d97706;
                         @else background: #e6f7ff; color: #1890ff;
@@ -718,7 +718,7 @@ function getTechnicianRoute($routeName, ...$params) {
                 </span>
             </div>
                 <div style="text-align: center;">
-                <a href="{{ getTechnicianRoute('technician.service.checklist.location', $service) }}" 
+                <a href="{{ getTechnicianRoute('technician.service.checklist.location', $service) }}"
                    class="geolocation-retry-btn">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px;">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.25 18.002h4.992m-.01-13.5v4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />

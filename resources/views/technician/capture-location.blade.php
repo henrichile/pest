@@ -11,7 +11,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -21,7 +21,7 @@
             justify-content: center;
             padding: 20px;
         }
-        
+
         .container {
             background: white;
             border-radius: 20px;
@@ -31,7 +31,7 @@
             width: 100%;
             text-align: center;
         }
-        
+
         .logo {
             width: 80px;
             height: 80px;
@@ -45,19 +45,19 @@
             font-size: 24px;
             font-weight: bold;
         }
-        
+
         h1 {
             color: #1a472a;
             margin-bottom: 10px;
             font-size: 28px;
         }
-        
+
         .subtitle {
             color: #666;
             margin-bottom: 30px;
             font-size: 16px;
         }
-        
+
         .service-info {
             background: #f8f9fa;
             padding: 20px;
@@ -65,27 +65,27 @@
             margin-bottom: 30px;
             text-align: left;
         }
-        
+
         .service-info h3 {
             color: #1a472a;
             margin-bottom: 10px;
         }
-        
+
         .info-row {
             display: flex;
             justify-content: space-between;
             margin-bottom: 8px;
         }
-        
+
         .info-label {
             font-weight: 600;
             color: #333;
         }
-        
+
         .info-value {
             color: #666;
         }
-        
+
         .location-button {
             background: #1a472a;
             color: white;
@@ -99,43 +99,43 @@
             width: 100%;
             margin-bottom: 20px;
         }
-        
+
         .location-button:hover {
             background: #2d5016;
             transform: translateY(-2px);
         }
-        
+
         .location-button:disabled {
             background: #ccc;
             cursor: not-allowed;
             transform: none;
         }
-        
+
         .status {
             padding: 15px;
             border-radius: 10px;
             margin-bottom: 20px;
             font-weight: 600;
         }
-        
+
         .status.loading {
             background: #e3f2fd;
             color: #1976d2;
             border: 2px solid #1976d2;
         }
-        
+
         .status.success {
             background: #e8f5e8;
             color: #2e7d32;
             border: 2px solid #2e7d32;
         }
-        
+
         .status.error {
             background: #ffebee;
             color: #c62828;
             border: 2px solid #c62828;
         }
-        
+
         .coordinates {
             background: #f0f0f0;
             padding: 15px;
@@ -144,7 +144,7 @@
             font-family: monospace;
             font-size: 14px;
         }
-        
+
         .continue-button {
             background: #4caf50;
             color: white;
@@ -157,16 +157,16 @@
             transition: all 0.3s ease;
             width: 100%;
         }
-        
+
         .continue-button:hover {
             background: #45a049;
         }
-        
+
         .continue-button:disabled {
             background: #ccc;
             cursor: not-allowed;
         }
-        
+
         .spinner {
             display: inline-block;
             width: 20px;
@@ -177,8 +177,8 @@
             animation: spin 1s linear infinite;
             margin-right: 10px;
         }
-        
-        
+
+
         .status.info {
             background: #e3f2fd;
             color: #1976d2;
@@ -188,7 +188,7 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
+
         .hidden {
             display: none;
         }
@@ -199,7 +199,7 @@
         <div class="logo">PC</div>
         <h1>Iniciar Servicio</h1>
         <p class="subtitle">Necesitamos capturar tu ubicación para comenzar</p>
-        
+
         <div class="service-info">
             <h3>Detalles del Servicio</h3>
             <div class="info-row">
@@ -219,18 +219,18 @@
                 <span class="info-value">{{ ucfirst($service->priority ?? "Media") }}</span>
             </div>
         </div>
-        
+
         <div id="status" class="status hidden"></div>
-        
+
         <button id="locationBtn" class="location-button">
             📍 Capturar Mi Ubicación
         </button>
-        
+
         <div id="coordinates" class="coordinates hidden"></div>
-        
+
 @php
 $isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
-$processLocationRoute = $isViewingAsTechnician ? route('admin.technician-view.service.checklist.process-location', $service) : route('technician.service.checklist.process-location', $service);
+$processLocationRoute = $isViewingAsTechnician ? route('technician-view.service.checklist.process-location', $service) : route('technician.service.checklist.process-location', $service);
 @endphp
         <form id="locationForm" method="POST" action="{{ $processLocationRoute }}" class="hidden">
             @csrf
@@ -244,8 +244,8 @@ $processLocationRoute = $isViewingAsTechnician ? route('admin.technician-view.se
         </form>
     </div>
 
-    
-    
+
+
     <script>
         const locationBtn = document.getElementById("locationBtn");
         const statusDiv = document.getElementById("status");
@@ -309,11 +309,11 @@ $processLocationRoute = $isViewingAsTechnician ? route('admin.technician-view.se
                     coordinatesDiv.classList.remove("hidden");
 
                     showStatus("success", "✅ <strong>¡Ubicación capturada!</strong><br>Ahora puedes continuar al checklist");
-                    
+
                     // Mostrar formulario y habilitar botón
                     locationForm.classList.remove("hidden");
                     continueBtn.disabled = false;
-                    
+
                     // Restaurar botón
                     locationBtn.disabled = false;
                     locationBtn.innerHTML = "✅ Ubicación Capturada";
@@ -322,7 +322,7 @@ $processLocationRoute = $isViewingAsTechnician ? route('admin.technician-view.se
                 function(error) {
                     let message = "❌ <strong>Error al obtener ubicación:</strong><br>";
                     let instructions = "";
-                    
+
                     switch(error.code) {
                         case 1:
                             message += "Permiso denegado por el usuario.";
@@ -380,7 +380,7 @@ $processLocationRoute = $isViewingAsTechnician ? route('admin.technician-view.se
                             `;
                             break;
                     }
-                    
+
                     showStatus("error", message + instructions);
                     // Agregar botón de reintentar
                     setTimeout(() => {
@@ -390,7 +390,7 @@ $processLocationRoute = $isViewingAsTechnician ? route('admin.technician-view.se
                         retryButton.onclick = retryGeolocation;
                         statusDiv.appendChild(retryButton);
                     }, 1000);
-                    
+
                     // Restaurar botón
                     locationBtn.disabled = false;
                     locationBtn.innerHTML = "📍 Intentar Nuevamente";
@@ -413,12 +413,12 @@ $processLocationRoute = $isViewingAsTechnician ? route('admin.technician-view.se
             coordinatesDiv.classList.add("hidden");
             locationForm.classList.add("hidden");
             continueBtn.disabled = true;
-            
+
             // Restaurar botón principal
             locationBtn.disabled = false;
             locationBtn.innerHTML = "📍 Capturar Mi Ubicación";
             locationBtn.style.background = "#1a472a";
-            
+
             // Simular click en el botón principal para reintentar
             locationBtn.click();
         }

@@ -6,24 +6,24 @@ $isViewingAsTechnician = session('view_as_technician', false) && auth()->check()
 // Helper function para obtener la ruta correcta según el modo
 function getTechnicianRoute($routeName, ...$params) {
     $isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
-    
+
     if ($isViewingAsTechnician) {
         // Mapear rutas de technician a technician-view
         $routeMap = [
-            'technician.service.detail' => 'admin.technician-view.service.detail',
-            'technician.service.checklist' => 'admin.technician-view.service.checklist',
-            'technician.service.checklist.stage' => 'admin.technician-view.service.checklist.stage',
-            'technician.service.checklist.location' => 'admin.technician-view.service.checklist.location',
-            'technician.service.checklist.process-location' => 'admin.technician-view.service.checklist.process-location',
+            'technician.service.detail' => 'technician-view.service.detail',
+            'technician.service.checklist' => 'technician-view.service.checklist',
+            'technician.service.checklist.stage' => 'technician-view.service.checklist.stage',
+            'technician.service.checklist.location' => 'technician-view.service.checklist.location',
+            'technician.service.checklist.process-location' => 'technician-view.service.checklist.process-location',
             'technician.service.checklist.submit' => 'technician-view.service.checklist.submit',
-            'technician.service.pdf' => 'admin.technician-view.service.pdf',
-            'technician.service.checklist-details' => 'admin.technician-view.service.checklist-details',
+            'technician.service.pdf' => 'technician-view.service.pdf',
+            'technician.service.checklist-details' => 'technician-view.service.checklist-details',
         ];
-        
+
         $mappedRoute = $routeMap[$routeName] ?? $routeName;
         return route($mappedRoute, ...$params);
     }
-    
+
     return route($routeName, ...$params);
 }
 @endphp
@@ -36,9 +36,9 @@ function getTechnicianRoute($routeName, ...$params) {
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    
+
     <title>{{ config('app.name', 'PestController') }} - @yield('title', 'Dashboard')</title>
-    
+
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="{{ config('pwa.name', 'PestController') }}">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -48,27 +48,27 @@ function getTechnicianRoute($routeName, ...$params) {
     <meta name="format-detection" content="telephone=no">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="{{ config('pwa.theme_color', '#1f2937') }}">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    
+
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
-    
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
+
     <!-- FullCalendar -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
-    
+
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+
     <!-- Critical CSS para prevenir FOUC en iconos y menús -->
     <style>
         /* Prevenir FOUC en iconos de notificaciones y usuario */
@@ -85,7 +85,7 @@ function getTechnicianRoute($routeName, ...$params) {
             padding: 8px !important;
             box-sizing: border-box !important;
         }
-        
+
         #notification-button svg,
         #notification-button-mobile svg {
             width: 24px !important;
@@ -97,7 +97,7 @@ function getTechnicianRoute($routeName, ...$params) {
             display: block !important;
             flex-shrink: 0 !important;
         }
-        
+
         #user-menu-button > div,
         #user-menu-button-mobile > div {
             width: 40px !important;
@@ -107,13 +107,13 @@ function getTechnicianRoute($routeName, ...$params) {
             max-width: 40px !important;
             max-height: 40px !important;
         }
-        
+
         #user-menu-button > div > span,
         #user-menu-button-mobile > div > span {
             font-size: 14px !important;
             line-height: 1 !important;
         }
-        
+
         /* Asegurar que los menús dropdown estén ocultos por defecto */
         .notification-menu,
         .user-menu,
@@ -124,7 +124,7 @@ function getTechnicianRoute($routeName, ...$params) {
             transform: translateY(-10px) !important;
             pointer-events: none !important;
         }
-        
+
         .notification-menu.show,
         .user-menu.show,
         #notification-menu-mobile.show,
@@ -134,18 +134,18 @@ function getTechnicianRoute($routeName, ...$params) {
             transform: translateY(0) !important;
             pointer-events: auto !important;
         }
-        
+
         /* Optimizar carga en móvil */
         @media (max-width: 767px) {
             body {
                 overflow-x: hidden !important;
             }
-            
+
             /* Asegurar que el sidebar esté oculto por defecto en móvil */
             #sidebar {
                 transform: translateX(-100%) !important;
             }
-            
+
             /* Asegurar que los menús no se muestren accidentalmente */
             .notification-menu:not(.show),
             .user-menu:not(.show),
@@ -155,7 +155,7 @@ function getTechnicianRoute($routeName, ...$params) {
             }
         }
     </style>
-    
+
     <!-- Script inline para prevenir FOUC - se ejecuta inmediatamente -->
     <script>
         (function() {
@@ -163,7 +163,7 @@ function getTechnicianRoute($routeName, ...$params) {
             function applyCriticalIconStyles() {
                 const notificationButton = document.getElementById('notification-button');
                 const userMenuButton = document.getElementById('user-menu-button');
-                
+
                 if (notificationButton) {
                     notificationButton.style.setProperty('width', '40px', 'important');
                     notificationButton.style.setProperty('height', '40px', 'important');
@@ -173,7 +173,7 @@ function getTechnicianRoute($routeName, ...$params) {
                     notificationButton.style.setProperty('max-height', '40px', 'important');
                     notificationButton.style.setProperty('padding', '8px', 'important');
                     notificationButton.style.setProperty('box-sizing', 'border-box', 'important');
-                    
+
                     const svg = notificationButton.querySelector('svg');
                     if (svg) {
                         svg.style.setProperty('width', '24px', 'important');
@@ -186,7 +186,7 @@ function getTechnicianRoute($routeName, ...$params) {
                         svg.style.setProperty('flex-shrink', '0', 'important');
                     }
                 }
-                
+
                 if (userMenuButton) {
                     userMenuButton.style.setProperty('width', '40px', 'important');
                     userMenuButton.style.setProperty('height', '40px', 'important');
@@ -196,7 +196,7 @@ function getTechnicianRoute($routeName, ...$params) {
                     userMenuButton.style.setProperty('max-height', '40px', 'important');
                     userMenuButton.style.setProperty('padding', '0', 'important');
                     userMenuButton.style.setProperty('box-sizing', 'border-box', 'important');
-                    
+
                     const div = userMenuButton.querySelector('div');
                     if (div) {
                         div.style.setProperty('width', '40px', 'important');
@@ -205,7 +205,7 @@ function getTechnicianRoute($routeName, ...$params) {
                         div.style.setProperty('min-height', '40px', 'important');
                         div.style.setProperty('max-width', '40px', 'important');
                         div.style.setProperty('max-height', '40px', 'important');
-                        
+
                         const span = div.querySelector('span');
                         if (span) {
                             span.style.setProperty('font-size', '14px', 'important');
@@ -214,7 +214,7 @@ function getTechnicianRoute($routeName, ...$params) {
                     }
                 }
             }
-            
+
             // Aplicar inmediatamente si el DOM ya está listo
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', function() {
@@ -231,7 +231,7 @@ function getTechnicianRoute($routeName, ...$params) {
                 setTimeout(applyCriticalIconStyles, 50);
                 setTimeout(applyCriticalIconStyles, 100);
             }
-            
+
             // Usar MutationObserver para aplicar estilos cuando los elementos se agreguen al DOM
             if (typeof MutationObserver !== 'undefined') {
                 const observer = new MutationObserver(function(mutations) {
@@ -240,7 +240,7 @@ function getTechnicianRoute($routeName, ...$params) {
                         if (mutation.addedNodes.length > 0) {
                             mutation.addedNodes.forEach(function(node) {
                                 if (node.nodeType === 1) {
-                                    if (node.id === 'notification-button' || node.id === 'user-menu-button' || 
+                                    if (node.id === 'notification-button' || node.id === 'user-menu-button' ||
                                         (node.querySelector && (node.querySelector('#notification-button') || node.querySelector('#user-menu-button')))) {
                                         shouldApply = true;
                                     }
@@ -252,13 +252,13 @@ function getTechnicianRoute($routeName, ...$params) {
                         applyCriticalIconStyles();
                     }
                 });
-                
+
                 observer.observe(document.body, {
                     childList: true,
                     subtree: true
                 });
             }
-            
+
             // Aplicar también en requestAnimationFrame para máxima prioridad
             if (typeof requestAnimationFrame !== 'undefined') {
                 requestAnimationFrame(function() {
@@ -270,7 +270,7 @@ function getTechnicianRoute($routeName, ...$params) {
             }
         })();
     </script>
-    
+
     @stack('styles')
 </head>
 <body class="h-full" id="body-element" style="overflow-x: hidden; background: #f9fafb;">
@@ -284,20 +284,20 @@ function getTechnicianRoute($routeName, ...$params) {
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
         </button>
-        
+
         <!-- Mobile Overlay -->
         <div id="mobile-overlay" class="md:hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-40 hidden" style="z-index: 9998;"></div>
-        
+
         <!-- Sidebar -->
         <aside id="sidebar" class="fixed md:static flex-shrink-0 w-72 flex flex-col bg-white border-r border-gray-200 transform -translate-x-full md:translate-x-0 md:transform-none transition-transform duration-300 ease-in-out z-50 h-full">
             <div class="flex grow flex-col gap-y-3 overflow-y-auto px-5 pb-4">
                 <div class="flex h-16 shrink-0 items-center justify-center pt-6 pb-4">
                     <img src="https://pestcontroller.cl/wp-content/uploads/2022/07/pestcontroller-logo.png" alt="PestController Logo" class="h-14 w-auto object-contain max-w-full">
                 </div>
-                
+
                 <!-- Separator -->
                 <div class="border-t border-gray-200 my-3"></div>
-                
+
                 <!-- Quick Actions - Modo Oscuro/Claro Switch -->
                 <div class="mb-3">
                     <div id="dark-mode-container" class="w-full flex items-center justify-between gap-x-3 rounded-lg py-2.5 px-3 text-xs transition-colors duration-200" style="background: #f3f4f6; border: 1px solid #e5e7eb;">
@@ -312,7 +312,7 @@ function getTechnicianRoute($routeName, ...$params) {
                         </button>
                     </div>
                 </div>
-                
+
                 <!-- Ver como Técnico (solo para super-admin) -->
                 @auth
                     @if(auth()->user()->hasRole('super-admin'))
@@ -340,10 +340,10 @@ function getTechnicianRoute($routeName, ...$params) {
                         @endif
                     @endif
                 @endauth
-                
+
                 <!-- Separator -->
                 <div class="border-t border-gray-200 my-3"></div>
-                
+
                 <nav class="flex flex-1 flex-col">
                     <ul role="list" class="flex flex-1 flex-col gap-y-7">
                         @if($isViewingAsTechnician)
@@ -352,27 +352,27 @@ function getTechnicianRoute($routeName, ...$params) {
                                 <div class="text-xs font-semibold uppercase mb-3" style="color: #6b7280; font-size: 10px; letter-spacing: 0.1em; line-height: 1.5;">Menú Principal</div>
                                 <ul role="list" class="-mx-2 space-y-1.5">
                                 <li>
-                                    <a href="{{ route('admin.technician-view.dashboard') }}" class="group flex items-center gap-x-6 rounded-md px-3 py-3 text-sm leading-5 font-medium {{ request()->routeIs('admin.technician-view.dashboard') ? 'bg-green-500 text-white' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800' }}" style="{{ !request()->routeIs('admin.technician-view.dashboard') ? 'color: #111827 !important;' : '' }}">
-                                        <svg class="h-5 w-5 shrink-0 {{ request()->routeIs('admin.technician-view.dashboard') ? 'text-white' : 'text-gray-900 dark:text-gray-400 group-hover:text-white' }}" style="margin-right: 20px !important; {{ !request()->routeIs('admin.technician-view.dashboard') ? 'color: #111827 !important;' : '' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <a href="{{ route('technician-view.dashboard') }}" class="group flex items-center gap-x-6 rounded-md px-3 py-3 text-sm leading-5 font-medium {{ request()->routeIs('technician-view.dashboard') ? 'bg-green-500 text-white' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800' }}" style="{{ !request()->routeIs('technician-view.dashboard') ? 'color: #111827 !important;' : '' }}">
+                                        <svg class="h-5 w-5 shrink-0 {{ request()->routeIs('technician-view.dashboard') ? 'text-white' : 'text-gray-900 dark:text-gray-400 group-hover:text-white' }}" style="margin-right: 20px !important; {{ !request()->routeIs('technician-view.dashboard') ? 'color: #111827 !important;' : '' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
                                         </svg>
-                                        <span class="{{ request()->routeIs('admin.technician-view.dashboard') ? 'text-white' : 'text-gray-900 dark:text-gray-300 group-hover:text-white' }}" style="font-size: 15px; font-weight: 500; {{ !request()->routeIs('admin.technician-view.dashboard') ? 'color: #111827 !important;' : '' }}">Dashboard</span>
+                                        <span class="{{ request()->routeIs('technician-view.dashboard') ? 'text-white' : 'text-gray-900 dark:text-gray-300 group-hover:text-white' }}" style="font-size: 15px; font-weight: 500; {{ !request()->routeIs('technician-view.dashboard') ? 'color: #111827 !important;' : '' }}">Dashboard</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin.technician-view.services') }}" class="group flex items-center gap-x-6 rounded-md px-3 py-3 text-sm leading-5 font-medium {{ request()->routeIs('admin.technician-view.services') || request()->routeIs('admin.technician-view.service.*') ? 'bg-green-500 text-white' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800' }}" style="{{ !(request()->routeIs('admin.technician-view.services') || request()->routeIs('admin.technician-view.service.*')) ? 'color: #111827 !important;' : '' }}">
-                                        <svg class="h-5 w-5 shrink-0 {{ request()->routeIs('admin.technician-view.services') || request()->routeIs('admin.technician-view.service.*') ? 'text-white' : 'text-gray-900 dark:text-gray-400 group-hover:text-white' }}" style="margin-right: 20px !important; {{ !(request()->routeIs('admin.technician-view.services') || request()->routeIs('admin.technician-view.service.*')) ? 'color: #111827 !important;' : '' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <a href="{{ route('technician-view.services') }}" class="group flex items-center gap-x-6 rounded-md px-3 py-3 text-sm leading-5 font-medium {{ request()->routeIs('technician-view.services') || request()->routeIs('technician-view.service.*') ? 'bg-green-500 text-white' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800' }}" style="{{ !(request()->routeIs('technician-view.services') || request()->routeIs('technician-view.service.*')) ? 'color: #111827 !important;' : '' }}">
+                                        <svg class="h-5 w-5 shrink-0 {{ request()->routeIs('technician-view.services') || request()->routeIs('technician-view.service.*') ? 'text-white' : 'text-gray-900 dark:text-gray-400 group-hover:text-white' }}" style="margin-right: 20px !important; {{ !(request()->routeIs('technician-view.services') || request()->routeIs('technician-view.service.*')) ? 'color: #111827 !important;' : '' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5a2.25 2.25 0 002.25-2.25m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5a2.25 2.25 0 012.25 2.25v7.5" />
                                         </svg>
-                                        <span class="{{ request()->routeIs('admin.technician-view.services') || request()->routeIs('admin.technician-view.service.*') ? 'text-white' : 'text-gray-900 dark:text-gray-300 group-hover:text-white' }}" style="font-size: 15px; font-weight: 500; {{ !(request()->routeIs('admin.technician-view.services') || request()->routeIs('admin.technician-view.service.*')) ? 'color: #111827 !important;' : '' }}">Mis Servicios</span>
+                                        <span class="{{ request()->routeIs('technician-view.services') || request()->routeIs('technician-view.service.*') ? 'text-white' : 'text-gray-900 dark:text-gray-300 group-hover:text-white' }}" style="font-size: 15px; font-weight: 500; {{ !(request()->routeIs('technician-view.services') || request()->routeIs('technician-view.service.*')) ? 'color: #111827 !important;' : '' }}">Mis Servicios</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin.technician-view.profile') }}" class="group flex items-center gap-x-6 rounded-md px-3 py-3 text-sm leading-5 font-medium {{ request()->routeIs('admin.technician-view.profile') ? 'bg-green-500 text-white' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800' }}" style="{{ !request()->routeIs('admin.technician-view.profile') ? 'color: #111827 !important;' : '' }}">
-                                        <svg class="h-5 w-5 shrink-0 {{ request()->routeIs('admin.technician-view.profile') ? 'text-white' : 'text-gray-900 dark:text-gray-400 group-hover:text-white' }}" style="margin-right: 20px !important; {{ !request()->routeIs('admin.technician-view.profile') ? 'color: #111827 !important;' : '' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <a href="{{ route('technician-view.profile') }}" class="group flex items-center gap-x-6 rounded-md px-3 py-3 text-sm leading-5 font-medium {{ request()->routeIs('technician-view.profile') ? 'bg-green-500 text-white' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800' }}" style="{{ !request()->routeIs('technician-view.profile') ? 'color: #111827 !important;' : '' }}">
+                                        <svg class="h-5 w-5 shrink-0 {{ request()->routeIs('technician-view.profile') ? 'text-white' : 'text-gray-900 dark:text-gray-400 group-hover:text-white' }}" style="margin-right: 20px !important; {{ !request()->routeIs('technician-view.profile') ? 'color: #111827 !important;' : '' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                                         </svg>
-                                        <span class="{{ request()->routeIs('admin.technician-view.profile') ? 'text-white' : 'text-gray-900 dark:text-gray-300 group-hover:text-white' }}" style="font-size: 15px; font-weight: 500; {{ !request()->routeIs('admin.technician-view.profile') ? 'color: #111827 !important;' : '' }}">Mi Perfil</span>
+                                        <span class="{{ request()->routeIs('technician-view.profile') ? 'text-white' : 'text-gray-900 dark:text-gray-300 group-hover:text-white' }}" style="font-size: 15px; font-weight: 500; {{ !request()->routeIs('technician-view.profile') ? 'color: #111827 !important;' : '' }}">Mi Perfil</span>
                                     </a>
                                 </li>
                                 </ul>
@@ -483,7 +483,7 @@ function getTechnicianRoute($routeName, ...$params) {
                             </ul>
                         </li>
                         @endif
-                        
+
                         @if(auth()->user()->hasRole('super-admin') && !$isViewingAsTechnician)
                         <li>
                             <div class="text-xs font-semibold uppercase mb-3" style="color: #6b7280; font-size: 10px; letter-spacing: 0.1em; line-height: 1.5;">Administración</div>
@@ -525,7 +525,7 @@ function getTechnicianRoute($routeName, ...$params) {
                             </ul>
                         </li>
                         @endif
-                        
+
                     </ul>
                 </nav>
             </div>
@@ -559,7 +559,7 @@ function getTechnicianRoute($routeName, ...$params) {
                         </div>
                     </div>
                 @endif
-                
+
                 <div class="px-3 sm:px-4 md:px-6 lg:px-8 max-w-full">
                     @if(session('success'))
                         <div class="mb-4 rounded-md p-4" style="background: #f0fdf4; border: 1px solid #22c55e;">
@@ -613,14 +613,14 @@ function getTechnicianRoute($routeName, ...$params) {
     </script>
 
     @stack('scripts')
-    
+
     <script>
         // Mobile Menu Toggle
         (function() {
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const sidebar = document.getElementById('sidebar');
             const mobileOverlay = document.getElementById('mobile-overlay');
-            
+
             function openMobileMenu() {
                 if (sidebar) {
                     sidebar.classList.remove('-translate-x-full');
@@ -644,7 +644,7 @@ function getTechnicianRoute($routeName, ...$params) {
                 if (pageCloseIcon) pageCloseIcon.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
             }
-            
+
             function closeMobileMenu() {
                 // Solo cerrar en móvil, no en desktop
                 if (window.innerWidth < 768) {
@@ -671,7 +671,7 @@ function getTechnicianRoute($routeName, ...$params) {
                 if (pageMenuIcon) pageMenuIcon.classList.remove('hidden');
                 if (pageCloseIcon) pageCloseIcon.classList.add('hidden');
             }
-            
+
             if (mobileMenuButton) {
                 mobileMenuButton.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -683,13 +683,13 @@ function getTechnicianRoute($routeName, ...$params) {
                     }
                 });
             }
-            
+
             if (mobileOverlay) {
                 mobileOverlay.addEventListener('click', function() {
                     closeMobileMenu();
                 });
             }
-            
+
             // Cerrar menú al hacer clic en un enlace (solo en móvil)
             if (sidebar) {
                 const sidebarLinks = sidebar.querySelectorAll('a');
@@ -701,7 +701,7 @@ function getTechnicianRoute($routeName, ...$params) {
                     });
                 });
             }
-            
+
             // Asegurar que el sidebar esté visible en desktop
             function ensureDesktopSidebar() {
                 if (window.innerWidth >= 768) {
@@ -740,10 +740,10 @@ function getTechnicianRoute($routeName, ...$params) {
                     }
                 }
             }
-            
+
             // Ejecutar al cargar y al redimensionar
             ensureDesktopSidebar();
-            
+
             // Cerrar menú al redimensionar a desktop
             window.addEventListener('resize', function() {
                 if (window.innerWidth >= 768) {
@@ -752,7 +752,7 @@ function getTechnicianRoute($routeName, ...$params) {
                 }
             });
         })();
-        
+
         // Dark Mode Toggle Switch
         (function() {
             const htmlRoot = document.documentElement;
@@ -763,7 +763,7 @@ function getTechnicianRoute($routeName, ...$params) {
             const modeContainer = document.getElementById('dark-mode-container');
             const sidebar = document.querySelector('aside');
             const mainContent = document.querySelector('main');
-            
+
             // Función para obtener el tema actual
             function getCurrentTheme() {
                 const saved = localStorage.getItem('darkMode');
@@ -773,13 +773,13 @@ function getTechnicianRoute($routeName, ...$params) {
                 // Por defecto, siempre iniciar en modo claro (no seguir preferencia del sistema)
                 return false;
             }
-            
+
             // Función para aplicar el tema
             function applyTheme(isDark) {
                 if (isDark) {
                     // Aplicar modo oscuro
                     htmlRoot.classList.add('dark');
-                    
+
                     // Actualizar switch
                     toggleButton.style.backgroundColor = '#22c55e';
                     switchThumb.style.transform = 'translateX(1.375rem)';
@@ -789,21 +789,21 @@ function getTechnicianRoute($routeName, ...$params) {
                     modeIcon.style.color = '#e5e7eb';
                     modeContainer.style.background = '#1f2937';
                     modeContainer.style.borderColor = '#374151';
-                    
+
                     // Actualizar icono
                     modeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />';
-                    
+
                     // Actualizar sidebar
                     if (sidebar) {
                         sidebar.style.background = '#111827';
                         sidebar.style.borderColor = '#374151';
                     }
-                    
+
                     // Actualizar main content
                     if (mainContent) {
                         mainContent.style.background = '#0f172a';
                     }
-                    
+
                     // Actualizar body y html
                     const bodyEl = document.getElementById('body-element');
                     const htmlEl = document.getElementById('html-root');
@@ -813,7 +813,7 @@ function getTechnicianRoute($routeName, ...$params) {
                     if (htmlEl) {
                         htmlEl.style.background = '#0f172a';
                     }
-                    
+
                     // Actualizar todos los elementos con bg-white
                     const whiteElements = document.querySelectorAll('.bg-white, [class*="bg-white"]');
                     whiteElements.forEach(el => {
@@ -822,19 +822,19 @@ function getTechnicianRoute($routeName, ...$params) {
                             el.style.color = '#e5e7eb';
                         }
                     });
-                    
+
                     // Actualizar tablas
                     const tableBodies = document.querySelectorAll('tbody');
                     tableBodies.forEach(tbody => {
                         tbody.style.backgroundColor = '#1f2937';
                         tbody.style.color = '#e5e7eb';
                     });
-                    
+
                     const tableHeaders = document.querySelectorAll('thead');
                     tableHeaders.forEach(thead => {
                         thead.style.backgroundColor = '#111827';
                     });
-                    
+
                     // Actualizar inputs y selects
                     const inputs = document.querySelectorAll('input, select, textarea');
                     inputs.forEach(input => {
@@ -844,13 +844,13 @@ function getTechnicianRoute($routeName, ...$params) {
                             input.style.borderColor = '#374151';
                         }
                     });
-                    
+
                     // Actualizar textos en modo oscuro - solo cambiar a blanco
                     const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, td, th, label, .statistics-text, .statistics-number');
                     textElements.forEach(el => {
                         if (!el.closest('.bg-green-500') && !el.classList.contains('bg-green-500')) {
                             const style = el.getAttribute('style') || '';
-                            
+
                             // Solo cambiar si tiene color #111827 o #6b7280 en el estilo inline
                             if (style.includes('color: #111827')) {
                                 el.style.color = '#ffffff';
@@ -859,29 +859,29 @@ function getTechnicianRoute($routeName, ...$params) {
                             }
                         }
                     });
-                    
+
                     // Actualizar todos los textos e iconos del menú
                     const menuTexts = document.querySelectorAll('nav span, nav a:not(.bg-green-500)');
                     const menuIcons = document.querySelectorAll('nav svg:not(.bg-green-500 svg)');
                     const menuLabels = document.querySelectorAll('.text-xs.font-semibold.uppercase');
                     const verComoTecnico = document.querySelector('button:has(svg[viewBox="0 0 24 24"])');
-                    
+
                     menuTexts.forEach(el => {
                         if (!el.closest('.bg-green-500')) {
                             el.style.color = '#d1d5db';
                         }
                     });
-                    
+
                     menuIcons.forEach(el => {
                         if (!el.closest('.bg-green-500')) {
                             el.style.color = '#9ca3af';
                         }
                     });
-                    
+
                     menuLabels.forEach(el => {
                         el.style.color = '#9ca3af';
                     });
-                    
+
                     if (verComoTecnico) {
                         const verComoTecnicoText = verComoTecnico.querySelector('span');
                         const verComoTecnicoIcon = verComoTecnico.querySelector('svg');
@@ -891,7 +891,7 @@ function getTechnicianRoute($routeName, ...$params) {
                 } else {
                     // Aplicar modo claro
                     htmlRoot.classList.remove('dark');
-                    
+
                     // Actualizar switch
                     toggleButton.style.backgroundColor = '#d1d5db';
                     switchThumb.style.transform = 'translateX(0.125rem)';
@@ -901,21 +901,21 @@ function getTechnicianRoute($routeName, ...$params) {
                     modeIcon.style.color = '#6b7280';
                     modeContainer.style.background = '#f3f4f6';
                     modeContainer.style.borderColor = '#e5e7eb';
-                    
+
                     // Actualizar icono
                     modeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />';
-                    
+
                     // Actualizar sidebar
                     if (sidebar) {
                         sidebar.style.background = '#ffffff';
                         sidebar.style.borderColor = '#e5e7eb';
                     }
-                    
+
                     // Actualizar main content
                     if (mainContent) {
                         mainContent.style.background = '#f9fafb';
                     }
-                    
+
                     // Restaurar body y html
                     const bodyEl = document.getElementById('body-element');
                     const htmlEl = document.getElementById('html-root');
@@ -925,7 +925,7 @@ function getTechnicianRoute($routeName, ...$params) {
                     if (htmlEl) {
                         htmlEl.style.background = '#f9fafb';
                     }
-                    
+
                     // Restaurar todos los elementos con bg-white
                     const whiteElements = document.querySelectorAll('.bg-white, [class*="bg-white"]');
                     whiteElements.forEach(el => {
@@ -933,19 +933,19 @@ function getTechnicianRoute($routeName, ...$params) {
                             el.style.backgroundColor = '#ffffff';
                         }
                     });
-                    
+
                     // Restaurar tablas
                     const tableBodies = document.querySelectorAll('tbody');
                     tableBodies.forEach(tbody => {
                         tbody.style.backgroundColor = '#ffffff';
                         tbody.style.color = '#111827';
                     });
-                    
+
                     const tableHeaders = document.querySelectorAll('thead');
                     tableHeaders.forEach(thead => {
                         thead.style.backgroundColor = '#f9fafb';
                     });
-                    
+
                     // Restaurar inputs y selects
                     const inputs = document.querySelectorAll('input, select, textarea');
                     inputs.forEach(input => {
@@ -955,7 +955,7 @@ function getTechnicianRoute($routeName, ...$params) {
                             input.style.borderColor = '#e5e7eb';
                         }
                     });
-                    
+
                     // Restaurar textos en modo claro - forzar colores correctos
                     const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, td, th, label, .statistics-text, .statistics-number, div[style*="color"]');
                     textElements.forEach(el => {
@@ -967,22 +967,22 @@ function getTechnicianRoute($routeName, ...$params) {
                                 // Verificar el color actual
                                 const currentColor = el.style.color || '';
                                 const computedColor = window.getComputedStyle(el).color;
-                                
+
                                 // Si el color es blanco o gris claro (de modo oscuro), restaurar
-                                if (currentColor.includes('#ffffff') || currentColor.includes('#e5e7eb') || 
+                                if (currentColor.includes('#ffffff') || currentColor.includes('#e5e7eb') ||
                                     currentColor.includes('rgb(255, 255, 255)') || currentColor.includes('rgb(229, 231, 235)') ||
                                     computedColor === 'rgb(255, 255, 255)' || computedColor === 'rgb(229, 231, 235)') {
-                                    
+
                                     // Determinar color correcto según el tipo de elemento
                                     const tagName = el.tagName.toLowerCase();
                                     const computedStyle = window.getComputedStyle(el);
                                     const fontWeight = parseInt(computedStyle.fontWeight) || 400;
                                     const fontSize = parseInt(computedStyle.fontSize) || 14;
-                                    
+
                                     // Títulos y textos importantes: negro
-                                    if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tagName) || 
-                                        fontWeight >= 600 || fontSize >= 16 || 
-                                        el.classList.contains('statistics-number') || 
+                                    if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tagName) ||
+                                        fontWeight >= 600 || fontSize >= 16 ||
+                                        el.classList.contains('statistics-number') ||
                                         el.classList.contains('font-bold') ||
                                         el.classList.contains('font-semibold')) {
                                         el.style.color = '#111827';
@@ -994,29 +994,29 @@ function getTechnicianRoute($routeName, ...$params) {
                             }
                         }
                     });
-                    
+
                     // Actualizar todos los textos e iconos del menú
                     const menuTexts = document.querySelectorAll('nav span, nav a:not(.bg-green-500)');
                     const menuIcons = document.querySelectorAll('nav svg:not(.bg-green-500 svg)');
                     const menuLabels = document.querySelectorAll('.text-xs.font-semibold.uppercase');
                     const verComoTecnico = document.querySelector('button:has(svg[viewBox="0 0 24 24"])');
-                    
+
                     menuTexts.forEach(el => {
                         if (!el.closest('.bg-green-500')) {
                             el.style.color = '#111827';
                         }
                     });
-                    
+
                     menuIcons.forEach(el => {
                         if (!el.closest('.bg-green-500')) {
                             el.style.color = '#111827';
                         }
                     });
-                    
+
                     menuLabels.forEach(el => {
                         el.style.color = '#6b7280';
                     });
-                    
+
                     if (verComoTecnico) {
                         const verComoTecnicoText = verComoTecnico.querySelector('span');
                         const verComoTecnicoIcon = verComoTecnico.querySelector('svg');
@@ -1024,11 +1024,11 @@ function getTechnicianRoute($routeName, ...$params) {
                         if (verComoTecnicoIcon) verComoTecnicoIcon.style.color = '#6b7280';
                     }
                 }
-                
+
                 localStorage.setItem('darkMode', isDark);
                 toggleButton.setAttribute('aria-checked', isDark);
             }
-            
+
             // Función para actualizar fondos después de que la página cargue
             function updateBackgroundsAfterLoad() {
                 setTimeout(() => {
@@ -1043,7 +1043,7 @@ function getTechnicianRoute($routeName, ...$params) {
                         if (htmlEl) {
                             htmlEl.style.background = '#0f172a';
                         }
-                        
+
                         // Actualizar todos los elementos con bg-white
                         const whiteElements = document.querySelectorAll('.bg-white');
                         whiteElements.forEach(el => {
@@ -1051,19 +1051,19 @@ function getTechnicianRoute($routeName, ...$params) {
                                 el.style.backgroundColor = '#1f2937';
                             }
                         });
-                        
+
                         // Actualizar tablas
                         const tableBodies = document.querySelectorAll('tbody');
                         tableBodies.forEach(tbody => {
                             tbody.style.backgroundColor = '#1f2937';
                             tbody.style.color = '#e5e7eb';
                         });
-                        
+
                         const tableHeaders = document.querySelectorAll('thead');
                         tableHeaders.forEach(thead => {
                             thead.style.backgroundColor = '#111827';
                         });
-                        
+
                         // Actualizar inputs y selects
                         const inputs = document.querySelectorAll('input:not([type="checkbox"]):not([type="radio"]), select, textarea');
                         inputs.forEach(input => {
@@ -1084,12 +1084,12 @@ function getTechnicianRoute($routeName, ...$params) {
                     }
                 }, 100);
             }
-            
+
             // Asegurar que los menús estén ocultos al cargar
             function hideAllDropdowns() {
                 const notificationMenus = document.querySelectorAll('.notification-menu, #notification-menu-mobile');
                 const userMenus = document.querySelectorAll('.user-menu, #user-menu-mobile');
-                
+
                 notificationMenus.forEach(menu => {
                     if (menu) {
                         menu.classList.remove('show');
@@ -1099,7 +1099,7 @@ function getTechnicianRoute($routeName, ...$params) {
                         menu.style.pointerEvents = 'none';
                     }
                 });
-                
+
                 userMenus.forEach(menu => {
                     if (menu) {
                         menu.classList.remove('show');
@@ -1110,10 +1110,10 @@ function getTechnicianRoute($routeName, ...$params) {
                     }
                 });
             }
-            
+
             // Inicializar tema al cargar
             const isDark = getCurrentTheme();
-            
+
             // Aplicar tema después de que el DOM esté completamente cargado
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', function() {
@@ -1135,7 +1135,7 @@ function getTechnicianRoute($routeName, ...$params) {
                 setTimeout(hideAllDropdowns, 100);
                 setTimeout(hideAllDropdowns, 300);
             }
-            
+
             // Observar cambios en el DOM para actualizar nuevos elementos (con debounce)
             let updateTimeout;
             const observer = new MutationObserver(() => {
@@ -1147,14 +1147,14 @@ function getTechnicianRoute($routeName, ...$params) {
                 }, 300);
             });
             observer.observe(document.body, { childList: true, subtree: true });
-            
+
             // Toggle al hacer clic
             toggleButton.addEventListener('click', function() {
                 const currentIsDark = htmlRoot.classList.contains('dark');
                 applyTheme(!currentIsDark);
                 updateBackgroundsAfterLoad();
             });
-            
+
             // Escuchar cambios en la preferencia del sistema
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
                 if (localStorage.getItem('darkMode') === null) {
@@ -1163,7 +1163,7 @@ function getTechnicianRoute($routeName, ...$params) {
             });
         })();
     </script>
-    
+
     <style>
         /* Forzar texto blanco en hover del menú - sobrescribe !important */
         .group:hover span {

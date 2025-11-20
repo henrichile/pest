@@ -11,7 +11,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #000;
@@ -20,25 +20,25 @@
             display: flex;
             flex-direction: column;
         }
-        
+
         .header {
             background: #1a1a1a;
             padding: 1rem;
             text-align: center;
             border-bottom: 1px solid #333;
         }
-        
+
         .header h1 {
             font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
         }
-        
+
         .header p {
             color: #888;
             font-size: 0.9rem;
         }
-        
+
         .container {
             flex: 1;
             display: flex;
@@ -49,7 +49,7 @@
             max-width: 500px;
             margin: 0 auto;
         }
-        
+
         .status-card {
             background: #1a1a1a;
             border: 1px solid #333;
@@ -59,36 +59,36 @@
             margin-bottom: 2rem;
             width: 100%;
         }
-        
+
         .status-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
         }
-        
+
         .status-title {
             font-size: 1.2rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
         }
-        
+
         .status-message {
             color: #888;
             font-size: 0.9rem;
             line-height: 1.4;
         }
-        
+
         .loading {
             color: #4CAF50;
         }
-        
+
         .success {
             color: #4CAF50;
         }
-        
+
         .error {
             color: #f44336;
         }
-        
+
         .service-info {
             background: #1a1a1a;
             border: 1px solid #333;
@@ -97,36 +97,36 @@
             width: 100%;
             margin-bottom: 2rem;
         }
-        
+
         .service-info h3 {
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 1rem;
             color: #4CAF50;
         }
-        
+
         .info-row {
             display: flex;
             justify-content: space-between;
             margin-bottom: 0.5rem;
             font-size: 0.9rem;
         }
-        
+
         .info-label {
             color: #888;
         }
-        
+
         .info-value {
             color: #fff;
             font-weight: 500;
         }
-        
+
         .actions {
             display: flex;
             gap: 1rem;
             width: 100%;
         }
-        
+
         .btn {
             flex: 1;
             padding: 1rem;
@@ -140,44 +140,44 @@
             text-align: center;
             display: inline-block;
         }
-        
+
         .btn-primary {
             background: #4CAF50;
             color: white;
         }
-        
+
         .btn-primary:hover {
             background: #45a049;
         }
-        
+
         .btn-secondary {
             background: #333;
             color: #fff;
             border: 1px solid #555;
         }
-        
+
         .btn-secondary:hover {
             background: #444;
         }
-        
+
         .btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
         }
-        
+
         .hidden {
             display: none;
         }
-        
+
         @media (max-width: 480px) {
             .container {
                 padding: 1rem;
             }
-            
+
             .status-card, .service-info {
                 padding: 1rem;
             }
-            
+
             .actions {
                 flex-direction: column;
             }
@@ -249,7 +249,7 @@
 
     <script>
         let capturedLocation = null;
-        
+
         // Función para obtener la ubicación
         function getCurrentLocation() {
             if (!navigator.geolocation) {
@@ -322,35 +322,35 @@
             // Crear formulario para enviar la ubicación
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = '{{ (isset($isTechnicianView) && $isTechnicianView) ? route("admin.technician-view.service.checklist.process-location", $service) : route("technician.service.checklist.process-location", $service) }}';
-            
+            form.action = '{{ (isset($isTechnicianView) && $isTechnicianView) ? route("technician-view.service.checklist.process-location", $service) : route("technician.service.checklist.process-location", $service) }}';
+
             // Agregar token CSRF
             const csrfToken = document.createElement('input');
             csrfToken.type = 'hidden';
             csrfToken.name = '_token';
             csrfToken.value = '{{ csrf_token() }}';
             form.appendChild(csrfToken);
-            
+
             // Agregar coordenadas
             const latInput = document.createElement('input');
             latInput.type = 'hidden';
             latInput.name = 'latitude';
             latInput.value = capturedLocation.latitude;
             form.appendChild(latInput);
-            
+
             const lngInput = document.createElement('input');
             lngInput.type = 'hidden';
             lngInput.name = 'longitude';
             lngInput.value = capturedLocation.longitude;
             form.appendChild(lngInput);
-            
+
             // Agregar dirección (usar la del servicio)
             const addressInput = document.createElement('input');
             addressInput.type = 'hidden';
             addressInput.name = 'address';
             addressInput.value = '{{ $service->address ?? "Ubicación capturada" }}';
             form.appendChild(addressInput);
-            
+
             // Enviar formulario
             document.body.appendChild(form);
             form.submit();

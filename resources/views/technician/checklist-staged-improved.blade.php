@@ -2,24 +2,24 @@
 // Helper function para obtener la ruta correcta según el modo
 function getTechnicianRoute($routeName, ...$params) {
     $isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
-    
+
     if ($isViewingAsTechnician) {
         // Mapear rutas de technician a technician-view
         $routeMap = [
-            'technician.service.detail' => 'admin.technician-view.service.detail',
-            'technician.service.checklist' => 'admin.technician-view.service.checklist',
-            'technician.service.checklist.stage' => 'admin.technician-view.service.checklist.stage',
-            'technician.service.checklist.location' => 'admin.technician-view.service.checklist.location',
-            'technician.service.checklist.process-location' => 'admin.technician-view.service.checklist.process-location',
+            'technician.service.detail' => 'technician-view.service.detail',
+            'technician.service.checklist' => 'technician-view.service.checklist',
+            'technician.service.checklist.stage' => 'technician-view.service.checklist.stage',
+            'technician.service.checklist.location' => 'technician-view.service.checklist.location',
+            'technician.service.checklist.process-location' => 'technician-view.service.checklist.process-location',
             'technician.service.checklist.submit' => 'technician-view.service.checklist.submit',
-            'technician.service.pdf' => 'admin.technician-view.service.pdf',
-            'technician.service.checklist-details' => 'admin.technician-view.service.checklist-details',
+            'technician.service.pdf' => 'technician-view.service.pdf',
+            'technician.service.checklist-details' => 'technician-view.service.checklist-details',
         ];
-        
+
         $mappedRoute = $routeMap[$routeName] ?? $routeName;
         return route($mappedRoute, ...$params);
     }
-    
+
     return route($routeName, ...$params);
 }
 @endphp
@@ -597,13 +597,13 @@ function getTechnicianRoute($routeName, ...$params) {
         <!-- Navigation Buttons -->
         <div class="nav-buttons">
             @if($previousStage)
-                <a href="{{ getTechnicianRoute('technician.service.checklist.stage', ['service' => $service, 'stage' => $previousStage]) }}" 
+                <a href="{{ getTechnicianRoute('technician.service.checklist.stage', ['service' => $service, 'stage' => $previousStage]) }}"
                    class="nav-btn nav-btn-secondary">
                     <span>←</span>
                     <span>Etapa Anterior</span>
                 </a>
             @else
-                <a href="{{ getTechnicianRoute('technician.service.detail', $service) }}" 
+                <a href="{{ getTechnicianRoute('technician.service.detail', $service) }}"
                    class="nav-btn nav-btn-secondary">
                     <span>←</span>
                     <span>Volver al Servicio</span>
