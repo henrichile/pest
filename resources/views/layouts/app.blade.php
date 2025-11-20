@@ -542,9 +542,12 @@ function getTechnicianRoute($routeName, ...$params) {
             <header class="fixed top-0 left-0 md:left-72 right-0 z-30 bg-white border-b border-gray-200" style="height: 60px;">
                 <div class="h-full px-4 flex items-center justify-between gap-4">
                     <!-- Left: Mobile Menu Button -->
-                    <button id="header-mobile-menu-button" class="md:hidden flex-shrink-0 p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    <button id="header-mobile-menu-button" class="md:hidden flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50; background-color: rgb(255, 255, 255);">
+                        <svg id="header-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
+                        </svg>
+                        <svg id="header-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
                     </button>
 
@@ -706,19 +709,23 @@ function getTechnicianRoute($routeName, ...$params) {
                     `;
                 }
 
-                // Cambiar iconos (layout, dashboard y páginas)
+                // Cambiar iconos (layout, dashboard, páginas y header)
                 const menuIcon = document.getElementById('menu-icon');
                 const closeIcon = document.getElementById('close-icon');
                 const dashboardMenuIcon = document.getElementById('dashboard-menu-icon');
                 const dashboardCloseIcon = document.getElementById('dashboard-close-icon');
                 const pageMenuIcon = document.getElementById('page-menu-icon');
                 const pageCloseIcon = document.getElementById('page-close-icon');
+                const headerMenuIcon = document.getElementById('header-menu-icon');
+                const headerCloseIcon = document.getElementById('header-close-icon');
                 if (menuIcon) menuIcon.classList.add('hidden');
                 if (closeIcon) closeIcon.classList.remove('hidden');
                 if (dashboardMenuIcon) dashboardMenuIcon.classList.add('hidden');
                 if (dashboardCloseIcon) dashboardCloseIcon.classList.remove('hidden');
                 if (pageMenuIcon) pageMenuIcon.classList.add('hidden');
                 if (pageCloseIcon) pageCloseIcon.classList.remove('hidden');
+                if (headerMenuIcon) headerMenuIcon.classList.add('hidden');
+                if (headerCloseIcon) headerCloseIcon.classList.remove('hidden');
 
                 // Bloquear scroll del body
                 document.body.style.overflow = 'hidden';
@@ -750,19 +757,23 @@ function getTechnicianRoute($routeName, ...$params) {
                     }
                     document.body.style.overflow = '';
                 }
-                // Cambiar iconos (layout, dashboard y páginas)
+                // Cambiar iconos (layout, dashboard, páginas y header)
                 const menuIcon = document.getElementById('menu-icon');
                 const closeIcon = document.getElementById('close-icon');
                 const dashboardMenuIcon = document.getElementById('dashboard-menu-icon');
                 const dashboardCloseIcon = document.getElementById('dashboard-close-icon');
                 const pageMenuIcon = document.getElementById('page-menu-icon');
                 const pageCloseIcon = document.getElementById('page-close-icon');
+                const headerMenuIcon = document.getElementById('header-menu-icon');
+                const headerCloseIcon = document.getElementById('header-close-icon');
                 if (menuIcon) menuIcon.classList.remove('hidden');
                 if (closeIcon) closeIcon.classList.add('hidden');
                 if (dashboardMenuIcon) dashboardMenuIcon.classList.remove('hidden');
                 if (dashboardCloseIcon) dashboardCloseIcon.classList.add('hidden');
                 if (pageMenuIcon) pageMenuIcon.classList.remove('hidden');
                 if (pageCloseIcon) pageCloseIcon.classList.add('hidden');
+                if (headerMenuIcon) headerMenuIcon.classList.remove('hidden');
+                if (headerCloseIcon) headerCloseIcon.classList.add('hidden');
             }
 
             if (mobileMenuButton) {
