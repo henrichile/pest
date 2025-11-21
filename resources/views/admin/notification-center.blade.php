@@ -116,6 +116,7 @@
                     <option value="">Todos</option>
                     @php
                         $typeNames = [
+                            // Formatos con namespace completo
                             'App\\Notifications\\ServiceCreatedNotification' => 'Servicio Creado',
                             'App\\Notifications\\ServiceUpdatedNotification' => 'Servicio Actualizado',
                             'App\\Notifications\\ServiceCompletedNotification' => 'Servicio Completado',
@@ -125,11 +126,25 @@
                             'App\\Notifications\\UserUpdatedNotification' => 'Usuario Actualizado',
                             'App\\Notifications\\ReportGeneratedNotification' => 'Reporte Generado',
                             'App\\Notifications\\SystemNotification' => 'Sistema',
+                            // Formatos sin namespace
+                            'AppNotificationsServiceCreatedNotification' => 'Servicio Creado',
+                            'AppNotificationsServiceUpdatedNotification' => 'Servicio Actualizado',
+                            'AppNotificationsServiceCompletedNotification' => 'Servicio Completado',
+                            'AppNotificationsServiceAssignedNotification' => 'Servicio Asignado',
+                            'AppNotificationsServiceAssigned' => 'Servicio Asignado',
+                            'AppNotificationsServiceCancelledNotification' => 'Servicio Cancelado',
+                            'AppNotificationsNewUserNotification' => 'Nuevo Usuario',
+                            'AppNotificationsUserUpdatedNotification' => 'Usuario Actualizado',
+                            'AppNotificationsReportGeneratedNotification' => 'Reporte Generado',
+                            'AppNotificationsSystemNotification' => 'Sistema',
                         ];
                     @endphp
                     @foreach($notificationsByType as $type => $count)
+                        @php
+                            $displayName = $typeNames[$type] ?? $typeNames[str_replace('\\', '', $type)] ?? class_basename($type);
+                        @endphp
                         <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>
-                            {{ $typeNames[$type] ?? class_basename($type) }}
+                            {{ $displayName }}
                         </option>
                     @endforeach
                 </select>
@@ -192,6 +207,7 @@
 
                             // Mapear tipos de notificación a nombres legibles
                             $typeNames = [
+                                // Formatos con namespace completo
                                 'App\\Notifications\\ServiceCreatedNotification' => 'Servicio Creado',
                                 'App\\Notifications\\ServiceUpdatedNotification' => 'Servicio Actualizado',
                                 'App\\Notifications\\ServiceCompletedNotification' => 'Servicio Completado',
@@ -201,9 +217,23 @@
                                 'App\\Notifications\\UserUpdatedNotification' => 'Usuario Actualizado',
                                 'App\\Notifications\\ReportGeneratedNotification' => 'Reporte Generado',
                                 'App\\Notifications\\SystemNotification' => 'Sistema',
+                                // Formatos sin namespace
+                                'AppNotificationsServiceCreatedNotification' => 'Servicio Creado',
+                                'AppNotificationsServiceUpdatedNotification' => 'Servicio Actualizado',
+                                'AppNotificationsServiceCompletedNotification' => 'Servicio Completado',
+                                'AppNotificationsServiceAssignedNotification' => 'Servicio Asignado',
+                                'AppNotificationsServiceAssigned' => 'Servicio Asignado',
+                                'AppNotificationsServiceCancelledNotification' => 'Servicio Cancelado',
+                                'AppNotificationsNewUserNotification' => 'Nuevo Usuario',
+                                'AppNotificationsUserUpdatedNotification' => 'Usuario Actualizado',
+                                'AppNotificationsReportGeneratedNotification' => 'Reporte Generado',
+                                'AppNotificationsSystemNotification' => 'Sistema',
                             ];
 
-                            $typeName = $typeNames[$notification->type] ?? class_basename($notification->type);
+                            // Intentar con el tipo completo, luego sin barras, y finalmente el basename
+                            $typeName = $typeNames[$notification->type]
+                                ?? $typeNames[str_replace('\\', '', $notification->type)]
+                                ?? class_basename($notification->type);
                         @endphp
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: #111827;">
