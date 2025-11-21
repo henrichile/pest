@@ -122,11 +122,11 @@
                                         $isTechView = true;
                                     }
 
-                                    // Generar URLs correctas
+                                    // Generar URLs correctas usando rutas nombradas
                                     if ($isTechView) {
-                                        $startUrl = url('/admin/technician-view/services/' . $service->id . '/start');
-                                        $detailUrl = url('/admin/technician-view/services/' . $service->id . '/detail');
-                                        $pdfUrl = url('/admin/technician-view/services/' . $service->id . '/pdf');
+                                        $startUrl = route('technician-view.service.start', $service);
+                                        $detailUrl = route('technician-view.service.detail', $service);
+                                        $pdfUrl = route('technician-view.service.pdf', $service);
                                     } else {
                                         try {
                                             $startUrl = route("technician.service.start", $service);
@@ -252,11 +252,11 @@
                                 $isTechView = true;
                             }
 
-                            // Generar URLs correctas
+                            // Generar URLs correctas usando rutas nombradas
                             if ($isTechView) {
-                                $startUrl = url('/admin/technician-view/services/' . $service->id . '/start');
-                                $detailUrl = url('/admin/technician-view/services/' . $service->id . '/detail');
-                                $pdfUrl = url('/admin/technician-view/services/' . $service->id . '/pdf');
+                                $startUrl = route('technician-view.service.start', $service);
+                                $detailUrl = route('technician-view.service.detail', $service);
+                                $pdfUrl = route('technician-view.service.pdf', $service);
                             } else {
                                 try {
                                     $startUrl = route("technician.service.start", $service);
