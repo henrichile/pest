@@ -1179,6 +1179,15 @@ function getTechnicianRoute($routeName, ...$params) {
                     // Restaurar textos en modo claro - forzar colores correctos
                     const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, td, th, label, .statistics-text, .statistics-number, div[style*="color"]');
                     textElements.forEach(el => {
+                        // Excluir elementos dentro de botones verdes o con texto blanco
+                        if (el.closest('.bg-green-500') ||
+                            el.classList.contains('bg-green-500') ||
+                            el.classList.contains('text-white') ||
+                            el.closest('button[style*="background: #22c55e"]') ||
+                            el.closest('a[style*="background: #22c55e"]')) {
+                            return;
+                        }
+
                         if (!el.closest('.bg-green-500') && !el.classList.contains('bg-green-500')) {
                             // Si tiene clase dark:text-white, en modo claro debe ser negro
                             if (el.classList.contains('dark:text-white')) {

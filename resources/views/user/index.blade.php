@@ -4,6 +4,17 @@
 
 @section('content')
 <div class="space-y-4 sm:space-y-6 pt-12 md:pt-0" style="padding-top: 80px;">
+    <!-- Título móvil dinámico -->
+    <div class="md:hidden mb-4">
+        <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
+            @if(request('role') === 'technician')
+                Técnicos
+            @else
+                Gestión de Usuarios
+            @endif
+        </h2>
+    </div>
+
     <!-- Header con hamburguesa y título -->
     <div class="mb-4 sm:mb-6">
         <!-- Primera fila: Hamburguesa + Título (móvil) / Título solo (desktop) - Oculta ahora -->
@@ -51,47 +62,50 @@
     </div>
 
     <!-- Filters -->
-    <div class="bg-white border dark:border-gray-700 rounded-lg p-4 mb-6" style="border: 1px solid #e5e7eb !important;">
-        <form method="GET" action="{{ route('admin.users.index') }}" class="flex flex-wrap gap-4 items-end">
+    <div class="bg-white border dark:border-gray-700 rounded-lg p-4 sm:p-6 mb-6" style="border: 1px solid #e5e7eb !important;">
+        <form method="GET" action="{{ route('admin.users.index') }}" class="space-y-4">
             <!-- Search -->
-            <div class="flex-1 min-w-[200px]">
-                <label for="search" class="block text-sm font-medium mb-1" style="color: #374151;">Buscar</label>
+            <div class="w-full">
+                <label for="search" class="block text-sm font-medium mb-2" style="color: #374151;">Buscar</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #6b7280;">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
                     </div>
-                    <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Nombre o email..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
+                    <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Nombre o email..." class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
                 </div>
             </div>
 
-            <!-- Role Filter -->
-            <div class="min-w-[150px]">
-                <label for="role" class="block text-sm font-medium mb-1" style="color: #374151;">Rol</label>
-                <select name="role" id="role" class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
-                    <option value="">Todos los roles</option>
-                    @foreach($roles as $role)
-                        <option value="{{ $role->name }}" {{ request('role') === $role->name ? 'selected' : '' }}>
-                            {{ ucfirst($role->name) }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+            <!-- Role and Status Filters -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Role Filter -->
+                <div class="w-full">
+                    <label for="role" class="block text-sm font-medium mb-2" style="color: #374151;">Rol</label>
+                    <select name="role" id="role" class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
+                        <option value="">Todos los roles</option>
+                        @foreach($roles as $role)
+                            <option value="{{ $role->name }}" {{ request('role') === $role->name ? 'selected' : '' }}>
+                                {{ ucfirst($role->name) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-            <!-- Status Filter -->
-            <div class="min-w-[150px]">
-                <label for="is_active" class="block text-sm font-medium mb-1" style="color: #374151;">Estado</label>
-                <select name="is_active" id="is_active" class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
-                    <option value="">Todos</option>
-                    <option value="1" {{ request('is_active') === '1' ? 'selected' : '' }}>Activos</option>
-                    <option value="0" {{ request('is_active') === '0' ? 'selected' : '' }}>Inactivos</option>
-                </select>
+                <!-- Status Filter -->
+                <div class="w-full">
+                    <label for="is_active" class="block text-sm font-medium mb-2" style="color: #374151;">Estado</label>
+                    <select name="is_active" id="is_active" class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
+                        <option value="">Todos</option>
+                        <option value="1" {{ request('is_active') === '1' ? 'selected' : '' }}>Activos</option>
+                        <option value="0" {{ request('is_active') === '0' ? 'selected' : '' }}>Inactivos</option>
+                    </select>
+                </div>
             </div>
 
             <!-- Submit Button -->
-            <div>
-                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors" style="background: #22c55e; hover:background: #16a34a;">
+            <div class="w-full">
+                <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2.5 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors" style="background: #22c55e; hover:background: #16a34a;">
                     <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>
