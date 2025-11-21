@@ -346,7 +346,8 @@
                 e.stopPropagation();
 
                 const formId = form.id;
-                const serviceId = formId.replace('start-form-', '');
+                // Extraer el ID del servicio correctamente (puede ser start-form-89 o start-form-mobile-89)
+                const serviceId = formId.replace('start-form-mobile-', '').replace('start-form-', '');
                 const submitBtn = form.querySelector('button[type="submit"]');
 
                 // Deshabilitar botón
