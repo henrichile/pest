@@ -529,7 +529,7 @@ function getTechnicianRoute($routeName, ...$params) {
         <div class="flex-1 flex flex-col min-w-0 overflow-x-hidden">
 
             <!-- Fixed Header (solo móvil) -->
-            <header class="md:hidden fixed top-0 left-0 right-0 z-30 bg-white border-b border-gray-200" style="width: 100%;">
+            <header class="md:hidden fixed top-0 left-0 right-0 bg-white border-b border-gray-200" style="width: 100%; z-index: 9999;">
                 <div class="w-full px-4 py-3 flex items-center justify-between gap-4">
                     <!-- Left: Mobile Menu Button -->
                     <button id="header-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50; background-color: rgb(255, 255, 255);">
