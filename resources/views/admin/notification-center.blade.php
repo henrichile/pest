@@ -102,7 +102,7 @@
 
     <!-- Filters -->
     <div class="bg-white border dark:border-gray-700 rounded-lg p-4 mb-6" style="border: 1px solid #e5e7eb !important;">
-        <form method="GET" action="{{ route('admin.notification-center') }}" class="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <form method="GET" action="{{ route('admin.notification-center') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
                 <label for="search" class="block text-sm font-medium mb-2" style="color: #374151;">Buscar</label>
                 <input type="text" id="search" name="search" value="{{ request('search') }}" placeholder="Buscar en notificaciones..."
@@ -110,45 +110,8 @@
                        style="border: 1px solid #e5e7eb !important; color: #111827;">
             </div>
 
-            <div>
-                <label for="type" class="block text-sm font-medium mb-2" style="color: #374151;">Tipo</label>
-                <select id="type" name="type" class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
-                    <option value="">Todos</option>
-                    @php
-                        $typeNames = [
-                            // Formatos con namespace completo
-                            'App\\Notifications\\ServiceCreatedNotification' => 'Servicio Creado',
-                            'App\\Notifications\\ServiceUpdatedNotification' => 'Servicio Actualizado',
-                            'App\\Notifications\\ServiceCompletedNotification' => 'Servicio Completado',
-                            'App\\Notifications\\ServiceAssignedNotification' => 'Servicio Asignado',
-                            'App\\Notifications\\ServiceCancelledNotification' => 'Servicio Cancelado',
-                            'App\\Notifications\\NewUserNotification' => 'Nuevo Usuario',
-                            'App\\Notifications\\UserUpdatedNotification' => 'Usuario Actualizado',
-                            'App\\Notifications\\ReportGeneratedNotification' => 'Reporte Generado',
-                            'App\\Notifications\\SystemNotification' => 'Sistema',
-                            // Formatos sin namespace
-                            'AppNotificationsServiceCreatedNotification' => 'Servicio Creado',
-                            'AppNotificationsServiceUpdatedNotification' => 'Servicio Actualizado',
-                            'AppNotificationsServiceCompletedNotification' => 'Servicio Completado',
-                            'AppNotificationsServiceAssignedNotification' => 'Servicio Asignado',
-                            'AppNotificationsServiceAssigned' => 'Servicio Asignado',
-                            'AppNotificationsServiceCancelledNotification' => 'Servicio Cancelado',
-                            'AppNotificationsNewUserNotification' => 'Nuevo Usuario',
-                            'AppNotificationsUserUpdatedNotification' => 'Usuario Actualizado',
-                            'AppNotificationsReportGeneratedNotification' => 'Reporte Generado',
-                            'AppNotificationsSystemNotification' => 'Sistema',
-                        ];
-                    @endphp
-                    @foreach($notificationsByType as $type => $count)
-                        @php
-                            $displayName = $typeNames[$type] ?? $typeNames[str_replace('\\', '', $type)] ?? class_basename($type);
-                        @endphp
-                        <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>
-                            {{ $displayName }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+            <!-- Campo oculto para tipo siempre en "Todos" -->
+            <input type="hidden" name="type" value="">
 
             <div>
                 <label for="read_status" class="block text-sm font-medium mb-2" style="color: #374151;">Estado</label>
@@ -173,7 +136,7 @@
                        style="border: 1px solid #e5e7eb !important; color: #111827;">
             </div>
 
-            <div class="md:col-span-5 flex gap-2">
+            <div class="md:col-span-4 flex gap-2">
                 <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors">
                     Filtrar
                 </button>
