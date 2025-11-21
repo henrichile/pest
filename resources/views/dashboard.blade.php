@@ -286,7 +286,7 @@
         }
     });
 </script>
-<div class="space-y-4 sm:space-y-6" style="padding-top: 80px;">
+<div class="space-y-4 sm:space-y-6 md:pt-12">
     <!-- Header con hamburguesa, título, buscador e iconos -->
     <div class="mb-4 sm:mb-6">
         <!-- Primera fila móvil: Hamburguesa + Iconos (oculta en móvil, visible en desktop) -->
