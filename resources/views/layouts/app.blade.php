@@ -567,26 +567,113 @@ function getTechnicianRoute($routeName, ...$params) {
                     <!-- Right: Notifications & User Menu -->
                     <div class="flex items-center gap-3 flex-shrink-0">
                         <!-- Notifications -->
-                        <button type="button" class="relative p-2 rounded-full hover:bg-gray-100 transition-colors">
-                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #6b7280;">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                            </svg>
-                            @if(auth()->check() && auth()->user()->unreadNotifications()->count() > 0)
-                                <span class="absolute top-1 right-1 flex h-2 w-2">
-                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                                </span>
-                            @endif
-                        </button>
+                        <div class="relative" id="header-notification-dropdown">
+                            <button type="button" id="header-notification-button" class="relative p-2 rounded-full hover:bg-gray-100 transition-colors">
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #6b7280;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                                </svg>
+                                @php
+                                    $unreadCount = auth()->check() ? auth()->user()->unreadNotifications()->count() : 0;
+                                @endphp
+                                @if($unreadCount > 0)
+                                    <span class="absolute text-white text-xs rounded-full flex items-center justify-center font-semibold" style="background: #22c55e; min-width: 20px; height: 20px; padding: 0 6px; top: -2px; right: -2px; z-index: 20; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                                        {{ $unreadCount > 99 ? '99+' : $unreadCount }}
+                                    </span>
+                                @endif
+                            </button>
+
+                            <!-- Notification Dropdown Menu -->
+                            <div id="header-notification-menu" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50" style="max-height: 400px; overflow-y: auto;">
+                                <div class="p-3 border-b border-gray-200 flex justify-between items-center">
+                                    <h3 class="font-semibold text-gray-900">Notificaciones</h3>
+                                    @if(Route::has('admin.notification-center'))
+                                    <a href="{{ route('admin.notification-center') }}" class="text-sm text-green-600 hover:text-green-700">Ver todas</a>
+                                    @endif
+                                </div>
+                                <div class="p-2">
+                                    @php
+                                        $recentNotifications = auth()->check() ? auth()->user()->notifications()->take(5)->get() : collect();
+                                    @endphp
+                                    @if($recentNotifications->count() > 0)
+                                        @foreach($recentNotifications as $notification)
+                                            @php
+                                                $data = is_array($notification->data) ? $notification->data : json_decode($notification->data, true);
+                                                $title = $data['title'] ?? 'Notificación';
+                                                $message = $data['message'] ?? '';
+                                                $isRead = !is_null($notification->read_at);
+                                            @endphp
+                                            <div class="p-3 hover:bg-gray-50 rounded-lg cursor-pointer {{ !$isRead ? 'bg-green-50' : '' }}">
+                                                <div class="flex justify-between items-start">
+                                                    <h4 class="font-semibold text-sm text-gray-900">{{ $title }}</h4>
+                                                    <span class="text-xs text-gray-500">{{ $notification->created_at->diffForHumans() }}</span>
+                                                </div>
+                                                <p class="text-sm text-gray-600 mt-1">{{ Str::limit($message, 80) }}</p>
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        <div class="p-6 text-center text-gray-500">
+                                            <p>No hay notificaciones</p>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- User Menu -->
-                        <button type="button" class="flex items-center gap-2 p-1.5 rounded-full hover:bg-gray-100 transition-colors">
-                            <div class="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center">
-                                <span class="text-sm font-medium text-white">
-                                    {{ auth()->check() ? strtoupper(substr(auth()->user()->name, 0, 1)) : 'U' }}
-                                </span>
+                        <div class="relative" id="header-user-dropdown">
+                            <button type="button" id="header-user-button" class="flex items-center gap-2 p-1.5 rounded-full hover:bg-gray-100 transition-colors">
+                                <div class="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center">
+                                    <span class="text-sm font-medium text-white">
+                                        {{ auth()->check() ? strtoupper(substr(auth()->user()->name, 0, 1)) : 'U' }}
+                                    </span>
+                                </div>
+                            </button>
+
+                            <!-- User Dropdown Menu -->
+                            <div id="header-user-menu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                                <div class="p-3 border-b border-gray-200">
+                                    <div class="flex items-center gap-3">
+                                        <div class="h-10 w-10 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                                            <span class="text-sm font-medium text-white">
+                                                {{ auth()->check() ? strtoupper(substr(auth()->user()->name, 0, 1)) : 'U' }}
+                                            </span>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm font-semibold text-gray-900 truncate">{{ auth()->check() ? auth()->user()->name : 'Usuario' }}</p>
+                                            <p class="text-xs text-gray-500 truncate">{{ auth()->check() ? auth()->user()->email : '' }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-2">
+                                    @if(Route::has('profile'))
+                                    <a href="{{ route('profile') }}" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                                        </svg>
+                                        <span>Mi Perfil</span>
+                                    </a>
+                                    @endif
+                                    @if(Route::has('admin.settings'))
+                                    <a href="{{ route('admin.settings') }}" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        <span>Configuración</span>
+                                    </a>
+                                    @endif
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                                            </svg>
+                                            <span>Cerrar Sesión</span>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
-                        </button>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -842,6 +929,48 @@ function getTechnicianRoute($routeName, ...$params) {
                     }
                 });
             }
+        })();
+
+        // Header Notification and User Menu Dropdowns
+        (function() {
+            const notificationButton = document.getElementById('header-notification-button');
+            const notificationMenu = document.getElementById('header-notification-menu');
+            const userButton = document.getElementById('header-user-button');
+            const userMenu = document.getElementById('header-user-menu');
+
+            // Toggle notification menu
+            if (notificationButton && notificationMenu) {
+                notificationButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    notificationMenu.classList.toggle('hidden');
+                    // Close user menu if open
+                    if (userMenu) {
+                        userMenu.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Toggle user menu
+            if (userButton && userMenu) {
+                userButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    userMenu.classList.toggle('hidden');
+                    // Close notification menu if open
+                    if (notificationMenu) {
+                        notificationMenu.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Close menus when clicking outside
+            document.addEventListener('click', function(e) {
+                if (notificationMenu && !notificationMenu.contains(e.target) && e.target !== notificationButton) {
+                    notificationMenu.classList.add('hidden');
+                }
+                if (userMenu && !userMenu.contains(e.target) && e.target !== userButton) {
+                    userMenu.classList.add('hidden');
+                }
+            });
         })();
 
         // Dark Mode Toggle Switch
