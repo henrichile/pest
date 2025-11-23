@@ -86,9 +86,7 @@ class ClientController extends Controller
             abort(403, 'No tienes acceso a esta página.');
         }
 
-        // Return the same view as index, which likely has a modal for creation
-        $clients = Client::orderBy('name')->paginate(20);
-        return view('admin.clients', compact('clients'));
+        return view('admin.clients-create');
     }
 
     /**
