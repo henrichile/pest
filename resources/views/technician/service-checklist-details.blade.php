@@ -38,14 +38,47 @@
                 </h2>
                 <ul class="space-y-2">
                     @if(isset($service->checklist_data["points"]) && count($service->checklist_data["points"]) > 0)
-                        @foreach($service->checklist_data["points"] as $point)
-                        <li class="flex items-center text-gray-700">
-                            <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            {{ $point }}
-                        </li>
-                        @endforeach
+                        @php
+                            // Convertir el objeto de puntos de control en un array legible
+                            $pointsToDisplay = [];
+                            $pointsData = $service->checklist_data["points"];
+
+                            // Mapeo de claves a etiquetas legibles
+                            $pointsMapping = [
+                                'installed_points_check' => 'Puntos instalados',
+                                'existing_points_check' => 'Puntos existentes',
+                                'spare_points_check' => 'Puntos de repuesto',
+                                'bait_weight_check' => 'Peso cebo instalado (gramos)',
+                                'physical_installed_check' => 'Puntos físicos instalados',
+                                'physical_existing_check' => 'Puntos físicos existentes',
+                                'physical_spare_check' => 'Puntos físicos de repuesto'
+                            ];
+
+                            // Si es un array asociativo (checkboxes), convertir a array de strings
+                            if (is_array($pointsData) && !isset($pointsData[0])) {
+                                foreach ($pointsMapping as $key => $label) {
+                                    if (isset($pointsData[$key]) && $pointsData[$key]) {
+                                        $pointsToDisplay[] = $label;
+                                    }
+                                }
+                            } else {
+                                // Si ya es un array de strings, usarlo directamente
+                                $pointsToDisplay = $pointsData;
+                            }
+                        @endphp
+
+                        @if(count($pointsToDisplay) > 0)
+                            @foreach($pointsToDisplay as $point)
+                            <li class="flex items-center text-gray-700">
+                                <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                {{ $point }}
+                            </li>
+                            @endforeach
+                        @else
+                            <li class="text-gray-500 italic">No hay puntos de control registrados</li>
+                        @endif
                     @else
                         <li class="text-gray-500 italic">No hay puntos de control registrados</li>
                     @endif

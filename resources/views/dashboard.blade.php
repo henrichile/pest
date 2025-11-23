@@ -1391,7 +1391,7 @@
                 <div class="p-5">
                     <h3 class="text-base font-semibold mb-4 dark:text-white" style="color: #111827;">Acciones Rápidas</h3>
                     <div class="space-y-3">
-                        <a href="{{ route('admin.services.create') ?? '#' }}" class="relative rounded-lg bg-white border dark:border-gray-700 px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" style="border: 1px solid #e5e7eb !important;">
+                        <a href="{{ Route::has('admin.services.create') ? route('admin.services.create') : '#' }}" class="relative rounded-lg bg-white border dark:border-gray-700 px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" style="border: 1px solid #e5e7eb !important;">
                     <div class="flex-shrink-0">
                                 <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: #ef4444;">
                                     <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -1406,7 +1406,7 @@
                     </div>
                 </a>
 
-                        <a href="{{ route('admin.clients.create') ?? route('clients.create') }}" class="relative rounded-lg bg-white border dark:border-gray-700 px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" style="border: 1px solid #e5e7eb !important;">
+                        <a href="{{ Route::has('admin.clients.create') ? route('admin.clients.create') : (Route::has('clients.create') ? route('clients.create') : '#') }}" class="relative rounded-lg bg-white border dark:border-gray-700 px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" style="border: 1px solid #e5e7eb !important;">
                     <div class="flex-shrink-0">
                                 <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: #22c55e;">
                                     <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -1446,7 +1446,7 @@
     <div class="mb-6">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold dark:text-white" style="color: #111827;">Servicios Recientes</h3>
-            <a href="{{ route('admin.services.index') ?? '#' }}" class="text-sm font-medium" style="color: #22c55e;">Ver todos</a>
+            <a href="{{ Route::has('admin.services.index') ? route('admin.services.index') : '#' }}" class="text-sm font-medium" style="color: #22c55e;">Ver todos</a>
         </div>
         <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
             <div class="p-6">
