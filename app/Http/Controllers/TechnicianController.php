@@ -16,11 +16,11 @@ class TechnicianController extends Controller
     public function dashboard()
     {
         $user = auth()->user();
-        
+
         // Si está en modo "view_as_technician" y es super-admin, mostrar todos los servicios
         // para que pueda ver cómo funciona el sistema
         $isViewingAsTechnician = session('view_as_technician', false) && $user->hasRole('super-admin');
-        
+
         if ($isViewingAsTechnician) {
             // Mostrar todos los servicios para que el admin pueda ver el flujo completo
             $query = Service::query();
@@ -72,7 +72,7 @@ class TechnicianController extends Controller
     {
         $user = auth()->user();
         $isViewingAsTechnician = session('view_as_technician', false) && $user->hasRole('super-admin');
-        
+
         if ($isViewingAsTechnician) {
             // Mostrar todos los servicios para que el admin pueda ver el flujo completo
             $services = Service::with(['client', 'serviceType', 'assignedUser'])
@@ -87,7 +87,7 @@ class TechnicianController extends Controller
         }
 
         // Detectar si estamos en modo technician-view
-        $isTechnicianView = request()->is('admin/technician-view/*') || 
+        $isTechnicianView = request()->is('admin/technician-view/*') ||
                            request()->routeIs('technician-view.*') ||
                            (session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin'));
 
@@ -108,9 +108,9 @@ class TechnicianController extends Controller
         }
 
         $service->load(['client', 'serviceType', 'assignedUser']);
-        
+
         // Detectar si estamos en modo technician-view
-        $isTechnicianView = request()->is('admin/technician-view/*') || 
+        $isTechnicianView = request()->is('admin/technician-view/*') ||
                            request()->routeIs('technician-view.*') ||
                            (session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin'));
 
@@ -168,7 +168,7 @@ class TechnicianController extends Controller
         }
 
         // Detectar si estamos en modo technician-view (admin viendo como técnico)
-        $isTechnicianView = request()->is('admin/technician-view/*') || 
+        $isTechnicianView = request()->is('admin/technician-view/*') ||
                            request()->routeIs('technician-view.*') ||
                            (request()->header('referer') && strpos(request()->header('referer'), '/admin/technician-view/') !== false);
 
@@ -177,7 +177,7 @@ class TechnicianController extends Controller
         if ($isTechnicianView) {
             return redirect('/admin/technician-view/services/' . $service->id . '/checklist/location');
         }
-        
+
         return redirect('/technician/services/' . $service->id . '/checklist/location');
     }
 
@@ -194,7 +194,7 @@ class TechnicianController extends Controller
         }
 
         // Detectar si estamos en modo technician-view
-        $isTechnicianView = request()->is('admin/technician-view/*') || 
+        $isTechnicianView = request()->is('admin/technician-view/*') ||
                            request()->routeIs('technician-view.*');
 
         return view("technician.capture-location-simple", compact("service", "isTechnicianView"));
@@ -272,7 +272,7 @@ class TechnicianController extends Controller
         }
 
         // Detectar si estamos en modo technician-view
-        $isTechnicianView = request()->is('admin/technician-view/*') || 
+        $isTechnicianView = request()->is('admin/technician-view/*') ||
                            request()->routeIs('technician-view.*') ||
                            (request()->header('referer') && strpos(request()->header('referer'), '/admin/technician-view/') !== false);
 
@@ -298,7 +298,7 @@ class TechnicianController extends Controller
         }
 
         // Detectar si estamos en modo technician-view
-        $isTechnicianView = request()->is('admin/technician-view/*') || 
+        $isTechnicianView = request()->is('admin/technician-view/*') ||
                            request()->routeIs('technician-view.*');
 
         // Verificar que la ubicación haya sido capturada
@@ -377,13 +377,13 @@ class TechnicianController extends Controller
                 $validStages = ["points", "products", "results", "observations", "sites", "description"];
             }
         }
-        
+
         if (!in_array($stage, $validStages)) {
             abort(404, "Etapa no válida");
         }
 
         // Detectar si estamos en modo technician-view
-        $isTechnicianView = request()->is('admin/technician-view/*') || 
+        $isTechnicianView = request()->is('admin/technician-view/*') ||
                            request()->routeIs('technician-view.*');
 
         // ✅ NUEVO: Para sanitización, saltarse la etapa de results
@@ -451,14 +451,14 @@ class TechnicianController extends Controller
         }
 
         // Detectar si estamos en modo technician-view
-        $isTechnicianView = request()->is('admin/technician-view/*') || 
+        $isTechnicianView = request()->is('admin/technician-view/*') ||
                            request()->routeIs('technician-view.*') ||
                            (request()->header('referer') && strpos(request()->header('referer'), '/admin/technician-view/') !== false);
 
         // Obtener la etapa actual del formulario
         $stage = $request->input('checklist_stage') ?? $request->input('current_stage') ?? $request->input('stage') ?? $request->input('data_stage') ?? 'unknown';
         $nextStage = $request->input('next_stage') ?? $request->input('data_next_stage') ?? null;
-        
+
         // Verificar estado del servicio (permitir si se está completando el servicio)
         $isCompletingService = ($stage === 'monitoreo-firma' || $nextStage === 'completed' || $stage === 'description');
         if ($service->status !== "en_progreso" && !$isCompletingService) {
@@ -486,7 +486,7 @@ class TechnicianController extends Controller
                 $validStages = ["points", "products", "results", "observations", "sites", "description"];
             }
         }
-        
+
         if (!in_array($stage, $validStages)) {
             return response()->json(['success' => false, 'message' => 'Etapa no válida ('.$stage.')'], 400);
         }
@@ -640,6 +640,24 @@ class TechnicianController extends Controller
 
     private function processPointsData(Request $request)
     {
+        $data = [];
+
+        // Guardar checkboxes de puntos de control
+        $checkboxFields = [
+            'installed_points_check',
+            'existing_points_check',
+            'spare_points_check',
+            'bait_weight_check',
+            'physical_installed_check',
+            'physical_existing_check',
+            'physical_spare_check'
+        ];
+
+        foreach ($checkboxFields as $field) {
+            $data[$field] = $request->has($field) ? true : false;
+        }
+
+        // Guardar puntos de ubicación si existen
         $points = [];
         $pointsData = $request->input('points', []);
 
@@ -655,7 +673,11 @@ class TechnicianController extends Controller
             }
         }
 
-        return $points;
+        if (!empty($points)) {
+            $data['locations'] = $points;
+        }
+
+        return $data;
     }
 
     private function processProductsData(Request $request)
@@ -746,7 +768,7 @@ class TechnicianController extends Controller
     private function generateNextCebaderaCode($existingObservations)
     {
         $maxNumber = 0;
-        
+
         // Buscar el número más alto en los códigos existentes
         foreach ($existingObservations as $observation) {
             if (isset($observation['cebadera_code']) && !empty($observation['cebadera_code'])) {
@@ -759,7 +781,7 @@ class TechnicianController extends Controller
                 }
             }
         }
-        
+
         // Generar el siguiente código
         $nextNumber = $maxNumber + 1;
         return sprintf('CE-%03d', $nextNumber);
@@ -773,12 +795,12 @@ class TechnicianController extends Controller
         if ($request->has('cebadera_code') || $request->has('detail')) {
             // Obtener el código de cebadera del request o generar uno automáticamente
             $cebaderaCode = trim($request->input('cebadera_code', ''));
-            
+
             // Si no se proporcionó un código o está vacío, generar uno automáticamente
             if (empty($cebaderaCode)) {
                 $cebaderaCode = $this->generateNextCebaderaCode($existingObservations);
             }
-            
+
             $newObservation = [
                 'cebadera_code' => $cebaderaCode,
                 'observation_number' => $request->input('observation_number', 1),
@@ -817,7 +839,7 @@ class TechnicianController extends Controller
                     if (empty($cebaderaCode)) {
                         $cebaderaCode = $this->generateNextCebaderaCode(array_merge($existingObservations, $observations));
                     }
-                    
+
                     $observations[] = [
                         'cebadera_code' => $cebaderaCode,
                         'observation_number' => $obs['observation_number'] ?? count($observations) + 1,
@@ -1463,7 +1485,7 @@ class TechnicianController extends Controller
         ]);
 
         $pdf = Pdf::loadView('technician.service-pdf', compact('service', 'validationId', 'integrityHash', 'qrCode'));
-        
+
         // Configurar opciones de DomPDF para manejar imágenes correctamente
         $pdf->setPaper('A4', 'portrait');
         $pdf->setOptions([
