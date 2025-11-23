@@ -1,5 +1,5 @@
 @php
-$isViewingAsTechnician = (session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin')) 
+$isViewingAsTechnician = (session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin'))
     || request()->is('admin/technician-view/*')
     || (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], '/admin/technician-view/') !== false);
 $submitRoute = $isViewingAsTechnician ? route('technician-view.service.checklist.submit', $service) : route('technician.service.checklist.submit', $service);
@@ -442,40 +442,40 @@ $submitRoute = $isViewingAsTechnician ? route('technician-view.service.checklist
     .form-row {
         grid-template-columns: 1fr;
     }
-    
+
     .observation-summary {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
     }
-    
+
     .observation-actions {
         flex-direction: column;
         align-items: flex-end;
         gap: 8px;
     }
-    
+
     .detail-row {
         flex-direction: column;
     }
-    
+
     .detail-row label {
         min-width: auto;
         margin-bottom: 8px;
     }
-    
+
     .form-actions {
         flex-direction: column;
     }
-    
+
     .btn-save, .btn-cancel {
         width: 100%;
     }
-    
+
     .navigation-buttons {
         justify-content: space-between;
     }
-    
+
     .back-button, .next-button {
         font-size: 1.1em;
         padding: 12px 24px;
@@ -562,18 +562,18 @@ $submitRoute = $isViewingAsTechnician ? route('technician-view.service.checklist
                 <span id="toggleFormIcon">▼</span>
             </button>
         </div>
-        
+
         <form method="POST" action="{{ $submitRoute }}" enctype="multipart/form-data" class="observation-form" id="addObservationFormNEW" style="display: none;">
             @csrf
             @method('POST')
             <input type="hidden" name="current_stage" value="observations">
             <input type="hidden" name="next_stage" value="observations">
-            
+
             <div class="form-row">
                 <div class="form-group">
                     @if($service->service_type === 'desratizacion')
                         <label>Código de la Cebadera:</label>
-                        
+
                     @elseif($service->service_type === 'desinsectacion' || $service->service_type === 'sanitizacion' || $service->service_type === 'fumigacion-de-jardines' || $service->service_type === 'servicios-especiales' || $service->service_type === 'desinfeccion')
                         <label>Lugar tratado o estación:</label>
                     @endif
@@ -601,12 +601,22 @@ $submitRoute = $isViewingAsTechnician ? route('technician-view.service.checklist
                     <input type="number" id="observation_number" name="observation_number" value="{{ (isset($service->checklist_data["observations"]) ? count($service->checklist_data["observations"]) : 0) + 1 }}" min="1" required>
                 </div>
             </div>
-            
+
             <div class="form-group">
-                <label for="detail">Detalle de la Observación</label>
+                <label for="detail">Detalle de la Observación <span style="color: red;">*</span></label>
                 <textarea id="detail" name="detail" placeholder="Describa detalladamente la observación..." rows="4" required></textarea>
             </div>
-            
+
+            <div class="form-group">
+                <label style="display: flex; align-items: center; cursor: pointer;">
+                    <input type="checkbox" id="no_observation" name="no_observation" value="1" style="margin-right: 8px;">
+                    <span>Sin observación</span>
+                </label>
+                <small style="color: #6b7280; display: block; margin-top: 4px;">
+                    Marque esta opción si no hay observaciones que registrar
+                </small>
+            </div>
+
             <div class="form-group">
                 <label for="photo">Foto de la Estación/Cebadera</label>
                 <div class="file-upload">
@@ -621,7 +631,7 @@ $submitRoute = $isViewingAsTechnician ? route('technician-view.service.checklist
                     <img id="previewImg" src="" alt="Vista previa" style="max-width: 200px; max-height: 150px; border-radius: 8px;">
                 </div>
             </div>
-            
+
             <div class="form-actions">
                 <button type="submit" class="btn-save">Guardar</button>
                 <button type="button" class="btn-cancel" onclick="toggleAddForm()">Cancelar</button>
@@ -698,10 +708,32 @@ $submitRoute = $isViewingAsTechnician ? route('technician-view.service.checklist
 
 @section('scripts')
 <script>
+// Manejar el checkbox "Sin observación"
+document.addEventListener('DOMContentLoaded', function() {
+    const noObservationCheckbox = document.getElementById('no_observation');
+    const detailTextarea = document.getElementById('detail');
+
+    if (noObservationCheckbox && detailTextarea) {
+        noObservationCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                // Remover el atributo required y llenar con "Sin observación"
+                detailTextarea.removeAttribute('required');
+                detailTextarea.value = 'Sin observación';
+                detailTextarea.disabled = true;
+            } else {
+                // Restaurar el atributo required y limpiar el campo
+                detailTextarea.setAttribute('required', 'required');
+                detailTextarea.value = '';
+                detailTextarea.disabled = false;
+            }
+        });
+    }
+});
+
 function toggleObservation(index) {
     const content = document.getElementById('observationContent' + index);
     const icon = document.getElementById('toggleIcon' + index);
-    
+
     if (content.style.display === 'none') {
         content.style.display = 'block';
         icon.textContent = '▲';
@@ -717,7 +749,7 @@ function generateNextCebaderaCode() {
     // Obtener todas las observaciones existentes
     const observationItems = document.querySelectorAll('.observation-item');
     let maxNumber = 0;
-    
+
     observationItems.forEach(item => {
         const codeElement = item.querySelector('.observation-code');
         if (codeElement) {
@@ -732,7 +764,7 @@ function generateNextCebaderaCode() {
             }
         }
     });
-    
+
     // Generar el siguiente código
     const nextNumber = maxNumber + 1;
     return `CE-${String(nextNumber).padStart(3, '0')}`;
@@ -741,7 +773,7 @@ function generateNextCebaderaCode() {
 function toggleAddForm() {
     const form = document.getElementById('addObservationFormNEW');
     const icon = document.getElementById('toggleFormIcon');
-    
+
     if (form.style.display === 'none') {
         form.style.display = 'block';
         icon.textContent = '▲';
@@ -760,16 +792,16 @@ function previewPhoto(input) {
     const preview = document.getElementById('photoPreview');
     const previewImg = document.getElementById('previewImg');
     const fileInfo = input.parentElement.querySelector('.file-info');
-    
+
     if (input.files && input.files[0]) {
         const reader = new FileReader();
-        
+
         reader.onload = function(e) {
             previewImg.src = e.target.result;
             preview.style.display = 'block';
             fileInfo.textContent = input.files[0].name;
         };
-        
+
         reader.readAsDataURL(input.files[0]);
     } else {
         preview.style.display = 'none';
@@ -784,18 +816,18 @@ function editObservation(index) {
     const cebaderaCode = header.querySelector('.observation-code')?.textContent || '';
     const observationNumber = header.querySelector('.observation-number')?.textContent.replace('Obs #', '') || '';
     const detail = observationItem.querySelector('.observation-content .detail-row:last-child span')?.textContent || '';
-    
+
     // Obtener información de la foto actual si existe
     const currentPhoto = observationItem.querySelector('.observation-photo img');
     const currentPhotoSrc = currentPhoto ? currentPhoto.src : '';
     const currentPhotoInfo = document.getElementById('currentPhotoInfo');
-    
+
     // Llenar el formulario del modal
     document.getElementById('editObservationIndex').value = index;
     document.getElementById('editCebaderaCode').value = cebaderaCode;
     document.getElementById('editObservationNumber').value = observationNumber;
     document.getElementById('editDetail').value = detail;
-    
+
     // Mostrar información de la foto actual
     if (currentPhotoSrc) {
         const photoName = currentPhotoSrc.split('/').pop();
@@ -803,11 +835,11 @@ function editObservation(index) {
     } else {
         currentPhotoInfo.innerHTML = '<i>No hay foto actual</i>';
     }
-    
+
     // Limpiar preview de nueva foto
     document.getElementById('editPhotoPreview').style.display = 'none';
     document.querySelector('#editModal .file-info').textContent = 'Sin archivos seleccionados';
-    
+
     // Mostrar el modal
     document.getElementById('editModal').style.display = 'flex';
     // Cerrar todas las observaciones abiertas
@@ -818,7 +850,7 @@ function editObservation(index) {
 
 function closeEditModal() {
     document.getElementById('editModal').style.display = 'none';
-    
+
     // Limpiar el formulario
     document.getElementById('editObservationForm').reset();
     document.getElementById('editPhotoPreview').style.display = 'none';
@@ -829,16 +861,16 @@ function previewEditPhoto(input) {
     const preview = document.getElementById('editPhotoPreview');
     const previewImg = document.getElementById('editPreviewImg');
     const fileInfo = input.parentElement.querySelector('.file-info');
-    
+
     if (input.files && input.files[0]) {
         const reader = new FileReader();
-        
+
         reader.onload = function(e) {
             previewImg.src = e.target.result;
             preview.style.display = 'block';
             fileInfo.textContent = input.files[0].name;
         };
-        
+
         reader.readAsDataURL(input.files[0]);
     } else {
         preview.style.display = 'none';
@@ -850,7 +882,7 @@ function deleteObservation(index) {
     if (confirm('¿Estás seguro de que quieres eliminar esta observación?')) {
         // Obtener serviceId de múltiples fuentes posibles
         let serviceId = '{{ $service->id ?? "undefined" }}';
-        
+
         // Si serviceId es "undefined", intentar obtenerlo de otras fuentes
         if (serviceId === 'undefined' || serviceId === '') {
             // Intentar obtenerlo de la URL actual
@@ -860,13 +892,13 @@ function deleteObservation(index) {
                 serviceId = urlMatch[1];
             }
         }
-        
+
         // Validar que tenemos serviceId
         if (!serviceId || serviceId === 'undefined' || serviceId === '') {
             alert('Error: No se pudo obtener el ID del servicio. Por favor, recarga la página.');
             return;
         }
-        
+
         // Hacer petición AJAX para eliminar
         fetch(`/technician/services/${serviceId}/checklist/observations/${index}`, {
             method: 'DELETE',
