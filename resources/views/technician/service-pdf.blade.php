@@ -886,7 +886,7 @@
         @endif
 
         {{-- Descripción del Servicio --}}
-        @if(isset($checklistData['description']['service_description']))
+        @if(isset($checklistData['description']['service_description']) && !empty($checklistData['description']['service_description']))
         <div class="subsection" style="margin-bottom: 20px;">
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Descripción del Servicio
@@ -895,10 +895,19 @@
                 {{ $checklistData['description']['service_description'] }}
             </div>
         </div>
+        @elseif(isset($checklistData['description']['content']) && !empty($checklistData['description']['content']))
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Descripción del Servicio
+            </div>
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+                {{ $checklistData['description']['content'] }}
+            </div>
+        </div>
         @endif
 
         {{-- Sugerencias --}}
-        @if(isset($checklistData['description']['service_sugerencia']))
+        @if(isset($checklistData['description']['service_sugerencia']) && !empty($checklistData['description']['service_sugerencia']))
         <div class="subsection" style="margin-bottom: 20px;">
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Sugerencias
