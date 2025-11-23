@@ -203,20 +203,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Autocompletar dirección cuando se selecciona un cliente
     clientSelect.addEventListener('change', function() {
+        console.log('Cliente seleccionado, index:', this.selectedIndex);
         const selectedOption = this.options[this.selectedIndex];
+        console.log('Opción seleccionada:', selectedOption);
         const clientAddress = selectedOption.getAttribute('data-address');
+        console.log('Dirección obtenida:', clientAddress);
 
         if (clientAddress && clientAddress.trim() !== '') {
+            console.log('Asignando dirección al input:', clientAddress);
             addressInput.value = clientAddress;
         } else {
+            console.log('No hay dirección, limpiando campo');
             addressInput.value = '';
         }
     });
 
     // Si hay un cliente pre-seleccionado (por ejemplo, desde old()), llenar la dirección
     if (clientSelect.value) {
+        console.log('Cliente pre-seleccionado detectado:', clientSelect.value);
         const selectedOption = clientSelect.options[clientSelect.selectedIndex];
         const clientAddress = selectedOption.getAttribute('data-address');
+        console.log('Dirección del cliente pre-seleccionado:', clientAddress);
         if (clientAddress && clientAddress.trim() !== '') {
             addressInput.value = clientAddress;
         }
