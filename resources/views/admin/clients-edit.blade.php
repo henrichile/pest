@@ -4,13 +4,6 @@
 
 @section('content')
 <div class="space-y-4 sm:space-y-6 pt-3 md:pt-0" style="padding-top: 80px;">
-    <!-- Título móvil -->
-    <div class="md:hidden mb-4">
-        <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
-            Editar Cliente
-        </h2>
-    </div>
-
     <!-- Header -->
     <div class="mb-4 sm:mb-6">
         <div class="md:flex md:items-center md:justify-between">
