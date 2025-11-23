@@ -750,177 +750,7 @@
         </div>
         @endif
 
-    @else
-        {{-- PROCESO ESTÁNDAR (NO MONITOREO CEBADERAS) --}}
 
-        {{-- Tipo de Servicio y Hallazgos Técnicos --}}
-        @if($checklistData)
-            <div class="section">
-                <div class="section-title">Hallazgos Técnicos - Puntos de Control</div>
-                <ul class="points-list">
-                    @if(isset($checklistData["points"]) && count($checklistData["points"]) > 0)
-                        @php
-                            // Convertir el objeto de puntos de control en un array legible
-                            $pointsToDisplay = [];
-                            $pointsData = $checklistData["points"];
-
-                            // Mapeo de claves a etiquetas legibles
-                            $pointsMapping = [
-                                'installed_points_check' => 'Puntos instalados',
-                                'existing_points_check' => 'Puntos existentes',
-                                'spare_points_check' => 'Puntos de repuesto',
-                                'bait_weight_check' => 'Peso cebo instalado (gramos)',
-                                'physical_installed_check' => 'Puntos físicos instalados',
-                                'physical_existing_check' => 'Puntos físicos existentes',
-                                'physical_spare_check' => 'Puntos físicos de repuesto'
-                            ];
-
-                            // Si es un array asociativo (checkboxes), convertir a array de strings
-                            if (is_array($pointsData) && !isset($pointsData[0])) {
-                                foreach ($pointsMapping as $key => $label) {
-                                    if (isset($pointsData[$key]) && $pointsData[$key]) {
-                                        $pointsToDisplay[] = $label;
-                                    }
-                                }
-                            } else {
-                                // Si ya es un array de strings, usarlo directamente
-                                $pointsToDisplay = $pointsData;
-                            }
-                        @endphp
-
-                        @if(count($pointsToDisplay) > 0)
-                            @foreach($pointsToDisplay as $point)
-                            <li>{{ $point }}</li>
-                            @endforeach
-                        @else
-                            <li>No hay puntos de control registrados</li>
-                        @endif
-                    @else
-                        <li>No hay puntos de control registrados</li>
-                    @endif
-                </ul>
-            </div>
-
-            @if(isset($checklistData["results"]) && count($checklistData["results"]) > 0)
-            <div class="section">
-                <div class="section-title">Hallazgos Técnicos - Resultados Observados</div>
-                <div class="technical-findings">
-                    <ul class="points-list">
-                        @if(isset($checklistData["results"]["observed_results"]) && count($checklistData["results"]["observed_results"]) > 0)
-                            @foreach($checklistData["results"]["observed_results"] as $result)
-                            <li>{{ $result }}</li>
-                            @endforeach
-                        @else
-                            <li>No hay resultados observados registrados</li>
-                        @endif
-                    </ul>
-                </div>
-            </div>
-            @endif
-
-            {{-- Insumos Utilizados (Producto + Lote) --}}
-            @if(isset($checklistData["products"]["applied_product"]))
-            <div class="section">
-                <div class="section-title">Insumos Utilizados</div>
-                <div class="product-info">
-                    <strong>Producto:</strong> {{ $checklistData["products"]["applied_product"] }}
-                </div>
-            </div>
-            @else
-                <div class="section">
-                    <div class="section-title">Insumos Utilizados</div>
-                    <div class="product-info">No hay productos aplicados registrados</div>
-                </div>
-            @endif
-
-            {{-- Observaciones con Imágenes --}}
-            @if(isset($checklistData["observations"]) && count($checklistData["observations"]) > 0)
-            <div class="section">
-                <div class="section-title">Observaciones Detalladas con Fotografías</div>
-                @foreach($checklistData["observations"] as $index => $observation)
-                <div class="observation-item">
-                    <div class="observation-header">
-                        Observación #{{ $observation['observation_number'] ?? ($index + 1) }}
-                        @if(isset($observation['cebadera_code']))
-                            - CE: {{ $observation['cebadera_code'] }}
-                        @endif
-                    </div>
-                    <div class="observation-detail">
-                        <strong>Detalle:</strong> {{ $observation['detail'] ?? 'No especificado' }}
-                    </div>
-                    @if(isset($observation['created_at']))
-                    <div class="observation-detail">
-                        <strong>Fecha:</strong> {{ \Carbon\Carbon::parse($observation['created_at'])->format('d/m/Y H:i') }}
-                    </div>
-                    @endif
-                    @if(isset($observation['photo']) && $observation['photo'])
-                    @php
-                        $imageSrc = null;
-                        $photoPath = $observation['photo'];
-
-                        // Normalizar la ruta removiendo múltiples prefijos si existen
-                        $photoPath = str_replace(['storage/storage/', 'storage/'], '', $photoPath);
-
-                        // Intentar varias rutas posibles
-                        $possiblePaths = [
-                            storage_path('app/public/' . $photoPath),
-                            storage_path('app/' . $photoPath),
-                            public_path($photoPath),
-                            public_path('storage/' . $photoPath),
-                        ];
-
-                        foreach ($possiblePaths as $fullPath) {
-                            if (file_exists($fullPath)) {
-                                try {
-                                    $imageData = base64_encode(file_get_contents($fullPath));
-                                    $extension = pathinfo($fullPath, PATHINFO_EXTENSION);
-                                    $mimeType = in_array(strtolower($extension), ['jpg', 'jpeg']) ? 'jpeg' : strtolower($extension);
-                                    $imageSrc = 'data:image/' . $mimeType . ';base64,' . $imageData;
-                                    break;
-                                } catch (\Exception $e) {
-                                    \Log::error('Error cargando imagen: ' . $fullPath . ' - ' . $e->getMessage());
-                                }
-                            }
-                        }
-
-                        if (!$imageSrc) {
-                            \Log::warning('No se encontró la imagen en ninguna ruta: ' . $observation['photo']);
-                        }
-                    @endphp
-                    @if($imageSrc)
-                    <div class="observation-detail">
-                        <strong>Fotografía:</strong><br>
-                        <img src="{{ $imageSrc }}" alt="Foto de observación" class="observation-photo">
-                    </div>
-                    @else
-                    <div class="observation-detail">
-                        <strong>Fotografía:</strong> <span class="no-data">No se pudo cargar la imagen ({{ $observation['photo'] }})</span>
-                    </div>
-                    @endif
-                    @endif
-                </div>
-                @endforeach
-            </div>
-            @else
-                <div class="observation-item">No hay observaciones registradas</div>
-            @endif
-
-            {{-- Sitios Tratados --}}
-            @if(isset($checklistData["sites"]["treated_sites"]) && !empty($checklistData["sites"]["treated_sites"]))
-            <div class="section">
-                <div class="section-title">Sitios Tratados</div>
-                <div class="checklist-item">{{ $checklistData["sites"]["treated_sites"] }}</div>
-            </div>
-            @endif
-
-            {{-- Descripción del Servicio --}}
-            @if(isset($checklistData["description"]["content"]))
-            <div class="section">
-                <div class="section-title">Descripción del Servicio</div>
-                <div class="checklist-item">{{ $checklistData["description"]["content"] }}</div>
-            </div>
-            @endif
-        @endif
     @endif
 
     {{-- SECCIÓN ESPECÍFICA PARA DESRATIZACIÓN --}}
@@ -1044,17 +874,13 @@
         @endif
 
         {{-- Sitios Tratados --}}
-        @if(isset($checklistData['sites']) && is_array($checklistData['sites']) && count($checklistData['sites']) > 0)
+        @if(isset($checklistData['sites']['treated_sites']))
         <div class="subsection" style="margin-bottom: 20px;">
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Sitios Tratados
             </div>
-            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px;">
-                <ul style="margin: 0; padding-left: 20px;">
-                    @foreach($checklistData['sites'] as $site)
-                    <li style="margin-bottom: 5px;">{{ $site }}</li>
-                    @endforeach
-                </ul>
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+                {{ $checklistData['sites']['treated_sites'] }}
             </div>
         </div>
         @endif
