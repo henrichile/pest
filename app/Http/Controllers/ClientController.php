@@ -149,9 +149,8 @@ class ClientController extends Controller
         }
 
         $client->load(['sites', 'workOrders.service']);
-        $clients = Client::orderBy('name')->paginate(20);
 
-        return view('admin.clients', compact('client', 'clients'));
+        return view('admin.clients-show', compact('client'));
     }
 
     /**
@@ -163,8 +162,7 @@ class ClientController extends Controller
             abort(403, 'No tienes acceso a esta página.');
         }
 
-        $clients = Client::orderBy('name')->paginate(20);
-        return view('admin.clients', compact('client', 'clients'));
+        return view('admin.clients-edit', compact('client'));
     }
 
     /**

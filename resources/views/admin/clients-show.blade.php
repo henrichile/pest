@@ -1,0 +1,193 @@
+@extends('layouts.app')
+
+@section('title', 'Detalle del Cliente')
+
+@section('content')
+<div class="space-y-4 sm:space-y-6 pt-3 md:pt-0" style="padding-top: 80px;">
+    <!-- Título móvil -->
+    <div class="md:hidden mb-4">
+        <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
+            Detalle del Cliente
+        </h2>
+    </div>
+
+    <!-- Header -->
+    <div class="mb-4 sm:mb-6">
+        <div class="md:flex md:items-center md:justify-between">
+            <div class="min-w-0 flex-1">
+                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" style="color: #111827; font-weight: 700;">
+                    {{ $client->name }}
+                </h2>
+                <p class="mt-1 text-xs sm:text-sm" style="color: #6b7280;">
+                    RUT: {{ $client->rut }}
+                </p>
+            </div>
+            <div class="mt-3 sm:mt-4 md:mt-0 md:ml-4 flex gap-2">
+                <a href="{{ route('admin.clients.edit', $client) }}" class="inline-flex items-center justify-center px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium text-white transition-colors" style="background: #22c55e;">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21h-4.5A2.25 2.25 0 019 18.75V14a3 3 0 013-3h2.25z" />
+                    </svg>
+                    Editar
+                </a>
+                <a href="{{ route('admin.clients.index') }}" class="inline-flex items-center justify-center px-3 sm:px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-xs sm:text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                    </svg>
+                    Volver
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Información del Cliente -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+        <!-- Información Básica -->
+        <div class="lg:col-span-2 bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Información Básica</h3>
+            <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Nombre</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ $client->name }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">RUT</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ $client->rut }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Email</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ $client->email ?? 'N/A' }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Teléfono</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ $client->phone ?? 'N/A' }}</dd>
+                </div>
+                <div class="sm:col-span-2">
+                    <dt class="text-sm font-medium text-gray-500">Dirección</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ $client->address ?? 'N/A' }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Ciudad</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ $client->city ?? 'N/A' }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Región</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ $client->region ?? 'N/A' }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">País</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ $client->country ?? 'N/A' }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Código Postal</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ $client->postal_code ?? 'N/A' }}</dd>
+                </div>
+            </dl>
+        </div>
+
+        <!-- Información de Negocio -->
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Información de Negocio</h3>
+            <dl class="space-y-4">
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Tipo de Negocio</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ $client->business_type ?? 'N/A' }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Industria</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ $client->industry ?? 'N/A' }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Notas</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ $client->notes ?? 'N/A' }}</dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+
+    <!-- Sitios del Cliente -->
+    <div class="bg-white border border-gray-200 rounded-lg shadow-sm">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h3 class="text-lg font-medium text-gray-900">Sitios</h3>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dirección</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ciudad</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @forelse($client->sites as $site)
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $site->name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $site->address ?? 'N/A' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $site->city ?? 'N/A' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                @if($site->is_active)
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Activo</span>
+                                @else
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Inactivo</span>
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="px-6 py-8 text-center text-sm text-gray-500">
+                                No hay sitios registrados para este cliente
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Órdenes de Trabajo -->
+    <div class="bg-white border border-gray-200 rounded-lg shadow-sm">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h3 class="text-lg font-medium text-gray-900">Órdenes de Trabajo Recientes</h3>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Folio</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Servicio</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @forelse($client->workOrders->take(10) as $workOrder)
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $workOrder->folio ?? 'N/A' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $workOrder->service->name ?? 'N/A' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $workOrder->scheduled_date ? $workOrder->scheduled_date->format('d/m/Y') : 'N/A' }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                    @if($workOrder->status === 'completed') bg-green-100 text-green-800
+                                    @elseif($workOrder->status === 'pending') bg-yellow-100 text-yellow-800
+                                    @else bg-blue-100 text-blue-800
+                                    @endif">
+                                    {{ ucfirst($workOrder->status) }}
+                                </span>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="px-6 py-8 text-center text-sm text-gray-500">
+                                No hay órdenes de trabajo registradas para este cliente
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@endsection
