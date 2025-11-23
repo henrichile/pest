@@ -150,6 +150,14 @@ class WorkOrder extends Model implements HasMedia
     }
 
     /**
+     * Get assigned technicians.
+     */
+    public function assignedTechnicians()
+    {
+        return $this->hasMany(WorkOrderAssignment::class);
+    }
+
+    /**
      * Check if work order is overdue.
      */
     public function isOverdue(): bool
@@ -183,7 +191,7 @@ class WorkOrder extends Model implements HasMedia
         $seconds = $this->total_duration;
         $hours = floor($seconds / 3600);
         $minutes = floor(($seconds % 3600) / 60);
-        
+
         return sprintf('%02d:%02d', $hours, $minutes);
     }
 
