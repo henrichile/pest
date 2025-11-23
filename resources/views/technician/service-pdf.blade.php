@@ -923,6 +923,168 @@
         @endif
     @endif
 
+    {{-- SECCIÓN ESPECÍFICA PARA DESRATIZACIÓN --}}
+    @if($service->service_type === 'desratizacion')
+    <div class="section" style="page-break-before: auto; margin-top: 30px;">
+        <div class="section-title" style="font-size: 18px; color: #1a472a; border-bottom: 2px solid #1a472a; padding-bottom: 10px; margin-bottom: 20px;">
+            INFORME DE DESRATIZACIÓN
+        </div>
+
+        {{-- Productos Aplicados --}}
+        @if(isset($checklistData['products']['applied_product']) || isset($checklistData['products']['product_id']))
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Productos Aplicados
+            </div>
+            <div class="checklist-item" style="background: #f8f9fa; padding: 12px; border-radius: 5px;">
+                {{ $checklistData['products']['applied_product'] ?? 'No especificado' }}
+            </div>
+            @if(isset($checklistData['products']['dosis_aplicada']) || isset($checklistData['products']['agua_aplicada']))
+            <div style="margin-top: 10px; padding: 10px; background: #e8f5e8; border-radius: 5px;">
+                @if(isset($checklistData['products']['dosis_aplicada']))
+                <div style="margin-bottom: 5px;">
+                    <span style="font-weight: bold;">Dosis aplicada:</span> {{ $checklistData['products']['dosis_aplicada'] }}
+                </div>
+                @endif
+                @if(isset($checklistData['products']['agua_aplicada']))
+                <div>
+                    <span style="font-weight: bold;">Agua aplicada:</span> {{ $checklistData['products']['agua_aplicada'] }}
+                </div>
+                @endif
+            </div>
+            @endif
+        </div>
+        @endif
+
+        {{-- Resultados Observados --}}
+        @if(isset($checklistData['results']))
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Resultados Observados
+            </div>
+            @if(isset($checklistData['results']['observed_results']) && is_array($checklistData['results']['observed_results']))
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; margin-bottom: 10px;">
+                <ul style="margin: 0; padding-left: 20px;">
+                    @foreach($checklistData['results']['observed_results'] as $result)
+                    <li style="margin-bottom: 5px;">{{ $result }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+            @if(isset($checklistData['results']['total_installed_points']) || isset($checklistData['results']['total_consumption_activity']))
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                @if(isset($checklistData['results']['total_installed_points']))
+                <div style="background: #e8f5e8; padding: 10px; border-radius: 5px;">
+                    <div style="font-size: 11px; color: #666; margin-bottom: 3px;">Puntos Instalados</div>
+                    <div style="font-size: 16px; font-weight: bold; color: #1a472a;">{{ $checklistData['results']['total_installed_points'] }}</div>
+                </div>
+                @endif
+                @if(isset($checklistData['results']['total_consumption_activity']))
+                <div style="background: #e8f5e8; padding: 10px; border-radius: 5px;">
+                    <div style="font-size: 11px; color: #666; margin-bottom: 3px;">Actividad de Consumo Total</div>
+                    <div style="font-size: 16px; font-weight: bold; color: #1a472a;">{{ $checklistData['results']['total_consumption_activity'] }}</div>
+                </div>
+                @endif
+            </div>
+            @endif
+        </div>
+        @endif
+
+        {{-- Observaciones --}}
+        @if(isset($checklistData['observations']) && is_array($checklistData['observations']) && count($checklistData['observations']) > 0)
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Observaciones
+            </div>
+            @foreach($checklistData['observations'] as $observation)
+                @if(isset($observation['detail']) || isset($observation['photo']))
+                <div style="background: #f8f9fa; padding: 12px; margin-bottom: 10px; border-radius: 5px; border-left: 4px solid #1a472a;">
+                    @if(isset($observation['cebadera_code']))
+                    <div style="font-weight: bold; color: #1a472a; margin-bottom: 5px;">
+                        {{ $observation['cebadera_code'] }}
+                        @if(isset($observation['observation_number']))
+                        - Obs #{{ $observation['observation_number'] }}
+                        @endif
+                    </div>
+                    @endif
+                    @if(isset($observation['detail']))
+                    <div style="margin-bottom: 8px;">{{ $observation['detail'] }}</div>
+                    @endif
+                    @if(isset($observation['photo']))
+                    @php
+                        $photoPath = str_replace('storage/', '', $observation['photo']);
+                        $paths = [
+                            storage_path('app/public/' . $photoPath),
+                            storage_path('app/' . $photoPath),
+                            public_path('storage/' . $photoPath),
+                            public_path($photoPath)
+                        ];
+                        $imageSrc = null;
+                        foreach ($paths as $path) {
+                            if (file_exists($path)) {
+                                $imageData = base64_encode(file_get_contents($path));
+                                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                                $mimeType = finfo_file($finfo, $path);
+                                finfo_close($finfo);
+                                $imageSrc = 'data:' . $mimeType . ';base64,' . $imageData;
+                                break;
+                            }
+                        }
+                    @endphp
+                    @if($imageSrc)
+                    <div style="margin-top: 8px;">
+                        <img src="{{ $imageSrc }}" alt="Foto de observación" style="max-width: 300px; height: auto; border-radius: 5px;">
+                    </div>
+                    @endif
+                    @endif
+                </div>
+                @endif
+            @endforeach
+        </div>
+        @endif
+
+        {{-- Sitios Tratados --}}
+        @if(isset($checklistData['sites']) && is_array($checklistData['sites']) && count($checklistData['sites']) > 0)
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Sitios Tratados
+            </div>
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px;">
+                <ul style="margin: 0; padding-left: 20px;">
+                    @foreach($checklistData['sites'] as $site)
+                    <li style="margin-bottom: 5px;">{{ $site }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+        @endif
+
+        {{-- Descripción del Servicio --}}
+        @if(isset($checklistData['description']['service_description']))
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Descripción del Servicio
+            </div>
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+                {{ $checklistData['description']['service_description'] }}
+            </div>
+        </div>
+        @endif
+
+        {{-- Sugerencias --}}
+        @if(isset($checklistData['description']['service_sugerencia']))
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Sugerencias
+            </div>
+            <div style="background: #fff3cd; padding: 12px; border-radius: 5px; border-left: 4px solid #856404; line-height: 1.6;">
+                {{ $checklistData['description']['service_sugerencia'] }}
+            </div>
+        </div>
+        @endif
+    </div>
+    @endif
+
     {{-- Firmas del Cliente y Técnico --}}
     <div class="signature-section">
         <div class="section-title">Firmas de Confirmación</div>
