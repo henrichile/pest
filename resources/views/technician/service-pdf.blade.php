@@ -318,10 +318,42 @@
                 <span class="info-label">Coordenadas GPS:</span>
                 <span class="info-value">{{ $service->latitude }}, {{ $service->longitude }}</span>
             </div>
+
+            @php
+                $mapboxToken = config('services.mapbox.access_token');
+                $lat = $service->latitude;
+                $lng = $service->longitude;
+                $zoom = 15;
+                $width = 700;
+                $height = 400;
+
+                // URL de la API de Mapbox Static Images
+                $mapboxUrl = "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-s+ff0000({$lng},{$lat})/{$lng},{$lat},{$zoom}/{$width}x{$height}@2x?access_token={$mapboxToken}";
+
+                // Intentar obtener la imagen del mapa
+                $mapImageBase64 = null;
+                try {
+                    $mapImageContent = @file_get_contents($mapboxUrl);
+                    if ($mapImageContent !== false) {
+                        $mapImageBase64 = base64_encode($mapImageContent);
+                    }
+                } catch (\Exception $e) {
+                    \Log::error('Error loading Mapbox static map: ' . $e->getMessage());
+                }
+            @endphp
+
+            @if($mapImageBase64)
+            <div style="margin-top: 15px; text-align: center;">
+                <img src="data:image/png;base64,{{ $mapImageBase64 }}"
+                     style="max-width: 100%; height: auto; border: 2px solid #e5e7eb; border-radius: 8px;"
+                     alt="Mapa de ubicación">
+            </div>
+            @else
             <div class="info-row">
-                <span class="info-label">Enlace Google Maps:</span>
+                <span class="info-label">Ver en mapa:</span>
                 <span class="info-value">https://maps.google.com/?q={{ $service->latitude }},{{ $service->longitude }}</span>
             </div>
+            @endif
         </div>
         @endif
         <div class="info-row">
