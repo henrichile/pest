@@ -29,7 +29,7 @@
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 @error('client_id') border-red-500 @enderror">
                         <option value="">Seleccione un cliente</option>
                         @foreach($clients as $client)
-                            <option value="{{ $client->id }}" 
+                            <option value="{{ $client->id }}"
                                     data-address="{{ $client->address ?? '' }}"
                                     {{ old('client_id') == $client->id ? 'selected' : '' }}>
                                 {{ $client->name }} - {{ $client->rut }}
@@ -195,32 +195,32 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Función para llenar automáticamente la dirección cuando se selecciona un cliente
-    function fillClientAddress() {
-        const selectedOption = clientSelect.options[clientSelect.selectedIndex];
-        const clientAddress = selectedOption.getAttribute('data-address');
-        
-        if (clientAddress && clientAddress.trim() !== '') {
-            addressInput.value = clientAddress;
-        } else {
-            // Si no hay dirección, dejar el campo vacío
-            addressInput.value = '';
-        }
-    }
-
     // Ejecutar al cargar la página
     toggleSpecialServiceTitle();
-    
-    // Si hay un cliente pre-seleccionado (por ejemplo, desde old()), llenar la dirección
-    if (clientSelect.value) {
-        fillClientAddress();
-    }
 
     // Ejecutar cuando cambia el select de tipo de servicio
     serviceTypeSelect.addEventListener('change', toggleSpecialServiceTitle);
-    
-    // Ejecutar cuando cambia el select de cliente
-    clientSelect.addEventListener('change', fillClientAddress);
+
+    // Autocompletar dirección cuando se selecciona un cliente
+    clientSelect.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const clientAddress = selectedOption.getAttribute('data-address');
+
+        if (clientAddress && clientAddress.trim() !== '') {
+            addressInput.value = clientAddress;
+        } else {
+            addressInput.value = '';
+        }
+    });
+
+    // Si hay un cliente pre-seleccionado (por ejemplo, desde old()), llenar la dirección
+    if (clientSelect.value) {
+        const selectedOption = clientSelect.options[clientSelect.selectedIndex];
+        const clientAddress = selectedOption.getAttribute('data-address');
+        if (clientAddress && clientAddress.trim() !== '') {
+            addressInput.value = clientAddress;
+        }
+    }
 });
 </script>
 @endsection
