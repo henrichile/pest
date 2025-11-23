@@ -1421,7 +1421,7 @@
                     </div>
                 </a>
 
-                        <a href="{{ route('admin.statistics') ?? '#' }}" class="relative rounded-lg bg-white border dark:border-gray-700 px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" style="border: 1px solid #e5e7eb !important;">
+                        <a href="{{ Route::has('admin.reports.index') ? route('admin.reports.index') : '#' }}" class="relative rounded-lg bg-white border dark:border-gray-700 px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" style="border: 1px solid #e5e7eb !important;">
                     <div class="flex-shrink-0">
                                 <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: #3b82f6;">
                                     <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
