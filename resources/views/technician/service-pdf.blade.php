@@ -1211,6 +1211,7 @@
         </div>
         @endif
     </div>
+    @endif
 
     {{-- SECCIÓN ESPECÍFICA PARA DESINSECTACIÓN --}}
     @if($service->service_type === 'desinsectacion')
