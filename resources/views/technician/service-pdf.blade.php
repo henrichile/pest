@@ -803,28 +803,16 @@
         </div>
 
         {{-- Productos Aplicados --}}
-        @if(isset($checklistData['products']['applied_product']) || isset($checklistData['products']['product_id']))
+        @if(isset($checklistData['products']))
         <div class="subsection" style="margin-bottom: 20px;">
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
-                Productos Aplicados
+                Producto Aplicado y Dosis
             </div>
             <div class="checklist-item" style="background: #f8f9fa; padding: 12px; border-radius: 5px;">
-                {{ $checklistData['products']['applied_product'] ?? 'No especificado' }}
+                <strong>Producto:</strong> {{ $checklistData['products']['applied_product'] ?? 'No especificado' }}<br>
+                <strong>Dosis:</strong> {{ $checklistData['products']['dosis'] ?? 'No especificado' }} cc<br>
+                <strong>Agua:</strong> {{ $checklistData['products']['agua'] ?? 'No especificado' }} Lts
             </div>
-            @if(isset($checklistData['products']['dosis_aplicada']) || isset($checklistData['products']['agua_aplicada']))
-            <div style="margin-top: 10px; padding: 10px; background: #e8f5e8; border-radius: 5px;">
-                @if(isset($checklistData['products']['dosis_aplicada']))
-                <div style="margin-bottom: 5px;">
-                    <span style="font-weight: bold;">Dosis aplicada:</span> {{ $checklistData['products']['dosis_aplicada'] }}
-                </div>
-                @endif
-                @if(isset($checklistData['products']['agua_aplicada']))
-                <div>
-                    <span style="font-weight: bold;">Agua aplicada:</span> {{ $checklistData['products']['agua_aplicada'] }}
-                </div>
-                @endif
-            </div>
-            @endif
         </div>
         @endif
 

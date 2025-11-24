@@ -100,38 +100,14 @@
                 @if(in_array($service->service_type, ['desinfeccion', 'sanitizacion', 'desinsectacion']) && isset($service->checklist_data["products"]))
                     @php
                         $productsData = $service->checklist_data["products"];
-                        $hasDosisOrAgua = isset($productsData['dosis']) || isset($productsData['agua']);
                     @endphp
-
-                    @if($hasDosisOrAgua)
                     <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
-                        <div class="grid md:grid-cols-2 gap-4">
-                            @if(isset($productsData['dosis']))
-                            <div class="flex items-center justify-between">
-                                <span class="font-semibold text-gray-700">
-                                    <svg class="w-5 h-5 inline-block mr-2 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"></path>
-                                    </svg>
-                                    Dosis:
-                                </span>
-                                <span class="text-gray-900 font-medium">{{ $productsData['dosis'] }} cc</span>
-                            </div>
-                            @endif
-
-                            @if(isset($productsData['agua']))
-                            <div class="flex items-center justify-between">
-                                <span class="font-semibold text-gray-700">
-                                    <svg class="w-5 h-5 inline-block mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clip-rule="evenodd"></path>
-                                    </svg>
-                                    Agua:
-                                </span>
-                                <span class="text-gray-900 font-medium">{{ $productsData['agua'] }} Lts</span>
-                            </div>
-                            @endif
+                        <div>
+                            <strong>Producto aplicado:</strong> {{ $productsData['applied_product'] ?? 'No especificado' }}<br>
+                            <strong>Dosis aplicada:</strong> {{ $productsData['dosis'] ?? 'No especificado' }} cc<br>
+                            <strong>Agua aplicada:</strong> {{ $productsData['agua'] ?? 'No especificado' }} Lts
                         </div>
                     </div>
-                    @endif
                 @endif
 
                 <ul class="space-y-2">
