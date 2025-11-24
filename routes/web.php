@@ -193,6 +193,22 @@ Route::middleware(['auth', \App\Http\Middleware\RedirectTechnicianRoutes::class,
     Route::patch('/notifications/mark-all-read', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
 });
 
+// Ruta para servir archivos de storage sin symlink (necesario para sistemas de archivos que no soportan symlinks como exFAT)
+Route::get('/storage/{path}', function ($path) {
+    $filePath = storage_path('app/public/' . $path);
+
+    if (!file_exists($filePath)) {
+        abort(404);
+    }
+
+    $mimeType = mime_content_type($filePath);
+
+    return response()->file($filePath, [
+        'Content-Type' => $mimeType,
+        'Cache-Control' => 'public, max-age=31536000',
+    ]);
+})->where('path', '.*')->name('storage.serve');
+
 // Rutas adicionales autenticadas
 Route::middleware(['auth'])->group(function () {
     Route::patch('products/{product}/update-stock', [App\Http\Controllers\ProductController::class, 'updateStock'])->name('products.update-stock');
