@@ -983,9 +983,9 @@
                 Productos Aplicados
             </div>
             <div class="checklist-item" style="background: #f8f9fa; padding: 12px; border-radius: 5px;">
-                <strong>Producto aplicado:</strong> {{ $checklistData['products']['applied_product'] ?? 'No especificado' }}<br>
-                <strong>Dosis aplicada:</strong> {{ $checklistData['products']['dosis_aplicada'] ?? 'No especificado' }} cc<br>
-                <strong>Agua aplicada:</strong> {{ $checklistData['products']['agua_aplicada'] ?? 'No especificado' }} Lts
+                    <strong>Producto aplicado:</strong> {{ $checklistData['products']['applied_product'] ?? 'No especificado' }}<br>
+                    <strong>Dosis aplicada:</strong> {{ $checklistData['products']['dosis_aplicada'] ?? ($checklistData['products']['dosis'] ?? 'No especificado') }} cc<br>
+                    <strong>Agua aplicada:</strong> {{ $checklistData['products']['agua_aplicada'] ?? ($checklistData['products']['agua'] ?? 'No especificado') }} Lts
             </div>
         </div>
         @endif
