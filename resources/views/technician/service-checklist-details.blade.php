@@ -122,7 +122,16 @@
                     <div class="mb-4">
                         <strong class="text-gray-900">Croquis:</strong>
                         <div class="mt-3">
-                            <img src="{{ asset($checklistData['monitoreo_croquis']['croquis_file']) }}" alt="Croquis de cebaderas" class="rounded-lg border border-gray-200 max-w-full">
+                            @php
+                                // La ruta guardada es 'storage/services/croquis/filename.ext'
+                                // Necesitamos convertirla a '/storage/services/croquis/filename.ext' para asset()
+                                $croquisPath = $checklistData['monitoreo_croquis']['croquis_file'];
+                                // Si la ruta empieza con 'storage/', agregar / al inicio
+                                if (strpos($croquisPath, 'storage/') === 0) {
+                                    $croquisPath = '/' . $croquisPath;
+                                }
+                            @endphp
+                            <img src="{{ asset($croquisPath) }}" alt="Croquis de cebaderas" class="rounded-lg border border-gray-200 max-w-full">
                         </div>
                     </div>
                     @endif
@@ -515,8 +524,8 @@
             </div>
             @endif
 
-            <!-- Etapa 2: Productos Aplicados - Oculto para servicios-especiales -->
-            @if($service->service_type !== 'servicios-especiales')
+            <!-- Etapa 2: Productos Aplicados - Oculto para servicios-especiales Y monitoreo-cebaderas -->
+            @if($service->service_type !== 'servicios-especiales' && !$isMonitoreoCebaderas)
             <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                 <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                     <svg class="w-6 h-6 text-blue-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -702,8 +711,8 @@
             </div>
             @endif
 
-            <!-- Etapa 5: Sitios Tratados -->
-            @if(true)
+            <!-- Etapa 5: Sitios Tratados - Oculto para monitoreo-cebaderas -->
+            @if(!$isMonitoreoCebaderas)
             <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                 <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                     <svg class="w-6 h-6 text-indigo-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
