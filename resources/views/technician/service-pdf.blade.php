@@ -57,7 +57,7 @@
 
         .service-info {
             background: #f8f9fa;
-            padding: 15px;
+            padding: 10px;
             border-radius: 8px;
             margin-bottom: 20px;
         }
