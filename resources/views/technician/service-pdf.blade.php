@@ -40,10 +40,10 @@
         }
 
         .title {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: bold;
             color: #333;
-            margin-top: 30px;
+            margin-top: 20px;
         }
 
         .qr-code {
