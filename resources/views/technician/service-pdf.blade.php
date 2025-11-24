@@ -65,7 +65,7 @@
         .info-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
+            margin-bottom: 3px;
             padding: 5px 0;
         }
 
