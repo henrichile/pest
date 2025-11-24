@@ -1247,7 +1247,7 @@
     @endif
 
      {{-- SECCIÓN ESPECÍFICA PARA SERVICIOS PERSONALIZADOS --}}
-    @if($service->service_type === 'Servicios Especiales')
+    @if(strtolower($service->service_type) === 'servicios especiales' || strtolower($service->service_type) === 'servicio personalizado' || strtolower($service->service_type) === 'servicios personalizados')
     <div class="section" style="page-break-before: auto; margin-top: 30px;">
         <div class="section-title" style="font-size: 18px; color: #1a472a; border-bottom: 2px solid #1a472a; padding-bottom: 10px; margin-bottom: 20px;">
             INFORME DE SERVICIO PERSONALIZADO
