@@ -535,16 +535,28 @@
             @if(isset($checklistData['monitoreo_croquis']['croquis_file']))
             @php
                 $imageSrc = null;
-                $croquisPath = str_replace(['storage/storage/', 'storage/'], '', $checklistData['monitoreo_croquis']['croquis_file']);
+                $originalPath = $checklistData['monitoreo_croquis']['croquis_file'];
+                \Log::info('=== CROQUIS DEBUG ===');
+                \Log::info('Original path: ' . $originalPath);
+
+                // Limpiar la ruta de manera más agresiva
+                $croquisPath = $originalPath;
+                $croquisPath = str_replace(['storage/storage/', 'storage/', 'public/'], '', $croquisPath);
+                // Si empieza con /, quitarlo
+                $croquisPath = ltrim($croquisPath, '/');
+                \Log::info('Cleaned path: ' . $croquisPath);
 
                 $possiblePaths = [
                     storage_path('app/public/' . $croquisPath),
                     storage_path('app/' . $croquisPath),
                     public_path($croquisPath),
                     public_path('storage/' . $croquisPath),
+                    // Agregar la ruta original como último recurso
+                    $originalPath,
                 ];
 
                 foreach ($possiblePaths as $fullPath) {
+                    \Log::info('Trying path: ' . $fullPath . ' - Exists: ' . (file_exists($fullPath) ? 'YES' : 'NO'));
                     if (file_exists($fullPath)) {
                         try {
                             $imageData = base64_encode(file_get_contents($fullPath));
@@ -552,11 +564,16 @@
                             $mimeType = finfo_file($finfo, $fullPath);
                             finfo_close($finfo);
                             $imageSrc = 'data:' . $mimeType . ';base64,' . $imageData;
+                            \Log::info('✓ Successfully loaded croquis from: ' . $fullPath);
                             break;
                         } catch (\Exception $e) {
                             \Log::error('Error cargando croquis: ' . $fullPath . ' - ' . $e->getMessage());
                         }
                     }
+                }
+
+                if (!$imageSrc) {
+                    \Log::warning('⚠ No se pudo cargar el croquis desde ninguna ruta');
                 }
             @endphp
             @if($imageSrc)
@@ -635,16 +652,28 @@
                             @foreach($station['photos'] as $photo)
                                 @php
                                     $imageSrc = null;
-                                    $photoPath = str_replace(['storage/storage/', 'storage/'], '', $photo);
+                                    \Log::info('=== FOTO CEBADERA DEBUG ===');
+                                    \Log::info('Original photo path: ' . $photo);
+                                    \Log::info('Station code: ' . ($station['code'] ?? 'N/A'));
+
+                                    // Limpiar la ruta de manera más agresiva
+                                    $photoPath = $photo;
+                                    $photoPath = str_replace(['storage/storage/', 'storage/', 'public/'], '', $photoPath);
+                                    // Si empieza con /, quitarlo
+                                    $photoPath = ltrim($photoPath, '/');
+                                    \Log::info('Cleaned photo path: ' . $photoPath);
 
                                     $possiblePaths = [
                                         storage_path('app/public/' . $photoPath),
                                         storage_path('app/' . $photoPath),
                                         public_path($photoPath),
                                         public_path('storage/' . $photoPath),
+                                        // Agregar la ruta original como último recurso
+                                        $photo,
                                     ];
 
                                     foreach ($possiblePaths as $fullPath) {
+                                        \Log::info('Trying photo path: ' . $fullPath . ' - Exists: ' . (file_exists($fullPath) ? 'YES' : 'NO'));
                                         if (file_exists($fullPath)) {
                                             try {
                                                 $imageData = base64_encode(file_get_contents($fullPath));
@@ -652,11 +681,16 @@
                                                 $mimeType = finfo_file($finfo, $fullPath);
                                                 finfo_close($finfo);
                                                 $imageSrc = 'data:' . $mimeType . ';base64,' . $imageData;
+                                                \Log::info('✓ Successfully loaded photo from: ' . $fullPath);
                                                 break;
                                             } catch (\Exception $e) {
                                                 \Log::error('Error cargando foto de cebadera: ' . $fullPath . ' - ' . $e->getMessage());
                                             }
                                         }
+                                    }
+
+                                    if (!$imageSrc) {
+                                        \Log::warning('⚠ No se pudo cargar la foto de cebadera desde ninguna ruta');
                                     }
                                 @endphp
                                 @if($imageSrc)
