@@ -905,7 +905,7 @@
         @endphp
 
         {{-- Descripción del Servicio --}}
-        @if(isset($checklistData['description']['service_description']) && trim($checklistData['description']['service_description']) !== '')
+        @if(isset($checklistData['description']['service_description']))
         <div class="subsection" style="margin-bottom: 20px;">
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Descripción del Servicio
