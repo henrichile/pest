@@ -14,26 +14,35 @@
         }
 
         .header {
-            text-align: center;
             margin-bottom: 30px;
             border-bottom: 3px solid #1a472a;
             padding-bottom: 20px;
             position: relative;
+            display: table;
+            width: 100%;
         }
 
         .logo {
-            margin-bottom: 10px;
+            position: absolute;
+            left: 0;
+            top: 0;
         }
 
         .logo img {
-            max-width: 180px;
+            max-width: 120px;
             height: auto;
+        }
+
+        .header-center {
+            text-align: center;
+            padding: 0 130px;
         }
 
         .title {
             font-size: 20px;
             font-weight: bold;
             color: #333;
+            margin-top: 30px;
         }
 
         .qr-code {
@@ -291,6 +300,7 @@
 </head>
 <body>
     <div class="header">
+        <!-- Logo a la izquierda -->
         <div class="logo">
             @php
                 // Buscar el logo en diferentes ubicaciones
@@ -315,18 +325,22 @@
             @if($logoBase64)
                 <img src="{{ $logoBase64 }}" alt="Pest Controller Logo">
             @else
-                <span style="font-size: 24px; font-weight: bold; color: #1a472a;">PEST CONTROLLER</span>
+                <span style="font-size: 18px; font-weight: bold; color: #1a472a;">PEST CONTROLLER</span>
             @endif
         </div>
-        <div class="title">REPORTE DE SERVICIO COMPLETADO</div>
+
+        <!-- Título centrado -->
+        <div class="header-center">
+            <div class="title">REPORTE DE SERVICIO COMPLETADO</div>
+        </div>
+
+        <!-- QR a la derecha -->
         @if(isset($qrCode))
         <div class="qr-code">
             <img src="data:image/png;base64,{{ $qrCode }}" alt="QR de Validación" style="width: 100%; height: 100%;">
         </div>
         @endif
-    </div>
-
-    {{-- Datos del Cliente, Sitio y Dirección Geolocalizada --}}
+    </div>    {{-- Datos del Cliente, Sitio y Dirección Geolocalizada --}}
     <div class="service-info">
         <div class="info-row">
             <span class="info-label">Número de Servicio:</span>
