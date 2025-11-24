@@ -983,22 +983,10 @@
                 Productos Aplicados
             </div>
             <div class="checklist-item" style="background: #f8f9fa; padding: 12px; border-radius: 5px;">
-                {{ $checklistData['products']['applied_product'] ?? 'No especificado' }}
+                <strong>Producto aplicado:</strong> {{ $checklistData['products']['applied_product'] ?? 'No especificado' }}<br>
+                <strong>Dosis aplicada:</strong> {{ $checklistData['products']['dosis_aplicada'] ?? 'No especificado' }} cc<br>
+                <strong>Agua aplicada:</strong> {{ $checklistData['products']['agua_aplicada'] ?? 'No especificado' }} Lts
             </div>
-            @if(isset($checklistData['products']['dosis_aplicada']) || isset($checklistData['products']['agua_aplicada']))
-            <div style="margin-top: 10px; padding: 10px; background: #e8f5e8; border-radius: 5px;">
-                @if(isset($checklistData['products']['dosis_aplicada']))
-                <div style="margin-bottom: 5px;">
-                    <span style="font-weight: bold;">Dosis aplicada:</span> {{ $checklistData['products']['dosis_aplicada'] }}
-                </div>
-                @endif
-                @if(isset($checklistData['products']['agua_aplicada']))
-                <div>
-                    <span style="font-weight: bold;">Agua aplicada:</span> {{ $checklistData['products']['agua_aplicada'] }}
-                </div>
-                @endif
-            </div>
-            @endif
         </div>
         @endif
 
