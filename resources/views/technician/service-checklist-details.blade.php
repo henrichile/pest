@@ -144,7 +144,7 @@
             @endif
 
             <!-- Etapa 3: Resultados Observados -->
-            @if(true)
+            @if($service->service_type === 'desinsectacion' || $service->service_type === 'desratizacion')
             <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                 @if($service->service_type === 'desinsectacion')
                 <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
