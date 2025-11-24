@@ -1126,6 +1126,7 @@
     {{-- Firmas del Cliente y Técnico --}}
     <div class="signature-section">
         <div class="section-title">Firmas de Confirmación</div>
+        <div style="height: 18px;"></div>
 
         @php
             $technicianSignature = null;
