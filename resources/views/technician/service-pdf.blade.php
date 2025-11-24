@@ -1247,10 +1247,10 @@
     @endif
 
      {{-- SECCIÓN ESPECÍFICA PARA SERVICIOS PERSONALIZADOS --}}
-    @if($service->service_type === 'desinsectacion')
+    @if($service->service_type === 'Servicios-especiales')
     <div class="section" style="page-break-before: auto; margin-top: 30px;">
         <div class="section-title" style="font-size: 18px; color: #1a472a; border-bottom: 2px solid #1a472a; padding-bottom: 10px; margin-bottom: 20px;">
-            INFORME DE SERVCIO PERSONALIZADO
+            INFORME DE SERVICIO PERSONALIZADO
         </div>
 
         {{-- Observaciones --}}
