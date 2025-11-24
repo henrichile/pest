@@ -178,7 +178,7 @@
 
         .service-info {
             background: #f8f9fa;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
         }
@@ -186,8 +186,8 @@
         .info-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
-            padding: 5px 0;
+            margin-bottom: 3px;
+            padding: 2px 0;
         }
 
         .info-label {
@@ -449,11 +449,6 @@
             @else
                 <span style="font-size: 18px; font-weight: bold; color: #1a472a;">PEST CONTROLLER</span>
             @endif
-        </div>
-
-        <!-- Título centrado -->
-        <div class="header-center">
-            <div class="title">REPORTE DE SERVICIO COMPLETADO</div>
         </div>
 
         <!-- QR a la derecha -->
