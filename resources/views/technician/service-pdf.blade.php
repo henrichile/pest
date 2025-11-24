@@ -484,13 +484,17 @@
                     @foreach($checklistData['monitoreo_datos']['service_photos'] as $photo)
                         @php
                             $imageSrc = null;
-                            $photoPath = str_replace(['storage/storage/', 'storage/'], '', $photo);
+
+                            // Limpiar ruta: remover solo 'storage/' del inicio si existe
+                            $cleanPath = $photo;
+                            if (strpos($cleanPath, 'storage/') === 0) {
+                                $cleanPath = substr($cleanPath, 8); // Remover 'storage/' del inicio
+                            }
 
                             $possiblePaths = [
-                                storage_path('app/public/' . $photoPath),
-                                storage_path('app/' . $photoPath),
-                                public_path($photoPath),
-                                public_path('storage/' . $photoPath),
+                                storage_path('app/public/' . $cleanPath),
+                                public_path('storage/' . $cleanPath),
+                                public_path($photo),
                             ];
 
                             foreach ($possiblePaths as $fullPath) {
@@ -501,11 +505,16 @@
                                         $mimeType = finfo_file($finfo, $fullPath);
                                         finfo_close($finfo);
                                         $imageSrc = 'data:' . $mimeType . ';base64,' . $imageData;
+                                        \Log::info('✓ Foto de servicio cargada: ' . $fullPath);
                                         break;
                                     } catch (\Exception $e) {
                                         \Log::error('Error cargando foto de servicio: ' . $fullPath . ' - ' . $e->getMessage());
                                     }
                                 }
+                            }
+
+                            if (!$imageSrc) {
+                                \Log::warning('⚠ No se pudo cargar foto de servicio. Ruta original: ' . $photo);
                             }
                         @endphp
                         @if($imageSrc)
@@ -536,27 +545,20 @@
             @php
                 $imageSrc = null;
                 $originalPath = $checklistData['monitoreo_croquis']['croquis_file'];
-                \Log::info('=== CROQUIS DEBUG ===');
-                \Log::info('Original path: ' . $originalPath);
 
-                // Limpiar la ruta de manera más agresiva
-                $croquisPath = $originalPath;
-                $croquisPath = str_replace(['storage/storage/', 'storage/', 'public/'], '', $croquisPath);
-                // Si empieza con /, quitarlo
-                $croquisPath = ltrim($croquisPath, '/');
-                \Log::info('Cleaned path: ' . $croquisPath);
+                // Limpiar ruta: remover solo 'storage/' del inicio si existe
+                $cleanPath = $originalPath;
+                if (strpos($cleanPath, 'storage/') === 0) {
+                    $cleanPath = substr($cleanPath, 8); // Remover 'storage/' del inicio
+                }
 
                 $possiblePaths = [
-                    storage_path('app/public/' . $croquisPath),
-                    storage_path('app/' . $croquisPath),
-                    public_path($croquisPath),
-                    public_path('storage/' . $croquisPath),
-                    // Agregar la ruta original como último recurso
-                    $originalPath,
+                    storage_path('app/public/' . $cleanPath),
+                    public_path('storage/' . $cleanPath),
+                    public_path($originalPath),
                 ];
 
                 foreach ($possiblePaths as $fullPath) {
-                    \Log::info('Trying path: ' . $fullPath . ' - Exists: ' . (file_exists($fullPath) ? 'YES' : 'NO'));
                     if (file_exists($fullPath)) {
                         try {
                             $imageData = base64_encode(file_get_contents($fullPath));
@@ -564,7 +566,7 @@
                             $mimeType = finfo_file($finfo, $fullPath);
                             finfo_close($finfo);
                             $imageSrc = 'data:' . $mimeType . ';base64,' . $imageData;
-                            \Log::info('✓ Successfully loaded croquis from: ' . $fullPath);
+                            \Log::info('✓ Croquis cargado: ' . $fullPath);
                             break;
                         } catch (\Exception $e) {
                             \Log::error('Error cargando croquis: ' . $fullPath . ' - ' . $e->getMessage());
@@ -573,22 +575,13 @@
                 }
 
                 if (!$imageSrc) {
-                    \Log::warning('⚠ No se pudo cargar el croquis desde ninguna ruta');
+                    \Log::warning('⚠ No se pudo cargar el croquis. Ruta original: ' . $originalPath);
                 }
             @endphp
             @if($imageSrc)
             <div class="checklist-item">
                 <strong>Croquis:</strong><br>
                 <img src="{{ $imageSrc }}" alt="Croquis de cebaderas" class="croquis-image">
-            </div>
-            @else
-            <div class="checklist-item">
-                <strong>Croquis:</strong><br>
-                <div style="background: #fff3cd; padding: 12px; border-radius: 5px; border-left: 4px solid #856404;">
-                    ⚠️ No se pudo cargar la imagen del croquis.<br>
-                    <small>Ruta original: {{ $originalPath }}</small><br>
-                    <small>Ruta limpia: {{ $croquisPath }}</small>
-                </div>
             </div>
             @endif
             @endif
@@ -661,28 +654,20 @@
                             @foreach($station['photos'] as $photo)
                                 @php
                                     $imageSrc = null;
-                                    \Log::info('=== FOTO CEBADERA DEBUG ===');
-                                    \Log::info('Original photo path: ' . $photo);
-                                    \Log::info('Station code: ' . ($station['code'] ?? 'N/A'));
 
-                                    // Limpiar la ruta de manera más agresiva
-                                    $photoPath = $photo;
-                                    $photoPath = str_replace(['storage/storage/', 'storage/', 'public/'], '', $photoPath);
-                                    // Si empieza con /, quitarlo
-                                    $photoPath = ltrim($photoPath, '/');
-                                    \Log::info('Cleaned photo path: ' . $photoPath);
+                                    // Limpiar ruta: remover solo 'storage/' del inicio si existe
+                                    $cleanPath = $photo;
+                                    if (strpos($cleanPath, 'storage/') === 0) {
+                                        $cleanPath = substr($cleanPath, 8); // Remover 'storage/' del inicio
+                                    }
 
                                     $possiblePaths = [
-                                        storage_path('app/public/' . $photoPath),
-                                        storage_path('app/' . $photoPath),
-                                        public_path($photoPath),
-                                        public_path('storage/' . $photoPath),
-                                        // Agregar la ruta original como último recurso
-                                        $photo,
+                                        storage_path('app/public/' . $cleanPath),
+                                        public_path('storage/' . $cleanPath),
+                                        public_path($photo),
                                     ];
 
                                     foreach ($possiblePaths as $fullPath) {
-                                        \Log::info('Trying photo path: ' . $fullPath . ' - Exists: ' . (file_exists($fullPath) ? 'YES' : 'NO'));
                                         if (file_exists($fullPath)) {
                                             try {
                                                 $imageData = base64_encode(file_get_contents($fullPath));
@@ -690,7 +675,7 @@
                                                 $mimeType = finfo_file($finfo, $fullPath);
                                                 finfo_close($finfo);
                                                 $imageSrc = 'data:' . $mimeType . ';base64,' . $imageData;
-                                                \Log::info('✓ Successfully loaded photo from: ' . $fullPath);
+                                                \Log::info('✓ Foto de cebadera cargada: ' . $fullPath);
                                                 break;
                                             } catch (\Exception $e) {
                                                 \Log::error('Error cargando foto de cebadera: ' . $fullPath . ' - ' . $e->getMessage());
@@ -699,17 +684,97 @@
                                     }
 
                                     if (!$imageSrc) {
-                                        \Log::warning('⚠ No se pudo cargar la foto de cebadera desde ninguna ruta');
+                                        \Log::warning('⚠ No se pudo cargar foto de cebadera. Ruta original: ' . $photo);
                                     }
                                 @endphp
                                 @if($imageSrc)
                                 <div class="photo-item">
                                     <img src="{{ $imageSrc }}" alt="Foto de cebadera {{ $station['code'] ?? ($index + 1) }}" class="bait-station-photo">
                                 </div>
-                                @else
-                                <div class="photo-item" style="background: #fff3cd; padding: 8px; border-radius: 5px; border-left: 4px solid #856404; font-size: 10px;">
-                                    ⚠️ No se pudo cargar la foto<br>
-                                    <small>Ruta: {{ $photo }}</small>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
+                </div>
+                @endforeach
+            </div>
+            @endif
+
+            @if(isset($checklistData['monitoreo_completo']['traps']) && count($checklistData['monitoreo_completo']['traps']) > 0)
+            <div class="checklist-item">
+                <strong>Trampas de Captura:</strong>
+                @foreach($checklistData['monitoreo_completo']['traps'] as $index => $trap)
+                <div class="bait-station-card">
+                    <div class="bait-station-header">Trampa #{{ $index + 1 }}</div>
+
+                    @if(isset($trap['code']))
+                    <div class="bait-station-detail"><strong>Código:</strong> {{ $trap['code'] }}</div>
+                    @endif
+
+                    @if(isset($trap['location']))
+                    <div class="bait-station-detail"><strong>Ubicación:</strong> {{ $trap['location'] }}</div>
+                    @endif
+
+                    @if(isset($trap['product_type']))
+                    <div class="bait-station-detail"><strong>Producto/Material:</strong> {{ ucfirst($trap['product_type']) }}</div>
+                    @endif
+
+                    @if(isset($trap['quantity']))
+                    <div class="bait-station-detail"><strong>Cantidad:</strong> {{ $trap['quantity'] }}</div>
+                    @endif
+
+                    @if(isset($trap['status']))
+                    <div class="bait-station-detail"><strong>Estado:</strong> {{ ucfirst($trap['status']) }}</div>
+                    @endif
+
+                    @if(isset($trap['notes']))
+                    <div class="bait-station-detail"><strong>Notas:</strong> {{ $trap['notes'] }}</div>
+                    @endif
+
+                    @if(isset($trap['photos']) && count($trap['photos']) > 0)
+                    <div class="bait-station-detail">
+                        <strong>Fotografías:</strong>
+                        <div class="photo-grid">
+                            @foreach($trap['photos'] as $photo)
+                                @php
+                                    $imageSrc = null;
+
+                                    // Limpiar ruta: remover solo 'storage/' del inicio si existe
+                                    $cleanPath = $photo;
+                                    if (strpos($cleanPath, 'storage/') === 0) {
+                                        $cleanPath = substr($cleanPath, 8); // Remover 'storage/' del inicio
+                                    }
+
+                                    $possiblePaths = [
+                                        storage_path('app/public/' . $cleanPath),
+                                        public_path('storage/' . $cleanPath),
+                                        public_path($photo),
+                                    ];
+
+                                    foreach ($possiblePaths as $fullPath) {
+                                        if (file_exists($fullPath)) {
+                                            try {
+                                                $imageData = base64_encode(file_get_contents($fullPath));
+                                                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                                                $mimeType = finfo_file($finfo, $fullPath);
+                                                finfo_close($finfo);
+                                                $imageSrc = 'data:' . $mimeType . ';base64,' . $imageData;
+                                                \Log::info('✓ Foto de trampa cargada: ' . $fullPath);
+                                                break;
+                                            } catch (\Exception $e) {
+                                                \Log::error('Error cargando foto de trampa: ' . $fullPath . ' - ' . $e->getMessage());
+                                            }
+                                        }
+                                    }
+
+                                    if (!$imageSrc) {
+                                        \Log::warning('⚠ No se pudo cargar foto de trampa. Ruta original: ' . $photo);
+                                    }
+                                @endphp
+                                @if($imageSrc)
+                                <div class="photo-item">
+                                    <img src="{{ $imageSrc }}" alt="Foto de trampa {{ $trap['code'] ?? ($index + 1) }}" class="bait-station-photo">
                                 </div>
                                 @endif
                             @endforeach
