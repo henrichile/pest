@@ -497,12 +497,13 @@
                                 if (file_exists($fullPath)) {
                                     try {
                                         $imageData = base64_encode(file_get_contents($fullPath));
-                                        $extension = pathinfo($fullPath, PATHINFO_EXTENSION);
-                                        $mimeType = in_array(strtolower($extension), ['jpg', 'jpeg']) ? 'jpeg' : strtolower($extension);
-                                        $imageSrc = 'data:image/' . $mimeType . ';base64,' . $imageData;
+                                        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                                        $mimeType = finfo_file($finfo, $fullPath);
+                                        finfo_close($finfo);
+                                        $imageSrc = 'data:' . $mimeType . ';base64,' . $imageData;
                                         break;
                                     } catch (\Exception $e) {
-                                        \Log::error('Error cargando foto de servicio: ' . $fullPath);
+                                        \Log::error('Error cargando foto de servicio: ' . $fullPath . ' - ' . $e->getMessage());
                                     }
                                 }
                             }
@@ -547,12 +548,13 @@
                     if (file_exists($fullPath)) {
                         try {
                             $imageData = base64_encode(file_get_contents($fullPath));
-                            $extension = pathinfo($fullPath, PATHINFO_EXTENSION);
-                            $mimeType = in_array(strtolower($extension), ['jpg', 'jpeg']) ? 'jpeg' : strtolower($extension);
-                            $imageSrc = 'data:image/' . $mimeType . ';base64,' . $imageData;
+                            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                            $mimeType = finfo_file($finfo, $fullPath);
+                            finfo_close($finfo);
+                            $imageSrc = 'data:' . $mimeType . ';base64,' . $imageData;
                             break;
                         } catch (\Exception $e) {
-                            \Log::error('Error cargando croquis: ' . $fullPath);
+                            \Log::error('Error cargando croquis: ' . $fullPath . ' - ' . $e->getMessage());
                         }
                     }
                 }
@@ -646,12 +648,13 @@
                                         if (file_exists($fullPath)) {
                                             try {
                                                 $imageData = base64_encode(file_get_contents($fullPath));
-                                                $extension = pathinfo($fullPath, PATHINFO_EXTENSION);
-                                                $mimeType = in_array(strtolower($extension), ['jpg', 'jpeg']) ? 'jpeg' : strtolower($extension);
-                                                $imageSrc = 'data:image/' . $mimeType . ';base64,' . $imageData;
+                                                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                                                $mimeType = finfo_file($finfo, $fullPath);
+                                                finfo_close($finfo);
+                                                $imageSrc = 'data:' . $mimeType . ';base64,' . $imageData;
                                                 break;
                                             } catch (\Exception $e) {
-                                                \Log::error('Error cargando foto de cebadera: ' . $fullPath);
+                                                \Log::error('Error cargando foto de cebadera: ' . $fullPath . ' - ' . $e->getMessage());
                                             }
                                         }
                                     }
