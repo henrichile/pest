@@ -581,6 +581,15 @@
                 <strong>Croquis:</strong><br>
                 <img src="{{ $imageSrc }}" alt="Croquis de cebaderas" class="croquis-image">
             </div>
+            @else
+            <div class="checklist-item">
+                <strong>Croquis:</strong><br>
+                <div style="background: #fff3cd; padding: 12px; border-radius: 5px; border-left: 4px solid #856404;">
+                    ⚠️ No se pudo cargar la imagen del croquis.<br>
+                    <small>Ruta original: {{ $originalPath }}</small><br>
+                    <small>Ruta limpia: {{ $croquisPath }}</small>
+                </div>
+            </div>
             @endif
             @endif
         </div>
@@ -696,6 +705,11 @@
                                 @if($imageSrc)
                                 <div class="photo-item">
                                     <img src="{{ $imageSrc }}" alt="Foto de cebadera {{ $station['code'] ?? ($index + 1) }}" class="bait-station-photo">
+                                </div>
+                                @else
+                                <div class="photo-item" style="background: #fff3cd; padding: 8px; border-radius: 5px; border-left: 4px solid #856404; font-size: 10px;">
+                                    ⚠️ No se pudo cargar la foto<br>
+                                    <small>Ruta: {{ $photo }}</small>
                                 </div>
                                 @endif
                             @endforeach
