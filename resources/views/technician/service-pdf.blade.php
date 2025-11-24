@@ -964,6 +964,7 @@
             <div style="background: #fff3cd; padding: 12px; border-radius: 5px; border-left: 4px solid #856404; line-height: 1.6;">
                 {{ $checklistData['description']['service_sugerencia'] }}
             </div>
+                <div style="page-break-after: always;"></div>
         </div>
         @endif
     </div>
@@ -1116,6 +1117,7 @@
             <div style="background: #fff3cd; padding: 12px; border-radius: 5px; border-left: 4px solid #856404; line-height: 1.6;">
                 {{ $checklistData['description']['service_sugerencia'] }}
             </div>
+                <div style="page-break-after: always;"></div>
         </div>
         @endif
     </div>
