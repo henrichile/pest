@@ -977,7 +977,7 @@
         </div>
 
         {{-- Productos Aplicados --}}
-        @if(isset($checklistData['products']['applied_product']) || isset($checklistData['products']['product_id']))
+        @if(isset($checklistData['products']))
         <div class="subsection" style="margin-bottom: 20px;">
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Productos Aplicados
