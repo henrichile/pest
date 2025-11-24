@@ -1486,13 +1486,24 @@ class TechnicianController extends Controller
 
         $pdf = Pdf::loadView('technician.service-pdf', compact('service', 'validationId', 'integrityHash', 'qrCode'));
 
-        // Configurar opciones de DomPDF para manejar imágenes correctamente
+        // Configurar opciones de DomPDF para manejar imágenes correctamente y codificación UTF-8
         $pdf->setPaper('A4', 'portrait');
         $pdf->setOptions([
             'isHtml5ParserEnabled' => true,
             'isRemoteEnabled' => true, // Necesario para cargar imágenes desde rutas del sistema
             'isPhpEnabled' => true, // Necesario para funciones PHP en las vistas
-            'defaultFont' => 'Arial',
+            'defaultFont' => 'DejaVu Sans', // DejaVu Sans tiene mejor soporte UTF-8 que Arial
+            'fontHeightRatio' => 1.1,
+            'enable_font_subsetting' => true,
+            'pdf_backend' => 'CPDF',
+            'debugPng' => false,
+            'debugKeepTemp' => false,
+            'debugCss' => false,
+            'debugLayout' => false,
+            'debugLayoutLines' => false,
+            'debugLayoutBlocks' => false,
+            'debugLayoutInline' => false,
+            'debugLayoutPaddingBox' => false,
         ]);
 
         $filename = "servicio-{$service->id}-{$service->client->name}-{$validationId}.pdf";
