@@ -22,10 +22,12 @@
         }
 
         .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #1a472a;
             margin-bottom: 10px;
+        }
+
+        .logo img {
+            max-width: 180px;
+            height: auto;
         }
 
         .title {
@@ -289,7 +291,33 @@
 </head>
 <body>
     <div class="header">
-        <div class="logo">PEST CONTROLLER</div>
+        <div class="logo">
+            @php
+                // Buscar el logo en diferentes ubicaciones
+                $logoPaths = [
+                    public_path('images/pestcontroller-logo.png'),
+                    public_path('images/logo.svg'),
+                    public_path('logo.jpg')
+                ];
+
+                $logoBase64 = null;
+                foreach ($logoPaths as $logoPath) {
+                    if (file_exists($logoPath)) {
+                        $imageData = base64_encode(file_get_contents($logoPath));
+                        $extension = pathinfo($logoPath, PATHINFO_EXTENSION);
+                        $mimeType = $extension === 'svg' ? 'image/svg+xml' : 'image/' . $extension;
+                        $logoBase64 = 'data:' . $mimeType . ';base64,' . $imageData;
+                        break;
+                    }
+                }
+            @endphp
+
+            @if($logoBase64)
+                <img src="{{ $logoBase64 }}" alt="Pest Controller Logo">
+            @else
+                <span style="font-size: 24px; font-weight: bold; color: #1a472a;">PEST CONTROLLER</span>
+            @endif
+        </div>
         <div class="title">REPORTE DE SERVICIO COMPLETADO</div>
         @if(isset($qrCode))
         <div class="qr-code">

@@ -27,8 +27,8 @@
             </div>
         </div>
         @if($service->checklist_data)
-            <!-- Etapa 1: Puntos de Control - Oculto para desinsectación -->
-            @if($service->service_type !== 'desinsectacion' && $service->service_type !== 'desinfeccion')
+            <!-- Etapa 1: Puntos de Control - Oculto para desinsectación, desinfección, sanitizacion y desratización -->
+            @if($service->service_type !== 'desinsectacion' && $service->service_type !== 'desinfeccion' && $service->service_type !== 'sanitizacion' && $service->service_type !== 'desratizacion')
             <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                 <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                     <svg class="w-6 h-6 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
