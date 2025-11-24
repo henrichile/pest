@@ -93,7 +93,13 @@
                         <strong class="text-gray-900">Fotografías del Servicio:</strong>
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-3">
                             @foreach($checklistData['monitoreo_datos']['service_photos'] as $photo)
-                            <img src="{{ asset($photo) }}" alt="Foto del servicio" class="rounded-lg border border-gray-200 w-full h-48 object-cover">
+                            @php
+                                $photoPath = $photo;
+                                if (strpos($photoPath, 'storage/') === 0) {
+                                    $photoPath = '/' . $photoPath;
+                                }
+                            @endphp
+                            <img src="{{ asset($photoPath) }}" alt="Foto del servicio" class="rounded-lg border border-gray-200 w-full h-48 object-cover">
                             @endforeach
                         </div>
                     </div>
@@ -221,7 +227,13 @@
                                     <span class="text-sm font-medium text-gray-600">Fotografías:</span>
                                     <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mt-2">
                                         @foreach($station['photos'] as $photo)
-                                        <img src="{{ asset($photo) }}" alt="Foto de cebadera {{ $station['code'] ?? ($index + 1) }}" class="rounded-lg border border-gray-200 w-full h-32 object-cover">
+                                        @php
+                                            $photoPath = $photo;
+                                            if (strpos($photoPath, 'storage/') === 0) {
+                                                $photoPath = '/' . $photoPath;
+                                            }
+                                        @endphp
+                                        <img src="{{ asset($photoPath) }}" alt="Foto de cebadera {{ $station['code'] ?? ($index + 1) }}" class="rounded-lg border border-gray-200 w-full h-32 object-cover">
                                         @endforeach
                                     </div>
                                 </div>
@@ -289,7 +301,13 @@
                                     <span class="text-sm font-medium text-gray-600">Fotografías:</span>
                                     <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mt-2">
                                         @foreach($trap['photos'] as $photo)
-                                        <img src="{{ asset($photo) }}" alt="Foto de trampa {{ $trap['code'] ?? ($index + 1) }}" class="rounded-lg border border-gray-200 w-full h-32 object-cover">
+                                        @php
+                                            $photoPath = $photo;
+                                            if (strpos($photoPath, 'storage/') === 0) {
+                                                $photoPath = '/' . $photoPath;
+                                            }
+                                        @endphp
+                                        <img src="{{ asset($photoPath) }}" alt="Foto de trampa {{ $trap['code'] ?? ($index + 1) }}" class="rounded-lg border border-gray-200 w-full h-32 object-cover">
                                         @endforeach
                                     </div>
                                 </div>
