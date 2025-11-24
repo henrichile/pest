@@ -885,8 +885,27 @@
         </div>
         @endif
 
+        {{-- DEBUG: Mostrar toda la estructura de description --}}
+        @php
+            if (isset($checklistData['description'])) {
+                error_log("=== DEBUG PDF DESRATIZACIÓN - Servicio ID: {$service->id} ===");
+                error_log("Campos en description: " . json_encode(array_keys($checklistData['description'])));
+                if (isset($checklistData['description']['service_description'])) {
+                    error_log("service_description existe: '" . $checklistData['description']['service_description'] . "'");
+                    error_log("service_description empty: " . (empty($checklistData['description']['service_description']) ? 'SI' : 'NO'));
+                }
+                if (isset($checklistData['description']['service_sugerencia'])) {
+                    error_log("service_sugerencia existe: '" . $checklistData['description']['service_sugerencia'] . "'");
+                    error_log("service_sugerencia empty: " . (empty($checklistData['description']['service_sugerencia']) ? 'SI' : 'NO'));
+                }
+            } else {
+                error_log("=== DEBUG PDF DESRATIZACIÓN - Servicio ID: {$service->id} ===");
+                error_log("NO EXISTE checklistData['description']");
+            }
+        @endphp
+
         {{-- Descripción del Servicio --}}
-        @if(isset($checklistData['description']['service_description']) && !empty($checklistData['description']['service_description']))
+        @if(isset($checklistData['description']['service_description']) && trim($checklistData['description']['service_description']) !== '')
         <div class="subsection" style="margin-bottom: 20px;">
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Descripción del Servicio
@@ -895,7 +914,7 @@
                 {{ $checklistData['description']['service_description'] }}
             </div>
         </div>
-        @elseif(isset($checklistData['description']['content']) && !empty($checklistData['description']['content']))
+        @elseif(isset($checklistData['description']['content']) && trim($checklistData['description']['content']) !== '')
         <div class="subsection" style="margin-bottom: 20px;">
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Descripción del Servicio
@@ -907,7 +926,7 @@
         @endif
 
         {{-- Sugerencias --}}
-        @if(isset($checklistData['description']['service_sugerencia']) && !empty($checklistData['description']['service_sugerencia']))
+        @if(isset($checklistData['description']['service_sugerencia']) && trim($checklistData['description']['service_sugerencia']) !== '')
         <div class="subsection" style="margin-bottom: 20px;">
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Sugerencias
