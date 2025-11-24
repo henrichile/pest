@@ -96,8 +96,8 @@
                     Productos Aplicados
                 </h2>
 
-                {{-- ✅ Dosis y Agua para desinfección y sanitización --}}
-                @if(in_array($service->service_type, ['desinfeccion', 'sanitizacion']) && isset($service->checklist_data["products"]))
+                {{-- ✅ Dosis y Agua para desinfección, sanitización y desinsectación --}}
+                @if(in_array($service->service_type, ['desinfeccion', 'sanitizacion', 'desinsectacion']) && isset($service->checklist_data["products"]))
                     @php
                         $productsData = $service->checklist_data["products"];
                         $hasDosisOrAgua = isset($productsData['dosis']) || isset($productsData['agua']);
