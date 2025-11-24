@@ -43,7 +43,7 @@
             font-size: 16px;
             font-weight: bold;
             color: #333;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
         .qr-code {
