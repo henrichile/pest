@@ -517,6 +517,15 @@ class TechnicianController extends Controller
                     $checklistData['monitoreo_datos'] = $this->processMonitoreoDatosData($request);
                     break;
                 case 'monitoreo-croquis':
+                    // Validar archivo de croquis si existe
+                    if ($request->hasFile('croquis_file')) {
+                        $request->validate([
+                            'croquis_file' => 'required|file|mimes:jpeg,jpg,png,pdf|max:10240', // 10MB max
+                        ], [
+                            'croquis_file.max' => 'El archivo de croquis no puede superar los 10MB.',
+                            'croquis_file.mimes' => 'El archivo debe ser una imagen (JPEG, JPG, PNG) o PDF.',
+                        ]);
+                    }
                     $checklistData['monitoreo_croquis'] = $this->processMonitoreoCroquisData($request);
                     break;
                 case 'monitoreo-completo':
@@ -597,7 +606,19 @@ class TechnicianController extends Controller
             }
             // Actualizar la base de datos (solo si no se completó en monitoreo-firma)
             if ($stage !== 'monitoreo-firma') {
+                Log::info('Saving checklist_data to database', [
+                    'service_id' => $service->id,
+                    'stage' => $stage,
+                    'checklist_data' => $checklistData
+                ]);
                 $service->update(['checklist_data' => $checklistData]);
+
+                // Verificar que se guardó correctamente
+                $service->refresh();
+                Log::info('Checklist data saved, verifying', [
+                    'service_id' => $service->id,
+                    'saved_data' => $service->checklist_data
+                ]);
             }
             $stageInstruction = $this->getProductStageInstruction($service->service_type);
             // Determinar la siguiente etapa
@@ -920,12 +941,35 @@ class TechnicianController extends Controller
             'croquis_notes' => $request->input('croquis_notes', ''),
         ];
 
+        // Log para debug
+        Log::info('Processing croquis data', [
+            'has_file' => $request->hasFile('croquis_file'),
+            'all_files' => $request->allFiles(),
+            'all_input' => $request->except(['_token'])
+        ]);
+
         // Procesar archivo de croquis si hay
         if ($request->hasFile('croquis_file')) {
             $file = $request->file('croquis_file');
-            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('services/croquis', $filename, 'public');
-            $data['croquis_file'] = 'storage/services/croquis/' . $filename;
+
+            // Validar que el archivo sea válido
+            if ($file->isValid()) {
+                $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $path = $file->storeAs('services/croquis', $filename, 'public');
+                $data['croquis_file'] = 'storage/services/croquis/' . $filename;
+
+                Log::info('Croquis file saved successfully', [
+                    'filename' => $filename,
+                    'path' => $path,
+                    'full_path' => $data['croquis_file']
+                ]);
+            } else {
+                Log::error('Croquis file is not valid', [
+                    'error' => $file->getErrorMessage()
+                ]);
+            }
+        } else {
+            Log::warning('No croquis_file in request');
         }
 
         return $data;
