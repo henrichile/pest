@@ -680,6 +680,8 @@
                                             } catch (\Exception $e) {
                                                 \Log::error('Error cargando foto de cebadera: ' . $fullPath . ' - ' . $e->getMessage());
                                             }
+                                        } else {
+                                            \Log::warning('Foto de cebadera no encontrada en ruta: ' . $fullPath);
                                         }
                                     }
 
@@ -763,8 +765,10 @@
                                                 \Log::info('✓ Foto de trampa cargada: ' . $fullPath);
                                                 break;
                                             } catch (\Exception $e) {
-                                                \Log::error('Error cargando foto de trampa: ' . $fullPath . ' - ' . $e->getMessage());
+                                                \Log::error('Error cargando foto de trampa en PDF: ' . $fullPath . ' - ' . $e->getMessage());
                                             }
+                                        } else {
+                                            \Log::warning('Foto de trampa no encontrada en ruta: ' . $fullPath);
                                         }
                                     }
 

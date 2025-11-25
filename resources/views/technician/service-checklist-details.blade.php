@@ -99,7 +99,7 @@
                                     $photoPath = '/' . $photoPath;
                                 }
                             @endphp
-                            <img src="{{ asset($photoPath) }}" alt="Foto del servicio" class="rounded-lg border border-gray-200 w-full h-48 object-cover">
+                            <img src="{{ $photoPath }}" alt="Foto del servicio" class="rounded-lg border border-gray-200 w-full h-48 object-cover">
                             @endforeach
                         </div>
                     </div>
@@ -137,7 +137,7 @@
                                     $croquisPath = '/' . $croquisPath;
                                 }
                             @endphp
-                            <img src="{{ asset($croquisPath) }}" alt="Croquis de cebaderas" class="rounded-lg border border-gray-200 max-w-full">
+                            <img src="{{ $croquisPath }}" alt="Croquis de cebaderas" class="rounded-lg border border-gray-200 max-w-full">
                         </div>
                     </div>
                     @endif
@@ -233,7 +233,12 @@
                                                 $photoPath = '/' . $photoPath;
                                             }
                                         @endphp
-                                        <img src="{{ asset($photoPath) }}" alt="Foto de cebadera {{ $station['code'] ?? ($index + 1) }}" class="rounded-lg border border-gray-200 w-full h-32 object-cover">
+                                        <div class="photo-item">
+                                            <img src="{{ $photoPath }}"
+                                                 alt="Foto de cebadera {{ $station['code'] ?? '' }}"
+                                                 class="rounded-lg shadow-sm border border-gray-200 w-full h-32 object-cover cursor-pointer hover:opacity-75 transition-opacity"
+                                                 onclick="window.open('{{ $photoPath }}', '_blank')">
+                                        </div>
                                         @endforeach
                                     </div>
                                 </div>
