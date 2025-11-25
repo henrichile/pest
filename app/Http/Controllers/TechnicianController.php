@@ -954,15 +954,41 @@ class TechnicianController extends Controller
 
             // Validar que el archivo sea válido
             if ($file->isValid()) {
-                $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                $path = $file->storeAs('services/croquis', $filename, 'public');
-                $data['croquis_file'] = 'storage/services/croquis/' . $filename;
+                try {
+                    // Asegurar que el directorio existe
+                    $directory = 'services/croquis';
+                    if (!Storage::disk('public')->exists($directory)) {
+                        Storage::disk('public')->makeDirectory($directory, 0775, true);
+                        Log::info('Created croquis directory', ['directory' => $directory]);
+                    }
 
-                Log::info('Croquis file saved successfully', [
-                    'filename' => $filename,
-                    'path' => $path,
-                    'full_path' => $data['croquis_file']
-                ]);
+                    $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                    $path = $file->storeAs($directory, $filename, 'public');
+                    $data['croquis_file'] = 'storage/services/croquis/' . $filename;
+
+                    // Verificar que el archivo se guardó correctamente
+                    $fullPath = storage_path('app/public/' . $path);
+                    if (file_exists($fullPath)) {
+                        Log::info('Croquis file saved successfully', [
+                            'filename' => $filename,
+                            'path' => $path,
+                            'full_path' => $data['croquis_file'],
+                            'disk_path' => $fullPath,
+                            'file_size' => filesize($fullPath)
+                        ]);
+                    } else {
+                        Log::error('Croquis file was not saved to disk', [
+                            'expected_path' => $fullPath,
+                            'storage_path' => $path
+                        ]);
+                    }
+                } catch (\Exception $e) {
+                    Log::error('Error saving croquis file', [
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString()
+                    ]);
+                    throw $e;
+                }
             } else {
                 Log::error('Croquis file is not valid', [
                     'error' => $file->getErrorMessage()
