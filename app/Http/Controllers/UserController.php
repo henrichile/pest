@@ -78,7 +78,9 @@ class UserController extends Controller
         }
 
         try {
-            $totalTreatments = Treatment::where('user_id', $user->id)->count();
+            $totalTreatments = Treatment::whereHas('workOrder.assignedTechnicians', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->count();
         } catch (\Exception $e) {
             $totalTreatments = 0;
         }
@@ -338,7 +340,9 @@ class UserController extends Controller
                 $query->where('user_id', $user->id);
             })->where('status', 'completed')->count(),
             'total_sessions' => WorkSession::where('user_id', $user->id)->count(),
-            'total_treatments' => Treatment::where('user_id', $user->id)->count(),
+            'total_treatments' => Treatment::whereHas('workOrder.assignedTechnicians', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->count(),
         ];
 
         // Get recent activities
@@ -694,19 +698,19 @@ class UserController extends Controller
             abort(403, 'No tienes permisos para acceder a esta página');
         }
         
-        $query = WorkSession::where('technician_id', $user->id)
+        $query = WorkSession::where('user_id', $user->id)
             ->with(['workOrder.client', 'workOrder.site', 'workOrder.service']);
-        
+
         // Filters
         if ($request->filled('start_date')) {
-            $query->where('start_time', '>=', $request->start_date);
+            $query->where('start_at', '>=', $request->start_date);
         }
-        
+
         if ($request->filled('end_date')) {
-            $query->where('start_time', '<=', $request->end_date);
+            $query->where('start_at', '<=', $request->end_date);
         }
-        
-        $sessions = $query->orderBy('start_time', 'desc')
+
+        $sessions = $query->orderBy('start_at', 'desc')
             ->paginate(20);
         
         return view('user.work-sessions', compact('user', 'sessions'));
@@ -755,7 +759,9 @@ class UserController extends Controller
             abort(403, 'No tienes permisos para acceder a esta página');
         }
         
-        $query = Treatment::where('technician_id', $user->id)
+        $query = Treatment::whereHas('workOrder.assignedTechnicians', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            })
             ->with(['pest', 'material', 'workOrder.client', 'workOrder.site']);
         
         // Filters
