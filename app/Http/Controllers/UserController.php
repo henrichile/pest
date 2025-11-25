@@ -54,12 +54,12 @@ class UserController extends Controller
         
         try {
             $totalWorkOrders = WorkOrder::whereHas('assignedTechnicians', function ($query) use ($user) {
-                $query->where('technician_id', $user->id);
+                $query->where('user_id', $user->id);
             })->count();
-            
+
             try {
                 $completedWorkOrders = WorkOrder::whereHas('assignedTechnicians', function ($query) use ($user) {
-                    $query->where('technician_id', $user->id);
+                    $query->where('user_id', $user->id);
                 })->where('status', 'completed')->count();
             } catch (\Exception $e) {
                 $completedWorkOrders = 0;
@@ -332,10 +332,10 @@ class UserController extends Controller
         // Get user statistics
         $stats = [
             'total_work_orders' => WorkOrder::whereHas('assignedTechnicians', function ($query) use ($user) {
-                $query->where('technician_id', $user->id);
+                $query->where('user_id', $user->id);
             })->count(),
             'completed_work_orders' => WorkOrder::whereHas('assignedTechnicians', function ($query) use ($user) {
-                $query->where('technician_id', $user->id);
+                $query->where('user_id', $user->id);
             })->where('status', 'completed')->count(),
             'total_sessions' => WorkSession::where('technician_id', $user->id)->count(),
             'total_treatments' => Treatment::where('technician_id', $user->id)->count(),
@@ -723,7 +723,7 @@ class UserController extends Controller
         }
         
         $query = WorkOrder::whereHas('assignedTechnicians', function ($q) use ($user) {
-            $q->where('technician_id', $user->id);
+            $q->where('user_id', $user->id);
         })->with(['client', 'site', 'service']);
         
         // Filters
