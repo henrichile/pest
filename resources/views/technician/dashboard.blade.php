@@ -581,7 +581,7 @@
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="px-2 py-1 text-xs font-medium rounded-full" style="background: #fef3c7; color: #92400e;">
-                            {{ ucfirst($service->status ?? 'Pendiente') }}
+                            {{ ucfirst(str_replace('-',' ',$service->status) ?? 'Pendiente') }}
                         </span>
                         <a href="{{ route('technician.service.detail', $service) }}" class="px-3 py-1.5 text-xs font-medium rounded-md text-white" style="background: #22c55e;">Ver Detalle</a>
                     </div>
