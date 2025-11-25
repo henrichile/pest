@@ -71,7 +71,7 @@
     });
 </script>
 @endpush
-<div class="max-w-4xl mx-auto" style="padding-top: 80px;">
+<div class="max-w-4xl mx-auto pt-12 md:pt-0">
     <div class="bg-white rounded-lg shadow-lg overflow-hidden">
         <!-- Header -->
         <div class="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">

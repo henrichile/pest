@@ -3,7 +3,7 @@
 @section('title', 'Perfil')
 
 @section('content')
-<div class="container mx-auto px-4 py-8" style="padding-top: 80px;">
+<div class="container mx-auto px-4 py-8 pt-12 md:pt-0">
     <div class="max-w-2xl mx-auto">
         <h1 class="text-2xl font-bold text-gray-900 mb-6">Mi Perfil</h1>
 
