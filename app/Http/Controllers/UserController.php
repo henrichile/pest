@@ -72,13 +72,13 @@ class UserController extends Controller
         $totalTreatments = 0;
         
         try {
-            $totalSessions = WorkSession::where('technician_id', $user->id)->count();
+            $totalSessions = WorkSession::where('user_id', $user->id)->count();
         } catch (\Exception $e) {
             $totalSessions = 0;
         }
-        
+
         try {
-            $totalTreatments = Treatment::where('technician_id', $user->id)->count();
+            $totalTreatments = Treatment::where('user_id', $user->id)->count();
         } catch (\Exception $e) {
             $totalTreatments = 0;
         }
@@ -337,20 +337,20 @@ class UserController extends Controller
             'completed_work_orders' => WorkOrder::whereHas('assignedTechnicians', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })->where('status', 'completed')->count(),
-            'total_sessions' => WorkSession::where('technician_id', $user->id)->count(),
-            'total_treatments' => Treatment::where('technician_id', $user->id)->count(),
+            'total_sessions' => WorkSession::where('user_id', $user->id)->count(),
+            'total_treatments' => Treatment::where('user_id', $user->id)->count(),
         ];
-        
+
         // Get recent activities
         $recentActivities = \Spatie\Activitylog\Models\Activity::where('causer_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->limit(20)
             ->get();
-        
+
         // Get work sessions
-        $workSessions = WorkSession::where('technician_id', $user->id)
+        $workSessions = WorkSession::where('user_id', $user->id)
             ->with(['workOrder.client', 'workOrder.site'])
-            ->orderBy('start_time', 'desc')
+            ->orderBy('start_at', 'desc')
             ->limit(10)
             ->get();
         
