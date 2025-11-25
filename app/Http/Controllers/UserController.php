@@ -460,14 +460,16 @@ class UserController extends Controller
         
         try {
             DB::beginTransaction();
-            
+
             $userData = $request->validated();
-            
-            // Update password if provided
+
+            // Update password if provided, otherwise remove it from the data
             if ($request->filled('password')) {
                 $userData['password'] = Hash::make($request->password);
+            } else {
+                unset($userData['password']);
             }
-            
+
             $user->update($userData);
             
             // Update roles
