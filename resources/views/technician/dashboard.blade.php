@@ -6,20 +6,36 @@
 <div class="space-y-4 sm:space-y-6 pt-12 md:pt-0">
     <!-- Header -->
     <div class="mb-6">
-        <!-- Desktop Header con buscador e íconos -->
-        <div class="hidden md:flex md:items-center md:justify-between">
-            <!-- Título y Fecha -->
-            <div class="min-w-0 flex-1">
-                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight dark:text-white" style="color: #111827; font-weight: 700;">
+        <!-- Desktop Header: Título + Buscador + Iconos (todo en la misma línea) -->
+        <div class="hidden md:flex md:items-center md:justify-between gap-4">
+            <!-- Título Dashboard -->
+            <div class="flex-shrink-0">
+                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 dark:text-white sm:truncate sm:tracking-tight" style="color: #111827; font-weight: 700;">
                     Dashboard
                 </h2>
-                <p class="mt-1 text-sm dark:text-gray-300" style="color: #6b7280;">
+                <p class="mt-1 text-xs sm:text-sm dark:text-white" style="color: #6b7280;">
                     {{ now()->locale('es')->isoFormat('dddd, D [de] MMMM') }}
                 </p>
             </div>
 
-            <!-- Buscador e Íconos (Desktop) -->
-            <div class="flex items-center gap-4 ml-6">
+            <!-- Buscador al lado derecho del título -->
+            <div class="relative flex-shrink-0" style="min-width: 0;">
+                <div class="relative">
+                    <svg class="absolute" style="left: 10px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #9ca3af; pointer-events: none; z-index: 1;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input
+                        type="text"
+                        placeholder="Buscar servicios..."
+                        class="w-56 pr-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all text-sm"
+                        style="background: white; color: #111827; padding-left: 36px; font-size: 14px;"
+                        autocomplete="off"
+                    />
+                </div>
+            </div>
+
+            <!-- Iconos de notificaciones y usuario (desktop) -->
+            <div class="flex items-center gap-x-4 flex-shrink-0">
                 <!-- Buscador -->
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -31,9 +47,9 @@
                 </div>
 
                 <!-- Notificaciones -->
-                <div class="relative" id="dashboard-notification-dropdown">
-                    <button type="button" id="dashboard-notification-button" class="relative flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 transition-colors">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #6b7280;">
+                <div class="relative" style="overflow: visible;">
+                    <button type="button" class="flex items-center justify-center text-gray-500 hover:text-gray-700 relative" title="Notificaciones" id="tech-notification-button" style="width: 40px !important; height: 40px !important; padding: 8px !important; overflow: visible !important;">
+                        <svg style="width: 24px !important; height: 24px !important; display: block !important; flex-shrink: 0 !important;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                         </svg>
                         @php
@@ -47,7 +63,7 @@
                     </button>
 
                     <!-- Notification Dropdown Menu -->
-                    <div id="dashboard-notification-menu" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50" style="max-height: 400px; overflow-y: auto;">
+                    <div id="tech-notification-menu" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50" style="max-height: 400px; overflow-y: auto;">
                         <div class="p-3 border-b border-gray-200 flex justify-between items-center">
                             <h3 class="font-semibold text-gray-900">Notificaciones</h3>
                             <a href="{{ route('technician.notifications.index') }}" class="text-sm text-green-600 hover:text-green-700">Ver todas</a>
@@ -82,17 +98,15 @@
                 </div>
 
                 <!-- Usuario -->
-                <div class="relative" id="dashboard-user-dropdown">
-                    <button type="button" id="dashboard-user-button" class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 transition-colors">
-                        <div class="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center">
-                            <span class="text-sm font-medium text-white">
-                                {{ auth()->check() ? strtoupper(substr(auth()->user()->name, 0, 1)) : 'U' }}
-                            </span>
+                <div class="relative">
+                    <button type="button" class="flex items-center justify-center hover:bg-gray-50 rounded-lg transition-colors" id="tech-user-button" title="Menú de usuario" style="width: 40px !important; height: 40px !important; padding: 0 !important;">
+                        <div class="bg-green-600 rounded-full flex items-center justify-center" style="width: 40px !important; height: 40px !important;">
+                            <span class="text-white font-medium" style="font-size: 14px !important; line-height: 1 !important;">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
                         </div>
                     </button>
 
                     <!-- User Dropdown Menu -->
-                    <div id="dashboard-user-menu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                    <div id="tech-user-menu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
                         <div class="p-3 border-b border-gray-200">
                             <div class="flex items-center gap-3">
                                 <div class="h-10 w-10 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
@@ -296,12 +310,12 @@
 
 @push('scripts')
 <script>
-    // Dashboard Notification and User Menu Dropdowns (Desktop)
+    // Technician Dashboard Notification and User Menu Dropdowns (Desktop)
     (function() {
-        const notificationButton = document.getElementById('dashboard-notification-button');
-        const notificationMenu = document.getElementById('dashboard-notification-menu');
-        const userButton = document.getElementById('dashboard-user-button');
-        const userMenu = document.getElementById('dashboard-user-menu');
+        const notificationButton = document.getElementById('tech-notification-button');
+        const notificationMenu = document.getElementById('tech-notification-menu');
+        const userButton = document.getElementById('tech-user-button');
+        const userMenu = document.getElementById('tech-user-menu');
 
         // Toggle notification menu
         if (notificationButton && notificationMenu) {
