@@ -61,54 +61,91 @@
         </form>
     </div>
 
-    <!-- Services List -->
-    <div class="bg-white border dark:border-gray-700 rounded-lg overflow-hidden" style="border: 1px solid #e5e7eb !important;">
+    <!-- Services Table -->
+    <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
         <div class="overflow-x-auto">
-            @forelse($services as $service)
-                <div class="p-4 sm:p-6 border-b border-gray-200 hover:bg-gray-50" style="border-bottom: 1px solid #e5e7eb;">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        <div class="flex-1">
-                            <div class="mb-2">
-                                <h3 class="text-lg font-semibold" style="color: #111827;">
-                                    {{ $service->client->name ?? 'Cliente no encontrado' }}
-                                </h3>
-                                @if($service->address)
-                                    <p class="text-sm" style="color: #6b7280;">{{ $service->address }}</p>
-                                @endif
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prioridad</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @forelse($services as $service)
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4">
+                            <div class="font-medium text-gray-900">{{ $service->client->name ?? 'Cliente no encontrado' }}</div>
+                            @if($service->address)
+                                <div class="text-sm text-gray-500">{{ $service->address }}</div>
+                            @endif
+                        </td>
+                        <td class="px-6 py-4">
+                            @if($service->serviceType)
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    {{ $service->serviceType->name ?? 'N/A' }}
+                                </span>
+                            @else
+                                <span class="text-sm text-gray-400">Sin tipo</span>
+                            @endif
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-900">
+                            {{ $service->scheduled_date ? \Carbon\Carbon::parse($service->scheduled_date)->format('d/m/Y H:i') : 'Sin fecha' }}
+                        </td>
+                        <td class="px-6 py-4">
+                            @if($service->status)
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
+                                    @if($service->status == 'pendiente') bg-yellow-100 text-yellow-800
+                                    @elseif($service->status == 'en_progreso') bg-blue-100 text-blue-800
+                                    @elseif($service->status == 'completado') bg-green-100 text-green-800
+                                    @else bg-gray-100 text-gray-800
+                                    @endif">
+                                    {{ ucfirst(str_replace('_', ' ', $service->status)) }}
+                                </span>
+                            @else
+                                <span class="text-sm text-gray-400">Sin estado</span>
+                            @endif
+                        </td>
+                        <td class="px-6 py-4">
+                            @if($service->priority)
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
+                                    @if($service->priority == 'alta') bg-red-100 text-red-800
+                                    @elseif($service->priority == 'media') bg-yellow-100 text-yellow-800
+                                    @else bg-gray-100 text-gray-800
+                                    @endif">
+                                    {{ ucfirst($service->priority) }}
+                                </span>
+                            @else
+                                <span class="text-sm text-gray-400">Sin prioridad</span>
+                            @endif
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <a href="{{ route('admin.services.show', $service) ?? route('services.show', $service) ?? '#' }}" class="text-green-600 hover:text-green-700 font-medium" title="Ver">
+                                    Ver
+                                </a>
+                                <a href="{{ route('admin.services.edit', $service) ?? '#' }}" class="text-blue-600 hover:text-blue-700 font-medium" title="Editar">
+                                    Editar
+                                </a>
+                                <button class="text-red-600 hover:text-red-700 font-medium" title="Eliminar">
+                                    Eliminar
+                                </button>
                             </div>
-                            <div class="flex flex-wrap gap-2">
-                                @if($service->status)
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                        @if($service->status == 'pendiente') bg-yellow-100 text-yellow-800
-                                        @elseif($service->status == 'en_progreso') bg-blue-100 text-blue-800
-                                        @elseif($service->status == 'completado') bg-green-100 text-green-800
-                                        @else bg-gray-100 text-gray-800
-                                        @endif">
-                                        {{ ucfirst(str_replace('_', ' ', $service->status)) }}
-                                    </span>
-                                @endif
-                                @if($service->serviceType)
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                        {{ $service->serviceType->name ?? 'N/A' }}
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <a href="{{ route('admin.services.show', $service) ?? route('services.show', $service) ?? '#' }}" class="text-blue-600 hover:text-blue-900" title="Ver">
-                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            @empty
-                <div class="p-8 text-center">
-                    <p class="text-sm" style="color: #6b7280;">No se encontraron servicios</p>
-                </div>
-            @endforelse
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="6" class="px-6 py-8 text-center text-sm text-gray-500">
+                            No se encontraron servicios
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
 
         @if($services->hasPages())
