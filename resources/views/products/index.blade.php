@@ -15,7 +15,7 @@
     <!-- Botón Nuevo Producto -->
     @can("create-products")
     <div class="flex justify-end mb-4">
-        <a href="{{ route("admin.products.create") }}" class="inline-flex items-center justify-center px-4 py-2.5 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 transition-colors">
+        <a href="{{ route("admin.products.create") }}" class="inline-flex items-center justify-center px-5 py-3 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700 transition-colors">
             <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
@@ -25,30 +25,27 @@
     @endcan
 
     <!-- Filters -->
-    <div class="bg-white rounded-lg shadow-lg p-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Servicio</label>
-                <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6 mb-6">
+        <h3 class="text-sm font-semibold text-gray-700 mb-4">Filtros</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex flex-col space-y-2">
+                <label class="text-sm font-medium text-gray-700">Tipo de Servicio</label>
+                <select id="filter-tipo-servicio" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full">
                     <option value="">Todos los tipos</option>
                     <option value="desratizacion">Desratización</option>
                     <option value="desinsectacion">Desinsectación</option>
                     <option value="sanitizacion">Sanitización</option>
+                    <option value="monitoreo">Monitoreo</option>
                 </select>
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Stock</label>
-                <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
-                    <option value="">Todos</option>
+            <div class="flex flex-col space-y-2">
+                <label class="text-sm font-medium text-gray-700">Stock</label>
+                <select id="filter-stock" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full">
+                    <option value="">Todos los niveles</option>
                     <option value="low">Stock Bajo (< 10)</option>
                     <option value="medium">Stock Medio (10-50)</option>
                     <option value="high">Stock Alto (> 50)</option>
                 </select>
-            </div>
-            <div class="flex items-end">
-                <button class="w-full bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors">
-                    Filtrar
-                </button>
             </div>
         </div>
     </div>
@@ -183,6 +180,63 @@
                 e.stopPropagation();
                 toggleMobileMenu();
             });
+        }
+    })();
+
+    // Filtros de productos
+    (function() {
+        const filterTipo = document.getElementById('filter-tipo-servicio');
+        const filterStock = document.getElementById('filter-stock');
+        const productRows = document.querySelectorAll('tbody tr');
+
+        function applyFilters() {
+            const tipoValue = filterTipo.value.toLowerCase();
+            const stockValue = filterStock.value.toLowerCase();
+
+            productRows.forEach(function(row) {
+                let showRow = true;
+
+                // Filtro por tipo de servicio
+                if (tipoValue) {
+                    const tipoCell = row.querySelector('td:nth-child(3)'); // Columna TIPO
+                    if (tipoCell) {
+                        const tipoText = tipoCell.textContent.trim().toLowerCase();
+                        if (!tipoText.includes(tipoValue)) {
+                            showRow = false;
+                        }
+                    }
+                }
+
+                // Filtro por stock
+                if (stockValue && showRow) {
+                    const stockCell = row.querySelector('td:nth-child(4)'); // Columna STOCK
+                    if (stockCell) {
+                        const stockText = stockCell.textContent.trim();
+                        const stockMatch = stockText.match(/(\d+)/);
+                        const stockNumber = stockMatch ? parseInt(stockMatch[1]) : 0;
+
+                        if (stockValue === 'low' && stockNumber >= 10) {
+                            showRow = false;
+                        } else if (stockValue === 'medium' && (stockNumber < 10 || stockNumber > 50)) {
+                            showRow = false;
+                        } else if (stockValue === 'high' && stockNumber <= 50) {
+                            showRow = false;
+                        }
+                    }
+                }
+
+                // Mostrar u ocultar fila
+                if (showRow) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        if (filterTipo && filterStock) {
+            filterTipo.addEventListener('change', applyFilters);
+            filterStock.addEventListener('change', applyFilters);
         }
     })();
 </script>
