@@ -443,8 +443,15 @@ class TechnicianController extends Controller
     }
 
 
-     public function saveChecklistStage(Request $request, Service $service)
+     public function submitChecklist(Request $request, Service $service)
     {
+        Log::info('submitChecklist called', [
+            'service_id' => $service->id,
+            'stage_input' => $request->input('checklist_stage'),
+            'all_inputs' => $request->all(),
+            'files' => $_FILES
+        ]);
+
         // Verificar permisos
         if ($service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
             return response()->json(['success' => false, 'message' => 'No tienes permisos para modificar este servicio'], 403);
