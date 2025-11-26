@@ -159,7 +159,7 @@ Route::middleware(['auth', 'role:super-admin'])->group(function () {
     Route::get('/admin/technician-view/services/{service}/checklist/location', [App\Http\Controllers\TechnicianController::class, 'showLocationCapture'])->name('technician-view.service.checklist.location');
     Route::post('/admin/technician-view/services/{service}/checklist/location', [App\Http\Controllers\TechnicianController::class, 'captureLocation'])->name('technician-view.service.checklist.location.post');
     Route::post('/admin/technician-view/services/{service}/checklist/process-location', [App\Http\Controllers\TechnicianController::class, 'processLocation'])->name('technician-view.service.checklist.process-location');
-    Route::post('/admin/technician-view/services/{service}/checklist/submit', [App\Http\Controllers\TechnicianController::class, 'saveChecklistStage'])->name('technician-view.service.checklist.submit');
+    Route::post('/admin/technician-view/services/{service}/checklist/submit', [App\Http\Controllers\TechnicianController::class, 'submitChecklist'])->name('technician-view.service.checklist.submit');
 });
 
 // Rutas de técnico
@@ -184,7 +184,7 @@ Route::middleware(['auth', \App\Http\Middleware\RedirectTechnicianRoutes::class,
     Route::get('/services/{service}/checklist/location', [App\Http\Controllers\TechnicianController::class, 'showLocationCapture'])->name('service.checklist.location');
     Route::post('/services/{service}/checklist/location', [App\Http\Controllers\TechnicianController::class, 'captureLocation'])->name('service.checklist.location.post');
     Route::post('/services/{service}/checklist/process-location', [App\Http\Controllers\TechnicianController::class, 'processLocation'])->name('service.checklist.process-location');
-    Route::post('/services/{service}/checklist/submit', [App\Http\Controllers\TechnicianController::class, 'saveChecklistStage'])->name('service.checklist.submit');
+    Route::post('/services/{service}/checklist/submit', [App\Http\Controllers\TechnicianController::class, 'submitChecklist'])->name('service.checklist.submit');
     Route::get('/services/{service}/checklist/{stage}', [App\Http\Controllers\TechnicianController::class, 'showChecklistStage'])->where('stage', 'points|products|results|observations|sites|description|monitoreo-datos|monitoreo-croquis|monitoreo-completo|monitoreo-estadisticas|monitoreo-analisis|monitoreo-firma')->name('service.checklist.stage');
     Route::get('/services/{service}/checklist/observations/{index}', [App\Http\Controllers\TechnicianController::class, 'handleObservation'])->name('service.checklist.observation.handle');
     Route::delete('/services/{service}/checklist/observations/{index}', [App\Http\Controllers\TechnicianController::class, 'deleteObservation'])->name('service.checklist.observation.delete');
