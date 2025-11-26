@@ -266,7 +266,7 @@
 
             currentSearch = query;
 
-            fetch(`{{ route('admin.search') }}?q=${encodeURIComponent(query)}`, {
+            fetch(`{{ route('technician.search') }}?q=${encodeURIComponent(query)}`, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'Accept': 'application/json',

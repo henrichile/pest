@@ -165,6 +165,10 @@ Route::middleware(['auth', 'role:super-admin'])->group(function () {
 // Rutas de técnico
 Route::middleware(['auth', \App\Http\Middleware\RedirectTechnicianRoutes::class, 'role:technician'])->prefix('technician')->name('technician.')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\TechnicianController::class, 'dashboard'])->name('dashboard');
+    
+    // Búsqueda global para técnicos
+    Route::get('/search', [App\Http\Controllers\SearchController::class, 'search'])->name('search');
+    
     Route::get('/services', [App\Http\Controllers\TechnicianController::class, 'services'])->name('services');
     Route::get('/services/{service}/detail', [App\Http\Controllers\TechnicianController::class, 'showServiceDetail'])->name('service.detail');
     Route::get('/services/{service}/pdf', [App\Http\Controllers\TechnicianController::class, 'generatePDF'])->name('service.pdf');
