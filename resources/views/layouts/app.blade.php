@@ -582,7 +582,7 @@ function getTechnicianRoute($routeName, ...$params) {
                     <div class="flex items-center gap-3 flex-shrink-0">
                         <!-- Notifications -->
                         <div class="relative" id="header-notification-dropdown">
-                            <button type="button" id="header-notification-button" class="relative p-2 rounded-full hover:bg-gray-100 transition-colors">
+                            <button type="button" id="header-notification-button" class="relative flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 transition-colors">
                                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #6b7280;">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                                 </svg>
@@ -635,7 +635,7 @@ function getTechnicianRoute($routeName, ...$params) {
 
                         <!-- User Menu -->
                         <div class="relative" id="header-user-dropdown">
-                            <button type="button" id="header-user-button" class="flex items-center gap-2 p-1.5 rounded-full hover:bg-gray-100 transition-colors">
+                            <button type="button" id="header-user-button" class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 transition-colors">
                                 <div class="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center">
                                     <span class="text-sm font-medium text-white">
                                         {{ auth()->check() ? strtoupper(substr(auth()->user()->name, 0, 1)) : 'U' }}
