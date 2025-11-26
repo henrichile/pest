@@ -995,7 +995,11 @@ class TechnicianController extends Controller
                 ]);
             }
         } else {
-            Log::warning('No croquis_file in request');
+            Log::warning('No croquis_file in request', [
+                'content_length' => $_SERVER['CONTENT_LENGTH'] ?? 'unknown',
+                'post_max_size' => ini_get('post_max_size'),
+                'upload_max_filesize' => ini_get('upload_max_filesize')
+            ]);
         }
 
         return $data;
@@ -1026,6 +1030,15 @@ class TechnicianController extends Controller
                         'observations' => is_array($station['observations'] ?? null) ? $station['observations'] : [],
                     ];
 
+                    // Debug log for structure
+                    if ($request->hasFile("bait_stations")) {
+                        Log::info('Checking photos for station', [
+                            'index' => $index,
+                            'has_file_at_index' => $request->hasFile("bait_stations.$index.photos"),
+                            'file_keys' => array_keys($request->file("bait_stations") ?? [])
+                        ]);
+                    }
+
                     // Procesar fotos de la cebadera
                     $photos = [];
                     
@@ -1048,9 +1061,18 @@ class TechnicianController extends Controller
                                     } else {
                                         Log::error('Failed to save bait station photo', ['filename' => $filename]);
                                     }
+                                } else {
+                                    Log::warning('Invalid bait station photo', [
+                                        'error' => $photo ? $photo->getErrorMessage() : 'Photo object is null',
+                                        'size' => $photo ? $photo->getSize() : 0
+                                    ]);
                                 }
                             }
                         }
+                    } else {
+                         Log::warning('No bait_stations files in request', [
+                            'content_length' => $_SERVER['CONTENT_LENGTH'] ?? 'unknown'
+                        ]);
                     }
                 $stationData['photos'] = $photos;
 
@@ -1095,9 +1117,18 @@ class TechnicianController extends Controller
                                     } else {
                                         Log::error('Failed to save trap photo', ['filename' => $filename]);
                                     }
+                                } else {
+                                    Log::warning('Invalid trap photo', [
+                                        'error' => $photo ? $photo->getErrorMessage() : 'Photo object is null',
+                                        'size' => $photo ? $photo->getSize() : 0
+                                    ]);
                                 }
                             }
                         }
+                    } else {
+                         Log::warning('No traps files in request', [
+                            'content_length' => $_SERVER['CONTENT_LENGTH'] ?? 'unknown'
+                        ]);
                     }
                 $trapData['photos'] = $photos;
 
