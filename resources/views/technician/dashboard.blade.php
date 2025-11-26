@@ -8,29 +8,31 @@
     <div class="mb-6">
         <!-- Desktop Header: Título + Buscador + Iconos (todo en la misma línea) -->
         <div class="hidden md:flex md:items-center md:justify-between gap-4">
-            <!-- Título Dashboard -->
-            <div class="flex-shrink-0">
-                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 dark:text-white sm:truncate sm:tracking-tight" style="color: #111827; font-weight: 700;">
-                    Dashboard
-                </h2>
-                <p class="mt-1 text-xs sm:text-sm dark:text-white" style="color: #6b7280;">
-                    {{ now()->locale('es')->isoFormat('dddd, D [de] MMMM') }}
-                </p>
-            </div>
+            <!-- Título Dashboard + Buscador -->
+            <div class="flex items-center gap-4">
+                <div class="flex-shrink-0">
+                    <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 dark:text-white sm:truncate sm:tracking-tight" style="color: #111827; font-weight: 700;">
+                        Dashboard
+                    </h2>
+                    <p class="mt-1 text-xs sm:text-sm dark:text-white" style="color: #6b7280;">
+                        {{ now()->locale('es')->isoFormat('dddd, D [de] MMMM') }}
+                    </p>
+                </div>
 
-            <!-- Buscador al lado derecho del título -->
-            <div class="relative flex-shrink-0" style="min-width: 0;">
-                <div class="relative">
-                    <svg class="absolute" style="left: 10px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #9ca3af; pointer-events: none; z-index: 1;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                    <input
-                        type="text"
-                        placeholder="Buscar servicios..."
-                        class="w-56 pr-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all text-sm"
-                        style="background: white; color: #111827; padding-left: 36px; font-size: 14px;"
-                        autocomplete="off"
-                    />
+                <!-- Buscador al lado derecho del título -->
+                <div class="relative flex-shrink-0" style="min-width: 0;">
+                    <div class="relative">
+                        <svg class="absolute" style="left: 10px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #9ca3af; pointer-events: none; z-index: 1;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input
+                            type="text"
+                            placeholder="Buscar servicios..."
+                            class="w-56 pr-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all text-sm"
+                            style="background: white; color: #111827; padding-left: 36px; font-size: 14px;"
+                            autocomplete="off"
+                        />
+                    </div>
                 </div>
             </div>
 
@@ -90,8 +92,8 @@
                 <!-- Usuario -->
                 <div class="relative">
                     <button type="button" class="flex items-center justify-center hover:bg-gray-50 rounded-lg transition-colors" id="tech-user-button" title="Menú de usuario" style="width: 40px !important; height: 40px !important; padding: 0 !important;">
-                        <div class="bg-green-600 rounded-full flex items-center justify-center" style="width: 40px !important; height: 40px !important;">
-                            <span class="text-white font-medium" style="font-size: 14px !important; line-height: 1 !important;">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
+                        <div class="bg-green-600 rounded-full flex items-center justify-center" style="width: 32px !important; height: 32px !important;">
+                            <span class="text-white font-medium" style="font-size: 13px !important; line-height: 1 !important;">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
                         </div>
                     </button>
 
