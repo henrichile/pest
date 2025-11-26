@@ -4,25 +4,25 @@
 @section("page-title", "Centro de Notificaciones")
 
 @section("content")
-<div class="max-w-6xl mx-auto space-y-6">
-    <!-- Header -->
-    <div class="flex justify-between items-center">
-        <div>
-            <h2 class="text-2xl font-bold text-gray-900">Centro de Notificaciones</h2>
-            <p class="text-gray-600">Gestiona tus notificaciones y alertas</p>
-        </div>
-        <div class="flex items-center space-x-4">
-            @if($stats['unread'] > 0)
-            <form method="POST" action="{{ route('technician.notifications.mark-all-read') }}" class="inline">
-                @csrf
-                @method('PATCH')
-                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                    Marcar todas como leídas
-                </button>
-            </form>
-            @endif
-        </div>
+<div class="max-w-6xl mx-auto space-y-6 pt-12 md:pt-0">
+    @include('technician.partials.header', [
+        'title' => 'Notificaciones',
+        'searchPlaceholder' => 'Buscar notificaciones...',
+        'pageId' => 'notifications'
+    ])
+
+    <!-- Botón marcar como leídas -->
+    @if($stats['unread'] > 0)
+    <div class="flex justify-end">
+        <form method="POST" action="{{ route('technician.notifications.mark-all-read') }}" class="inline">
+            @csrf
+            @method('PATCH')
+            <button type="submit" class="px-4 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium">
+                Marcar todas como leídas
+            </button>
+        </form>
     </div>
+    @endif
 
     <!-- Estadísticas -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
