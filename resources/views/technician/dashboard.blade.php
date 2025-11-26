@@ -36,16 +36,6 @@
 
             <!-- Iconos de notificaciones y usuario (desktop) -->
             <div class="flex items-center gap-x-4 flex-shrink-0">
-                <!-- Buscador -->
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                        </svg>
-                    </div>
-                    <input type="text" placeholder="Buscar..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="background: #ffffff; width: 280px;">
-                </div>
-
                 <!-- Notificaciones -->
                 <div class="relative" style="overflow: visible;">
                     <button type="button" class="flex items-center justify-center text-gray-500 hover:text-gray-700 relative" title="Notificaciones" id="tech-notification-button" style="width: 40px !important; height: 40px !important; padding: 8px !important; overflow: visible !important;">
