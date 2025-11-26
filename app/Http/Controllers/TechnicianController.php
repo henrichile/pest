@@ -1017,6 +1017,15 @@ class TechnicianController extends Controller
         ];
 
         // Procesar cebaderas
+        // Debug raw request data
+        Log::info('Raw Monitoreo Completo Request', [
+            'files_keys' => array_keys($_FILES),
+            'post_keys' => array_keys($_POST),
+            'bait_stations_files' => $_FILES['bait_stations'] ?? 'null',
+            'traps_files' => $_FILES['traps'] ?? 'null',
+            'content_length' => $_SERVER['CONTENT_LENGTH'] ?? 'unknown'
+        ]);
+
         $baitStationsInput = $request->input('bait_stations', []);
         if (!empty($baitStationsInput)) {
             foreach ($baitStationsInput as $index => $station) {

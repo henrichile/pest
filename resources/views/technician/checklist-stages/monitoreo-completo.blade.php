@@ -77,6 +77,19 @@ $submitRoute = $isViewingAsTechnician ? route('technician-view.service.checklist
 </form>
 
 <script>
+// Debug form submission
+document.getElementById('monitoreoCompletoForm').addEventListener('submit', function(e) {
+    const formData = new FormData(this);
+    console.log('Form Submission Debug:');
+    for (let [key, value] of formData.entries()) {
+        if (value instanceof File) {
+            console.log(`${key}: File(${value.name}, ${value.size} bytes)`);
+        } else {
+            console.log(`${key}: ${value}`);
+        }
+    }
+});
+
 let baitStationCounter = 0;
 let trapCounter = 0;
 
