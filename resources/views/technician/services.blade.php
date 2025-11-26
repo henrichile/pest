@@ -13,22 +13,23 @@
     ])
 
     <!-- Filtros -->
-    <div class="bg-white rounded-lg shadow-lg p-4 md:p-6">
-        <div class="flex flex-col md:flex-row md:items-center space-y-3 md:space-y-0 md:space-x-4">
-            <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-2 w-full md:w-auto">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6 mb-6">
+        <h3 class="text-sm font-semibold text-gray-700 mb-4">Filtros</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex flex-col space-y-2">
                 <label class="text-sm font-medium text-gray-700">Estado:</label>
-                <select id="filter-estado" class="border border-gray-300 rounded-lg px-3 py-2.5 md:py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-auto">
-                    <option value="">Todos</option>
+                <select id="filter-estado" class="border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full">
+                    <option value="">Todos los estados</option>
                     <option value="pendiente">Pendientes</option>
                     <option value="en_progreso">En Progreso</option>
                     <option value="finalizado">Finalizados</option>
                     <option value="vencido">Vencidos</option>
                 </select>
             </div>
-            <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-2 w-full md:w-auto">
+            <div class="flex flex-col space-y-2">
                 <label class="text-sm font-medium text-gray-700">Tipo:</label>
-                <select id="filter-tipo" class="border border-gray-300 rounded-lg px-3 py-2.5 md:py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-auto">
-                    <option value="">Todos</option>
+                <select id="filter-tipo" class="border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full">
+                    <option value="">Todos los tipos</option>
                     <option value="monitoreo-cebaderas">Monitoreo-cebaderas</option>
                     <option value="desratizacion">Desratización</option>
                     <option value="desinsectacion">Desinsectación</option>
