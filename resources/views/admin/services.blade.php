@@ -3,90 +3,62 @@
 @section('title', 'Servicios')
 
 @section('content')
-<div class="space-y-4 sm:space-y-6 pt-3 md:pt-0" style="padding-top: 80px;">
-    <!-- Header con hamburguesa y título -->
-    <div class="mb-4 sm:mb-6">
-        <!-- Primera fila: Hamburguesa + Título (móvil) - Oculta ahora -->
-        <div class="hidden md:hidden items-center gap-3 mb-4" style="padding-top: 2.5rem; display: none !important; flex-direction: row !important; align-items: center !important;">
-            <!-- Hamburguesa (solo móvil) -->
-            <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50; display: none !important; align-items: center !important; justify-content: center !important;">
-                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
-                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
+<div class="space-y-4 sm:space-y-6 pt-12 md:pt-0">
+    @include('admin.partials.header', [
+        'title' => 'Servicios',
+        'subtitle' => 'Gestiona todos los servicios de control de plagas',
+        'searchPlaceholder' => 'Buscar servicios...',
+        'pageId' => 'services'
+    ])
 
-            <!-- Título -->
-            <div class="flex-1" style="flex: 1 1 0% !important; min-width: 0 !important;">
-                <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700; margin: 0 !important;">
-                    Servicios
-                </h2>
-            </div>
-        </div>
-
-        <!-- Segunda fila: Título completo (desktop) -->
-        <div class="hidden md:flex md:items-center md:justify-between">
-            <div class="min-w-0 flex-1">
-                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" style="color: #111827; font-weight: 700;">
-                    Servicios
-                </h2>
-                <p class="mt-1 text-xs sm:text-sm" style="color: #6b7280;">
-                    Gestiona todos los servicios de control de plagas
-                </p>
-            </div>
-            <div class="mt-3 sm:mt-4 md:mt-0 md:ml-4">
-                <a href="{{ route('admin.services.create') ?? route('services.create') ?? '#' }}" class="inline-flex items-center justify-center w-full sm:w-auto px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium text-white transition-colors" style="background: #22c55e; hover:background: #16a34a;">
-                    <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                    </svg>
-                    <span class="hidden sm:inline">Nuevo Servicio</span>
-                    <span class="sm:hidden">Nuevo</span>
-                </a>
-            </div>
-        </div>
+    <!-- Botón Nuevo Servicio -->
+    <div class="flex justify-end mb-4">
+        <a href="{{ route('admin.services.create') ?? route('services.create') ?? '#' }}" class="inline-flex items-center justify-center px-5 py-3 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700 transition-colors">
+            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Nuevo Servicio
+        </a>
     </div>
 
     <!-- Filters -->
-    <div class="bg-white rounded-lg shadow-md border mb-6" style="border: 1px solid #e5e7eb;">
-        <div class="p-4 sm:p-6">
-            <form method="GET" action="{{ route('admin.services.index') ?? route('services.index') ?? '#' }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div>
-                    <label for="status" class="block text-sm font-medium mb-2" style="color: #6b7280;">Estado</label>
-                    <select name="status" id="status" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" style="border: 1px solid #e5e7eb; color: #111827;">
-                        <option value="">Todos los estados</option>
-                        <option value="pendiente" {{ request('status') === 'pendiente' ? 'selected' : '' }}>Pendiente</option>
-                        <option value="en_progreso" {{ request('status') === 'en_progreso' ? 'selected' : '' }}>En Progreso</option>
-                        <option value="completado" {{ request('status') === 'completado' ? 'selected' : '' }}>Completado</option>
-                        <option value="cancelado" {{ request('status') === 'cancelado' ? 'selected' : '' }}>Cancelado</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="type" class="block text-sm font-medium mb-2" style="color: #6b7280;">Tipo</label>
-                    <select name="type" id="type" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" style="border: 1px solid #e5e7eb; color: #111827;">
-                        <option value="">Todos los tipos</option>
-                        <option value="desratizacion" {{ request('type') === 'desratizacion' ? 'selected' : '' }}>Desratización</option>
-                        <option value="desinsectacion" {{ request('type') === 'desinsectacion' ? 'selected' : '' }}>Desinsectación</option>
-                        <option value="sanitizacion" {{ request('type') === 'sanitizacion' ? 'selected' : '' }}>Sanitización</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="priority" class="block text-sm font-medium mb-2" style="color: #6b7280;">Prioridad</label>
-                    <select name="priority" id="priority" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" style="border: 1px solid #e5e7eb; color: #111827;">
-                        <option value="">Todas las prioridades</option>
-                        <option value="baja" {{ request('priority') === 'baja' ? 'selected' : '' }}>Baja</option>
-                        <option value="media" {{ request('priority') === 'media' ? 'selected' : '' }}>Media</option>
-                        <option value="alta" {{ request('priority') === 'alta' ? 'selected' : '' }}>Alta</option>
-                    </select>
-                </div>
-                <div class="flex items-end">
-                    <button type="submit" class="w-full bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-lg transition-colors text-sm font-medium">
-                        Filtrar
-                    </button>
-                </div>
-            </form>
-        </div>
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6 mb-6">
+        <h3 class="text-sm font-semibold text-gray-700 mb-4">Filtros</h3>
+        <form method="GET" action="{{ route('admin.services.index') ?? route('services.index') ?? '#' }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="flex flex-col space-y-2">
+                <label for="status" class="text-sm font-medium text-gray-700">Estado</label>
+                <select name="status" id="status" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full">
+                    <option value="">Todos los estados</option>
+                    <option value="pendiente" {{ request('status') === 'pendiente' ? 'selected' : '' }}>Pendiente</option>
+                    <option value="en_progreso" {{ request('status') === 'en_progreso' ? 'selected' : '' }}>En Progreso</option>
+                    <option value="completado" {{ request('status') === 'completado' ? 'selected' : '' }}>Completado</option>
+                    <option value="cancelado" {{ request('status') === 'cancelado' ? 'selected' : '' }}>Cancelado</option>
+                </select>
+            </div>
+            <div class="flex flex-col space-y-2">
+                <label for="type" class="text-sm font-medium text-gray-700">Tipo</label>
+                <select name="type" id="type" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full">
+                    <option value="">Todos los tipos</option>
+                    <option value="desratizacion" {{ request('type') === 'desratizacion' ? 'selected' : '' }}>Desratización</option>
+                    <option value="desinsectacion" {{ request('type') === 'desinsectacion' ? 'selected' : '' }}>Desinsectación</option>
+                    <option value="sanitizacion" {{ request('type') === 'sanitizacion' ? 'selected' : '' }}>Sanitización</option>
+                </select>
+            </div>
+            <div class="flex flex-col space-y-2">
+                <label for="priority" class="text-sm font-medium text-gray-700">Prioridad</label>
+                <select name="priority" id="priority" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full">
+                    <option value="">Todas las prioridades</option>
+                    <option value="baja" {{ request('priority') === 'baja' ? 'selected' : '' }}>Baja</option>
+                    <option value="media" {{ request('priority') === 'media' ? 'selected' : '' }}>Media</option>
+                    <option value="alta" {{ request('priority') === 'alta' ? 'selected' : '' }}>Alta</option>
+                </select>
+            </div>
+            <div class="flex items-end col-span-full lg:col-span-3">
+                <button type="submit" class="w-full lg:w-auto px-6 py-3.5 bg-gray-700 hover:bg-gray-800 text-white rounded-lg transition-colors text-base font-medium">
+                    Filtrar
+                </button>
+            </div>
+        </form>
     </div>
 
     <!-- Services List -->
