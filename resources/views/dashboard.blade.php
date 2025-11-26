@@ -290,7 +290,7 @@
     <!-- Header con hamburguesa, título, buscador e iconos -->
     <div class="mb-4 sm:mb-6">
         <!-- Primera fila móvil: Hamburguesa + Iconos (oculta en desktop) -->
-        <div class="md:hidden mb-4 items-center justify-between pt-12">
+        <div class="hidden md:hidden mb-4 items-center justify-between pt-12">
             <!-- Hamburguesa (izquierda) -->
             <button id="dashboard-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50;">
                 <svg id="dashboard-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">

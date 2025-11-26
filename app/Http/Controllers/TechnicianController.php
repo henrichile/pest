@@ -1027,31 +1027,31 @@ class TechnicianController extends Controller
                     ];
 
                     // Procesar fotos de la cebadera
-                $photos = [];
-                
-                // 1. Recuperar fotos existentes
-                if (isset($station['existing_photos']) && is_array($station['existing_photos'])) {
-                    $photos = $station['existing_photos'];
-                }
+                    $photos = [];
+                    
+                    // 1. Recuperar fotos existentes
+                    if (isset($station['existing_photos']) && is_array($station['existing_photos'])) {
+                        $photos = $station['existing_photos'];
+                    }
 
-                // 2. Agregar nuevas fotos si se enviaron
-                if ($request->hasFile("bait_stations")) {
-                    $allFiles = $request->file("bait_stations");
-                    if (isset($allFiles[$index]['photos']) && is_array($allFiles[$index]['photos'])) {
-                        foreach ($allFiles[$index]['photos'] as $photo) {
-                            if ($photo && $photo->isValid()) {
-                                $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
-                                $path = $photo->storeAs('services/bait-stations', $filename, 'public');
-                                
-                                if ($path && file_exists(storage_path('app/public/' . $path))) {
-                                    $photos[] = 'storage/services/bait-stations/' . $filename;
-                                } else {
-                                    Log::error('Failed to save bait station photo', ['filename' => $filename]);
+                    // 2. Agregar nuevas fotos si se enviaron
+                    if ($request->hasFile("bait_stations")) {
+                        $allFiles = $request->file("bait_stations");
+                        if (isset($allFiles[$index]['photos']) && is_array($allFiles[$index]['photos'])) {
+                            foreach ($allFiles[$index]['photos'] as $photo) {
+                                if ($photo && $photo->isValid()) {
+                                    $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
+                                    $path = $photo->storeAs('services/bait-stations', $filename, 'public');
+                                    
+                                    if ($path && file_exists(storage_path('app/public/' . $path))) {
+                                        $photos[] = 'storage/services/bait-stations/' . $filename;
+                                    } else {
+                                        Log::error('Failed to save bait station photo', ['filename' => $filename]);
+                                    }
                                 }
                             }
                         }
                     }
-                }
                 $stationData['photos'] = $photos;
 
                     $data['bait_stations'][] = $stationData;
@@ -1074,31 +1074,31 @@ class TechnicianController extends Controller
                     ];
 
                     // Procesar fotos de la trampa
-                $photos = [];
-                
-                // 1. Recuperar fotos existentes
-                if (isset($trap['existing_photos']) && is_array($trap['existing_photos'])) {
-                    $photos = $trap['existing_photos'];
-                }
+                    $photos = [];
+                    
+                    // 1. Recuperar fotos existentes
+                    if (isset($trap['existing_photos']) && is_array($trap['existing_photos'])) {
+                        $photos = $trap['existing_photos'];
+                    }
 
-                // 2. Agregar nuevas fotos si se enviaron
-                if ($request->hasFile("traps")) {
-                    $allFiles = $request->file("traps");
-                    if (isset($allFiles[$index]['photos']) && is_array($allFiles[$index]['photos'])) {
-                        foreach ($allFiles[$index]['photos'] as $photo) {
-                            if ($photo && $photo->isValid()) {
-                                $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
-                                $path = $photo->storeAs('services/traps', $filename, 'public');
-                                
-                                if ($path && file_exists(storage_path('app/public/' . $path))) {
-                                    $photos[] = 'storage/services/traps/' . $filename;
-                                } else {
-                                    Log::error('Failed to save trap photo', ['filename' => $filename]);
+                    // 2. Agregar nuevas fotos si se enviaron
+                    if ($request->hasFile("traps")) {
+                        $allFiles = $request->file("traps");
+                        if (isset($allFiles[$index]['photos']) && is_array($allFiles[$index]['photos'])) {
+                            foreach ($allFiles[$index]['photos'] as $photo) {
+                                if ($photo && $photo->isValid()) {
+                                    $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
+                                    $path = $photo->storeAs('services/traps', $filename, 'public');
+                                    
+                                    if ($path && file_exists(storage_path('app/public/' . $path))) {
+                                        $photos[] = 'storage/services/traps/' . $filename;
+                                    } else {
+                                        Log::error('Failed to save trap photo', ['filename' => $filename]);
+                                    }
                                 }
                             }
                         }
                     }
-                }
                 $trapData['photos'] = $photos;
 
                     $data['traps'][] = $trapData;
