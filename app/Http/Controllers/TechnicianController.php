@@ -1030,6 +1030,14 @@ class TechnicianController extends Controller
                         'observations' => is_array($station['observations'] ?? null) ? $station['observations'] : [],
                     ];
 
+                    // Procesar fotos de la cebadera
+                    $photos = [];
+                    
+                    // 1. Recuperar fotos existentes
+                    if (isset($station['existing_photos']) && is_array($station['existing_photos'])) {
+                        $photos = $station['existing_photos'];
+                    }
+
                     // 2. Agregar nuevas fotos si se enviaron
                     if ($request->hasFile("bait_stations.$index.photos")) {
                         foreach ($request->file("bait_stations.$index.photos") as $photo) {
