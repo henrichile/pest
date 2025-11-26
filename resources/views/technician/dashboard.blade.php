@@ -5,12 +5,135 @@
 @section('content')
 <div class="space-y-4 sm:space-y-6 pt-12 md:pt-0">
     <!-- Header -->
-    <div class="md:flex md:items-center md:justify-between mb-6">
-        <div class="min-w-0 flex-1">
-            <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight dark:text-white" style="color: #111827; font-weight: 700;">
+    <div class="mb-6">
+        <!-- Desktop Header con buscador e íconos -->
+        <div class="hidden md:flex md:items-center md:justify-between">
+            <!-- Título y Fecha -->
+            <div class="min-w-0 flex-1">
+                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight dark:text-white" style="color: #111827; font-weight: 700;">
+                    Dashboard
+                </h2>
+                <p class="mt-1 text-sm dark:text-gray-300" style="color: #6b7280;">
+                    {{ now()->locale('es')->isoFormat('dddd, D [de] MMMM') }}
+                </p>
+            </div>
+
+            <!-- Buscador e Íconos (Desktop) -->
+            <div class="flex items-center gap-4 ml-6">
+                <!-- Buscador -->
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                        </svg>
+                    </div>
+                    <input type="text" placeholder="Buscar..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="background: #ffffff; width: 280px;">
+                </div>
+
+                <!-- Notificaciones -->
+                <div class="relative" id="dashboard-notification-dropdown">
+                    <button type="button" id="dashboard-notification-button" class="relative flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 transition-colors">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #6b7280;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                        </svg>
+                        @php
+                            $unreadCount = auth()->check() ? auth()->user()->unreadNotifications()->count() : 0;
+                        @endphp
+                        @if($unreadCount > 0)
+                            <span class="absolute text-white text-xs rounded-full flex items-center justify-center font-semibold" style="background: #22c55e; min-width: 20px; height: 20px; padding: 0 6px; top: -2px; right: -2px; z-index: 20; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                                {{ $unreadCount > 99 ? '99+' : $unreadCount }}
+                            </span>
+                        @endif
+                    </button>
+
+                    <!-- Notification Dropdown Menu -->
+                    <div id="dashboard-notification-menu" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50" style="max-height: 400px; overflow-y: auto;">
+                        <div class="p-3 border-b border-gray-200 flex justify-between items-center">
+                            <h3 class="font-semibold text-gray-900">Notificaciones</h3>
+                            <a href="{{ route('technician.notifications.index') }}" class="text-sm text-green-600 hover:text-green-700">Ver todas</a>
+                        </div>
+                        <div class="p-2">
+                            @php
+                                $recentNotifications = auth()->check() ? auth()->user()->notifications()->take(5)->get() : collect();
+                            @endphp
+                            @if($recentNotifications->count() > 0)
+                                @foreach($recentNotifications as $notification)
+                                    @php
+                                        $data = is_array($notification->data) ? $notification->data : json_decode($notification->data, true);
+                                        $title = $data['title'] ?? 'Notificación';
+                                        $message = $data['message'] ?? '';
+                                        $isRead = !is_null($notification->read_at);
+                                    @endphp
+                                    <div class="p-3 hover:bg-gray-50 rounded-lg cursor-pointer {{ !$isRead ? 'bg-green-50' : '' }}">
+                                        <div class="flex justify-between items-start">
+                                            <h4 class="font-semibold text-sm text-gray-900">{{ $title }}</h4>
+                                            <span class="text-xs text-gray-500">{{ $notification->created_at->diffForHumans() }}</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600 mt-1">{{ Str::limit($message, 80) }}</p>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="p-6 text-center text-gray-500">
+                                    <p>No hay notificaciones</p>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Usuario -->
+                <div class="relative" id="dashboard-user-dropdown">
+                    <button type="button" id="dashboard-user-button" class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 transition-colors">
+                        <div class="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center">
+                            <span class="text-sm font-medium text-white">
+                                {{ auth()->check() ? strtoupper(substr(auth()->user()->name, 0, 1)) : 'U' }}
+                            </span>
+                        </div>
+                    </button>
+
+                    <!-- User Dropdown Menu -->
+                    <div id="dashboard-user-menu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                        <div class="p-3 border-b border-gray-200">
+                            <div class="flex items-center gap-3">
+                                <div class="h-10 w-10 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                                    <span class="text-sm font-medium text-white">
+                                        {{ auth()->check() ? strtoupper(substr(auth()->user()->name, 0, 1)) : 'U' }}
+                                    </span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-semibold text-gray-900 truncate">{{ auth()->check() ? auth()->user()->name : 'Usuario' }}</p>
+                                    <p class="text-xs text-gray-500 truncate">{{ auth()->check() ? auth()->user()->email : '' }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-2">
+                            <a href="{{ route('technician.profile') }}" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                                </svg>
+                                <span>Mi Perfil</span>
+                            </a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                                    </svg>
+                                    <span>Cerrar Sesión</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Header (solo título) -->
+        <div class="md:hidden">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900" style="color: #111827; font-weight: 700;">
                 Dashboard
             </h2>
-            <p class="mt-1 text-sm dark:text-gray-300" style="color: #6b7280;">
+            <p class="mt-1 text-sm" style="color: #6b7280;">
                 {{ now()->locale('es')->isoFormat('dddd, D [de] MMMM') }}
             </p>
         </div>
@@ -170,3 +293,49 @@
 </div>
 
 @endsection
+
+@push('scripts')
+<script>
+    // Dashboard Notification and User Menu Dropdowns (Desktop)
+    (function() {
+        const notificationButton = document.getElementById('dashboard-notification-button');
+        const notificationMenu = document.getElementById('dashboard-notification-menu');
+        const userButton = document.getElementById('dashboard-user-button');
+        const userMenu = document.getElementById('dashboard-user-menu');
+
+        // Toggle notification menu
+        if (notificationButton && notificationMenu) {
+            notificationButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                notificationMenu.classList.toggle('hidden');
+                // Close user menu if open
+                if (userMenu) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+        }
+
+        // Toggle user menu
+        if (userButton && userMenu) {
+            userButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                userMenu.classList.toggle('hidden');
+                // Close notification menu if open
+                if (notificationMenu) {
+                    notificationMenu.classList.add('hidden');
+                }
+            });
+        }
+
+        // Close menus when clicking outside
+        document.addEventListener('click', function(e) {
+            if (notificationMenu && !notificationMenu.contains(e.target) && e.target !== notificationButton) {
+                notificationMenu.classList.add('hidden');
+            }
+            if (userMenu && !userMenu.contains(e.target) && e.target !== userButton) {
+                userMenu.classList.add('hidden');
+            }
+        });
+    })();
+</script>
+@endpush
