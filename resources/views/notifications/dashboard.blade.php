@@ -25,7 +25,7 @@
     </div>
 
     <!-- Estadísticas -->
-    <div class="mt-8 grid grid-cols-3 gap-5">
+    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
         <div class="bg-white overflow-hidden shadow rounded-lg border" style="border: 1px solid #e5e7eb !important;">
             <div class="p-5">
                 <div class="flex items-center">
