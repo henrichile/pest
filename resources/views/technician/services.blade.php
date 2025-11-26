@@ -17,7 +17,7 @@
         <div class="flex flex-col md:flex-row md:items-center space-y-3 md:space-y-0 md:space-x-4">
             <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-2 w-full md:w-auto">
                 <label class="text-sm font-medium text-gray-700">Estado:</label>
-                <select class="border border-gray-300 rounded-lg px-3 py-2.5 md:py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-auto">
+                <select id="filter-estado" class="border border-gray-300 rounded-lg px-3 py-2.5 md:py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-auto">
                     <option value="">Todos</option>
                     <option value="pendiente">Pendientes</option>
                     <option value="en_progreso">En Progreso</option>
@@ -27,9 +27,10 @@
             </div>
             <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-2 w-full md:w-auto">
                 <label class="text-sm font-medium text-gray-700">Tipo:</label>
-                <select class="border border-gray-300 rounded-lg px-3 py-2.5 md:py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-auto">
+                <select id="filter-tipo" class="border border-gray-300 rounded-lg px-3 py-2.5 md:py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-auto">
                     <option value="">Todos</option>
-                    <option value="desratizacion">Sanitización</option>
+                    <option value="monitoreo-cebaderas">Monitoreo-cebaderas</option>
+                    <option value="desratizacion">Desratización</option>
                     <option value="desinsectacion">Desinsectación</option>
                     <option value="sanitizacion">Sanitización</option>
                 </select>
@@ -322,6 +323,60 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Filtros de servicios
+        const filterEstado = document.getElementById('filter-estado');
+        const filterTipo = document.getElementById('filter-tipo');
+        const serviceRows = document.querySelectorAll('tbody tr');
+
+        function applyFilters() {
+            const estadoValue = filterEstado.value.toLowerCase();
+            const tipoValue = filterTipo.value.toLowerCase();
+
+            serviceRows.forEach(function(row) {
+                let showRow = true;
+
+                // Filtro por estado
+                if (estadoValue) {
+                    const estadoCell = row.querySelector('td:nth-child(4)'); // Columna ESTADO
+                    if (estadoCell) {
+                        const estadoText = estadoCell.textContent.trim().toLowerCase();
+                        const estadoMatch = 
+                            (estadoValue === 'pendiente' && estadoText === 'pendiente') ||
+                            (estadoValue === 'en_progreso' && estadoText === 'en progreso') ||
+                            (estadoValue === 'finalizado' && estadoText === 'finalizado') ||
+                            (estadoValue === 'vencido' && estadoText === 'vencido');
+                        
+                        if (!estadoMatch) {
+                            showRow = false;
+                        }
+                    }
+                }
+
+                // Filtro por tipo
+                if (tipoValue && showRow) {
+                    const tipoCell = row.querySelector('td:nth-child(2)'); // Columna TIPO
+                    if (tipoCell) {
+                        const tipoText = tipoCell.textContent.trim().toLowerCase();
+                        if (!tipoText.includes(tipoValue)) {
+                            showRow = false;
+                        }
+                    }
+                }
+
+                // Mostrar u ocultar fila
+                if (showRow) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        if (filterEstado && filterTipo) {
+            filterEstado.addEventListener('change', applyFilters);
+            filterTipo.addEventListener('change', applyFilters);
+        }
+
         // PRIORIDAD 1: Verificar atributo del body (viene del servidor basado en sesión)
         let isTechnicianView = false;
         const body = document.body;
