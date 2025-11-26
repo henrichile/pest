@@ -1030,48 +1030,29 @@ class TechnicianController extends Controller
                         'observations' => is_array($station['observations'] ?? null) ? $station['observations'] : [],
                     ];
 
-                    // Debug log for structure
-                    if ($request->hasFile("bait_stations")) {
-                        Log::info('Checking photos for station', [
-                            'index' => $index,
-                            'has_file_at_index' => $request->hasFile("bait_stations.$index.photos"),
-                            'file_keys' => array_keys($request->file("bait_stations") ?? [])
-                        ]);
-                    }
-
-                    // Procesar fotos de la cebadera
-                    $photos = [];
-                    
-                    // 1. Recuperar fotos existentes
-                    if (isset($station['existing_photos']) && is_array($station['existing_photos'])) {
-                        $photos = $station['existing_photos'];
-                    }
-
                     // 2. Agregar nuevas fotos si se enviaron
-                    if ($request->hasFile("bait_stations")) {
-                        $allFiles = $request->file("bait_stations");
-                        if (isset($allFiles[$index]['photos']) && is_array($allFiles[$index]['photos'])) {
-                            foreach ($allFiles[$index]['photos'] as $photo) {
-                                if ($photo && $photo->isValid()) {
-                                    $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
-                                    $path = $photo->storeAs('services/bait-stations', $filename, 'public');
-                                    
-                                    if ($path && file_exists(storage_path('app/public/' . $path))) {
-                                        $photos[] = 'storage/services/bait-stations/' . $filename;
-                                    } else {
-                                        Log::error('Failed to save bait station photo', ['filename' => $filename]);
-                                    }
+                    if ($request->hasFile("bait_stations.$index.photos")) {
+                        foreach ($request->file("bait_stations.$index.photos") as $photo) {
+                            if ($photo && $photo->isValid()) {
+                                $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
+                                $path = $photo->storeAs('services/bait-stations', $filename, 'public');
+                                
+                                if ($path && file_exists(storage_path('app/public/' . $path))) {
+                                    $photos[] = 'storage/services/bait-stations/' . $filename;
                                 } else {
-                                    Log::warning('Invalid bait station photo', [
-                                        'error' => $photo ? $photo->getErrorMessage() : 'Photo object is null',
-                                        'size' => $photo ? $photo->getSize() : 0
-                                    ]);
+                                    Log::error('Failed to save bait station photo', ['filename' => $filename]);
                                 }
+                            } else {
+                                Log::warning('Invalid bait station photo', [
+                                    'error' => $photo ? $photo->getErrorMessage() : 'Photo object is null',
+                                    'size' => $photo ? $photo->getSize() : 0
+                                ]);
                             }
                         }
                     } else {
-                         Log::warning('No bait_stations files in request', [
-                            'content_length' => $_SERVER['CONTENT_LENGTH'] ?? 'unknown'
+                         Log::warning('No bait_stations files in request for index ' . $index, [
+                            'content_length' => $_SERVER['CONTENT_LENGTH'] ?? 'unknown',
+                            'has_file_root' => $request->hasFile("bait_stations")
                         ]);
                     }
                 $stationData['photos'] = $photos;
@@ -1104,30 +1085,28 @@ class TechnicianController extends Controller
                     }
 
                     // 2. Agregar nuevas fotos si se enviaron
-                    if ($request->hasFile("traps")) {
-                        $allFiles = $request->file("traps");
-                        if (isset($allFiles[$index]['photos']) && is_array($allFiles[$index]['photos'])) {
-                            foreach ($allFiles[$index]['photos'] as $photo) {
-                                if ($photo && $photo->isValid()) {
-                                    $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
-                                    $path = $photo->storeAs('services/traps', $filename, 'public');
-                                    
-                                    if ($path && file_exists(storage_path('app/public/' . $path))) {
-                                        $photos[] = 'storage/services/traps/' . $filename;
-                                    } else {
-                                        Log::error('Failed to save trap photo', ['filename' => $filename]);
-                                    }
+                    if ($request->hasFile("traps.$index.photos")) {
+                        foreach ($request->file("traps.$index.photos") as $photo) {
+                            if ($photo && $photo->isValid()) {
+                                $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
+                                $path = $photo->storeAs('services/traps', $filename, 'public');
+                                
+                                if ($path && file_exists(storage_path('app/public/' . $path))) {
+                                    $photos[] = 'storage/services/traps/' . $filename;
                                 } else {
-                                    Log::warning('Invalid trap photo', [
-                                        'error' => $photo ? $photo->getErrorMessage() : 'Photo object is null',
-                                        'size' => $photo ? $photo->getSize() : 0
-                                    ]);
+                                    Log::error('Failed to save trap photo', ['filename' => $filename]);
                                 }
+                            } else {
+                                Log::warning('Invalid trap photo', [
+                                    'error' => $photo ? $photo->getErrorMessage() : 'Photo object is null',
+                                    'size' => $photo ? $photo->getSize() : 0
+                                ]);
                             }
                         }
                     } else {
-                         Log::warning('No traps files in request', [
-                            'content_length' => $_SERVER['CONTENT_LENGTH'] ?? 'unknown'
+                         Log::warning('No traps files in request for index ' . $index, [
+                            'content_length' => $_SERVER['CONTENT_LENGTH'] ?? 'unknown',
+                            'has_file_root' => $request->hasFile("traps")
                         ]);
                     }
                 $trapData['photos'] = $photos;
