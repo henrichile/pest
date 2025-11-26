@@ -3,41 +3,13 @@
 @section('title', 'Reportes')
 
 @section('content')
-<div class="space-y-4 sm:space-y-6 pt-3 md:pt-0" style="padding-top: 80px;">
-    <!-- Header con hamburguesa y título -->
-    <div class="mb-4 sm:mb-6">
-        <!-- Primera fila: Hamburguesa + Título (móvil) - Oculta ahora -->
-        <div class="hidden md:hidden items-center gap-3 mb-4" style="padding-top: 2.5rem;">
-            <!-- Hamburguesa (solo móvil) -->
-            <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50; display: none;">
-                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
-                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-
-            <!-- Título -->
-            <div class="flex-1">
-                <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
-                    Reportes
-                </h2>
-            </div>
-        </div>
-
-        <!-- Segunda fila: Título completo (desktop) -->
-        <div class="hidden md:flex md:items-center md:justify-between">
-            <div class="min-w-0 flex-1">
-                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" style="color: #111827; font-weight: 700;">
-                    Reportes
-                </h2>
-                <p class="mt-1 text-xs sm:text-sm" style="color: #6b7280;">
-                    Genera, exporta y programa reportes personalizados
-                </p>
-            </div>
-        </div>
-    </div>
+<div class="space-y-4 sm:space-y-6 pt-12 md:pt-0">
+    @include('admin.partials.header', [
+        'title' => 'Reportes',
+        'subtitle' => 'Genera, exporta y programa reportes personalizados',
+        'searchPlaceholder' => 'Buscar reportes...',
+        'pageId' => 'reports'
+    ])
 
     <!-- Filtros de Reporte -->
     <div class="bg-white rounded-lg shadow-md border mb-6" style="border: 1px solid #e5e7eb;">
