@@ -517,23 +517,26 @@ class TechnicianController extends Controller
                     $checklistData['monitoreo_datos'] = $this->processMonitoreoDatosData($request);
                     break;
                 case 'monitoreo-croquis':
-                    // Validar archivo de croquis si existe
-                    if ($request->hasFile('croquis_file')) {
-                        $request->validate([
-                            'croquis_file' => 'required|file|mimes:jpeg,jpg,png,pdf|max:10240', // 10MB max
-                        ], [
-                            'croquis_file.max' => 'El archivo de croquis no puede superar los 10MB.',
-                            'croquis_file.mimes' => 'El archivo debe ser una imagen (JPEG, JPG, PNG) o PDF.',
-                        ]);
-                    }
-                    $checklistData['monitoreo_croquis'] = $this->processMonitoreoCroquisData($request);
-                    break;
+               // Validar archivo de croquis si existe
+               if ($request->hasFile('croquis_file')) {
+                   $request->validate([
+                       'croquis_file' => 'required|file|mimes:jpeg,jpg,png,pdf|max:10240', // 10MB max
+                   ], [
+                       'croquis_file.max' => 'El archivo de croquis no puede superar los 10MB.',
+                       'croquis_file.mimes' => 'El archivo debe ser una imagen (JPEG, JPG, PNG) o PDF.',
+                   ]);
+               }
+               // Merge with existing data to preserve file if not updated
+               $currentCroquisData = $checklistData['monitoreo_croquis'] ?? [];
+               $newCroquisData = $this->processMonitoreoCroquisData($request);
+               $checklistData['monitoreo_croquis'] = array_merge($currentCroquisData, $newCroquisData);
+               break;
                 case 'monitoreo-completo':
                     $checklistData['monitoreo_completo'] = $this->processMonitoreoCompletoData($request);
                     break;
                 case 'monitoreo-estadisticas':
                     $checklistData['monitoreo_estadisticas'] = $this->processMonitoreoEstadisticasData($request);
-                    break;
+                break;
                 case 'monitoreo-analisis':
                     $checklistData['monitoreo_analisis'] = $this->processMonitoreoAnalisisData($request);
                     break;
@@ -559,7 +562,6 @@ class TechnicianController extends Controller
                     }
                     return redirect('/technician/services/' . $service->id . '/detail')
                         ->with('success', 'Servicio completado exitosamente. Puedes descargar el informe en PDF.');
-                    break;
                 case 'points':
                     $checklistData['points'] = $this->processPointsData($request);
                     break;
@@ -958,30 +960,28 @@ class TechnicianController extends Controller
                     // Asegurar que el directorio existe
                     $directory = 'services/croquis';
                     if (!Storage::disk('public')->exists($directory)) {
-                        Storage::disk('public')->makeDirectory($directory, 0775, true);
+                        Storage::disk('public')->makeDirectory($directory);
                         Log::info('Created croquis directory', ['directory' => $directory]);
                     }
 
                     $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                    $path = $file->storeAs($directory, $filename, 'public');
-                    $data['croquis_file'] = 'storage/services/croquis/' . $filename;
+                $path = $file->storeAs($directory, $filename, 'public');
 
-                    // Verificar que el archivo se guardó correctamente
+                if ($path) {
                     $fullPath = storage_path('app/public/' . $path);
                     if (file_exists($fullPath)) {
+                        $data['croquis_file'] = 'storage/services/croquis/' . $filename;
                         Log::info('Croquis file saved successfully', [
                             'filename' => $filename,
                             'path' => $path,
-                            'full_path' => $data['croquis_file'],
-                            'disk_path' => $fullPath,
-                            'file_size' => filesize($fullPath)
+                            'full_path' => $data['croquis_file']
                         ]);
                     } else {
-                        Log::error('Croquis file was not saved to disk', [
-                            'expected_path' => $fullPath,
-                            'storage_path' => $path
-                        ]);
+                        Log::error('Croquis file stored but not found on disk', ['path' => $fullPath]);
                     }
+                } else {
+                    Log::error('Failed to store croquis file');
+                }
                 } catch (\Exception $e) {
                     Log::error('Error saving croquis file', [
                         'error' => $e->getMessage(),
@@ -1026,21 +1026,33 @@ class TechnicianController extends Controller
                         'observations' => is_array($station['observations'] ?? null) ? $station['observations'] : [],
                     ];
 
-                    // Procesar fotos de la cebadera si se enviaron
-                    $photos = [];
-                    if ($request->hasFile("bait_stations")) {
-                        $allFiles = $request->file("bait_stations");
-                        if (isset($allFiles[$index]['photos']) && is_array($allFiles[$index]['photos'])) {
-                            foreach ($allFiles[$index]['photos'] as $photo) {
-                                if ($photo && $photo->isValid()) {
-                                    $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
-                                    $photo->storeAs('services/bait-stations', $filename, 'public');
+                    // Procesar fotos de la cebadera
+                $photos = [];
+                
+                // 1. Recuperar fotos existentes
+                if (isset($station['existing_photos']) && is_array($station['existing_photos'])) {
+                    $photos = $station['existing_photos'];
+                }
+
+                // 2. Agregar nuevas fotos si se enviaron
+                if ($request->hasFile("bait_stations")) {
+                    $allFiles = $request->file("bait_stations");
+                    if (isset($allFiles[$index]['photos']) && is_array($allFiles[$index]['photos'])) {
+                        foreach ($allFiles[$index]['photos'] as $photo) {
+                            if ($photo && $photo->isValid()) {
+                                $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
+                                $path = $photo->storeAs('services/bait-stations', $filename, 'public');
+                                
+                                if ($path && file_exists(storage_path('app/public/' . $path))) {
                                     $photos[] = 'storage/services/bait-stations/' . $filename;
+                                } else {
+                                    Log::error('Failed to save bait station photo', ['filename' => $filename]);
                                 }
                             }
                         }
                     }
-                    $stationData['photos'] = $photos;
+                }
+                $stationData['photos'] = $photos;
 
                     $data['bait_stations'][] = $stationData;
                 }
@@ -1061,21 +1073,33 @@ class TechnicianController extends Controller
                         'notes' => $trap['notes'] ?? '',
                     ];
 
-                    // Procesar fotos de la trampa si se enviaron
-                    $photos = [];
-                    if ($request->hasFile("traps")) {
-                        $allFiles = $request->file("traps");
-                        if (isset($allFiles[$index]['photos']) && is_array($allFiles[$index]['photos'])) {
-                            foreach ($allFiles[$index]['photos'] as $photo) {
-                                if ($photo && $photo->isValid()) {
-                                    $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
-                                    $photo->storeAs('services/traps', $filename, 'public');
+                    // Procesar fotos de la trampa
+                $photos = [];
+                
+                // 1. Recuperar fotos existentes
+                if (isset($trap['existing_photos']) && is_array($trap['existing_photos'])) {
+                    $photos = $trap['existing_photos'];
+                }
+
+                // 2. Agregar nuevas fotos si se enviaron
+                if ($request->hasFile("traps")) {
+                    $allFiles = $request->file("traps");
+                    if (isset($allFiles[$index]['photos']) && is_array($allFiles[$index]['photos'])) {
+                        foreach ($allFiles[$index]['photos'] as $photo) {
+                            if ($photo && $photo->isValid()) {
+                                $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
+                                $path = $photo->storeAs('services/traps', $filename, 'public');
+                                
+                                if ($path && file_exists(storage_path('app/public/' . $path))) {
                                     $photos[] = 'storage/services/traps/' . $filename;
+                                } else {
+                                    Log::error('Failed to save trap photo', ['filename' => $filename]);
                                 }
                             }
                         }
                     }
-                    $trapData['photos'] = $photos;
+                }
+                $trapData['photos'] = $photos;
 
                     $data['traps'][] = $trapData;
                 }

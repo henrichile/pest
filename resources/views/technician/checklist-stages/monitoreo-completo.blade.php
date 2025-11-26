@@ -170,6 +170,7 @@ function addBaitStation() {
                 </div>
                 <div class="photos-preview-small" id="station-photos-${baitStationCounter}"></div>
             </div>
+            <div id="station-existing-photos-${baitStationCounter}" class="photos-preview-small"></div>
         </div>
     `;
     container.appendChild(stationDiv);
@@ -236,6 +237,7 @@ function addTrap() {
                 </div>
                 <div class="photos-preview-small" id="trap-photos-${trapCounter}"></div>
             </div>
+            <div id="trap-existing-photos-${trapCounter}" class="photos-preview-small"></div>
         </div>
         <div>
             <label>Notas</label>
@@ -292,7 +294,48 @@ function handleTrapPhotoUpload(event, trapId) {
     existingStations.forEach((station, index) => {
         baitStationCounter = index + 1;
         addBaitStation();
-        // Llenar datos...
+        
+        // Llenar campos básicos
+        document.querySelector(`[name="bait_stations[${baitStationCounter}][code]"]`).value = station.code || '';
+        document.querySelector(`[name="bait_stations[${baitStationCounter}][location]"]`).value = station.location || '';
+        document.querySelector(`[name="bait_stations[${baitStationCounter}][product_type]"]`).value = station.product_type || '';
+        document.querySelector(`[name="bait_stations[${baitStationCounter}][quantity]"]`).value = station.quantity || '';
+        document.querySelector(`[name="bait_stations[${baitStationCounter}][unit]"]`).value = station.unit || 'g';
+        
+        // Marcar observaciones
+        if (station.observations && Array.isArray(station.observations)) {
+            station.observations.forEach(obs => {
+                const checkbox = document.querySelector(`[name="bait_stations[${baitStationCounter}][observations][]"][value="${obs}"]`);
+                if (checkbox) {
+                    checkbox.checked = true;
+                    checkbox.closest('.checkbox-label').classList.add('checked');
+                }
+            });
+        }
+
+        // Manejar fotos existentes
+        if (station.photos && Array.isArray(station.photos) && station.photos.length > 0) {
+            const container = document.getElementById(`bait-station-${baitStationCounter}`);
+            const existingPhotosContainer = document.getElementById(`station-existing-photos-${baitStationCounter}`);
+            
+            station.photos.forEach(photoPath => {
+                // Crear input hidden para mantener la foto
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = `bait_stations[${baitStationCounter}][existing_photos][]`;
+                input.value = photoPath;
+                container.appendChild(input);
+
+                // Mostrar preview
+                const div = document.createElement('div');
+                div.className = 'photo-preview-item-small';
+                // Asumimos que photoPath es relativo a public, ej: storage/services/...
+                // Necesitamos la URL completa o relativa correcta
+                const url = `/${photoPath}`; 
+                div.innerHTML = `<img src="${url}" alt="Foto existente">`;
+                existingPhotosContainer.appendChild(div);
+            });
+        }
     });
 @endif
 
@@ -301,7 +344,36 @@ function handleTrapPhotoUpload(event, trapId) {
     existingTraps.forEach((trap, index) => {
         trapCounter = index + 1;
         addTrap();
-        // Llenar datos...
+        
+        // Llenar campos básicos
+        document.querySelector(`[name="traps[${trapCounter}][code]"]`).value = trap.code || '';
+        document.querySelector(`[name="traps[${trapCounter}][location]"]`).value = trap.location || '';
+        document.querySelector(`[name="traps[${trapCounter}][product_type]"]`).value = trap.product_type || '';
+        document.querySelector(`[name="traps[${trapCounter}][quantity]"]`).value = trap.quantity || 1;
+        document.querySelector(`[name="traps[${trapCounter}][status]"]`).value = trap.status || '';
+        document.querySelector(`[name="traps[${trapCounter}][notes]"]`).value = trap.notes || '';
+
+        // Manejar fotos existentes
+        if (trap.photos && Array.isArray(trap.photos) && trap.photos.length > 0) {
+            const container = document.getElementById(`trap-${trapCounter}`);
+            const existingPhotosContainer = document.getElementById(`trap-existing-photos-${trapCounter}`);
+            
+            trap.photos.forEach(photoPath => {
+                // Crear input hidden para mantener la foto
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = `traps[${trapCounter}][existing_photos][]`;
+                input.value = photoPath;
+                container.appendChild(input);
+
+                // Mostrar preview
+                const div = document.createElement('div');
+                div.className = 'photo-preview-item-small';
+                const url = `/${photoPath}`;
+                div.innerHTML = `<img src="${url}" alt="Foto existente">`;
+                existingPhotosContainer.appendChild(div);
+            });
+        }
     });
 @endif
 </script>
