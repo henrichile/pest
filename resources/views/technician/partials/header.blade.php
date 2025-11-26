@@ -14,18 +14,26 @@
         </div>
 
         <!-- Buscador al lado derecho del título -->
-        <div class="relative flex-shrink-0" style="min-width: 0;">
+        <div class="relative flex-shrink-0 global-search-container" style="min-width: 0;">
             <div class="relative">
-                <svg class="absolute" style="left: 10px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #9ca3af; pointer-events-none; z-index: 1;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg class="absolute" style="left: 10px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #9ca3af; pointer-events: none; z-index: 1;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
                 <input
                     type="text"
+                    id="tech-search-input-{{ $pageId ?? 'page' }}"
                     placeholder="{{ $searchPlaceholder ?? 'Buscar...' }}"
                     class="w-56 pr-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all text-sm"
                     style="background: white; color: #111827; padding-left: 36px; font-size: 14px;"
                     autocomplete="off"
                 />
+            </div>
+
+            <!-- Search Results Dropdown -->
+            <div id="tech-search-results-{{ $pageId ?? 'page' }}" class="hidden absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto" style="box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); min-width: 400px;">
+                <div id="tech-search-content-{{ $pageId ?? 'page' }}" class="p-2">
+                    <!-- Results will be inserted here -->
+                </div>
             </div>
         </div>
     </div>
@@ -181,6 +189,138 @@
             }
             if (userMenu && !userMenu.contains(e.target) && e.target !== userButton) {
                 userMenu.classList.add('hidden');
+            }
+        });
+    })();
+
+    // Search Functionality
+    (function() {
+        const pageId = '{{ $pageId ?? "page" }}';
+        const searchInput = document.getElementById('tech-search-input-' + pageId);
+        const searchResults = document.getElementById('tech-search-results-' + pageId);
+        const searchResultsContent = document.getElementById('tech-search-content-' + pageId);
+        let searchTimeout = null;
+        let currentSearch = '';
+
+        if (!searchInput) return;
+
+        // Iconos por tipo
+        const typeIcons = {
+            'service': '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>',
+            'client': '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>'
+        };
+
+        function renderResults(data) {
+            if (!data || Object.keys(data).length === 0) {
+                searchResultsContent.innerHTML = '<div class="p-4 text-center text-gray-500">No se encontraron resultados</div>';
+                return;
+            }
+
+            let html = '';
+            let hasResults = false;
+
+            // Servicios
+            if (data.services && data.services.length > 0) {
+                hasResults = true;
+                html += '<div class="mb-2"><div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Servicios</div>';
+                data.services.forEach(item => {
+                    html += `<a href="${item.url}" class="flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors">
+                        <div class="text-green-600">${typeIcons.service}</div>
+                        <div class="flex-1 min-w-0">
+                            <div class="font-medium text-gray-900 truncate">${item.title}</div>
+                            <div class="text-sm text-gray-500 truncate">${item.subtitle}</div>
+                        </div>
+                    </a>`;
+                });
+                html += '</div>';
+            }
+
+            // Clientes
+            if (data.clients && data.clients.length > 0) {
+                hasResults = true;
+                html += '<div class="mb-2"><div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Clientes</div>';
+                data.clients.forEach(item => {
+                    html += `<a href="${item.url}" class="flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors">
+                        <div class="text-blue-600">${typeIcons.client}</div>
+                        <div class="flex-1 min-w-0">
+                            <div class="font-medium text-gray-900 truncate">${item.title}</div>
+                            <div class="text-sm text-gray-500 truncate">${item.subtitle}</div>
+                        </div>
+                    </a>`;
+                });
+                html += '</div>';
+            }
+
+            if (!hasResults) {
+                html = '<div class="p-4 text-center text-gray-500">No se encontraron resultados</div>';
+            }
+
+            searchResultsContent.innerHTML = html;
+        }
+
+        function performSearch(query) {
+            if (query.length < 2) {
+                searchResults.classList.add('hidden');
+                return;
+            }
+
+            currentSearch = query;
+
+            fetch(`{{ route('admin.search') }}?q=${encodeURIComponent(query)}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (query === currentSearch) {
+                    renderResults(data);
+                    searchResults.classList.remove('hidden');
+                }
+            })
+            .catch(error => {
+                console.error('Error en búsqueda:', error);
+                if (query === currentSearch) {
+                    searchResultsContent.innerHTML = '<div class="p-4 text-center text-red-500">Error al realizar la búsqueda</div>';
+                    searchResults.classList.remove('hidden');
+                }
+            });
+        }
+
+        searchInput.addEventListener('input', function(e) {
+            const query = e.target.value.trim();
+            clearTimeout(searchTimeout);
+
+            if (query.length < 2) {
+                searchResults.classList.add('hidden');
+                return;
+            }
+
+            searchTimeout = setTimeout(() => {
+                performSearch(query);
+            }, 300);
+        });
+
+        searchInput.addEventListener('focus', function() {
+            if (searchInput.value.trim().length >= 2 && !searchResults.classList.contains('hidden')) {
+                searchResults.classList.remove('hidden');
+            }
+        });
+
+        // Cerrar resultados al hacer clic fuera
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.global-search-container')) {
+                searchResults.classList.add('hidden');
+            }
+        });
+
+        // Manejar tecla Escape
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                searchResults.classList.add('hidden');
+                searchInput.blur();
             }
         });
     })();
