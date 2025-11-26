@@ -6,6 +6,12 @@
 @section("content")
 <div class="max-w-7xl mx-auto space-y-4 md:space-y-6 px-4 md:px-0 pt-12 md:pt-0">
 
+    @include('technician.partials.header', [
+        'title' => 'Mis Servicios',
+        'searchPlaceholder' => 'Buscar servicios...',
+        'pageId' => 'services'
+    ])
+
     <!-- Filtros -->
     <div class="bg-white rounded-lg shadow-lg p-4 md:p-6">
         <div class="flex flex-col md:flex-row md:items-center space-y-3 md:space-y-0 md:space-x-4">

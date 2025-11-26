@@ -5,7 +5,11 @@
 @section('content')
 <div class="container mx-auto px-4 py-8 pt-12 md:pt-0">
     <div class="max-w-2xl mx-auto">
-        <h1 class="text-2xl font-bold text-gray-900 mb-6">Mi Perfil</h1>
+        @include('technician.partials.header', [
+            'title' => 'Mi Perfil',
+            'searchPlaceholder' => 'Buscar...',
+            'pageId' => 'profile'
+        ])
 
         <div class="bg-white shadow rounded-lg p-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
