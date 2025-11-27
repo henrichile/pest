@@ -1390,12 +1390,22 @@
                             @endforeach
                         </div>
                         
-                        <a href="{{ route('admin.products.index') ?? '#' }}" class="mt-4 inline-flex items-center justify-center px-4 py-2 rounded-lg transition-colors hover:opacity-90" style="background: #ef4444 !important; color: rgb(255, 255, 255) !important; white-space: nowrap; font-size: 0.875rem; font-weight: 500;">
-                            <span style="color: rgb(255, 255, 255) !important; font-weight: 500;">Ver todos los productos</span>
-                            <svg class="ml-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="rgb(255, 255, 255)" style="width: 1rem; height: 1rem; color: rgb(255, 255, 255) !important;">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        <a href="{{ route('admin.products.index') ?? '#' }}" class="mt-4 inline-flex items-center justify-center px-4 py-2 rounded-lg transition-colors hover:opacity-90 btn-white-text" style="background: #ef4444 !important; white-space: nowrap; font-size: 0.875rem; font-weight: 500;">
+                            <span class="btn-white-text">Ver todos los productos</span>
+                            <svg class="ml-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" style="width: 1rem; height: 1rem;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" stroke="#ffffff" />
                             </svg>
                         </a>
+                        <style>
+                            .btn-white-text,
+                            .btn-white-text span,
+                            .btn-white-text svg {
+                                color: #ffffff !important;
+                            }
+                            .btn-white-text svg path {
+                                stroke: #ffffff !important;
+                            }
+                        </style>
                     @else
                         <p class="text-xs flex items-center gap-1 mt-2" style="color: #10b981;">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
