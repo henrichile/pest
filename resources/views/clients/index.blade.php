@@ -4,36 +4,25 @@
 @section("page-title", "Gestión de Clientes")
 
 @section("content")
-<div class="space-y-6">
-    <!-- Header Actions -->
-    <div class="flex justify-between items-center">
-        <div>
-            <h2 class="text-2xl font-bold text-gray-900">Clientes</h2>
-            <p class="text-gray-600">Gestiona la información de todos los clientes</p>
-        </div>
-        @can("create-clients")
+<div class="space-y-4 sm:space-y-6">
+    @include('admin.partials.header', [
+        'title' => 'Clientes',
+        'subtitle' => 'Gestiona la información de todos los clientes',
+        'searchPlaceholder' => 'Buscar clientes...',
+        'pageId' => 'clients'
+    ])
+
+    @can("create-clients")
+    <div class="flex justify-end mb-4">
         <a href="{{ route("admin.clients.create") }}" 
-           class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+           class="inline-flex items-center justify-center px-5 py-3 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700 transition-colors">
+            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path>
             </svg>
             <span>Nuevo Cliente</span>
         </a>
-        @endcan
     </div>
-
-    <!-- Search -->
-    <div class="bg-white rounded-lg shadow-lg p-6">
-        <div class="flex items-center space-x-4">
-            <div class="flex-1">
-                <input type="text" placeholder="Buscar por nombre, RUT o email..." 
-                       class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
-            </div>
-            <button class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg transition-colors">
-                Buscar
-            </button>
-        </div>
-    </div>
+    @endcan
 
     <!-- Clients Table -->
     <div class="bg-white rounded-lg shadow-lg overflow-hidden">
