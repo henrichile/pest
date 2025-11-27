@@ -704,8 +704,20 @@ function getTechnicianRoute($routeName, ...$params) {
             <!-- El header desktop con buscador está ahora dentro de cada dashboard (admin/technician) -->
 
             <!-- Page content -->
-            <main class="flex-1" style="background: #f9fafb; min-height: calc(100vh - 4rem); padding-top: 80px;">
+            <main class="flex-1" style="background: #f9fafb; min-height: calc(100vh - 4rem);">
                 <style>
+                    /* Padding top solo en desktop */
+                    @media (min-width: 768px) {
+                        main {
+                            padding-top: 80px;
+                        }
+                    }
+                    /* Padding reducido en móvil */
+                    @media (max-width: 767px) {
+                        main {
+                            padding-top: 20px;
+                        }
+                    }
                     @media (min-width: 768px) {
                         main {
                             padding-top: 0.75rem !important;
