@@ -283,7 +283,14 @@ function getTechnicianRoute($routeName, ...$params) {
         <div id="mobile-overlay" class="md:hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-40 hidden" style="z-index: 9998;"></div>
 
         <!-- Sidebar -->
-        <aside id="sidebar" class="fixed md:static flex-shrink-0 w-80 md:w-72 flex flex-col bg-white border-r border-gray-200 transform -translate-x-full md:translate-x-0 md:transform-none transition-transform duration-300 ease-in-out z-50 h-full">
+        <aside id="sidebar" class="fixed md:static flex-shrink-0 w-80 md:w-72 flex flex-col bg-white border-r border-gray-200 transition-transform duration-300 ease-in-out z-50 h-full" style="transform: translateX(0);">
+            <style>
+                @media (max-width: 767px) {
+                    #sidebar {
+                        transform: translateX(-100%) !important;
+                    }
+                }
+            </style>
             <div class="flex grow flex-col gap-y-3 overflow-y-auto px-6 md:px-5 pb-4">
                 <div class="flex h-16 shrink-0 items-center justify-center pt-6 pb-4">
                     <a href="{{ auth()->user()->hasRole('super-admin') ? route('admin.dashboard') : route('technician.dashboard') }}" class="block">
