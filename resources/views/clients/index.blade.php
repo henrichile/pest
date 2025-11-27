@@ -5,10 +5,10 @@
 
 @section("content")
 <style>
-    /* Reducir espacio entre header e iconos y título en móvil */
+    /* Reducir espacio en móvil para subir el contenido */
     @media (max-width: 767px) {
         main {
-            padding-top: 80px !important;
+            padding-top: 50px !important;
         }
         /* Reducir margen del header móvil solo en esta página */
         .md\:hidden.mb-2 {
