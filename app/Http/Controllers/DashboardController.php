@@ -393,12 +393,12 @@ class DashboardController extends Controller
             $monthlyIncome = 0;
         }
         
-        // Alertas de stock bajo (placeholder - ajustar según tu lógica)
+        // Alertas de stock bajo (productos con stock menor a 10)
         $lowStockAlerts = 0;
         try {
-            // Aquí puedes agregar la lógica para contar productos con stock bajo
-            // $lowStockAlerts = Material::where('stock', '<', 'min_stock')->count();
+            $lowStockAlerts = \App\Models\Product::where('stock', '<', 10)->count();
         } catch (\Exception $e) {
+            \Log::error('Error calculando alertas de stock bajo: ' . $e->getMessage());
             $lowStockAlerts = 0;
         }
         
