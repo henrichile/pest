@@ -7,12 +7,9 @@
 <style>
     /* Reducir espacio en móvil para subir el contenido */
     @media (max-width: 767px) {
-        main {
+        body main.flex-1,
+        main.flex-1 {
             padding-top: 50px !important;
-        }
-        /* Reducir margen del header móvil solo en esta página */
-        .md\:hidden.mb-2 {
-            margin-bottom: 0.25rem !important; /* Reducir a 4px */
         }
     }
 </style>
