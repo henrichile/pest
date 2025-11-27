@@ -1390,9 +1390,9 @@
                             @endforeach
                         </div>
                         
-                        <a href="{{ route('admin.products.index') ?? '#' }}" class="mt-4 inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg transition-colors hover:opacity-90" style="background: #ef4444; color: #ffffff !important; white-space: nowrap;">
-                            <span style="color: #ffffff !important;">Ver todos los productos</span>
-                            <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #ffffff !important;">
+                        <a href="{{ route('admin.products.index') ?? '#' }}" class="mt-4 inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg transition-colors hover:opacity-90" style="background: #ef4444 !important; color: white !important; white-space: nowrap;">
+                            <span style="color: white !important; font-weight: 500;">Ver todos los productos</span>
+                            <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" style="color: white !important;">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                             </svg>
                         </a>
