@@ -69,6 +69,19 @@ $submitRoute = $isViewingAsTechnician ? route('technician-view.service.checklist
 <script>
 function handleCroquisUpload(event) {
     const files = event.target.files;
+    console.log('handleCroquisUpload called', files);
+
+    if (files.length > 0) {
+        console.log('File details:', {
+            name: files[0].name,
+            size: files[0].size,
+            type: files[0].type
+        });
+        if (files[0].size > 10 * 1024 * 1024) {
+            alert('⚠️ El archivo supera los 10MB. Es posible que no se suba correctamente.');
+        }
+    }
+
     const preview = document.getElementById('croquis-preview');
     preview.innerHTML = '';
     
