@@ -854,7 +854,7 @@
         @if(isset($checklistData['monitoreo_estadisticas']))
         <div class="section">
             <div class="section-title" style="border: none; display: flex; align-items: center; gap: 10px; font-size: 18px; margin-bottom: 15px;">
-                <span style="color: #4f46e5; font-size: 24px;">📊</span> 4. Estadísticas
+                4. Estadísticas
             </div>
 
             <table class="stats-container">
