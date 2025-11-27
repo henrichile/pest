@@ -291,11 +291,55 @@
             color: #1a472a;
         }
 
-        .ai-analysis-box {
-            background: #e8f5e8;
+        .stats-container {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 10px;
+            margin-bottom: 20px;
+            margin-left: -10px; /* Compensate for first cell spacing if needed, or just standard table */
+        }
+        
+        .stat-card-cell {
+            width: 25%;
             padding: 15px;
             border-radius: 8px;
-            margin-top: 10px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .stat-card-blue { background-color: #eff6ff; }
+        .stat-card-green { background-color: #f0fdf4; }
+        .stat-card-red { background-color: #fef2f2; }
+        .stat-card-yellow { background-color: #fefce8; }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+
+        .text-blue { color: #2563eb; }
+        .text-green { color: #16a34a; }
+        .text-red { color: #dc2626; }
+        .text-yellow { color: #ca8a04; }
+
+        .stat-label-card {
+            font-size: 10px;
+            color: #6b7280;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .activity-badge {
+            background-color: #f3e8ff;
+            color: #7e22ce;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 12px;
+            display: inline-block;
+            text-transform: uppercase;
         }
     </style>
 </head>
@@ -809,48 +853,44 @@
         {{-- 4. ESTADÍSTICAS --}}
         @if(isset($checklistData['monitoreo_estadisticas']))
         <div class="section">
-            <div class="section-title">4. ESTADÍSTICAS</div>
-
-            <div class="stats-grid">
-                @if(isset($checklistData['monitoreo_estadisticas']['total_monitored']))
-                <div class="stat-item">
-                    <div class="stat-label">Cebaderas Monitoreadas</div>
-                    <div class="stat-value">{{ $checklistData['monitoreo_estadisticas']['total_monitored'] }}</div>
-                </div>
-                @endif
-
-                @if(isset($checklistData['monitoreo_estadisticas']['total_active']))
-                <div class="stat-item">
-                    <div class="stat-label">Cebaderas Activas</div>
-                    <div class="stat-value">{{ $checklistData['monitoreo_estadisticas']['total_active'] }}</div>
-                </div>
-                @endif
-
-                @if(isset($checklistData['monitoreo_estadisticas']['total_problems']))
-                <div class="stat-item">
-                    <div class="stat-label">Con Problemas</div>
-                    <div class="stat-value">{{ $checklistData['monitoreo_estadisticas']['total_problems'] }}</div>
-                </div>
-                @endif
-
-                @if(isset($checklistData['monitoreo_estadisticas']['average_consumption_percent']))
-                <div class="stat-item">
-                    <div class="stat-label">Consumo Promedio</div>
-                    <div class="stat-value">{{ number_format($checklistData['monitoreo_estadisticas']['average_consumption_percent'], 1) }}%</div>
-                </div>
-                @endif
+            <div class="section-title" style="border: none; display: flex; align-items: center; gap: 10px; font-size: 18px; margin-bottom: 15px;">
+                <span style="color: #4f46e5; font-size: 24px;">📊</span> 4. Estadísticas
             </div>
 
+            <table class="stats-container">
+                <tr>
+                    <td class="stat-card-cell stat-card-blue">
+                        <div class="stat-number text-blue">{{ $checklistData['monitoreo_estadisticas']['total_monitored'] ?? 0 }}</div>
+                        <div class="stat-label-card">Monitoreadas</div>
+                    </td>
+                    <td class="stat-card-cell stat-card-green">
+                        <div class="stat-number text-green">{{ $checklistData['monitoreo_estadisticas']['total_active'] ?? 0 }}</div>
+                        <div class="stat-label-card">Activas</div>
+                    </td>
+                    <td class="stat-card-cell stat-card-red">
+                        <div class="stat-number text-red">{{ $checklistData['monitoreo_estadisticas']['total_problems'] ?? 0 }}</div>
+                        <div class="stat-label-card">Con Problemas</div>
+                    </td>
+                    <td class="stat-card-cell stat-card-yellow">
+                        <div class="stat-number text-yellow">{{ number_format($checklistData['monitoreo_estadisticas']['average_consumption_percent'] ?? 0, 1) }}%</div>
+                        <div class="stat-label-card">Consumo Promedio</div>
+                    </td>
+                </tr>
+            </table>
+
             @if(isset($checklistData['monitoreo_estadisticas']['activity_level']))
-            <div class="checklist-item" style="margin-top: 15px;">
-                <strong>Nivel de Actividad:</strong> {{ strtoupper($checklistData['monitoreo_estadisticas']['activity_level']) }}
+            <div style="margin-bottom: 20px; font-size: 14px; display: flex; align-items: center;">
+                <strong style="margin-right: 10px;">Nivel de Actividad:</strong> 
+                <span class="activity-badge">{{ strtoupper($checklistData['monitoreo_estadisticas']['activity_level']) }}</span>
             </div>
             @endif
 
             @if(isset($checklistData['monitoreo_estadisticas']['executive_summary']))
             <div class="checklist-item">
                 <strong>Resumen Ejecutivo:</strong><br>
-                {{ $checklistData['monitoreo_estadisticas']['executive_summary'] }}
+                <div style="margin-top: 5px; color: #4b5563;">
+                    {{ $checklistData['monitoreo_estadisticas']['executive_summary'] }}
+                </div>
             </div>
             @endif
         </div>
