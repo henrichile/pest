@@ -150,7 +150,7 @@
 </div>
 
 <!-- Mobile Header (solo título) -->
-<div class="md:hidden mb-6">
+<div class="md:hidden mb-2">
     <h2 class="text-2xl font-bold leading-7 text-gray-900" style="color: #111827; font-weight: 700;">
         {{ $title ?? 'Dashboard' }}
     </h2>
