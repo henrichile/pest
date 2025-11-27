@@ -4,13 +4,6 @@
 @section("page-title", "Gestión de Clientes")
 
 @section("content")
-<style>
-    @media (max-width: 767px) {
-        main {
-            padding-top: 20px !important;
-        }
-    }
-</style>
 <div class="space-y-4 sm:space-y-6">
     @include('admin.partials.header', [
         'title' => 'Clientes',
