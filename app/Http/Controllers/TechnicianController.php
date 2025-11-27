@@ -1176,9 +1176,23 @@ class TechnicianController extends Controller
                 $image = str_replace('data:image/png;base64,', '', $signatureData);
                 $image = str_replace(' ', '+', $image);
                 $imageData = base64_decode($image);
-                $filename = 'signature_' . time() . '_' . uniqid() . '.png';
+                $filename = 'signature_tech_' . time() . '_' . uniqid() . '.png';
                 Storage::disk('public')->put('signatures/' . $filename, $imageData);
                 $data['technician_signature'] = 'storage/signatures/' . $filename;
+            }
+        }
+
+        // Procesar firma del cliente si se proporcionó
+        if ($request->has('client_signature') && !empty($request->input('client_signature'))) {
+            $signatureData = $request->input('client_signature');
+            // Si es una imagen en base64, guardarla
+            if (strpos($signatureData, 'data:image') === 0) {
+                $image = str_replace('data:image/png;base64,', '', $signatureData);
+                $image = str_replace(' ', '+', $image);
+                $imageData = base64_decode($image);
+                $filename = 'signature_client_' . time() . '_' . uniqid() . '.png';
+                Storage::disk('public')->put('signatures/' . $filename, $imageData);
+                $data['client_signature'] = 'storage/signatures/' . $filename;
             }
         }
 

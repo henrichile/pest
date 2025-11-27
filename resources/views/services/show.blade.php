@@ -167,6 +167,63 @@
         @endif
     </div>
 
+    <!-- Signatures -->
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Firmas de Confirmación</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Technician Signature -->
+            <div>
+                <h4 class="text-sm font-medium text-gray-500 mb-2">Firma del Técnico</h4>
+                @php
+                    $techSignature = null;
+                    if (isset($service->checklist_data['monitoreo_firma']['technician_signature'])) {
+                        $techSignature = $service->checklist_data['monitoreo_firma']['technician_signature'];
+                    } elseif (isset($service->checklist_data['technician_signature'])) {
+                        $techSignature = $service->checklist_data['technician_signature'];
+                    }
+                @endphp
+
+                @if($techSignature)
+                    <div class="border rounded-lg p-2 inline-block bg-gray-50">
+                        <img src="{{ asset($techSignature) }}" alt="Firma Técnico" class="max-h-24">
+                    </div>
+                    <p class="text-sm text-gray-600 mt-1">{{ $service->assignedUser->name ?? 'Técnico' }}</p>
+                @else
+                    <p class="text-gray-500 italic">No registrada</p>
+                @endif
+            </div>
+
+            <!-- Client Signature -->
+            <div>
+                <h4 class="text-sm font-medium text-gray-500 mb-2">Firma del Cliente</h4>
+                @php
+                    $clientSignature = null;
+                    if (isset($service->checklist_data['monitoreo_firma']['client_signature'])) {
+                        $clientSignature = $service->checklist_data['monitoreo_firma']['client_signature'];
+                    } elseif (isset($service->checklist_data['client_signature'])) {
+                        $clientSignature = $service->checklist_data['client_signature'];
+                    } elseif (isset($service->checklist_data['description']['client_signature'])) {
+                        $clientSignature = $service->checklist_data['description']['client_signature'];
+                    }
+                @endphp
+
+                @if($clientSignature)
+                    <div class="border rounded-lg p-2 inline-block bg-gray-50">
+                        <img src="{{ asset($clientSignature) }}" alt="Firma Cliente" class="max-h-24">
+                    </div>
+                    <p class="text-sm text-gray-600 mt-1">
+                        {{ $service->checklist_data['monitoreo_firma']['signer_name'] ?? ($service->client->name ?? 'Cliente') }}
+                        @if(isset($service->checklist_data['monitoreo_firma']['signer_position']))
+                            <span class="text-xs text-gray-500">({{ ucfirst($service->checklist_data['monitoreo_firma']['signer_position']) }})</span>
+                        @endif
+                    </p>
+                @else
+                    <p class="text-gray-500 italic">No registrada</p>
+                @endif
+            </div>
+        </div>
+    </div>
+
     <!-- Actions -->
     <div class="flex justify-between items-center">
         <a href="{{ route("admin.services.index") }}"

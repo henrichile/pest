@@ -1491,7 +1491,9 @@
             }
 
             // Buscar firma del cliente
-            if(isset($checklistData['description']['client_signature'])) {
+            if($isMonitoreoCebaderas && isset($checklistData['monitoreo_firma']['client_signature'])) {
+                $clientSignature = $checklistData['monitoreo_firma']['client_signature'];
+            } elseif(isset($checklistData['description']['client_signature'])) {
                 $clientSignature = $checklistData['description']['client_signature'];
             }
         @endphp

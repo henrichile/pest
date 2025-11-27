@@ -7,26 +7,45 @@ $submitRoute = $isViewingAsTechnician ? route('technician-view.service.checklist
 <form method="POST" action="{{ $submitRoute }}" data-stage="monitoreo-firma" id="firmaForm">
     @csrf
     <div class="form-section">
-        <h5>✍️ Firma del Técnico</h5>
-        <div class="signature-section">
-            <div class="signature-display">
-                @if(auth()->user()->signature)
-                    <div class="signature-loaded">
-                        <span class="check-icon">✔</span>
-                        <p>Firma cargada automáticamente desde tu perfil: <strong>{{ auth()->user()->name }}</strong></p>
-                    </div>
-                    <div class="signature-preview">
-                        <img src="{{ Storage::url(auth()->user()->signature) }}" alt="Firma del Técnico" class="signature-image">
-                    </div>
-                @else
-                    <div class="signature-placeholder">
-                        <canvas id="signature-canvas" width="600" height="200"></canvas>
-                        <div class="signature-actions">
-                            <button type="button" class="btn-clear" onclick="clearSignature()">Limpiar</button>
+        <h5>✍️ Firmas</h5>
+        
+        <div class="signature-container" style="display: flex; gap: 20px; flex-wrap: wrap;">
+            <!-- Firma del Técnico -->
+            <div class="signature-box" style="flex: 1; min-width: 300px;">
+                <h6 style="margin-bottom: 15px; color: #4b5563; font-weight: 600;">Firma del Técnico</h6>
+                <div class="signature-display">
+                    @if(auth()->user()->signature)
+                        <div class="signature-loaded">
+                            <span class="check-icon">✔</span>
+                            <p>Firma cargada: <strong>{{ auth()->user()->name }}</strong></p>
                         </div>
-                        <input type="hidden" name="technician_signature" id="technician_signature">
+                        <div class="signature-preview">
+                            <img src="{{ Storage::url(auth()->user()->signature) }}" alt="Firma del Técnico" class="signature-image">
+                        </div>
+                    @else
+                        <div class="signature-placeholder">
+                            <canvas id="technician-canvas" class="signature-canvas" width="400" height="200"></canvas>
+                            <div class="signature-actions">
+                                <button type="button" class="btn-clear" onclick="signaturePad.clear('technician')">Limpiar</button>
+                            </div>
+                            <input type="hidden" name="technician_signature" id="technician_signature">
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Firma del Cliente -->
+            <div class="signature-box" style="flex: 1; min-width: 300px;">
+                <h6 style="margin-bottom: 15px; color: #4b5563; font-weight: 600;">Firma del Cliente</h6>
+                <div class="signature-display">
+                    <div class="signature-placeholder">
+                        <canvas id="client-canvas" class="signature-canvas" width="400" height="200"></canvas>
+                        <div class="signature-actions">
+                            <button type="button" class="btn-clear" onclick="signaturePad.clear('client')">Limpiar</button>
+                        </div>
+                        <input type="hidden" name="client_signature" id="client_signature">
                     </div>
-                @endif
+                </div>
             </div>
         </div>
     </div>
@@ -89,80 +108,119 @@ $submitRoute = $isViewingAsTechnician ? route('technician-view.service.checklist
 </form>
 
 <script>
-let canvas, ctx;
-let isDrawing = false;
+const signaturePad = {
+    pads: {},
+    isDrawing: false,
+    currentCanvas: null,
+    currentCtx: null,
 
-document.addEventListener('DOMContentLoaded', function() {
-    canvas = document.getElementById('signature-canvas');
-    if (canvas) {
-        ctx = canvas.getContext('2d');
+    init: function() {
+        // Initialize Technician Canvas if it exists
+        const techCanvas = document.getElementById('technician-canvas');
+        if (techCanvas) this.setupCanvas(techCanvas, 'technician');
+
+        // Initialize Client Canvas
+        const clientCanvas = document.getElementById('client-canvas');
+        if (clientCanvas) this.setupCanvas(clientCanvas, 'client');
+    },
+
+    setupCanvas: function(canvas, id) {
+        const ctx = canvas.getContext('2d');
         ctx.strokeStyle = '#000';
         ctx.lineWidth = 2;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
 
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mouseout', stopDrawing);
+        this.pads[id] = { canvas, ctx };
 
-        // Touch events para móviles
-        canvas.addEventListener('touchstart', handleTouch);
-        canvas.addEventListener('touchmove', handleTouch);
-        canvas.addEventListener('touchend', stopDrawing);
+        // Mouse events
+        canvas.addEventListener('mousedown', (e) => this.startDrawing(e, id));
+        canvas.addEventListener('mousemove', (e) => this.draw(e, id));
+        canvas.addEventListener('mouseup', () => this.stopDrawing());
+        canvas.addEventListener('mouseout', () => this.stopDrawing());
+
+        // Touch events
+        canvas.addEventListener('touchstart', (e) => this.handleTouch(e, id));
+        canvas.addEventListener('touchmove', (e) => this.handleTouch(e, id));
+        canvas.addEventListener('touchend', () => this.stopDrawing());
+    },
+
+    startDrawing: function(e, id) {
+        this.isDrawing = true;
+        this.currentCanvas = this.pads[id].canvas;
+        this.currentCtx = this.pads[id].ctx;
+        
+        const rect = this.currentCanvas.getBoundingClientRect();
+        this.currentCtx.beginPath();
+        this.currentCtx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+    },
+
+    draw: function(e, id) {
+        if (!this.isDrawing || this.currentCanvas !== this.pads[id].canvas) return;
+        
+        const rect = this.currentCanvas.getBoundingClientRect();
+        this.currentCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+        this.currentCtx.stroke();
+        this.updateInput(id);
+    },
+
+    stopDrawing: function() {
+        if (this.isDrawing) {
+            this.isDrawing = false;
+            this.currentCanvas = null;
+            this.currentCtx = null;
+        }
+    },
+
+    handleTouch: function(e, id) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 
+                                          e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        });
+        this.pads[id].canvas.dispatchEvent(mouseEvent);
+    },
+
+    clear: function(id) {
+        const pad = this.pads[id];
+        if (pad) {
+            pad.ctx.clearRect(0, 0, pad.canvas.width, pad.canvas.height);
+            document.getElementById(id + '_signature').value = '';
+        }
+    },
+
+    updateInput: function(id) {
+        const pad = this.pads[id];
+        if (pad) {
+            const dataURL = pad.canvas.toDataURL('image/png');
+            document.getElementById(id + '_signature').value = dataURL;
+        }
     }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    signaturePad.init();
 });
-
-function startDrawing(e) {
-    isDrawing = true;
-    const rect = canvas.getBoundingClientRect();
-    ctx.beginPath();
-    ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
-}
-
-function draw(e) {
-    if (!isDrawing) return;
-    const rect = canvas.getBoundingClientRect();
-    ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
-    ctx.stroke();
-    updateSignatureData();
-}
-
-function stopDrawing() {
-    if (isDrawing) {
-        isDrawing = false;
-        updateSignatureData();
-    }
-}
-
-function handleTouch(e) {
-    e.preventDefault();
-    const touch = e.touches[0];
-    const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 
-                                      e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
-        clientX: touch.clientX,
-        clientY: touch.clientY
-    });
-    canvas.dispatchEvent(mouseEvent);
-}
-
-function clearSignature() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    document.getElementById('technician_signature').value = '';
-}
-
-function updateSignatureData() {
-    const dataURL = canvas.toDataURL('image/png');
-    document.getElementById('technician_signature').value = dataURL;
-}
 
 // Validar antes de enviar
 document.getElementById('firmaForm')?.addEventListener('submit', function(e) {
-    const signature = document.getElementById('technician_signature')?.value || 
-                     (document.querySelector('.signature-image') ? 'loaded' : '');
-    if (!signature) {
+    // Validar firma técnico (si no está cargada desde perfil)
+    const techSigInput = document.getElementById('technician_signature');
+    const techSigLoaded = document.querySelector('.signature-loaded');
+    
+    if (!techSigLoaded && (!techSigInput || !techSigInput.value)) {
         e.preventDefault();
-        alert('Por favor, proporciona una firma antes de completar el servicio.');
+        alert('Por favor, proporciona la firma del técnico.');
+        return false;
+    }
+
+    // Validar firma cliente
+    const clientSigInput = document.getElementById('client_signature');
+    if (!clientSigInput || !clientSigInput.value) {
+        e.preventDefault();
+        alert('Por favor, proporciona la firma del cliente.');
         return false;
     }
 });
@@ -230,20 +288,20 @@ document.getElementById('firmaForm')?.addEventListener('submit', function(e) {
     border: 1px solid #e5e7eb;
 }
 
-#signature-canvas {
+.signature-canvas {
     border: 3px solid #dee2e6;
     border-radius: 12px;
     cursor: crosshair;
     display: block;
     width: 100%;
-    max-width: 600px;
+    max-width: 100%;
     margin: 0 auto;
     background: white;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     transition: border-color 0.3s ease;
 }
 
-#signature-canvas:hover {
+.signature-canvas:hover {
     border-color: #22c55e;
 }
 
