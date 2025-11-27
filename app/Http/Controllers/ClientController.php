@@ -148,7 +148,7 @@ class ClientController extends Controller
             abort(403, 'No tienes acceso a esta página.');
         }
 
-        $client->load(['sites', 'workOrders.service']);
+        $client->load(['sites', 'workOrders.service', 'services']);
 
         return view('admin.clients-show', compact('client'));
     }
