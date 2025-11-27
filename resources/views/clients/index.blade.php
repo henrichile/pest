@@ -4,16 +4,7 @@
 @section("page-title", "Gestión de Clientes")
 
 @section("content")
-<style>
-    /* Reducir espacio en móvil para subir el contenido */
-    @media (max-width: 767px) {
-        body main.flex-1,
-        main.flex-1 {
-            padding-top: 50px !important;
-        }
-    }
-</style>
-<div class="space-y-4 sm:space-y-6">
+<div class="space-y-4 sm:space-y-6" style="margin-top: -50px;">
     @include('admin.partials.header', [
         'title' => 'Clientes',
         'subtitle' => 'Gestiona la información de todos los clientes',
