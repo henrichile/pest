@@ -8,6 +8,7 @@ $submitRoute = $isViewingAsTechnician ? route('technician-view.service.checklist
 $monitoreoDatos = $service->checklist_data['monitoreo_datos'] ?? $service->checklist_data ?? [];
 $monitoreoCompleto = $service->checklist_data['monitoreo_completo'] ?? [];
 $baitStations = $monitoreoCompleto['bait_stations'] ?? [];
+$traps = $monitoreoCompleto['traps'] ?? [];
 
 // Obtener plagas detectadas de la etapa de datos
 $pestsDetected = $monitoreoDatos['pests_detected_list'] ?? $monitoreoDatos['pests_detected'] ?? [];
@@ -20,6 +21,7 @@ if (!is_array($pestsDetected)) {
 
 // Calcular estadísticas desde las cebaderas
 $totalMonitoreadas = count($baitStations);
+$totalTrampas = count($traps);
 $totalActivas = 0;
 $totalConProblemas = 0;
 $totalConsumo = 0;
@@ -179,6 +181,17 @@ if (empty($historicalData) && $totalMonitoreadas > 0) {
 
     <input type="hidden" name="checklist_stage" value="monitoreo-estadisticas">
     <input type="hidden" name="next_stage" value="monitoreo-analisis">
+    
+    {{-- Hidden inputs for statistics --}}
+    <input type="hidden" name="total_monitored" value="{{ $totalMonitoreadas }}">
+    <input type="hidden" name="total_active" value="{{ $totalActivas }}">
+    <input type="hidden" name="total_problems" value="{{ $totalConProblemas }}">
+    <input type="hidden" name="total_traps" value="{{ $totalTrampas }}">
+    <input type="hidden" name="total_consumption" value="{{ $totalConsumo }}">
+    <input type="hidden" name="average_consumption_percent" value="{{ $consumoPromedio }}">
+    <input type="hidden" name="detected_species" value="{{ implode(', ', $pestsDetected) }}">
+    <input type="hidden" name="activity_level" value="{{ $nivelActual }}">
+    <input type="hidden" name="executive_summary" value="Resumen generado automáticamente basado en {{ $totalMonitoreadas }} estaciones monitoreadas.">
 </form>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
