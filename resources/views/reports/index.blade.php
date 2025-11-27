@@ -3,7 +3,7 @@
 @section('title', 'Reportes')
 
 @section('content')
-<div class="space-y-4 sm:space-y-6 pt-12 md:pt-0">
+<div class="space-y-4 sm:space-y-6">
     @include('admin.partials.header', [
         'title' => 'Reportes',
         'subtitle' => 'Genera, exporta y programa reportes personalizados',
