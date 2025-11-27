@@ -1373,13 +1373,35 @@
                         Alertas de Stock
                     </h3>
                     <p class="text-4xl font-bold mb-2" style="color: #ef4444;">{{ $stats['low_stock_alerts'] ?? 0 }}</p>
-                    <p class="text-sm mb-2 dark:text-white" style="color: #6b7280;">Productos con stock bajo</p>
+                    <p class="text-sm mb-3 dark:text-white" style="color: #6b7280;">Productos con stock bajo</p>
+                    
                     @if(($stats['low_stock_alerts'] ?? 0) > 0)
-                        <p class="text-xs flex items-center gap-1" style="color: #f59e0b;">
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                        <div class="mt-4 space-y-2">
+                            @foreach($lowStockProducts ?? [] as $product)
+                                <div class="flex items-center justify-between py-2 px-3 rounded-lg" style="background: #fef2f2; border: 1px solid #fee2e2;">
+                                    <div class="flex items-center gap-2 flex-1 min-w-0">
+                                        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #ef4444;">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                                        </svg>
+                                        <span class="text-sm font-medium truncate" style="color: #991b1b;" title="{{ $product->name }}">{{ $product->name }}</span>
+                                    </div>
+                                    <span class="text-xs font-bold px-2 py-1 rounded" style="background: #dc2626; color: white; min-width: 35px; text-align: center;">{{ $product->stock }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                        
+                        <a href="{{ route('admin.products.index') ?? '#' }}" class="mt-4 inline-flex items-center justify-center w-full px-4 py-2.5 text-sm font-medium text-white rounded-lg transition-colors" style="background: #ef4444; hover:background: #dc2626;">
+                            <span>Ver todos los productos</span>
+                            <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                             </svg>
-                            Requiere atención
+                        </a>
+                    @else
+                        <p class="text-xs flex items-center gap-1 mt-2" style="color: #10b981;">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Stock en niveles adecuados
                         </p>
                     @endif
                     </div>

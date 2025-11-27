@@ -395,11 +395,18 @@ class DashboardController extends Controller
         
         // Alertas de stock bajo (productos con stock menor a 10)
         $lowStockAlerts = 0;
+        $lowStockProducts = [];
         try {
+            $lowStockProducts = \App\Models\Product::where('stock', '<', 10)
+                ->select('id', 'name', 'stock')
+                ->orderBy('stock', 'asc')
+                ->limit(4)
+                ->get();
             $lowStockAlerts = \App\Models\Product::where('stock', '<', 10)->count();
         } catch (\Exception $e) {
             \Log::error('Error calculando alertas de stock bajo: ' . $e->getMessage());
             $lowStockAlerts = 0;
+            $lowStockProducts = [];
         }
         
         // Datos del gráfico: servicios por mes y por tipo
@@ -1089,7 +1096,7 @@ class DashboardController extends Controller
             ->limit(10)
             ->get();
         
-        return view('dashboard', compact('stats', 'recentActivities'));
+        return view('dashboard', compact('stats', 'recentActivities', 'lowStockProducts'));
     }
 
     /**
