@@ -3,62 +3,21 @@
 @section('title', 'Gestión de Usuarios')
 
 @section('content')
-<div class="space-y-4 sm:space-y-6 pt-12 md:pt-0" style="padding-top: 80px;">
-    <!-- Título móvil dinámico -->
-    <div class="md:hidden mb-4">
-        <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
-            @if(request('role') === 'technician')
-                Técnicos
-            @else
-                Gestión de Usuarios
-            @endif
-        </h2>
-    </div>
+<div class="space-y-4 sm:space-y-6">
+    @include('admin.partials.header', [
+        'title' => request('role') === 'technician' ? 'Técnicos' : 'Gestión de Usuarios',
+        'subtitle' => 'Administra los usuarios del sistema',
+        'searchPlaceholder' => 'Buscar usuarios...',
+        'pageId' => 'users'
+    ])
 
-    <!-- Header con hamburguesa y título -->
-    <div class="mb-4 sm:mb-6">
-        <!-- Primera fila: Hamburguesa + Título (móvil) / Título solo (desktop) - Oculta ahora -->
-        <div class="hidden md:hidden items-center gap-3 mb-4">
-            <!-- Hamburguesa (solo móvil) -->
-            <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50; display: none;">
-                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
-                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-
-            <!-- Título -->
-            <div class="flex-1">
-                <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
-                    Gestión de Usuarios
-                </h2>
-            </div>
-        </div>
-
-        <!-- Segunda fila: Título completo (desktop) -->
-        <div class="hidden md:block md:flex md:items-center md:justify-between">
-            <div class="min-w-0 flex-1">
-                <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" style="color: #111827; font-weight: 700;">
-                    Gestión de Usuarios
-                </h2>
-                <p class="mt-1 text-sm" style="color: #6b7280;">
-                    Administra los usuarios del sistema
-                </p>
-            </div>
-        </div>
-
-        <!-- Botón de acción -->
-        <div class="mt-3 sm:mt-4 md:mt-0 md:ml-4 md:flex md:items-center">
-            <a href="{{ route('admin.users.create') }}" class="inline-flex items-center justify-center w-full sm:w-auto px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium text-white transition-colors" style="background: #22c55e; hover:background: #16a34a;">
-                <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-                <span class="hidden sm:inline">Crear Nuevo Usuario</span>
-                <span class="sm:hidden">Nuevo Usuario</span>
-            </a>
-        </div>
+    <div class="flex justify-end mb-4">
+        <a href="{{ route('admin.users.create') }}" class="inline-flex items-center justify-center px-5 py-3 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700 transition-colors">
+            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Crear Nuevo Usuario
+        </a>
     </div>
 
     <!-- Filters -->
