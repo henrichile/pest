@@ -5,9 +5,14 @@
 
 @section("content")
 <style>
+    /* Reducir espacio entre header e iconos y título en móvil */
     @media (max-width: 767px) {
         main {
             padding-top: 80px !important;
+        }
+        /* Reducir margen del header móvil solo en esta página */
+        .md\:hidden.mb-2 {
+            margin-bottom: 0.25rem !important; /* Reducir a 4px */
         }
     }
 </style>
