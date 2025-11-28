@@ -3,6 +3,15 @@ use Illuminate\Support\Facades\DB;
 // Helper para determinar si está en modo técnico
 $isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
 
+// Compartir contador de notificaciones no leídas globalmente
+if (auth()->check()) {
+    $unreadCount = auth()->user()->unreadNotifications()->count();
+    $recentNotifications = auth()->user()->notifications()->orderBy('created_at', 'desc')->limit(10)->get();
+} else {
+    $unreadCount = 0;
+    $recentNotifications = collect();
+}
+
 // Helper function para obtener la ruta correcta según el modo
 function getTechnicianRoute($routeName, ...$params) {
     $isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
