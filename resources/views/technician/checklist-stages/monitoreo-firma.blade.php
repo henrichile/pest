@@ -2,72 +2,31 @@
 $isViewingAsTechnician = (session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin')) 
     || request()->is('admin/technician-view/*')
     || (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], '/admin/technician-view/') !== false);
-$submitRoute = $isViewingAsTechnician ? route('technician-view.service.checklist.submit', $service) : route('technician.service.checklist.submit', $service);
+$submitRoute = $isViewingAsTechnician ? route('admin.technician-view.service.checklist.submit', $service) : route('technician.service.checklist.submit', $service);
 @endphp
 <form method="POST" action="{{ $submitRoute }}" data-stage="monitoreo-firma" id="firmaForm">
     @csrf
     <div class="form-section">
-        <h5>✍️ Firmas</h5>
-        
-        <div class="signature-container" style="display: flex; gap: 20px; flex-wrap: wrap;">
-            <!-- Firma del Técnico -->
-            <div class="signature-box" style="flex: 1; min-width: 300px;">
-                <h6 style="margin-bottom: 15px; color: #4b5563; font-weight: 600;">Firma del Técnico</h6>
-                <div class="signature-display">
-                    @if(auth()->user()->signature)
-                        <div class="signature-loaded">
-                            <span class="check-icon">✔</span>
-                            <p>Firma cargada: <strong>{{ auth()->user()->name }}</strong></p>
+        <h5>✍️ Firma del Técnico</h5>
+        <div class="signature-section">
+            <div class="signature-display">
+                @if(auth()->user()->signature)
+                    <div class="signature-loaded">
+                        <span class="check-icon">✔</span>
+                        <p>Firma cargada automáticamente desde tu perfil: <strong>{{ auth()->user()->name }}</strong></p>
+                    </div>
+                    <div class="signature-preview">
+                        <img src="{{ Storage::url(auth()->user()->signature) }}" alt="Firma del Técnico" class="signature-image">
+                    </div>
+                @else
+                    <div class="signature-placeholder">
+                        <canvas id="signature-canvas" width="600" height="200"></canvas>
+                        <div class="signature-actions">
+                            <button type="button" class="btn-clear" onclick="clearSignature()">Limpiar</button>
                         </div>
-                        <div class="signature-preview">
-                            <img src="{{ Storage::url(auth()->user()->signature) }}" alt="Firma del Técnico" class="signature-image">
-                        </div>
-                    @else
-                        <div class="signature-placeholder">
-                            <canvas id="technician-canvas" class="signature-canvas" width="400" height="200"></canvas>
-                            <div class="signature-actions">
-                                <button type="button" class="btn-clear" onclick="signaturePad.clear('technician')">Limpiar</button>
-                            </div>
-                            <input type="hidden" name="technician_signature" id="technician_signature">
-                        </div>
-                    @endif
-                </div>
-            </div>
-
-            <!-- Firma del Cliente -->
-            <div class="signature-box" style="flex: 1; min-width: 300px;">
-                <h6 style="margin-bottom: 15px; color: #4b5563; font-weight: 600;">Firma del Cliente</h6>
-                <div class="signature-display">
-                    @if(isset($service->checklist_data['monitoreo_firma']['client_signature']))
-                        <div class="signature-loaded" id="client-signature-loaded">
-                            <span class="check-icon">✔</span>
-                            <p>Firma del Cliente registrada</p>
-                            <button type="button" class="btn-clear" style="margin-top: 10px; background: #6b7280;" onclick="signaturePad.reset('client')">Nueva Firma</button>
-                        </div>
-                        <div class="signature-preview" id="client-signature-preview">
-                            <img src="{{ asset($service->checklist_data['monitoreo_firma']['client_signature']) }}" alt="Firma del Cliente" class="signature-image">
-                        </div>
-                        
-                        <!-- Hidden container for new signature (initially hidden) -->
-                        <div class="signature-placeholder" id="client-signature-pad" style="display: none;">
-                            <canvas id="client-canvas" class="signature-canvas" width="400" height="200"></canvas>
-                            <div class="signature-actions">
-                                <button type="button" class="btn-clear" onclick="signaturePad.clear('client')">Limpiar</button>
-                                <button type="button" class="btn-clear" style="background: #6b7280;" onclick="signaturePad.cancelReset('client')">Cancelar</button>
-                            </div>
-                        </div>
-                        <!-- Input holds existing path initially -->
-                        <input type="hidden" name="client_signature" id="client_signature" value="{{ $service->checklist_data['monitoreo_firma']['client_signature'] }}">
-                    @else
-                        <div class="signature-placeholder">
-                            <canvas id="client-canvas" class="signature-canvas" width="400" height="200"></canvas>
-                            <div class="signature-actions">
-                                <button type="button" class="btn-clear" onclick="signaturePad.clear('client')">Limpiar</button>
-                            </div>
-                            <input type="hidden" name="client_signature" id="client_signature">
-                        </div>
-                    @endif
-                </div>
+                        <input type="hidden" name="technician_signature" id="technician_signature">
+                    </div>
+                @endif
             </div>
         </div>
     </div>
@@ -130,161 +89,80 @@ $submitRoute = $isViewingAsTechnician ? route('technician-view.service.checklist
 </form>
 
 <script>
-const signaturePad = {
-    pads: {},
-    isDrawing: false,
-    currentCanvas: null,
-    currentCtx: null,
+let canvas, ctx;
+let isDrawing = false;
 
-    init: function() {
-        // Initialize Technician Canvas if it exists
-        const techCanvas = document.getElementById('technician-canvas');
-        if (techCanvas) this.setupCanvas(techCanvas, 'technician');
-
-        // Initialize Client Canvas
-        const clientCanvas = document.getElementById('client-canvas');
-        if (clientCanvas) this.setupCanvas(clientCanvas, 'client');
-    },
-
-    setupCanvas: function(canvas, id) {
-        const ctx = canvas.getContext('2d');
+document.addEventListener('DOMContentLoaded', function() {
+    canvas = document.getElementById('signature-canvas');
+    if (canvas) {
+        ctx = canvas.getContext('2d');
         ctx.strokeStyle = '#000';
         ctx.lineWidth = 2;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
 
-        this.pads[id] = { canvas, ctx };
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
 
-        // Mouse events
-        canvas.addEventListener('mousedown', (e) => this.startDrawing(e, id));
-        canvas.addEventListener('mousemove', (e) => this.draw(e, id));
-        canvas.addEventListener('mouseup', () => this.stopDrawing());
-        canvas.addEventListener('mouseout', () => this.stopDrawing());
-
-        // Touch events
-        canvas.addEventListener('touchstart', (e) => this.handleTouch(e, id));
-        canvas.addEventListener('touchmove', (e) => this.handleTouch(e, id));
-        canvas.addEventListener('touchend', () => this.stopDrawing());
-    },
-
-    startDrawing: function(e, id) {
-        this.isDrawing = true;
-        this.currentCanvas = this.pads[id].canvas;
-        this.currentCtx = this.pads[id].ctx;
-        
-        const rect = this.currentCanvas.getBoundingClientRect();
-        this.currentCtx.beginPath();
-        this.currentCtx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
-    },
-
-    draw: function(e, id) {
-        if (!this.isDrawing || this.currentCanvas !== this.pads[id].canvas) return;
-        
-        const rect = this.currentCanvas.getBoundingClientRect();
-        this.currentCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
-        this.currentCtx.stroke();
-        this.updateInput(id);
-    },
-
-    stopDrawing: function() {
-        if (this.isDrawing) {
-            this.isDrawing = false;
-            this.currentCanvas = null;
-            this.currentCtx = null;
-        }
-    },
-
-    handleTouch: function(e, id) {
-        e.preventDefault();
-        const touch = e.touches[0];
-        const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 
-                                          e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
-            clientX: touch.clientX,
-            clientY: touch.clientY
-        });
-        this.pads[id].canvas.dispatchEvent(mouseEvent);
-    },
-
-    clear: function(id) {
-        const pad = this.pads[id];
-        if (pad) {
-            pad.ctx.clearRect(0, 0, pad.canvas.width, pad.canvas.height);
-            document.getElementById(id + '_signature').value = '';
-        }
-    },
-
-    updateInput: function(id) {
-        const pad = this.pads[id];
-        if (pad) {
-            const dataURL = pad.canvas.toDataURL('image/png');
-            document.getElementById(id + '_signature').value = dataURL;
-        }
-    },
-
-    reset: function(id) {
-        document.getElementById(id + '-signature-loaded').style.display = 'none';
-        document.getElementById(id + '-signature-preview').style.display = 'none';
-        document.getElementById(id + '-signature-pad').style.display = 'block';
-        
-        // Clear input so if they submit without signing, it's empty (or handle validation)
-        document.getElementById(id + '_signature').value = '';
-        
-        // Re-init canvas if needed (might need to resize or setup context again if it was hidden)
-        const canvas = document.getElementById(id + '-canvas');
-        if (canvas) {
-            // Ensure context is ready
-            this.setupCanvas(canvas, id);
-            // Fix width/height if needed
-            canvas.width = canvas.offsetWidth;
-            canvas.height = 200; // Fixed height
-            this.setupCanvas(canvas, id); // Re-setup context after resize
-        }
-    },
-
-    cancelReset: function(id) {
-        document.getElementById(id + '-signature-loaded').style.display = 'block';
-        document.getElementById(id + '-signature-preview').style.display = 'block';
-        document.getElementById(id + '-signature-pad').style.display = 'none';
-        
-        // Restore original value (we need to store it somewhere or reload page? 
-        // Simplest is to reload page or store in data attribute.
-        // For now, let's just assume they want to keep the old one.
-        // But we cleared the input!
-        // We should store the original value in a data attribute on the input.
-        const input = document.getElementById(id + '_signature');
-        input.value = input.getAttribute('data-original-value');
+        // Touch events para móviles
+        canvas.addEventListener('touchstart', handleTouch);
+        canvas.addEventListener('touchmove', handleTouch);
+        canvas.addEventListener('touchend', stopDrawing);
     }
-};
-
-document.addEventListener('DOMContentLoaded', function() {
-    signaturePad.init();
-    
-    // Store original values
-    ['technician', 'client'].forEach(id => {
-        const input = document.getElementById(id + '_signature');
-        if (input && input.value) {
-            input.setAttribute('data-original-value', input.value);
-        }
-    });
 });
+
+function startDrawing(e) {
+    isDrawing = true;
+    const rect = canvas.getBoundingClientRect();
+    ctx.beginPath();
+    ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+}
+
+function draw(e) {
+    if (!isDrawing) return;
+    const rect = canvas.getBoundingClientRect();
+    ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+    ctx.stroke();
+    updateSignatureData();
+}
+
+function stopDrawing() {
+    if (isDrawing) {
+        isDrawing = false;
+        updateSignatureData();
+    }
+}
+
+function handleTouch(e) {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 
+                                      e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
+        clientX: touch.clientX,
+        clientY: touch.clientY
+    });
+    canvas.dispatchEvent(mouseEvent);
+}
+
+function clearSignature() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    document.getElementById('technician_signature').value = '';
+}
+
+function updateSignatureData() {
+    const dataURL = canvas.toDataURL('image/png');
+    document.getElementById('technician_signature').value = dataURL;
+}
 
 // Validar antes de enviar
 document.getElementById('firmaForm')?.addEventListener('submit', function(e) {
-    // Validar firma técnico (si no está cargada desde perfil)
-    const techSigInput = document.getElementById('technician_signature');
-    const techSigLoaded = document.querySelector('.signature-loaded');
-    
-    if (!techSigLoaded && (!techSigInput || !techSigInput.value)) {
+    const signature = document.getElementById('technician_signature')?.value || 
+                     (document.querySelector('.signature-image') ? 'loaded' : '');
+    if (!signature) {
         e.preventDefault();
-        alert('Por favor, proporciona la firma del técnico.');
-        return false;
-    }
-
-    // Validar firma cliente
-    const clientSigInput = document.getElementById('client_signature');
-    if (!clientSigInput || !clientSigInput.value) {
-        e.preventDefault();
-        alert('Por favor, proporciona la firma del cliente.');
+        alert('Por favor, proporciona una firma antes de completar el servicio.');
         return false;
     }
 });
@@ -352,20 +230,20 @@ document.getElementById('firmaForm')?.addEventListener('submit', function(e) {
     border: 1px solid #e5e7eb;
 }
 
-.signature-canvas {
+#signature-canvas {
     border: 3px solid #dee2e6;
     border-radius: 12px;
     cursor: crosshair;
     display: block;
     width: 100%;
-    max-width: 100%;
+    max-width: 600px;
     margin: 0 auto;
     background: white;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     transition: border-color 0.3s ease;
 }
 
-.signature-canvas:hover {
+#signature-canvas:hover {
     border-color: #22c55e;
 }
 

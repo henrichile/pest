@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Crear Nuevo Cliente')
+@section('title', 'Editar Cliente')
 
 @section('content')
 <div class="space-y-4 sm:space-y-6 pt-12 md:pt-0">
@@ -8,10 +8,10 @@
     <div class="md:flex md:items-center md:justify-between mb-6">
         <div class="min-w-0 flex-1">
             <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight" style="color: #111827; font-weight: 700;">
-                Crear Nuevo Cliente
+                Editar Cliente
             </h2>
             <p class="mt-1 text-sm" style="color: #6b7280;">
-                Complete los datos del nuevo cliente
+                Actualice los datos del cliente
             </p>
         </div>
         <div class="mt-4 md:mt-0 md:ml-4">
@@ -26,8 +26,9 @@
 
     <!-- Form -->
     <div class="bg-white border dark:border-gray-700 rounded-lg p-6" style="border: 1px solid #e5e7eb !important;">
-        <form method="POST" action="{{ route('admin.clients.store') }}">
+        <form method="POST" action="{{ route('admin.clients.update', $client) }}">
             @csrf
+            @method('PUT')
 
             <!-- Success/Error Messages -->
             @if(session('success'))
@@ -61,7 +62,7 @@
                         <label for="name" class="block text-sm font-medium mb-1" style="color: #374151;">
                             Nombre <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" name="name" id="name" value="{{ old('name') }}" required
+                        <input type="text" name="name" id="name" value="{{ old('name', $client->name) }}" required
                                class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
@@ -71,7 +72,7 @@
                         <label for="rut" class="block text-sm font-medium mb-1" style="color: #374151;">
                             RUT <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" name="rut" id="rut" value="{{ old('rut') }}" required
+                        <input type="text" name="rut" id="rut" value="{{ old('rut', $client->rut) }}" required
                                class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
@@ -81,7 +82,7 @@
                         <label for="email" class="block text-sm font-medium mb-1" style="color: #374151;">
                             Email
                         </label>
-                        <input type="email" name="email" id="email" value="{{ old('email') }}"
+                        <input type="email" name="email" id="email" value="{{ old('email', $client->email) }}"
                                class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
@@ -91,7 +92,7 @@
                         <label for="phone" class="block text-sm font-medium mb-1" style="color: #374151;">
                             Teléfono <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" name="phone" id="phone" value="{{ old('phone') }}" required
+                        <input type="text" name="phone" id="phone" value="{{ old('phone', $client->phone) }}" required
                                class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
@@ -101,7 +102,7 @@
                         <label for="address" class="block text-sm font-medium mb-1" style="color: #374151;">
                             Dirección <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" name="address" id="address" value="{{ old('address') }}" required
+                        <input type="text" name="address" id="address" value="{{ old('address', $client->address) }}" required
                                placeholder="Calle, número, piso, depto."
                                class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
@@ -112,7 +113,7 @@
                         <label for="business_type" class="block text-sm font-medium mb-1" style="color: #374151;">
                             Tipo de Negocio
                         </label>
-                        <input type="text" name="business_type" id="business_type" value="{{ old('business_type') }}"
+                        <input type="text" name="business_type" id="business_type" value="{{ old('business_type', $client->business_type) }}"
                                placeholder="Ej: Restaurante, Retail, etc."
                                class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
@@ -123,7 +124,7 @@
                         <label for="contact_person" class="block text-sm font-medium mb-1" style="color: #374151;">
                             Persona de Contacto
                         </label>
-                        <input type="text" name="contact_person" id="contact_person" value="{{ old('contact_person') }}"
+                        <input type="text" name="contact_person" id="contact_person" value="{{ old('contact_person', $client->contact_person) }}"
                                placeholder="Ej: Juan Pérez - Gerente"
                                class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
@@ -138,7 +139,7 @@
                     Cancelar
                 </a>
                 <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors">
-                    Crear Cliente
+                    Actualizar Cliente
                 </button>
             </div>
         </form>
