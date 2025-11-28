@@ -1179,6 +1179,9 @@ class TechnicianController extends Controller
                 $filename = 'signature_tech_' . time() . '_' . uniqid() . '.png';
                 Storage::disk('public')->put('signatures/' . $filename, $imageData);
                 $data['technician_signature'] = 'storage/signatures/' . $filename;
+            } else {
+                // Si no es base64, asumimos que es la ruta existente
+                $data['technician_signature'] = $signatureData;
             }
         }
 
@@ -1193,6 +1196,9 @@ class TechnicianController extends Controller
                 $filename = 'signature_client_' . time() . '_' . uniqid() . '.png';
                 Storage::disk('public')->put('signatures/' . $filename, $imageData);
                 $data['client_signature'] = 'storage/signatures/' . $filename;
+            } else {
+                // Si no es base64, asumimos que es la ruta existente
+                $data['client_signature'] = $signatureData;
             }
         }
 

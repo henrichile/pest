@@ -38,13 +38,35 @@ $submitRoute = $isViewingAsTechnician ? route('technician-view.service.checklist
             <div class="signature-box" style="flex: 1; min-width: 300px;">
                 <h6 style="margin-bottom: 15px; color: #4b5563; font-weight: 600;">Firma del Cliente</h6>
                 <div class="signature-display">
-                    <div class="signature-placeholder">
-                        <canvas id="client-canvas" class="signature-canvas" width="400" height="200"></canvas>
-                        <div class="signature-actions">
-                            <button type="button" class="btn-clear" onclick="signaturePad.clear('client')">Limpiar</button>
+                    @if(isset($service->checklist_data['monitoreo_firma']['client_signature']))
+                        <div class="signature-loaded" id="client-signature-loaded">
+                            <span class="check-icon">✔</span>
+                            <p>Firma del Cliente registrada</p>
+                            <button type="button" class="btn-clear" style="margin-top: 10px; background: #6b7280;" onclick="signaturePad.reset('client')">Nueva Firma</button>
                         </div>
-                        <input type="hidden" name="client_signature" id="client_signature">
-                    </div>
+                        <div class="signature-preview" id="client-signature-preview">
+                            <img src="{{ asset($service->checklist_data['monitoreo_firma']['client_signature']) }}" alt="Firma del Cliente" class="signature-image">
+                        </div>
+                        
+                        <!-- Hidden container for new signature (initially hidden) -->
+                        <div class="signature-placeholder" id="client-signature-pad" style="display: none;">
+                            <canvas id="client-canvas" class="signature-canvas" width="400" height="200"></canvas>
+                            <div class="signature-actions">
+                                <button type="button" class="btn-clear" onclick="signaturePad.clear('client')">Limpiar</button>
+                                <button type="button" class="btn-clear" style="background: #6b7280;" onclick="signaturePad.cancelReset('client')">Cancelar</button>
+                            </div>
+                        </div>
+                        <!-- Input holds existing path initially -->
+                        <input type="hidden" name="client_signature" id="client_signature" value="{{ $service->checklist_data['monitoreo_firma']['client_signature'] }}">
+                    @else
+                        <div class="signature-placeholder">
+                            <canvas id="client-canvas" class="signature-canvas" width="400" height="200"></canvas>
+                            <div class="signature-actions">
+                                <button type="button" class="btn-clear" onclick="signaturePad.clear('client')">Limpiar</button>
+                            </div>
+                            <input type="hidden" name="client_signature" id="client_signature">
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -197,11 +219,53 @@ const signaturePad = {
             const dataURL = pad.canvas.toDataURL('image/png');
             document.getElementById(id + '_signature').value = dataURL;
         }
+    },
+
+    reset: function(id) {
+        document.getElementById(id + '-signature-loaded').style.display = 'none';
+        document.getElementById(id + '-signature-preview').style.display = 'none';
+        document.getElementById(id + '-signature-pad').style.display = 'block';
+        
+        // Clear input so if they submit without signing, it's empty (or handle validation)
+        document.getElementById(id + '_signature').value = '';
+        
+        // Re-init canvas if needed (might need to resize or setup context again if it was hidden)
+        const canvas = document.getElementById(id + '-canvas');
+        if (canvas) {
+            // Ensure context is ready
+            this.setupCanvas(canvas, id);
+            // Fix width/height if needed
+            canvas.width = canvas.offsetWidth;
+            canvas.height = 200; // Fixed height
+            this.setupCanvas(canvas, id); // Re-setup context after resize
+        }
+    },
+
+    cancelReset: function(id) {
+        document.getElementById(id + '-signature-loaded').style.display = 'block';
+        document.getElementById(id + '-signature-preview').style.display = 'block';
+        document.getElementById(id + '-signature-pad').style.display = 'none';
+        
+        // Restore original value (we need to store it somewhere or reload page? 
+        // Simplest is to reload page or store in data attribute.
+        // For now, let's just assume they want to keep the old one.
+        // But we cleared the input!
+        // We should store the original value in a data attribute on the input.
+        const input = document.getElementById(id + '_signature');
+        input.value = input.getAttribute('data-original-value');
     }
 };
 
 document.addEventListener('DOMContentLoaded', function() {
     signaturePad.init();
+    
+    // Store original values
+    ['technician', 'client'].forEach(id => {
+        const input = document.getElementById(id + '_signature');
+        if (input && input.value) {
+            input.setAttribute('data-original-value', input.value);
+        }
+    });
 });
 
 // Validar antes de enviar
