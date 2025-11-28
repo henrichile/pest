@@ -14,25 +14,71 @@ class ServiceAssignedNotification extends Notification
 
     protected $service;
 
+    /**
+     * Create a new notification instance.
+     */
     public function __construct(Service $service)
     {
         $this->service = $service;
     }
 
-    public function via($notifiable)
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @return array<int, string>
+     */
+    public function via($notifiable): array
     {
         return ['database'];
     }
 
-    public function toDatabase($notifiable)
+    /**
+     * Get the mail representation of the notification.
+     */
+    public function toMail($notifiable): MailMessage
     {
+        $clientName = $this->service->client->name ?? 'Cliente';
+        $scheduledDate = $this->service->scheduled_date 
+            ? $this->service->scheduled_date->format('d/m/Y H:i') 
+            : 'Fecha no definida';
+        
+        return (new MailMessage)
+                    ->subject('Nuevo Servicio Asignado')
+                    ->line("Se te ha asignado un nuevo servicio para {$clientName} el {$scheduledDate}")
+                    ->action('Ver Servicio', route('technician.service.detail', $this->service->id));
+    }
+
+    /**
+     * Get the array representation of the notification.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray($notifiable): array
+    {
+        $clientName = $this->service->client->name ?? 'Cliente';
+        $scheduledDate = $this->service->scheduled_date 
+            ? $this->service->scheduled_date->format('d/m/Y H:i') 
+            : 'Fecha no definida';
+        
+        $message = "Se te ha asignado un nuevo servicio para {$clientName} el {$scheduledDate}";
+        
+        // Si es reasignación, cambiar el mensaje
+        if (request()->has('reassigned')) {
+            $message = "Se te ha reasignado el servicio para {$clientName} el {$scheduledDate}";
+        }
+        
         return [
-            'service_id' => $this->service->id,
-            'client_name' => $this->service->client->name,
-            'service_type' => $this->service->service_type,
-            'title' => 'Nuevo Servicio Asignado',
-            'message' => 'Se te ha asignado un nuevo servicio: ' . $this->service->client->name,
+            'title' => request()->has('reassigned') ? 'Servicio Reasignado' : 'Nuevo Servicio Asignado',
+            'message' => $message,
             'type' => 'info',
+            'service_id' => $this->service->id,
+            'url' => route('technician.service.detail', $this->service->id),
+            'metadata' => [
+                'service_type' => $this->service->serviceType->name ?? 'N/A',
+                'client_name' => $clientName,
+                'priority' => $this->service->priority,
+            ]
         ];
     }
 }
+

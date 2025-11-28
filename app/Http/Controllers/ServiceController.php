@@ -7,7 +7,6 @@ use App\Models\Client;
 use App\Models\Product;
 use App\Models\ServiceType;
 use App\Models\User;
-use App\Models\SystemNotification;
 use App\Notifications\ServiceAssignedNotification;
 use App\Http\Requests\ServiceUpdateRequest;
 use Illuminate\Http\Request;
@@ -86,25 +85,16 @@ class ServiceController extends Controller
 
         // Enviar notificación si hay un técnico asignado
         if ($service->assigned_to) {
-            $service->load('assignedUser', 'client', 'serviceType');
-
-            // Notificación Laravel nativa
-            $service->assignedUser->notify(new ServiceAssignedNotification($service));
-
-            // Notificación en el sistema
-            SystemNotification::create([
-                'title' => 'Nuevo Servicio Asignado',
-                'message' => "Se te ha asignado un nuevo servicio para {$service->client->name} el " . $service->scheduled_date->format('d/m/Y H:i'),
-                'type' => 'info',
-                'priority' => 'medium',
-                'user_id' => $service->assigned_to,
-                'service_id' => $service->id,
-                'metadata' => [
-                    'service_type' => $service->serviceType->name ?? 'N/A',
-                    'client_name' => $service->client->name,
-                    'priority' => $service->priority,
-                ]
-            ]);
+            try {
+                $service->load('assignedUser', 'client', 'serviceType');
+                
+                if ($service->assignedUser) {
+                    // Notificación Laravel nativa (se guarda en la tabla notifications)
+                    $service->assignedUser->notify(new ServiceAssignedNotification($service));
+                }
+            } catch (\Exception $e) {
+                Log::error('Error enviando notificación de servicio asignado: ' . $e->getMessage());
+            }
         }
 
         return redirect()->route("admin.services.index")->with("success", "Servicio creado exitosamente");
@@ -136,25 +126,19 @@ class ServiceController extends Controller
 
         // Si se cambió la asignación del técnico
         if ($oldAssignedTo != $request->assigned_to && $request->assigned_to) {
-            $service->load('assignedUser', 'client', 'serviceType');
-            // Notificación Laravel nativa
-            $service->assignedUser->notify(new ServiceAssignedNotification($service));
-
-            // Notificación en el sistema
-            SystemNotification::create([
-                'title' => 'Servicio Reasignado',
-                'message' => "Se te ha reasignado el servicio para {$service->client->name} el " . $service->scheduled_date->format('d/m/Y H:i'),
-                'type' => 'info',
-                'priority' => 'medium',
-                'user_id' => $service->assigned_to,
-                'service_id' => $service->id,
-                'metadata' => [
-                    'service_type' => $service->serviceType->name ?? 'N/A',
-                    'client_name' => $service->client->name,
-                    'priority' => $service->priority,
-                    'action' => 'reassigned'
-                ]
-            ]);
+            try {
+                $service->load('assignedUser', 'client', 'serviceType');
+                
+                if ($service->assignedUser) {
+                    // Marcar como reasignación en el request para que la notificación lo detecte
+                    request()->merge(['reassigned' => true]);
+                    
+                    // Notificación Laravel nativa (se guarda en la tabla notifications)
+                    $service->assignedUser->notify(new ServiceAssignedNotification($service));
+                }
+            } catch (\Exception $e) {
+                Log::error('Error enviando notificación de servicio reasignado: ' . $e->getMessage());
+            }
         }
 
         return redirect()->route("admin.services.index")->with("success", "Servicio actualizado exitosamente");
