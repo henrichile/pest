@@ -172,13 +172,13 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Usuario</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Tipo</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Título</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Mensaje</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Estado</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Fecha</th>
-                        <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Acciones</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 12%;">Usuario</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 10%;">Tipo</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 18%;">Título</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 30%;">Mensaje</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 8%;">Estado</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 10%;">Fecha</th>
+                        <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 12%;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -186,23 +186,39 @@
                         @php
                             $data = json_decode($notification->data, true);
                             $user = \App\Models\User::find($notification->notifiable_id);
+                            // Extraer nombre corto del tipo de notificación
+                            $typeName = $notification->type;
+                            if (strpos($typeName, '\\') !== false) {
+                                $typeParts = explode('\\', $typeName);
+                                $typeName = end($typeParts);
+                                // Remover "Notification" del final si existe
+                                $typeName = str_replace('Notification', '', $typeName);
+                            }
+                            // Mapear tipos comunes a nombres más legibles
+                            $typeLabels = [
+                                'ServiceAssigned' => 'Servicio Asignado',
+                                'ServiceCompleted' => 'Servicio Completado',
+                                'ServiceUpdated' => 'Servicio Actualizado',
+                                'Generic' => 'General',
+                            ];
+                            $typeLabel = $typeLabels[$typeName] ?? $typeName;
                         @endphp
                         <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: #111827;">
+                            <td class="px-4 py-4 whitespace-nowrap text-sm" style="color: #111827;">
                                 {{ $user->name ?? 'Usuario eliminado' }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 py-1 text-xs font-medium rounded-full" style="background: #e0e7ff; color: #3730a3;">
-                                    {{ $notification->type }}
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-medium rounded-full whitespace-nowrap" style="background: #e0e7ff; color: #3730a3; display: inline-block;">
+                                    {{ $typeLabel }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 text-sm" style="color: #111827;">
+                            <td class="px-4 py-4 text-sm" style="color: #111827;">
                                 {{ $data['title'] ?? 'Sin título' }}
                             </td>
-                            <td class="px-6 py-4 text-sm" style="color: #6b7280;">
-                                {{ Str::limit($data['message'] ?? '', 50) }}
+                            <td class="px-4 py-4 text-sm" style="color: #6b7280;">
+                                {{ Str::limit($data['message'] ?? '', 60) }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td class="px-4 py-4 whitespace-nowrap">
                                 @if($notification->read_at)
                                     <span class="px-2 py-1 text-xs font-medium rounded-full" style="background: #d1fae5; color: #065f46;">
                                         Leída
@@ -213,21 +229,21 @@
                                     </span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: #6b7280;">
+                            <td class="px-4 py-4 whitespace-nowrap text-sm" style="color: #6b7280;">
                                 {{ \Carbon\Carbon::parse($notification->created_at)->format('d/m/Y H:i') }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 @if(!$notification->read_at)
                                     <form action="{{ route('admin.notifications.mark-read', $notification->id) }}" method="POST" class="inline">
                                         @csrf
                                         @method('PATCH')
-                                        <button type="submit" class="text-green-600 hover:text-green-900 mr-2">Marcar como leída</button>
+                                        <button type="submit" class="text-green-600 hover:text-green-900 mr-2 text-xs">Marcar como leída</button>
                                     </form>
                                 @endif
                                 <form action="{{ route('admin.notifications.destroy', $notification->id) }}" method="POST" class="inline" onsubmit="return confirm('¿Estás seguro de eliminar esta notificación?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900">Eliminar</button>
+                                    <button type="submit" class="text-red-600 hover:text-red-900 text-xs">Eliminar</button>
                                 </form>
                             </td>
                         </tr>
