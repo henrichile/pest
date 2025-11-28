@@ -475,13 +475,27 @@
                     </div>
                     @endif
 
-                    @if(isset($checklistData['monitoreo_firma']['technician_signature']))
-                    <div class="text-center">
-                        <h3 class="font-semibold text-gray-900 mb-2">Firma del Técnico</h3>
-                        <img src="{{ $checklistData['monitoreo_firma']['technician_signature'] }}"
-                             alt="Firma del Técnico"
-                             class="max-w-xs mx-auto border border-gray-200 rounded-lg">
-                        <p class="text-sm text-gray-600 mt-2">{{ $service->assignedUser->name ?? "Técnico" }}</p>
+                    @if(isset($checklistData['monitoreo_firma']['technician_signature']) || isset($checklistData['monitoreo_firma']['client_signature']))
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                        @if(isset($checklistData['monitoreo_firma']['technician_signature']))
+                        <div class="text-center">
+                            <h3 class="font-semibold text-gray-900 mb-2">Firma del Técnico</h3>
+                            <img src="{{ $checklistData['monitoreo_firma']['technician_signature'] }}"
+                                 alt="Firma del Técnico"
+                                 class="max-w-xs mx-auto border border-gray-200 rounded-lg">
+                            <p class="text-sm text-gray-600 mt-2">{{ $service->assignedUser->name ?? "Técnico" }}</p>
+                        </div>
+                        @endif
+
+                        @if(isset($checklistData['monitoreo_firma']['client_signature']))
+                        <div class="text-center">
+                            <h3 class="font-semibold text-gray-900 mb-2">Firma del Cliente</h3>
+                            <img src="{{ $checklistData['monitoreo_firma']['client_signature'] }}"
+                                 alt="Firma del Cliente"
+                                 class="max-w-xs mx-auto border border-gray-200 rounded-lg">
+                            <p class="text-sm text-gray-600 mt-2">{{ $checklistData['monitoreo_firma']['signer_name'] ?? 'Cliente' }}</p>
+                        </div>
+                        @endif
                     </div>
                     @endif
                 </div>
