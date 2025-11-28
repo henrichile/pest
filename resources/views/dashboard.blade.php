@@ -18,15 +18,15 @@
         flex-shrink: 0 !important;
         overflow: visible !important;
     }
-
+    
     #notification-button {
         padding: 8px !important;
     }
-
+    
     #user-menu-button {
         padding: 0 !important;
     }
-
+    
     #notification-button svg {
         width: 24px !important;
         height: 24px !important;
@@ -37,7 +37,7 @@
         display: block !important;
         flex-shrink: 0 !important;
     }
-
+    
     #user-menu-button > div {
         width: 40px !important;
         height: 40px !important;
@@ -47,12 +47,12 @@
         max-height: 40px !important;
         box-sizing: border-box !important;
     }
-
+    
     #user-menu-button > div > span {
         font-size: 14px !important;
         line-height: 1 !important;
     }
-
+    
     /* Prevenir cualquier tamaño grande que pueda venir de otros estilos */
     .notification-dropdown button,
     .user-menu-dropdown button {
@@ -63,7 +63,7 @@
         max-width: 40px !important;
         max-height: 40px !important;
     }
-
+    
     /* Iconos dentro del menú de usuario - CRÍTICO */
     .user-menu-icon {
         width: 20px !important;
@@ -74,7 +74,7 @@
         max-height: 20px !important;
         flex-shrink: 0 !important;
     }
-
+    
     /* Avatar del menú de usuario */
     .user-menu-avatar {
         width: 48px !important;
@@ -86,7 +86,7 @@
         object-fit: cover !important;
         border-radius: 50% !important;
     }
-
+    
     /* Todos los SVG dentro del menú de usuario */
     .user-menu svg {
         width: 20px !important;
@@ -96,7 +96,7 @@
         max-width: 20px !important;
         max-height: 20px !important;
     }
-
+    
     /* Asegurar que el layout del título y buscador funcione correctamente */
     @media (min-width: 768px) {
         .dashboard-header-row {
@@ -107,17 +107,17 @@
             width: 100% !important;
             max-width: 100% !important;
         }
-
+        
         .dashboard-title-container {
             flex-shrink: 0 !important;
             flex-grow: 0 !important;
         }
-
+        
         .dashboard-search-container {
             flex-shrink: 0 !important;
             flex-grow: 0 !important;
         }
-
+        
         /* Asegurar que el input del buscador tenga un ancho fijo */
         #global-search-input-desktop {
             width: 224px !important;
@@ -139,7 +139,7 @@
                 setTimeout(function() {
                     const nb = document.getElementById('notification-button');
                     const umb = document.getElementById('user-menu-button');
-
+                    
                     if (nb) {
                         nb.style.setProperty('width', '40px', 'important');
                         nb.style.setProperty('height', '40px', 'important');
@@ -149,7 +149,7 @@
                         nb.style.setProperty('max-height', '40px', 'important');
                         nb.style.setProperty('padding', '8px', 'important');
                         nb.style.setProperty('box-sizing', 'border-box', 'important');
-
+                        
                         const svg = nb.querySelector('svg');
                         if (svg) {
                             svg.style.setProperty('width', '24px', 'important');
@@ -160,7 +160,7 @@
                             svg.style.setProperty('max-height', '24px', 'important');
                         }
                     }
-
+                    
                     if (umb) {
                         umb.style.setProperty('width', '40px', 'important');
                         umb.style.setProperty('height', '40px', 'important');
@@ -170,7 +170,7 @@
                         umb.style.setProperty('max-height', '40px', 'important');
                         umb.style.setProperty('padding', '0', 'important');
                         umb.style.setProperty('box-sizing', 'border-box', 'important');
-
+                        
                         const div = umb.querySelector('div');
                         if (div) {
                             div.style.setProperty('width', '40px', 'important');
@@ -179,7 +179,7 @@
                             div.style.setProperty('min-height', '40px', 'important');
                             div.style.setProperty('max-width', '40px', 'important');
                             div.style.setProperty('max-height', '40px', 'important');
-
+                            
                             const span = div.querySelector('span');
                             if (span) {
                                 span.style.setProperty('font-size', '14px', 'important');
@@ -187,7 +187,7 @@
                             }
                         }
                     }
-
+                    
                     // Corregir iconos dentro del menú de usuario
                     const userMenuIcons = document.querySelectorAll('.user-menu-icon');
                     userMenuIcons.forEach(function(icon) {
@@ -198,7 +198,7 @@
                         icon.style.setProperty('max-width', '20px', 'important');
                         icon.style.setProperty('max-height', '20px', 'important');
                     });
-
+                    
                     // Corregir avatar del menú de usuario
                     const userMenuAvatar = document.querySelector('.user-menu-avatar');
                     if (userMenuAvatar) {
@@ -212,14 +212,14 @@
                 }, i * 10);
             }
         }
-
+        
         // Ejecutar inmediatamente
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', forceIconSizes);
         } else {
             forceIconSizes();
         }
-
+        
         // También usar MutationObserver (solo si document.body existe)
         if (typeof MutationObserver !== 'undefined' && document.body) {
             try {
@@ -240,11 +240,11 @@
         if (mainMenuButton) {
             mainMenuButton.style.display = 'none';
         }
-
+        
         // Asegurar que los iconos tengan el tamaño correcto inmediatamente
         const notificationButton = document.getElementById('notification-button');
         const userMenuButton = document.getElementById('user-menu-button');
-
+        
         if (notificationButton) {
             notificationButton.style.width = '40px';
             notificationButton.style.height = '40px';
@@ -253,7 +253,7 @@
             notificationButton.style.maxWidth = '40px';
             notificationButton.style.maxHeight = '40px';
             notificationButton.style.padding = '8px';
-
+            
             const notificationSvg = notificationButton.querySelector('svg');
             if (notificationSvg) {
                 notificationSvg.style.width = '24px';
@@ -264,7 +264,7 @@
                 notificationSvg.style.maxHeight = '24px';
             }
         }
-
+        
         if (userMenuButton) {
             userMenuButton.style.width = '40px';
             userMenuButton.style.height = '40px';
@@ -273,7 +273,7 @@
             userMenuButton.style.maxWidth = '40px';
             userMenuButton.style.maxHeight = '40px';
             userMenuButton.style.padding = '0';
-
+            
             const userMenuDiv = userMenuButton.querySelector('div');
             if (userMenuDiv) {
                 userMenuDiv.style.width = '40px';
@@ -286,12 +286,12 @@
         }
     });
 </script>
-<div class="space-y-4 sm:space-y-6 md:pt-12">
-    <!-- Header con hamburguesa, título, buscador e iconos -->
+<div class="space-y-4 sm:space-y-6 pt-3 md:pt-0">
+    <!-- Header con hamburguesa y título -->
     <div class="mb-4 sm:mb-6">
-        <!-- Primera fila móvil: Hamburguesa + Iconos (oculta en desktop) -->
-        <div class="hidden md:hidden mb-4 items-center justify-between pt-12">
-            <!-- Hamburguesa (izquierda) -->
+        <!-- Primera fila: Hamburguesa + Título (móvil) -->
+        <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
+            <!-- Hamburguesa (solo móvil) -->
             <button id="dashboard-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50;">
                 <svg id="dashboard-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -300,137 +300,42 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-
-            <!-- Iconos de notificaciones y usuario (derecha) -->
-            <div class="flex items-center gap-x-2 flex-shrink-0">
-                <!-- Notifications -->
-                <div class="relative notification-dropdown" id="notification-dropdown-mobile" style="overflow: visible;">
-                    <button type="button" class="flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 relative" title="Notificaciones" id="notification-button-mobile" style="width: 40px !important; height: 40px !important; padding: 8px !important; min-width: 40px !important; min-height: 40px !important; max-width: 40px !important; max-height: 40px !important; overflow: visible !important;">
-                        <svg style="width: 24px !important; height: 24px !important; min-width: 24px !important; min-height: 24px !important; max-width: 24px !important; max-height: 24px !important; display: block !important; flex-shrink: 0 !important;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                        </svg>
-                        @if(isset($unreadCount) && $unreadCount > 0)
-                        <span class="absolute text-white text-xs rounded-full flex items-center justify-center font-semibold" style="background: #22c55e; min-width: 20px; height: 20px; padding: 0 6px; top: -2px; right: -2px; z-index: 20; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-                            {{ $unreadCount > 99 ? '99+' : $unreadCount }}
-                        </span>
-                        @endif
-                    </button>
-
-                    <!-- Dropdown Menu -->
-                    <div class="notification-menu" id="notification-menu-mobile">
-                        <div class="notification-menu-header">
-                            <h3 style="color: #111827; font-weight: 600; font-size: 16px;">Notificaciones</h3>
-                            <a href="{{ route('admin.notification-center') ?? '#' }}" style="color: #22c55e; font-size: 14px; font-weight: 500; text-decoration: none;">Ver todas</a>
-                        </div>
-                        <div class="notification-menu-content">
-                            @if(isset($recentNotifications) && $recentNotifications->count() > 0)
-                                @foreach($recentNotifications->take(8) as $notification)
-                                    @php
-                                        $data = is_array($notification->data) ? $notification->data : json_decode($notification->data, true);
-                                        $title = $data['title'] ?? 'Notificación';
-                                        $message = $data['message'] ?? '';
-                                        $type = $data['type'] ?? 'info';
-                                        $isRead = !is_null($notification->read_at);
-                                    @endphp
-                                    <div class="notification-item {{ !$isRead ? 'unread' : '' }}" data-notification-id="{{ $notification->id }}">
-                                        <div class="notification-item-content">
-                                            <div class="notification-item-header">
-                                                <h4 style="color: #111827; font-weight: 600; font-size: 14px; margin: 0 0 4px 0;">{{ $title }}</h4>
-                                                <span class="notification-time">{{ $notification->created_at->diffForHumans() }}</span>
-                                            </div>
-                                            <p style="color: #6b7280; font-size: 13px; margin: 0; line-height: 1.4;">{{ Str::limit($message, 80) }}</p>
-                                        </div>
-                                        @if(!$isRead)
-                                        <div class="notification-dot"></div>
-                                        @endif
-                                    </div>
-                                @endforeach
-                            @else
-                                <div class="notification-empty">
-                                    <p style="color: #6b7280; font-size: 14px; text-align: center; padding: 20px;">No hay notificaciones</p>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Profile dropdown -->
-                <div class="relative user-menu-dropdown" id="user-menu-dropdown-mobile">
-                    <button type="button" class="flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors" id="user-menu-button-mobile" title="Menú de usuario" style="width: 40px !important; height: 40px !important; padding: 0 !important; min-width: 40px !important; min-height: 40px !important; max-width: 40px !important; max-height: 40px !important;">
-                        <div class="bg-green-600 rounded-full flex items-center justify-center" style="width: 40px !important; height: 40px !important; min-width: 40px !important; min-height: 40px !important; max-width: 40px !important; max-height: 40px !important;">
-                            <span class="text-white font-medium" style="font-size: 14px !important; line-height: 1 !important;">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
-                        </div>
-                    </button>
-
-                    <!-- User Menu -->
-                    <div class="user-menu" id="user-menu-mobile">
-                        <div class="user-menu-header">
-                            <div class="user-menu-profile">
-                                <img src="{{ auth()->user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name ?? 'Usuario') . '&background=22c55e&color=fff' }}" alt="{{ auth()->user()->name }}" class="user-menu-avatar">
-                                <div class="user-menu-info">
-                                    <div class="user-menu-name">{{ auth()->user()->name ?? 'Usuario' }}</div>
-                                    <div class="user-menu-email">{{ auth()->user()->email ?? '' }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="user-menu-content">
-                            <a href="{{ Route::has('admin.profile') ? route('admin.profile') : (Route::has('profile') ? route('profile') : '#') }}" class="user-menu-item">
-                                <svg class="user-menu-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                                </svg>
-                                <span>Mi Perfil</span>
-                            </a>
-                            <a href="{{ Route::has('admin.settings') ? route('admin.settings') : (Route::has('settings') ? route('settings') : '#') }}" class="user-menu-item">
-                                <svg class="user-menu-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                                <span>Configuración</span>
-                            </a>
-                            <div class="user-menu-divider"></div>
-                            <form method="POST" action="{{ route('logout') }}" class="user-menu-form">
-                                @csrf
-                                <button type="submit" class="user-menu-item user-menu-item-danger">
-                                    <svg class="user-menu-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-                                    </svg>
-                                    <span>Cerrar Sesión</span>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Fila principal desktop: Título + Buscador + Iconos (todo en la misma línea) -->
-        <div class="hidden md:flex md:items-center md:justify-between gap-4 mb-4 dashboard-header-row">
-            <!-- Título Dashboard -->
-            <div class="dashboard-title-container flex-shrink-0">
-                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 dark:text-white sm:truncate sm:tracking-tight" style="color: #111827; font-weight: 700;">
+            
+            <!-- Título -->
+            <div class="flex-1">
+                <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
                     Dashboard
                 </h2>
-                <p class="mt-1 text-xs sm:text-sm dark:text-white" style="color: #6b7280;">
+            </div>
+        </div>
+        
+        <!-- Segunda fila: Título completo (desktop) -->
+        <div class="hidden md:flex md:items-center md:justify-between gap-4">
+            <div class="min-w-0 flex-1">
+                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" style="color: #111827; font-weight: 700;">
+                    Dashboard
+                </h2>
+                <p class="mt-1 text-xs sm:text-sm" style="color: #6b7280;">
                     {{ now()->locale('es')->isoFormat('dddd, D [de] MMMM') }}
                 </p>
             </div>
-
+            
             <!-- Buscador al lado derecho del título -->
-            <div class="relative global-search-container dashboard-search-container flex-shrink-0" style="min-width: 0;">
+            <div class="relative global-search-container flex-shrink-0" style="min-width: 0;">
                 <div class="relative">
                     <svg class="absolute" style="left: 10px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #9ca3af; pointer-events: none; z-index: 1;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    <input
-                        type="text"
-                        id="global-search-input-desktop"
-                        placeholder="Buscar servicios, clientes..."
-                        class="w-56 pr-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all text-sm sm:text-base"
+                    <input 
+                        type="text" 
+                        id="global-search-input-desktop" 
+                        placeholder="Buscar servicios, clientes..." 
+                        class="w-56 pr-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all text-sm"
                         style="background: white; color: #111827; padding-left: 36px; font-size: 14px;"
                         autocomplete="off"
                     />
                 </div>
-
+                
                 <!-- Search Results Dropdown -->
                 <div id="search-results-desktop" class="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto hidden" style="box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);">
                     <div id="search-results-content-desktop" class="p-2">
@@ -438,7 +343,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <!-- Iconos de notificaciones y usuario (desktop) -->
             <div class="flex items-center gap-x-2 sm:gap-x-4 flex-shrink-0">
                 <!-- Notifications -->
@@ -453,7 +358,7 @@
                         </span>
                         @endif
                     </button>
-
+                    
                     <!-- Dropdown Menu -->
                     <div class="notification-menu" id="notification-menu">
                         <div class="notification-menu-header">
@@ -499,12 +404,12 @@
                             <span class="text-white font-medium" style="font-size: 14px !important; line-height: 1 !important;">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
                         </div>
                     </button>
-
+                    
                     <!-- User Menu -->
                     <div class="user-menu" id="user-menu">
                         <div class="user-menu-header">
                             <div class="user-menu-profile">
-                                <img class="user-menu-avatar" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQ?:jEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="{{ auth()->user()->name ?? 'Usuario' }}" style="width: 48px !important; height: 48px !important; min-width: 48px !important; min-height: 48px !important; max-width: 48px !important; max-height: 48px !important; object-fit: cover !important; border-radius: 50% !important;">
+                                <img src="{{ auth()->user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name ?? 'Usuario') . '&background=22c55e&color=fff' }}" alt="{{ auth()->user()->name }}" class="user-menu-avatar">
                                 <div class="user-menu-info">
                                     <div class="user-menu-name">{{ auth()->user()->name ?? 'Usuario' }}</div>
                                     <div class="user-menu-email">{{ auth()->user()->email ?? '' }}</div>
@@ -512,23 +417,24 @@
                             </div>
                         </div>
                         <div class="user-menu-content">
-                            <a href="{{ route('profile') }}" class="user-menu-item">
-                                <svg class="user-menu-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px !important; height: 20px !important; min-width: 20px !important; min-height: 20px !important; max-width: 20px !important; max-height: 20px !important;">
+                            <a href="{{ Route::has('admin.profile') ? route('admin.profile') : (Route::has('profile') ? route('profile') : '#') }}" class="user-menu-item">
+                                <svg class="user-menu-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                                 </svg>
                                 <span>Mi Perfil</span>
                             </a>
                             <a href="{{ Route::has('admin.settings') ? route('admin.settings') : (Route::has('settings') ? route('settings') : '#') }}" class="user-menu-item">
-                                <svg class="user-menu-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px !important; height: 20px !important; min-width: 20px !important; min-height: 20px !important; max-width: 20px !important; max-height: 20px !important;">
+                                <svg class="user-menu-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                                 <span>Configuración</span>
                             </a>
-                            <form method="POST" action="{{ route('logout') }}">
+                            <div class="user-menu-divider"></div>
+                            <form method="POST" action="{{ route('logout') }}" class="user-menu-form">
                                 @csrf
-                                <button type="submit" class="user-menu-item w-full text-left">
-                                    <svg class="user-menu-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px !important; height: 20px !important; min-width: 20px !important; min-height: 20px !important; max-width: 20px !important; max-height: 20px !important;">
+                                <button type="submit" class="user-menu-item user-menu-item-danger">
+                                    <svg class="user-menu-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
                                     </svg>
                                     <span>Cerrar Sesión</span>
@@ -539,35 +445,25 @@
                 </div>
             </div>
         </div>
-
-        <!-- Fila móvil: Título + Buscador -->
-        <div class="md:hidden flex flex-col gap-4">
-            <!-- Título Dashboard -->
-            <div>
-                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 dark:text-white sm:truncate sm:tracking-tight" style="color: #111827; font-weight: 700;">
-                    Dashboard
-                </h2>
-                <p class="mt-1 text-xs sm:text-sm dark:text-white" style="color: #6b7280;">
-                    {{ now()->locale('es')->isoFormat('dddd, D [de] MMMM') }}
-                </p>
-            </div>
-
+        
+        <!-- Fila móvil: Buscador (debajo del título) -->
+        <div class="md:hidden flex flex-col gap-4 mb-4">
             <!-- Buscador móvil (debajo del título) -->
             <div class="relative global-search-container w-full" style="min-width: 0;">
                 <div class="relative">
                     <svg class="absolute" style="left: 10px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #9ca3af; pointer-events: none; z-index: 1;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    <input
-                        type="text"
-                        id="global-search-input-mobile"
-                        placeholder="Buscar servicios, clientes..."
+                    <input 
+                        type="text" 
+                        id="global-search-input-mobile" 
+                        placeholder="Buscar servicios, clientes..." 
                         class="w-full pr-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all text-sm sm:text-base"
                         style="background: white; color: #111827; padding-left: 36px; font-size: 14px;"
                         autocomplete="off"
                     />
                 </div>
-
+                
                 <!-- Search Results Dropdown -->
                 <div id="search-results-mobile" class="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto hidden" style="box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);">
                     <div id="search-results-content-mobile" class="p-2">
@@ -577,12 +473,12 @@
             </div>
         </div>
     </div>
-
+    
     <style>
                 .notification-dropdown {
                     position: relative;
                 }
-
+                
                 /* Área invisible de transición para facilitar el movimiento del mouse */
                 .notification-dropdown::before {
                     content: '';
@@ -593,7 +489,7 @@
                     height: 12px;
                     z-index: 999;
                 }
-
+                
                 .notification-menu {
                     position: absolute;
                     top: calc(100% + 12px);
@@ -611,20 +507,20 @@
                     transform: translateY(-10px);
                     transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
                 }
-
+                
                 @media (max-width: 640px) {
                     .notification-menu {
                         width: calc(100vw - 1rem);
                         right: 0.5rem;
                     }
                 }
-
+                
                 .notification-menu.show {
                     opacity: 1;
                     visibility: visible;
                     transform: translateY(0);
                 }
-
+                
                 .notification-menu-header {
                     display: flex;
                     justify-content: space-between;
@@ -633,12 +529,12 @@
                     border-bottom: 1px solid #e5e7eb;
                     background: #f9fafb;
                 }
-
+                
                 .notification-menu-content {
                     max-height: 400px;
                     overflow-y: auto;
                 }
-
+                
                 .notification-item {
                     display: flex;
                     align-items: flex-start;
@@ -648,38 +544,38 @@
                     position: relative;
                     cursor: pointer;
                 }
-
+                
                 .notification-item:hover {
                     background: #f9fafb;
                 }
-
+                
                 .notification-item.unread {
                     background: #f0fdf4;
                 }
-
+                
                 .notification-item.unread:hover {
                     background: #dcfce7;
                 }
-
+                
                 .notification-item-content {
                     flex: 1;
                     min-width: 0;
                 }
-
+                
                 .notification-item-header {
                     display: flex;
                     justify-content: space-between;
                     align-items: flex-start;
                     margin-bottom: 4px;
                 }
-
+                
                 .notification-time {
                     color: #9ca3af;
                     font-size: 12px;
                     white-space: nowrap;
                     margin-left: 12px;
                 }
-
+                
                 .notification-dot {
                     width: 8px;
                     height: 8px;
@@ -689,35 +585,35 @@
                     margin-top: 6px;
                     flex-shrink: 0;
                 }
-
+                
                 .notification-empty {
                     padding: 40px 20px;
                     text-align: center;
                 }
-
+                
                 /* Scrollbar styling */
                 .notification-menu-content::-webkit-scrollbar {
                     width: 6px;
                 }
-
+                
                 .notification-menu-content::-webkit-scrollbar-track {
                     background: #f1f1f1;
                 }
-
+                
                 .notification-menu-content::-webkit-scrollbar-thumb {
                     background: #cbd5e1;
                     border-radius: 3px;
                 }
-
+                
                 .notification-menu-content::-webkit-scrollbar-thumb:hover {
                     background: #94a3b8;
                 }
-
+                
                 /* Estilos del menú de usuario */
                 .user-menu-dropdown {
                     position: relative;
                 }
-
+                
                 /* Área invisible de transición para facilitar el movimiento del mouse */
                 .user-menu-dropdown::before {
                     content: '';
@@ -728,7 +624,7 @@
                     height: 12px;
                     z-index: 999;
                 }
-
+                
                 .user-menu {
                     position: absolute !important;
                     top: calc(100% + 12px) !important;
@@ -746,32 +642,32 @@
                     transform: translateY(-10px) !important;
                     transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease !important;
                 }
-
+                
                 @media (max-width: 640px) {
                     .user-menu {
                         width: calc(100vw - 1rem) !important;
                         right: 0.5rem !important;
                     }
                 }
-
+                
                 .user-menu.show {
                     opacity: 1 !important;
                     visibility: visible !important;
                     transform: translateY(0) !important;
                 }
-
+                
                 .user-menu-header {
                     padding: 20px !important;
                     border-bottom: 1px solid #e5e7eb !important;
                     background: #f9fafb !important;
                 }
-
+                
                 .user-menu-profile {
                     display: flex !important;
                     align-items: center !important;
                     gap: 12px !important;
                 }
-
+                
                 .user-menu-avatar {
                     width: 48px !important;
                     height: 48px !important;
@@ -783,12 +679,12 @@
                     border-radius: 50% !important;
                     flex-shrink: 0 !important;
                 }
-
+                
                 .user-menu-info {
                     flex: 1 !important;
                     min-width: 0 !important;
                 }
-
+                
                 .user-menu-name {
                     font-size: 15px !important;
                     font-weight: 600 !important;
@@ -798,7 +694,7 @@
                     overflow: hidden !important;
                     text-overflow: ellipsis !important;
                 }
-
+                
                 .user-menu-email {
                     font-size: 13px !important;
                     color: #6b7280 !important;
@@ -806,11 +702,11 @@
                     overflow: hidden !important;
                     text-overflow: ellipsis !important;
                 }
-
+                
                 .user-menu-content {
                     padding: 8px 0 !important;
                 }
-
+                
                 .user-menu-item {
                     display: flex !important;
                     align-items: center !important;
@@ -827,20 +723,20 @@
                     width: 100% !important;
                     text-align: left !important;
                 }
-
+                
                 .user-menu-item:hover {
                     background: #f9fafb !important;
                 }
-
+                
                 .user-menu-item-danger {
                     color: #ef4444 !important;
                 }
-
+                
                 .user-menu-item-danger:hover {
                     background: #fef2f2 !important;
                     color: #dc2626 !important;
                 }
-
+                
                 .user-menu-icon {
                     width: 20px !important;
                     height: 20px !important;
@@ -852,56 +748,56 @@
                     color: currentColor !important;
                 }
             </style>
-
+            
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     const dropdown = document.getElementById('notification-dropdown');
                     const button = document.getElementById('notification-button');
                     const menu = document.getElementById('notification-menu');
-
+                    
                     if (dropdown && button && menu) {
                         let hideTimeout = null;
                         let showTimeout = null;
-
+                        
                         // Función para mostrar el menú
                         function showMenu() {
                             if (hideTimeout) {
                                 clearTimeout(hideTimeout);
                                 hideTimeout = null;
                             }
-
+                            
                             if (showTimeout) {
                                 clearTimeout(showTimeout);
                             }
-
+                            
                             showTimeout = setTimeout(function() {
                                 menu.classList.add('show');
                                 showTimeout = null;
                             }, 50); // Pequeño delay para suavizar la transición
                         }
-
+                        
                         // Función para ocultar el menú
                         function hideMenu() {
                             if (showTimeout) {
                                 clearTimeout(showTimeout);
                                 showTimeout = null;
                             }
-
+                            
                             if (hideTimeout) {
                                 clearTimeout(hideTimeout);
                             }
-
+                            
                             // Delay antes de ocultar para permitir movimiento del mouse
                             hideTimeout = setTimeout(function() {
                                 menu.classList.remove('show');
                                 hideTimeout = null;
                             }, 200); // 200ms de delay
                         }
-
+                        
                         // Mostrar cuando el mouse entra en el dropdown o el menú
                         dropdown.addEventListener('mouseenter', showMenu);
                         menu.addEventListener('mouseenter', showMenu);
-
+                        
                         // Ocultar cuando el mouse sale del dropdown o el menú
                         dropdown.addEventListener('mouseleave', function(e) {
                             // Solo ocultar si el mouse no va hacia el menú
@@ -909,14 +805,14 @@
                                 hideMenu();
                             }
                         });
-
+                        
                         menu.addEventListener('mouseleave', function(e) {
                             // Solo ocultar si el mouse no va hacia el botón
                             if (!dropdown.contains(e.relatedTarget)) {
                                 hideMenu();
                             }
                         });
-
+                        
                         // Mark as read on click
                         const notificationItems = document.querySelectorAll('.notification-item');
                         notificationItems.forEach(item => {
@@ -957,63 +853,63 @@
                     }
                 });
             </script>
-
+            
             <script>
                 // Menú de usuario
                 document.addEventListener('DOMContentLoaded', function() {
                     const userDropdown = document.getElementById('user-menu-dropdown');
                     const userButton = document.getElementById('user-menu-button');
                     const userMenu = document.getElementById('user-menu');
-
+                    
                     if (userDropdown && userButton && userMenu) {
                         let hideTimeout = null;
                         let showTimeout = null;
-
+                        
                         // Función para mostrar el menú
                         function showUserMenu() {
                             if (hideTimeout) {
                                 clearTimeout(hideTimeout);
                                 hideTimeout = null;
                             }
-
+                            
                             if (showTimeout) {
                                 clearTimeout(showTimeout);
                             }
-
+                            
                             showTimeout = setTimeout(function() {
                                 userMenu.classList.add('show');
                                 showTimeout = null;
                             }, 50);
                         }
-
+                        
                         // Función para ocultar el menú
                         function hideUserMenu() {
                             if (showTimeout) {
                                 clearTimeout(showTimeout);
                                 showTimeout = null;
                             }
-
+                            
                             if (hideTimeout) {
                                 clearTimeout(hideTimeout);
                             }
-
+                            
                             hideTimeout = setTimeout(function() {
                                 userMenu.classList.remove('show');
                                 hideTimeout = null;
                             }, 200);
                         }
-
+                        
                         // Mostrar cuando el mouse entra en el dropdown o el menú
                         userDropdown.addEventListener('mouseenter', showUserMenu);
                         userMenu.addEventListener('mouseenter', showUserMenu);
-
+                        
                         // Ocultar cuando el mouse sale del dropdown o el menú
                         userDropdown.addEventListener('mouseleave', function(e) {
                             if (!userMenu.contains(e.relatedTarget)) {
                                 hideUserMenu();
                             }
                         });
-
+                        
                         userMenu.addEventListener('mouseleave', function(e) {
                             if (!userDropdown.contains(e.relatedTarget)) {
                                 hideUserMenu();
@@ -1022,7 +918,7 @@
                     }
                 });
             </script>
-
+            
             <script>
                 // Funcionalidad para botones móviles de notificaciones y usuario
                 document.addEventListener('DOMContentLoaded', function() {
@@ -1030,11 +926,11 @@
                     const mobileNotificationDropdown = document.getElementById('notification-dropdown-mobile');
                     const mobileNotificationButton = document.getElementById('notification-button-mobile');
                     const mobileNotificationMenu = document.getElementById('notification-menu-mobile');
-
+                    
                     if (mobileNotificationDropdown && mobileNotificationButton && mobileNotificationMenu) {
                         let hideTimeout = null;
                         let showTimeout = null;
-
+                        
                         function showMobileNotificationMenu() {
                             if (hideTimeout) {
                                 clearTimeout(hideTimeout);
@@ -1048,7 +944,7 @@
                                 showTimeout = null;
                             }, 50);
                         }
-
+                        
                         function hideMobileNotificationMenu() {
                             if (showTimeout) {
                                 clearTimeout(showTimeout);
@@ -1062,7 +958,7 @@
                                 hideTimeout = null;
                             }, 200);
                         }
-
+                        
                         mobileNotificationButton.addEventListener('click', function(e) {
                             e.stopPropagation();
                             if (mobileNotificationMenu.classList.contains('show')) {
@@ -1071,23 +967,23 @@
                                 showMobileNotificationMenu();
                             }
                         });
-
+                        
                         document.addEventListener('click', function(e) {
                             if (!mobileNotificationDropdown.contains(e.target)) {
                                 hideMobileNotificationMenu();
                             }
                         });
                     }
-
+                    
                     // Usuario móvil
                     const mobileUserDropdown = document.getElementById('user-menu-dropdown-mobile');
                     const mobileUserButton = document.getElementById('user-menu-button-mobile');
                     const mobileUserMenu = document.getElementById('user-menu-mobile');
-
+                    
                     if (mobileUserDropdown && mobileUserButton && mobileUserMenu) {
                         let hideTimeout = null;
                         let showTimeout = null;
-
+                        
                         function showMobileUserMenu() {
                             if (hideTimeout) {
                                 clearTimeout(hideTimeout);
@@ -1101,7 +997,7 @@
                                 showTimeout = null;
                             }, 50);
                         }
-
+                        
                         function hideMobileUserMenu() {
                             if (showTimeout) {
                                 clearTimeout(showTimeout);
@@ -1115,7 +1011,7 @@
                                 hideTimeout = null;
                             }, 200);
                         }
-
+                        
                         mobileUserButton.addEventListener('click', function(e) {
                             e.stopPropagation();
                             if (mobileUserMenu.classList.contains('show')) {
@@ -1124,7 +1020,7 @@
                                 showMobileUserMenu();
                             }
                         });
-
+                        
                         document.addEventListener('click', function(e) {
                             if (!mobileUserDropdown.contains(e.target)) {
                                 hideMobileUserMenu();
@@ -1283,7 +1179,7 @@
                         <span class="text-xs dark:text-white" style="color: #6b7280;">Otros Servicios</span>
                                         </div>
                                     </div>
-
+                
                 <!-- Resumen por Tipo de Servicio -->
                 <div class="mt-6">
                     <h4 class="text-base font-semibold mb-4 dark:text-white" style="color: #111827;">RESUMEN POR TIPO DE SERVICIO</h4>
@@ -1373,45 +1269,13 @@
                         Alertas de Stock
                     </h3>
                     <p class="text-4xl font-bold mb-2" style="color: #ef4444;">{{ $stats['low_stock_alerts'] ?? 0 }}</p>
-                    <p class="text-sm mb-3 dark:text-white" style="color: #6b7280;">Productos con stock bajo</p>
-                    
+                    <p class="text-sm mb-2 dark:text-white" style="color: #6b7280;">Productos con stock bajo</p>
                     @if(($stats['low_stock_alerts'] ?? 0) > 0)
-                        <div class="mt-4 space-y-2">
-                            @foreach($lowStockProducts ?? [] as $product)
-                                <div class="flex items-center justify-between py-2 px-3 rounded-lg" style="background: #fef2f2; border: 1px solid #fee2e2;">
-                                    <div class="flex items-center gap-2 flex-1 min-w-0">
-                                        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #ef4444;">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
-                                        </svg>
-                                        <span class="text-sm font-medium truncate" style="color: #991b1b;" title="{{ $product->name }}">{{ $product->name }}</span>
-                                    </div>
-                                    <span class="text-xs font-bold px-2 py-1 rounded" style="background: #dc2626; color: white; min-width: 35px; text-align: center;">{{ $product->stock }}</span>
-                                </div>
-                            @endforeach
-                        </div>
-                        
-                        <a href="{{ route('admin.products.index') ?? '#' }}" class="mt-4 inline-flex items-center justify-center px-4 py-2 rounded-lg transition-colors hover:opacity-90 btn-white-text" style="background: #ef4444 !important; white-space: nowrap; font-size: 0.875rem; font-weight: 500;">
-                            <span class="btn-white-text">Ver todos los productos</span>
-                            <svg class="ml-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" style="width: 1rem; height: 1rem;">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" stroke="#ffffff" />
-                            </svg>
-                        </a>
-                        <style>
-                            .btn-white-text,
-                            .btn-white-text span,
-                            .btn-white-text svg {
-                                color: #ffffff !important;
-                            }
-                            .btn-white-text svg path {
-                                stroke: #ffffff !important;
-                            }
-                        </style>
-                    @else
-                        <p class="text-xs flex items-center gap-1 mt-2" style="color: #10b981;">
+                        <p class="text-xs flex items-center gap-1" style="color: #f59e0b;">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                             </svg>
-                            Stock en niveles adecuados
+                            Requiere atención
                         </p>
                     @endif
                     </div>
@@ -1423,7 +1287,7 @@
                 <div class="p-5">
                     <h3 class="text-base font-semibold mb-4 dark:text-white" style="color: #111827;">Acciones Rápidas</h3>
                     <div class="space-y-3">
-                        <a href="{{ Route::has('admin.services.create') ? route('admin.services.create') : '#' }}" class="relative rounded-lg bg-white border dark:border-gray-700 px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" style="border: 1px solid #e5e7eb !important;">
+                        <a href="{{ route('admin.services.create') ?? '#' }}" class="relative rounded-lg bg-white border dark:border-gray-700 px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" style="border: 1px solid #e5e7eb !important;">
                     <div class="flex-shrink-0">
                                 <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: #ef4444;">
                                     <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -1438,7 +1302,7 @@
                     </div>
                 </a>
 
-                        <a href="{{ Route::has('admin.clients.create') ? route('admin.clients.create') : (Route::has('clients.create') ? route('clients.create') : '#') }}" class="relative rounded-lg bg-white border dark:border-gray-700 px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" style="border: 1px solid #e5e7eb !important;">
+                        <a href="{{ route('admin.clients.create') ?? route('clients.create') }}" class="relative rounded-lg bg-white border dark:border-gray-700 px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" style="border: 1px solid #e5e7eb !important;">
                     <div class="flex-shrink-0">
                                 <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: #22c55e;">
                                     <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -1453,7 +1317,7 @@
                     </div>
                 </a>
 
-                        <a href="{{ Route::has('admin.reports.index') ? route('admin.reports.index') : '#' }}" class="relative rounded-lg bg-white border dark:border-gray-700 px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" style="border: 1px solid #e5e7eb !important;">
+                        <a href="{{ route('admin.statistics') ?? '#' }}" class="relative rounded-lg bg-white border dark:border-gray-700 px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" style="border: 1px solid #e5e7eb !important;">
                     <div class="flex-shrink-0">
                                 <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: #3b82f6;">
                                     <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -1478,7 +1342,7 @@
     <div class="mb-6">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold dark:text-white" style="color: #111827;">Servicios Recientes</h3>
-            <a href="{{ Route::has('admin.services.index') ? route('admin.services.index') : '#' }}" class="text-sm font-medium" style="color: #22c55e;">Ver todos</a>
+            <a href="{{ route('admin.services.index') ?? '#' }}" class="text-sm font-medium" style="color: #22c55e;">Ver todos</a>
         </div>
         <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
             <div class="p-6">
@@ -1543,7 +1407,7 @@
         // Get chart data from PHP
         const chartLabels = @json($stats['chart_labels'] ?? []);
         const chartDatasets = @json($stats['chart_datasets'] ?? []);
-
+        
         // Ensure canvas fills container - wait for DOM to be ready
         setTimeout(() => {
             const container = ctx.parentElement;
@@ -1554,7 +1418,7 @@
                 ctx.style.height = containerHeight + 'px';
             }
         }, 100);
-
+        
         // Calculate max value for Y axis
         let maxValue = 1;
         chartDatasets.forEach(dataset => {
@@ -1562,19 +1426,19 @@
             if (datasetMax > maxValue) maxValue = datasetMax;
         });
         const yAxisMax = Math.ceil(maxValue * 1.1);
-
+        
         // Get current theme
         const isDark = document.documentElement.classList.contains('dark');
         const gridColor = isDark ? '#374151' : '#e5e7eb';
         const tickColor = isDark ? '#9ca3af' : '#6b7280';
         const chartBgColor = isDark ? '#1f2937' : '#f9fafb';
-
+        
         // Update chart container background
         const chartContainer = document.getElementById('chart-container');
         if (chartContainer) {
             chartContainer.style.background = chartBgColor;
         }
-
+        
         // Update colors on theme change
         const darkModeObserver = new MutationObserver(() => {
             const newIsDark = document.documentElement.classList.contains('dark');
@@ -1582,23 +1446,23 @@
             const newTickColor = newIsDark ? '#9ca3af' : '#6b7280';
             const newChartBgColor = newIsDark ? '#1f2937' : '#f9fafb';
             const newTextColor = newIsDark ? '#e5e7eb' : '#111827';
-
+            
             if (chartContainer) {
                 chartContainer.style.background = newChartBgColor;
             }
-
+            
             // Update statistics text colors
             const statisticsTexts = document.querySelectorAll('.statistics-text, .statistics-number, #statistics-title');
             statisticsTexts.forEach(el => {
                 el.style.color = newTextColor;
             });
-
+            
             // Update legend text colors
             const legendTexts = document.querySelectorAll('.mt-4.flex span');
             legendTexts.forEach(el => {
                 el.style.color = newIsDark ? '#9ca3af' : '#6b7280';
             });
-
+            
             if (window.chartInstance) {
                 window.chartInstance.options.scales.x.grid.color = newGridColor;
                 window.chartInstance.options.scales.x.ticks.color = newTickColor;
@@ -1611,7 +1475,7 @@
             attributes: true,
             attributeFilter: ['class']
         });
-
+        
         // Manejar cambio de período
         const periodFilter = document.getElementById('periodFilter');
         if (periodFilter) {
@@ -1622,7 +1486,7 @@
                 window.location.href = url.toString();
             });
         }
-
+        
         window.chartInstance = new Chart(ctx, {
         type: 'line',
         data: {
@@ -1724,7 +1588,7 @@
             }
         });
     }
-
+    
     // Global Search Functionality
     (function() {
         // Obtener inputs de búsqueda (desktop y móvil)
@@ -1736,7 +1600,7 @@
         const searchResultsMobile = document.getElementById('search-results-mobile');
         const searchResultsContentDesktop = document.getElementById('search-results-content-desktop');
         const searchResultsContentMobile = document.getElementById('search-results-content-mobile');
-
+        
         // Función para obtener los elementos activos según el tamaño de pantalla
         function getActiveSearchElements() {
             if (window.innerWidth >= 768) {
@@ -1753,14 +1617,14 @@
                 };
             }
         }
-
+        
         const searchResults = searchResultsDesktop || searchResultsMobile;
         const searchResultsContent = searchResultsContentDesktop || searchResultsContentMobile;
         let searchTimeout = null;
         let currentSearch = '';
-
+        
         if (!searchInput) return;
-
+        
         // Iconos por tipo
         const typeIcons = {
             'service': '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>',
@@ -1769,7 +1633,7 @@
             'pest': '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>',
             'technician': '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>'
         };
-
+        
         const typeLabels = {
             'service': 'Servicio',
             'client': 'Cliente',
@@ -1777,23 +1641,23 @@
             'pest': 'Plaga',
             'technician': 'Técnico'
         };
-
+        
         function renderResults(data, contentContainer) {
             if (!contentContainer) {
                 const active = getActiveSearchElements();
                 contentContainer = active.content;
             }
-
+            
             if (!data || Object.keys(data).length === 0) {
                 if (contentContainer) {
                     contentContainer.innerHTML = '<div class="p-4 text-center text-gray-500">No se encontraron resultados</div>';
                 }
                 return;
             }
-
+            
             let html = '';
             let hasResults = false;
-
+            
             // Servicios
             if (data.services && data.services.length > 0) {
                 hasResults = true;
@@ -1809,7 +1673,7 @@
                 });
                 html += '</div>';
             }
-
+            
             // Clientes
             if (data.clients && data.clients.length > 0) {
                 hasResults = true;
@@ -1825,7 +1689,7 @@
                 });
                 html += '</div>';
             }
-
+            
             // Productos
             if (data.products && data.products.length > 0) {
                 hasResults = true;
@@ -1841,7 +1705,7 @@
                 });
                 html += '</div>';
             }
-
+            
             // Plagas
             if (data.pests && data.pests.length > 0) {
                 hasResults = true;
@@ -1857,7 +1721,7 @@
                 });
                 html += '</div>';
             }
-
+            
             // Técnicos
             if (data.technicians && data.technicians.length > 0) {
                 hasResults = true;
@@ -1873,32 +1737,32 @@
                 });
                 html += '</div>';
             }
-
+            
             if (!hasResults) {
                 html = '<div class="p-4 text-center text-gray-500">No se encontraron resultados</div>';
             }
-
+            
             if (contentContainer) {
                 contentContainer.innerHTML = html;
             }
         }
-
+        
         function performSearch(query, resultsContainer, contentContainer) {
             if (!resultsContainer || !contentContainer) {
                 const active = getActiveSearchElements();
                 resultsContainer = active.results;
                 contentContainer = active.content;
             }
-
+            
             if (query.length < 2) {
                 if (resultsContainer) {
                     resultsContainer.classList.add('hidden');
                 }
                 return;
             }
-
+            
             currentSearch = query;
-
+            
             fetch(`{{ route('admin.search') }}?q=${encodeURIComponent(query)}`, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
@@ -1927,39 +1791,39 @@
                 }
             });
         }
-
+        
         // Función para inicializar event listeners en un input
         function initializeSearchListeners(input, results, content) {
             if (!input || !results || !content) return;
-
+            
             input.addEventListener('input', function(e) {
                 const query = e.target.value.trim();
-
+                
                 clearTimeout(searchTimeout);
-
+                
                 if (query.length < 2) {
                     results.classList.add('hidden');
                     return;
                 }
-
+                
                 searchTimeout = setTimeout(() => {
                     performSearch(query, results, content);
                 }, 300);
             });
-
+            
             input.addEventListener('focus', function() {
                 if (input.value.trim().length >= 2 && !results.classList.contains('hidden')) {
                     results.classList.remove('hidden');
                 }
             });
-
+            
             // Cerrar resultados al hacer clic fuera
             document.addEventListener('click', function(e) {
                 if (!e.target.closest('.global-search-container')) {
                     results.classList.add('hidden');
                 }
             });
-
+            
             // Manejar tecla Escape
             input.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
@@ -1968,16 +1832,16 @@
                 }
             });
         }
-
+        
         // Inicializar listeners para desktop y móvil
         if (searchInputDesktop && searchResultsDesktop && searchResultsContentDesktop) {
             initializeSearchListeners(searchInputDesktop, searchResultsDesktop, searchResultsContentDesktop);
         }
-
+        
         if (searchInputMobile && searchResultsMobile && searchResultsContentMobile) {
             initializeSearchListeners(searchInputMobile, searchResultsMobile, searchResultsContentMobile);
         }
-
+        
         // Actualizar listeners al cambiar tamaño de ventana
         let resizeTimeout;
         window.addEventListener('resize', function() {
@@ -1990,32 +1854,32 @@
             }, 250);
         });
     })();
-
+    
     // Dashboard Mobile Menu Button
     (function() {
         function initDashboardMenu() {
             const dashboardMenuButton = document.getElementById('dashboard-mobile-menu-button');
             const sidebar = document.getElementById('sidebar');
             const mobileOverlay = document.getElementById('mobile-overlay');
-
+            
             if (!dashboardMenuButton) {
                 console.warn('Botón de menú móvil del dashboard no encontrado');
                 setTimeout(initDashboardMenu, 100);
                 return;
             }
-
+            
             if (!sidebar) {
                 console.error('Sidebar no encontrado');
                 return;
             }
-
+            
             function openMobileMenu() {
                 console.log('Abriendo menú móvil...');
-
+                
                 // Primero, remover todas las clases que puedan estar afectando
                 sidebar.classList.remove('-translate-x-full');
                 sidebar.classList.add('translate-x-0');
-
+                
                 // Crear un style tag para sobrescribir el CSS crítico
                 let styleTag = document.getElementById('mobile-menu-override-style');
                 if (!styleTag) {
@@ -2037,7 +1901,7 @@
                         height: 100vh !important;
                     }
                 `;
-
+                
                 // También aplicar estilos inline como respaldo
                 sidebar.style.cssText = `
                     display: flex !important;
@@ -2051,7 +1915,7 @@
                     width: 288px !important;
                     height: 100vh !important;
                 `;
-
+                
                 // Verificar estilos aplicados
                 const computedStyle = window.getComputedStyle(sidebar);
                 console.log('Transform aplicado:', computedStyle.transform);
@@ -2060,7 +1924,7 @@
                 console.log('Z-index:', computedStyle.zIndex);
                 console.log('Left:', computedStyle.left);
                 console.log('Width:', computedStyle.width);
-
+                
                 // Mostrar overlay
                 if (mobileOverlay) {
                     mobileOverlay.classList.remove('hidden');
@@ -2070,75 +1934,75 @@
                         z-index: 9998 !important;
                     `;
                 }
-
+                
                 // Cambiar iconos
                 const menuIcon = document.getElementById('dashboard-menu-icon');
                 const closeIcon = document.getElementById('dashboard-close-icon');
                 if (menuIcon) menuIcon.classList.add('hidden');
                 if (closeIcon) closeIcon.classList.remove('hidden');
-
+                
                 // Bloquear scroll del body
                 document.body.style.overflow = 'hidden';
-
+                
                 console.log('Menú móvil abierto - Sidebar visible:', sidebar.classList.contains('translate-x-0'));
             }
-
+            
             function closeMobileMenu() {
                 console.log('Cerrando menú móvil...');
                 // Agregar clase que oculta el sidebar
                 sidebar.classList.add('-translate-x-full');
                 // Remover clase que muestra el sidebar
                 sidebar.classList.remove('translate-x-0');
-
+                
                 // Remover el style tag de override
                 const styleTag = document.getElementById('mobile-menu-override-style');
                 if (styleTag) {
                     styleTag.remove();
                 }
-
+                
                 // Asegurar que el sidebar esté oculto
                 sidebar.style.cssText = `
                     transform: translateX(-100%) !important;
                 `;
-
+                
                 // Ocultar overlay
                 if (mobileOverlay) {
                     mobileOverlay.classList.add('hidden');
                     mobileOverlay.style.display = 'none';
                 }
-
+                
                 // Cambiar iconos
                 const menuIcon = document.getElementById('dashboard-menu-icon');
                 const closeIcon = document.getElementById('dashboard-close-icon');
                 if (menuIcon) menuIcon.classList.remove('hidden');
                 if (closeIcon) closeIcon.classList.add('hidden');
-
+                
                 // Restaurar scroll del body
                 document.body.style.overflow = '';
-
+                
                 console.log('Menú móvil cerrado');
             }
-
+            
             function toggleMobileMenu() {
                 // Verificar si el menú está abierto
                 const computedStyle = window.getComputedStyle(sidebar);
                 const transform = computedStyle.transform;
-                const isOpen = sidebar.classList.contains('translate-x-0') ||
-                              transform === 'matrix(1, 0, 0, 1, 0, 0)' ||
+                const isOpen = sidebar.classList.contains('translate-x-0') || 
+                              transform === 'matrix(1, 0, 0, 1, 0, 0)' || 
                               transform === 'none' ||
                               sidebar.style.transform === 'translateX(0)' ||
                               sidebar.style.transform.includes('translateX(0)');
                 console.log('Estado del menú:', isOpen ? 'abierto' : 'cerrado');
                 console.log('Transform computed:', transform);
                 console.log('Transform style:', sidebar.style.transform);
-
+                
                 if (isOpen) {
                     closeMobileMenu();
                 } else {
                     openMobileMenu();
                 }
             }
-
+            
             // Event listener para el botón
             dashboardMenuButton.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -2146,14 +2010,14 @@
                 console.log('Botón de menú móvil clickeado');
                 toggleMobileMenu();
             });
-
+            
             // Event listener para el overlay (cerrar al hacer clic fuera)
             if (mobileOverlay) {
                 mobileOverlay.addEventListener('click', function() {
                     closeMobileMenu();
                 });
             }
-
+            
             // Cerrar menú al hacer clic en un enlace del sidebar (solo en móvil)
             const sidebarLinks = sidebar.querySelectorAll('a');
             sidebarLinks.forEach(link => {
@@ -2164,7 +2028,7 @@
                 });
             });
         }
-
+        
         // Inicializar cuando el DOM esté listo
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initDashboardMenu);
@@ -2172,14 +2036,14 @@
             initDashboardMenu();
         }
     })();
-
+    
     // Actualizar colores en modo oscuro
     (function() {
         function updateDarkModeColors() {
-            const isDark = document.documentElement.classList.contains('dark') ||
+            const isDark = document.documentElement.classList.contains('dark') || 
                           localStorage.getItem('darkMode') === 'true' ||
                           (localStorage.getItem('darkMode') === null && window.matchMedia('(prefers-color-scheme: dark)').matches);
-
+            
             if (isDark) {
                 // Actualizar todos los elementos con estilos inline de color
                 const elementsToUpdate = document.querySelectorAll('[style*="color: #111827"], [style*="color: #6b7280"]');
@@ -2192,7 +2056,7 @@
                         }
                     }
                 });
-
+                
                 // Actualizar elementos con clases específicas
                 const statisticsTexts = document.querySelectorAll('.statistics-text');
                 const statisticsNumbers = document.querySelectorAll('.statistics-number');
@@ -2208,10 +2072,10 @@
                 });
             }
         }
-
+        
         // Ejecutar al cargar
         updateDarkModeColors();
-
+        
         // Observar cambios en el modo oscuro
         const observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
@@ -2220,12 +2084,12 @@
                 }
             });
         });
-
+        
         observer.observe(document.documentElement, {
             attributes: true,
             attributeFilter: ['class']
         });
-
+        
         // También escuchar cambios en localStorage
         window.addEventListener('storage', function(e) {
             if (e.key === 'darkMode') {
