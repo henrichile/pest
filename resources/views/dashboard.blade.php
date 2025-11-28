@@ -1873,24 +1873,77 @@
                 return;
             }
             
-            function openMobileMenu() {
-                console.log('Abriendo menú móvil...');
+            function toggleMobileMenu() {
+                // Verificar si el menú está abierto usando múltiples métodos
+                const computedStyle = window.getComputedStyle(sidebar);
+                const transform = computedStyle.transform;
+                const sidebarTransform = sidebar.style.transform || '';
+                const isOpen = sidebar.classList.contains('translate-x-0') || 
+                              transform === 'matrix(1, 0, 0, 1, 0, 0)' || 
+                              transform === 'none' ||
+                              sidebarTransform === 'translateX(0)' ||
+                              sidebarTransform.includes('translateX(0)') ||
+                              sidebarTransform === '';
                 
-                // Primero, remover todas las clases que puedan estar afectando
-                sidebar.classList.remove('-translate-x-full');
-                sidebar.classList.add('translate-x-0');
-                
-                // Crear un style tag para sobrescribir el CSS crítico
-                let styleTag = document.getElementById('mobile-menu-override-style');
-                if (!styleTag) {
-                    styleTag = document.createElement('style');
-                    styleTag.id = 'mobile-menu-override-style';
-                    document.head.appendChild(styleTag);
-                }
-                styleTag.textContent = `
-                    #sidebar {
-                        transform: translateX(0) !important;
+                if (isOpen) {
+                    // Cerrar menú
+                    sidebar.classList.remove('translate-x-0');
+                    sidebar.classList.add('-translate-x-full');
+                    
+                    // Remover el style tag de override
+                    const styleTag = document.getElementById('mobile-menu-override-style');
+                    if (styleTag) {
+                        styleTag.remove();
+                    }
+                    
+                    // Asegurar que el sidebar esté oculto
+                    sidebar.style.transform = 'translateX(-100%)';
+                    
+                    // Ocultar overlay
+                    if (mobileOverlay) {
+                        mobileOverlay.classList.add('hidden');
+                        mobileOverlay.style.display = 'none';
+                    }
+                    
+                    // Cambiar iconos
+                    const menuIcon = document.getElementById('dashboard-menu-icon');
+                    const closeIcon = document.getElementById('dashboard-close-icon');
+                    if (menuIcon) menuIcon.classList.remove('hidden');
+                    if (closeIcon) closeIcon.classList.add('hidden');
+                    
+                    // Restaurar scroll del body
+                    document.body.style.overflow = '';
+                } else {
+                    // Abrir menú
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebar.classList.add('translate-x-0');
+                    
+                    // Crear un style tag para sobrescribir el CSS crítico
+                    let styleTag = document.getElementById('mobile-menu-override-style');
+                    if (!styleTag) {
+                        styleTag = document.createElement('style');
+                        styleTag.id = 'mobile-menu-override-style';
+                        document.head.appendChild(styleTag);
+                    }
+                    styleTag.textContent = `
+                        #sidebar {
+                            transform: translateX(0) !important;
+                            display: flex !important;
+                            visibility: visible !important;
+                            opacity: 1 !important;
+                            z-index: 9999 !important;
+                            position: fixed !important;
+                            left: 0 !important;
+                            top: 0 !important;
+                            width: 288px !important;
+                            height: 100vh !important;
+                        }
+                    `;
+                    
+                    // También aplicar estilos inline como respaldo
+                    sidebar.style.cssText = `
                         display: flex !important;
+                        transform: translateX(0) !important;
                         visibility: visible !important;
                         opacity: 1 !important;
                         z-index: 9999 !important;
@@ -1899,107 +1952,26 @@
                         top: 0 !important;
                         width: 288px !important;
                         height: 100vh !important;
-                    }
-                `;
-                
-                // También aplicar estilos inline como respaldo
-                sidebar.style.cssText = `
-                    display: flex !important;
-                    transform: translateX(0) !important;
-                    visibility: visible !important;
-                    opacity: 1 !important;
-                    z-index: 9999 !important;
-                    position: fixed !important;
-                    left: 0 !important;
-                    top: 0 !important;
-                    width: 288px !important;
-                    height: 100vh !important;
-                `;
-                
-                // Verificar estilos aplicados
-                const computedStyle = window.getComputedStyle(sidebar);
-                console.log('Transform aplicado:', computedStyle.transform);
-                console.log('Display:', computedStyle.display);
-                console.log('Visibility:', computedStyle.visibility);
-                console.log('Z-index:', computedStyle.zIndex);
-                console.log('Left:', computedStyle.left);
-                console.log('Width:', computedStyle.width);
-                
-                // Mostrar overlay
-                if (mobileOverlay) {
-                    mobileOverlay.classList.remove('hidden');
-                    mobileOverlay.style.cssText = `
-                        display: block !important;
-                        visibility: visible !important;
-                        z-index: 9998 !important;
                     `;
-                }
-                
-                // Cambiar iconos
-                const menuIcon = document.getElementById('dashboard-menu-icon');
-                const closeIcon = document.getElementById('dashboard-close-icon');
-                if (menuIcon) menuIcon.classList.add('hidden');
-                if (closeIcon) closeIcon.classList.remove('hidden');
-                
-                // Bloquear scroll del body
-                document.body.style.overflow = 'hidden';
-                
-                console.log('Menú móvil abierto - Sidebar visible:', sidebar.classList.contains('translate-x-0'));
-            }
-            
-            function closeMobileMenu() {
-                console.log('Cerrando menú móvil...');
-                // Agregar clase que oculta el sidebar
-                sidebar.classList.add('-translate-x-full');
-                // Remover clase que muestra el sidebar
-                sidebar.classList.remove('translate-x-0');
-                
-                // Remover el style tag de override
-                const styleTag = document.getElementById('mobile-menu-override-style');
-                if (styleTag) {
-                    styleTag.remove();
-                }
-                
-                // Asegurar que el sidebar esté oculto
-                sidebar.style.cssText = `
-                    transform: translateX(-100%) !important;
-                `;
-                
-                // Ocultar overlay
-                if (mobileOverlay) {
-                    mobileOverlay.classList.add('hidden');
-                    mobileOverlay.style.display = 'none';
-                }
-                
-                // Cambiar iconos
-                const menuIcon = document.getElementById('dashboard-menu-icon');
-                const closeIcon = document.getElementById('dashboard-close-icon');
-                if (menuIcon) menuIcon.classList.remove('hidden');
-                if (closeIcon) closeIcon.classList.add('hidden');
-                
-                // Restaurar scroll del body
-                document.body.style.overflow = '';
-                
-                console.log('Menú móvil cerrado');
-            }
-            
-            function toggleMobileMenu() {
-                // Verificar si el menú está abierto
-                const computedStyle = window.getComputedStyle(sidebar);
-                const transform = computedStyle.transform;
-                const isOpen = sidebar.classList.contains('translate-x-0') || 
-                              transform === 'matrix(1, 0, 0, 1, 0, 0)' || 
-                              transform === 'none' ||
-                              sidebar.style.transform === 'translateX(0)' ||
-                              sidebar.style.transform.includes('translateX(0)');
-                console.log('Estado del menú:', isOpen ? 'abierto' : 'cerrado');
-                console.log('Transform computed:', transform);
-                console.log('Transform style:', sidebar.style.transform);
-                
-                if (isOpen) {
-                    closeMobileMenu();
-                } else {
-                    openMobileMenu();
+                    
+                    // Mostrar overlay
+                    if (mobileOverlay) {
+                        mobileOverlay.classList.remove('hidden');
+                        mobileOverlay.style.cssText = `
+                            display: block !important;
+                            visibility: visible !important;
+                            z-index: 9998 !important;
+                        `;
+                    }
+                    
+                    // Cambiar iconos
+                    const menuIcon = document.getElementById('dashboard-menu-icon');
+                    const closeIcon = document.getElementById('dashboard-close-icon');
+                    if (menuIcon) menuIcon.classList.add('hidden');
+                    if (closeIcon) closeIcon.classList.remove('hidden');
+                    
+                    // Bloquear scroll del body
+                    document.body.style.overflow = 'hidden';
                 }
             }
             
@@ -2007,33 +1979,35 @@
             dashboardMenuButton.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('Botón de menú móvil clickeado');
                 toggleMobileMenu();
             });
             
             // Event listener para el overlay (cerrar al hacer clic fuera)
             if (mobileOverlay) {
                 mobileOverlay.addEventListener('click', function() {
-                    closeMobileMenu();
+                    toggleMobileMenu();
                 });
             }
             
             // Cerrar menú al hacer clic en un enlace del sidebar (solo en móvil)
-            const sidebarLinks = sidebar.querySelectorAll('a');
-            sidebarLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    if (window.innerWidth < 768) {
-                        closeMobileMenu();
-                    }
+            if (sidebar) {
+                const sidebarLinks = sidebar.querySelectorAll('a');
+                sidebarLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        if (window.innerWidth < 768) {
+                            toggleMobileMenu();
+                        }
+                    });
                 });
-            });
+            }
         }
         
         // Inicializar cuando el DOM esté listo
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initDashboardMenu);
         } else {
-            initDashboardMenu();
+            // Si el DOM ya está listo, esperar un poco para asegurar que el layout haya inicializado
+            setTimeout(initDashboardMenu, 50);
         }
     })();
     
