@@ -30,10 +30,9 @@ class TechnicianController extends Controller
             $query = Service::where('assigned_to', $user->id);
         }
 
-        // Servicios completados hoy
-        $completedToday = (clone $query)
+        // Servicios finalizados (todos los finalizados, no solo los de hoy)
+        $finalizedServices = (clone $query)
             ->where('status', 'finalizado')
-            ->whereDate('checklist_completed_at', today())
             ->count();
 
         // Servicios pendientes
@@ -61,7 +60,7 @@ class TechnicianController extends Controller
             ->get();
 
         return view('technician.dashboard', compact(
-            'completedToday',
+            'finalizedServices',
             'pendingServices',
             'inProgressServices',
             'overdueServices',
