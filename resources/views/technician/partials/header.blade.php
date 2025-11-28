@@ -267,8 +267,18 @@
             currentSearch = query;
 
             @php
-                // Usar la ruta de búsqueda general que funciona para todos los usuarios
-                $searchRoute = route('search');
+                // Detectar si estamos en modo technician-view (admin) o técnico normal
+                $isViewingAsTechnician = (session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin')) 
+                    || request()->is('admin/technician-view/*')
+                    || (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], '/admin/technician-view/') !== false);
+                
+                // Usar admin.search si estamos en modo technician-view, de lo contrario intentar technician.search o admin.search
+                if ($isViewingAsTechnician) {
+                    $searchRoute = route('admin.search');
+                } else {
+                    // Para técnicos normales, usar admin.search también ya que es la única ruta disponible
+                    $searchRoute = route('admin.search');
+                }
             @endphp
             fetch(`{{ $searchRoute }}?q=${encodeURIComponent(query)}`, {
                 headers: {
