@@ -287,23 +287,144 @@ function handleTrapPhotoUpload(event, trapId) {
 }
 
 // Cargar datos existentes si hay
-@if(isset($service->checklist_data['bait_stations']))
-    const existingStations = @json($service->checklist_data['bait_stations'] ?? []);
-    existingStations.forEach((station, index) => {
-        baitStationCounter = index + 1;
-        addBaitStation();
-        // Llenar datos...
+@php
+    $monitoreoCompleto = $service->checklist_data['monitoreo_completo'] ?? [];
+    $existingBaitStations = $monitoreoCompleto['bait_stations'] ?? $service->checklist_data['bait_stations'] ?? [];
+    $existingTraps = $monitoreoCompleto['traps'] ?? $service->checklist_data['traps'] ?? [];
+@endphp
+
+@if(count($existingBaitStations) > 0)
+    document.addEventListener('DOMContentLoaded', function() {
+        const existingStations = @json($existingBaitStations);
+        existingStations.forEach((station, index) => {
+            baitStationCounter = index + 1;
+            addBaitStation();
+            
+            // Llenar datos de la cebadera
+            const stationDiv = document.getElementById(`bait-station-${baitStationCounter}`);
+            if (stationDiv) {
+                // Código y ubicación
+                stationDiv.querySelector(`input[name="bait_stations[${baitStationCounter}][code]"]`).value = station.code || '';
+                stationDiv.querySelector(`input[name="bait_stations[${baitStationCounter}][location]"]`).value = station.location || '';
+                
+                // Tipo de producto
+                if (station.product_type) {
+                    stationDiv.querySelector(`select[name="bait_stations[${baitStationCounter}][product_type]"]`).value = station.product_type;
+                }
+                
+                // Cantidad y unidad
+                stationDiv.querySelector(`input[name="bait_stations[${baitStationCounter}][quantity]"]`).value = station.quantity || 0;
+                if (station.unit) {
+                    stationDiv.querySelector(`select[name="bait_stations[${baitStationCounter}][unit]"]`).value = station.unit;
+                }
+                
+                // Observaciones (checkboxes)
+                if (station.observations && Array.isArray(station.observations)) {
+                    station.observations.forEach(obs => {
+                        const checkbox = stationDiv.querySelector(`input[type="checkbox"][value="${obs}"]`);
+                        if (checkbox) checkbox.checked = true;
+                    });
+                }
+                
+                // Fotos existentes
+                if (station.photos && Array.isArray(station.photos) && station.photos.length > 0) {
+                    const preview = document.getElementById(`station-photos-${baitStationCounter}`);
+                    if (preview) {
+                        station.photos.forEach(photoPath => {
+                            const div = document.createElement('div');
+                            div.className = 'photo-preview-item-small';
+                            div.innerHTML = `<img src="/${photoPath}" alt="Foto existente" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px;">`;
+                            preview.appendChild(div);
+                        });
+                    }
+                }
+            }
+        });
     });
 @endif
 
-@if(isset($service->checklist_data['traps']))
-    const existingTraps = @json($service->checklist_data['traps'] ?? []);
-    existingTraps.forEach((trap, index) => {
-        trapCounter = index + 1;
-        addTrap();
-        // Llenar datos...
+@if(count($existingTraps) > 0)
+    document.addEventListener('DOMContentLoaded', function() {
+        const existingTraps = @json($existingTraps);
+        existingTraps.forEach((trap, index) => {
+            trapCounter = index + 1;
+            addTrap();
+            
+            // Llenar datos de la trampa
+            const trapDiv = document.getElementById(`trap-${trapCounter}`);
+            if (trapDiv) {
+                // Código y ubicación
+                trapDiv.querySelector(`input[name="traps[${trapCounter}][code]"]`).value = trap.code || '';
+                trapDiv.querySelector(`input[name="traps[${trapCounter}][location]"]`).value = trap.location || '';
+                
+                // Tipo de producto
+                if (trap.product_type) {
+                    trapDiv.querySelector(`select[name="traps[${trapCounter}][product_type]"]`).value = trap.product_type;
+                }
+                
+                // Cantidad
+                trapDiv.querySelector(`input[name="traps[${trapCounter}][quantity]"]`).value = trap.quantity || 1;
+                
+                // Estado
+                if (trap.status) {
+                    trapDiv.querySelector(`select[name="traps[${trapCounter}][status]"]`).value = trap.status;
+                }
+                
+                // Notas
+                if (trap.notes) {
+                    trapDiv.querySelector(`textarea[name="traps[${trapCounter}][notes]"]`).value = trap.notes;
+                }
+                
+                // Fotos existentes
+                if (trap.photos && Array.isArray(trap.photos) && trap.photos.length > 0) {
+                    const preview = document.getElementById(`trap-photos-${trapCounter}`);
+                    if (preview) {
+                        trap.photos.forEach(photoPath => {
+                            const div = document.createElement('div');
+                            div.className = 'photo-preview-item-small';
+                            div.innerHTML = `<img src="/${photoPath}" alt="Foto existente" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px;">`;
+                            preview.appendChild(div);
+                        });
+                    }
+                }
+            }
+        });
     });
 @endif
+
+// Cargar datos generales si existen
+@php
+    $monitoringDate = $monitoreoCompleto['monitoring_date'] ?? $service->checklist_data['monitoring_date'] ?? date('Y-m-d');
+    $totalBaitStations = $monitoreoCompleto['total_bait_stations'] ?? $service->checklist_data['total_bait_stations'] ?? 0;
+    $generalObservations = $monitoreoCompleto['general_observations'] ?? $service->checklist_data['general_observations'] ?? '';
+    $clientRecommendations = $monitoreoCompleto['client_recommendations_monitoring'] ?? $service->checklist_data['client_recommendations_monitoring'] ?? '';
+@endphp
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Llenar fecha de monitoreo
+    const monitoringDateInput = document.getElementById('monitoring_date');
+    if (monitoringDateInput) {
+        monitoringDateInput.value = '{{ $monitoringDate }}';
+    }
+    
+    // Llenar total de cebaderas
+    const totalBaitStationsInput = document.getElementById('total_bait_stations');
+    if (totalBaitStationsInput) {
+        totalBaitStationsInput.value = {{ $totalBaitStations }};
+    }
+    
+    // Llenar observaciones generales
+    const generalObservationsTextarea = document.getElementById('general_observations');
+    if (generalObservationsTextarea) {
+        generalObservationsTextarea.value = @json($generalObservations);
+    }
+    
+    // Llenar recomendaciones
+    const clientRecommendationsTextarea = document.getElementById('client_recommendations_monitoring');
+    if (clientRecommendationsTextarea) {
+        clientRecommendationsTextarea.value = @json($clientRecommendations);
+    }
+});
 </script>
 
 <style>
