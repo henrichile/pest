@@ -23,6 +23,10 @@ $submitRoute = $isViewingAsTechnician ? route('admin.technician-view.service.che
 
     <div class="form-section">
         <h5>📸 Subir/Actualizar Croquis</h5>
+        @php
+            $monitoreoCroquis = $service->checklist_data['monitoreo_croquis'] ?? [];
+            $existingCroquis = $monitoreoCroquis['croquis_file'] ?? null;
+        @endphp
         <div class="photo-upload-area" id="croquis-upload-area">
             <input type="file" 
                    name="croquis_file" 
@@ -35,7 +39,14 @@ $submitRoute = $isViewingAsTechnician ? route('admin.technician-view.service.che
                 <p>Haz clic para subir croquis o arrastra aquí</p>
                 <small>PNG, JPG, PDF hasta 10MB</small>
             </div>
-            <div id="croquis-preview" class="croquis-preview"></div>
+            <div id="croquis-preview" class="croquis-preview">
+                @if($existingCroquis)
+                    <div class="croquis-preview-item">
+                        <img src="/{{ $existingCroquis }}" alt="Croquis existente" class="sketch-image">
+                        <p>Croquis guardado anteriormente</p>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 
@@ -45,7 +56,7 @@ $submitRoute = $isViewingAsTechnician ? route('admin.technician-view.service.che
                   id="croquis_notes" 
                   class="form-textarea" 
                   rows="4"
-                  placeholder="Anotaciones sobre el croquis, cambios realizados, nuevas ubicaciones...">{{ old('croquis_notes', $service->checklist_data['croquis_notes'] ?? '') }}</textarea>
+                  placeholder="Anotaciones sobre el croquis, cambios realizados, nuevas ubicaciones...">{{ old('croquis_notes', $monitoreoCroquis['croquis_notes'] ?? $service->checklist_data['croquis_notes'] ?? '') }}</textarea>
     </div>
 
     <input type="hidden" name="checklist_stage" value="monitoreo-croquis">
