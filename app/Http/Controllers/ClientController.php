@@ -103,7 +103,29 @@ class ClientController extends Controller
         try {
             DB::beginTransaction();
 
-            $client = Client::create($request->validated());
+            $data = $request->validated();
+            
+            // Procesar contactos si existen
+            if ($request->filled('contact_name') || $request->filled('contact_email') || $request->filled('contact_phone')) {
+                $contacts = [];
+                if ($request->filled('contact_name')) {
+                    $contacts[] = [
+                        'name' => $request->contact_name,
+                        'email' => $request->contact_email ?? null,
+                        'phone' => $request->contact_phone ?? null,
+                        'position' => $request->contact_position ?? null,
+                        'is_primary' => true,
+                    ];
+                }
+                $data['contacts'] = $contacts;
+            }
+            
+            // Asegurar que is_active tenga un valor por defecto
+            if (!isset($data['is_active'])) {
+                $data['is_active'] = true;
+            }
+
+            $client = Client::create($data);
 
             // Log activity
             activity()

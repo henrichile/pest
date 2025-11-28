@@ -20,17 +20,18 @@ class CreateClientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'type' => 'required|in:natural,juridica',
+            'business_name' => 'required|string|max:255',
             'rut' => 'required|string|max:20|unique:clients,rut',
-            'email' => 'nullable|email|max:255',
-            'phone' => 'required|string|max:20',
-            'address' => 'required|string|max:500',
-            'city' => 'required|string|max:100',
-            'region' => 'required|string|max:100',
-            'country' => 'required|string|max:100',
             'business_type' => 'nullable|string|max:255',
+            'contacts' => 'nullable|array',
+            'contacts.*.name' => 'nullable|string|max:255',
+            'contacts.*.email' => 'nullable|email|max:255',
+            'contacts.*.phone' => 'nullable|string|max:20',
+            'contacts.*.position' => 'nullable|string|max:255',
+            'contacts.*.is_primary' => 'nullable|boolean',
+            'payment_method' => 'nullable|string|max:255',
             'notes' => 'nullable|string|max:1000',
+            'is_active' => 'nullable|boolean',
         ];
     }
 
