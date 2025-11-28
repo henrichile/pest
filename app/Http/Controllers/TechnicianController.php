@@ -85,7 +85,15 @@ class TechnicianController extends Controller
         
         // Aplicar filtros
         if ($request->filled('estado')) {
-            $query->where('status', $request->estado);
+            $estado = $request->estado;
+            
+            // Los servicios vencidos son pendientes con fecha pasada
+            if ($estado === 'vencido') {
+                $query->where('status', 'pendiente')
+                      ->where('scheduled_date', '<', now());
+            } else {
+                $query->where('status', $estado);
+            }
         }
         
         if ($request->filled('tipo')) {
