@@ -24,7 +24,7 @@
     <!-- Filters -->
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6 mb-6">
         <h3 class="text-sm font-semibold text-gray-700 mb-4">Filtros</h3>
-        <form method="GET" action="{{ route('admin.services.index') ?? route('services.index') ?? '#' }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <form method="GET" action="{{ route('admin.services.index') ?? route('services.index') ?? '#' }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="flex flex-col space-y-2">
                 <label for="status" class="text-sm font-medium text-gray-700">Estado</label>
                 <select name="status" id="status" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full">
@@ -53,12 +53,13 @@
                     <option value="alta" {{ request('priority') === 'alta' ? 'selected' : '' }}>Alta</option>
                 </select>
             </div>
-            <div class="col-span-full lg:col-span-3 mt-4">
-                <div class="flex items-center gap-3">
-                    <button type="submit" id="filter-submit-btn" class="px-6 py-3 bg-gray-700 hover:bg-gray-800 text-white font-medium rounded-lg shadow-sm transition-colors">
+            <div class="flex flex-col space-y-2">
+                <label class="text-sm font-medium text-gray-700 opacity-0">Acciones</label>
+                <div class="flex items-center gap-3 h-full">
+                    <button type="submit" id="filter-submit-btn" class="flex-1 px-6 py-3.5 bg-gray-700 hover:bg-gray-800 text-white font-medium rounded-lg shadow-sm transition-colors" style="color: #ffffff !important; background-color: #374151 !important;">
                         Filtrar
                     </button>
-                    <a href="{{ route('admin.services.index') }}" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg shadow-sm transition-colors text-center no-underline">
+                    <a href="{{ route('admin.services.index') }}" class="flex-1 px-6 py-3.5 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg shadow-sm transition-colors text-center no-underline" style="color: #374151 !important; background-color: #e5e7eb !important;">
                         Limpiar
                     </a>
                 </div>
