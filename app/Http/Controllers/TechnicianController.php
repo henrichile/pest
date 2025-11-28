@@ -17,9 +17,18 @@ class TechnicianController extends Controller
     {
         $user = auth()->user();
         
-        // Siempre filtrar por técnico asignado para que los KPIs sean correctos
-        // Incluso en modo "view_as_technician", mostrar solo los servicios del técnico actual
-        $query = Service::where('assigned_to', $user->id);
+        // Detectar si estamos en modo technician-view (igual que en services())
+        $isViewingAsTechnician = session('view_as_technician', false) && $user->hasRole('super-admin');
+        $isTechnicianViewRoute = request()->is('admin/technician-view/*') || 
+                                 request()->routeIs('technician-view.*');
+        
+        // Si está en modo "view_as_technician" o en ruta technician-view, mostrar todos los servicios
+        // Si es un técnico real, filtrar por técnico asignado
+        if ($isViewingAsTechnician || $isTechnicianViewRoute) {
+            $query = Service::query();
+        } else {
+            $query = Service::where('assigned_to', $user->id);
+        }
 
         // Servicios completados hoy
         $completedToday = (clone $query)
