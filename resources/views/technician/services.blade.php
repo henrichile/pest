@@ -181,11 +181,45 @@
         </div>
         
         <!-- Paginación - Fuera del overflow-x-auto para que sea visible en móvil -->
-        <div class="px-4 sm:px-6 py-4 border-t border-gray-200 bg-white overflow-x-auto">
-            <div class="flex justify-center">
-                {{ $services->links() }}
+        @if($services->hasPages())
+        <div class="px-4 sm:px-6 py-4 border-t border-gray-200 bg-white">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-2">
+                <!-- Información de resultados -->
+                <div class="text-sm text-gray-700">
+                    Mostrando
+                    <span class="font-medium">{{ $services->firstItem() }}</span>
+                    a
+                    <span class="font-medium">{{ $services->lastItem() }}</span>
+                    de
+                    <span class="font-medium">{{ $services->total() }}</span>
+                    resultados
+                </div>
+                
+                <!-- Números de página - Visible en móvil y desktop -->
+                <div class="flex items-center gap-1 overflow-x-auto w-full sm:w-auto justify-center">
+                    @if($services->onFirstPage())
+                        <span class="px-3 py-2 text-sm font-medium text-gray-400 cursor-not-allowed">« Anterior</span>
+                    @else
+                        <a href="{{ $services->previousPageUrl() }}" class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">« Anterior</a>
+                    @endif
+                    
+                    @foreach($services->getUrlRange(max(1, $services->currentPage() - 2), min($services->lastPage(), $services->currentPage() + 2)) as $page => $url)
+                        @if($page == $services->currentPage())
+                            <span class="px-3 py-2 text-sm font-medium text-white bg-green-600 border border-green-600 rounded-md">{{ $page }}</span>
+                        @else
+                            <a href="{{ $url }}" class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">{{ $page }}</a>
+                        @endif
+                    @endforeach
+                    
+                    @if($services->hasMorePages())
+                        <a href="{{ $services->nextPageUrl() }}" class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">Siguiente »</a>
+                    @else
+                        <span class="px-3 py-2 text-sm font-medium text-gray-400 cursor-not-allowed">Siguiente »</span>
+                    @endif
+                </div>
             </div>
         </div>
+        @endif
         @else
         <div class="text-center py-12">
             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
