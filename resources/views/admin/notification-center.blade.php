@@ -169,16 +169,25 @@
     <!-- Notifications List -->
     <div class="bg-white border dark:border-gray-700 rounded-lg overflow-hidden" style="border: 1px solid #e5e7eb !important;">
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200" style="table-layout: fixed;">
+            <table class="min-w-full divide-y divide-gray-200" style="table-layout: fixed; width: 100%;">
+                <colgroup>
+                    <col style="width: 12%;">
+                    <col style="width: 8%;">
+                    <col style="width: 18%;">
+                    <col style="width: 32%;">
+                    <col style="width: 8%;">
+                    <col style="width: 10%;">
+                    <col style="width: 12%;">
+                </colgroup>
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 13%;">Usuario</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 5%;">Tipo</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 18%;">Título</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 36%;">Mensaje</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 8%;">Estado</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 10%;">Fecha</th>
-                        <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 10%;">Acciones</th>
+                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Usuario</th>
+                        <th class="px-2 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Tipo</th>
+                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Título</th>
+                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Mensaje</th>
+                        <th class="px-2 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Estado</th>
+                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Fecha</th>
+                        <th class="px-3 py-3 text-right text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -194,45 +203,45 @@
                                 // Remover "Notification" del final si existe
                                 $typeName = str_replace('Notification', '', $typeName);
                             }
-                            // Mapear tipos comunes a nombres más legibles
+                            // Mapear tipos comunes a nombres más cortos
                             $typeLabels = [
-                                'ServiceAssigned' => 'Servicio Asignado',
-                                'ServiceCompleted' => 'Servicio Completado',
-                                'ServiceUpdated' => 'Servicio Actualizado',
+                                'ServiceAssigned' => 'Asignado',
+                                'ServiceCompleted' => 'Completado',
+                                'ServiceUpdated' => 'Actualizado',
                                 'Generic' => 'General',
                             ];
-                            $typeLabel = $typeLabels[$typeName] ?? $typeName;
+                            $typeLabel = $typeLabels[$typeName] ?? (strlen($typeName) > 12 ? substr($typeName, 0, 12) : $typeName);
                         @endphp
                         <tr class="hover:bg-gray-50">
-                            <td class="px-4 py-4 whitespace-nowrap text-sm" style="color: #111827; width: 13%;">
+                            <td class="px-3 py-4 whitespace-nowrap text-sm" style="color: #111827; overflow: hidden; text-overflow: ellipsis;">
                                 {{ $user->name ?? 'Usuario eliminado' }}
                             </td>
-                            <td class="px-4 py-4 whitespace-nowrap" style="width: 5%;">
-                                <span class="px-2 py-1 text-xs font-medium rounded-full whitespace-nowrap" style="background: #e0e7ff; color: #3730a3; display: inline-block;">
+                            <td class="px-2 py-4" style="overflow: hidden; max-width: 0;">
+                                <span class="px-1.5 py-0.5 text-xs font-medium rounded whitespace-nowrap inline-block" style="background: #e0e7ff; color: #3730a3; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">
                                     {{ $typeLabel }}
                                 </span>
                             </td>
-                            <td class="px-4 py-4 text-sm" style="color: #111827; width: 18%;">
+                            <td class="px-3 py-4 text-sm" style="color: #111827; overflow: hidden; text-overflow: ellipsis;">
                                 {{ $data['title'] ?? 'Sin título' }}
                             </td>
-                            <td class="px-4 py-4 text-sm" style="color: #6b7280; width: 36%;">
-                                {{ Str::limit($data['message'] ?? '', 80) }}
+                            <td class="px-3 py-4 text-sm" style="color: #6b7280; overflow: hidden; text-overflow: ellipsis;">
+                                {{ Str::limit($data['message'] ?? '', 100) }}
                             </td>
-                            <td class="px-4 py-4 whitespace-nowrap" style="width: 8%;">
+                            <td class="px-2 py-4 whitespace-nowrap" style="overflow: hidden;">
                                 @if($notification->read_at)
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full" style="background: #d1fae5; color: #065f46;">
+                                    <span class="px-1.5 py-0.5 text-xs font-medium rounded" style="background: #d1fae5; color: #065f46;">
                                         Leída
                                     </span>
                                 @else
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full" style="background: #fee2e2; color: #991b1b;">
+                                    <span class="px-1.5 py-0.5 text-xs font-medium rounded" style="background: #fee2e2; color: #991b1b;">
                                         No Leída
                                     </span>
                                 @endif
                             </td>
-                            <td class="px-4 py-4 whitespace-nowrap text-sm" style="color: #6b7280; width: 10%;">
+                            <td class="px-3 py-4 whitespace-nowrap text-sm" style="color: #6b7280; overflow: hidden; text-overflow: ellipsis;">
                                 {{ \Carbon\Carbon::parse($notification->created_at)->format('d/m/Y H:i') }}
                             </td>
-                            <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium" style="width: 10%;">
+                            <td class="px-3 py-4 whitespace-nowrap text-right text-sm font-medium" style="overflow: hidden;">
                                 @if(!$notification->read_at)
                                     <form action="{{ route('admin.notifications.mark-read', $notification->id) }}" method="POST" class="inline">
                                         @csrf
