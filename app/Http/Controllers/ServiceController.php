@@ -24,7 +24,12 @@ class ServiceController extends Controller
         
         // Aplicar filtros
         if ($request->filled('status')) {
-            $query->where('status', $request->status);
+            $status = $request->status;
+            // Mapear "completado" a "finalizado" para compatibilidad
+            if ($status === 'completado') {
+                $status = 'finalizado';
+            }
+            $query->where('status', $status);
         }
         
         if ($request->filled('type')) {

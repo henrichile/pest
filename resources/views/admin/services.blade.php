@@ -31,7 +31,7 @@
                     <option value="">Todos los estados</option>
                     <option value="pendiente" {{ request('status') === 'pendiente' ? 'selected' : '' }}>Pendiente</option>
                     <option value="en_progreso" {{ request('status') === 'en_progreso' ? 'selected' : '' }}>En Progreso</option>
-                    <option value="completado" {{ request('status') === 'completado' ? 'selected' : '' }}>Completado</option>
+                    <option value="finalizado" {{ request('status') === 'finalizado' ? 'selected' : '' }}>Finalizado</option>
                     <option value="cancelado" {{ request('status') === 'cancelado' ? 'selected' : '' }}>Cancelado</option>
                 </select>
             </div>
@@ -101,7 +101,7 @@
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
                                     @if($service->status == 'pendiente') bg-yellow-100 text-yellow-800
                                     @elseif($service->status == 'en_progreso') bg-blue-100 text-blue-800
-                                    @elseif($service->status == 'completado') bg-green-100 text-green-800
+                                    @elseif($service->status == 'finalizado') bg-green-100 text-green-800
                                     @else bg-gray-100 text-gray-800
                                     @endif">
                                     {{ ucfirst(str_replace('_', ' ', $service->status)) }}
