@@ -42,7 +42,7 @@ class ClientController extends Controller
         // El middleware de rol se aplicará solo en métodos específicos
         $this->middleware('role:client')->except(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
     }
-
+    
     /**
      * Display a listing of clients (for admin).
      */
@@ -72,187 +72,9 @@ class ClientController extends Controller
 
             return view('admin.clients', compact('clients'));
         }
-
+        
         // Si es cliente, redirigir a su dashboard
         abort(403, 'No tienes acceso a esta página.');
-    }
-
-    /**
-     * Show the form for creating a new client.
-     */
-    public function create(): View
-    {
-        if (!Auth::user()->hasRole('super-admin')) {
-            abort(403, 'No tienes acceso a esta página.');
-        }
-
-        return view('admin.clients-create');
-    }
-
-    /**
-     * Store a newly created client in storage.
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        if (!Auth::user()->hasRole('super-admin')) {
-            abort(403, 'No tienes acceso a esta acción.');
-        }
-
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'rut' => 'required|string|max:20|unique:clients,rut',
-            'email' => 'required|email|max:255|unique:clients,email',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:500',
-            'city' => 'nullable|string|max:100',
-            'region' => 'nullable|string|max:100',
-            'country' => 'nullable|string|max:100',
-            'postal_code' => 'nullable|string|max:20',
-            'business_type' => 'nullable|string|max:100',
-            'industry' => 'nullable|string|max:100',
-            'notes' => 'nullable|string|max:1000',
-        ]);
-
-        try {
-            DB::beginTransaction();
-
-            $client = Client::create($validated);
-
-            // Log activity
-            activity()
-                ->performedOn($client)
-                ->causedBy(Auth::user())
-                ->log('Cliente creado');
-
-            DB::commit();
-
-            return redirect()->route('admin.clients.index')
-                ->with('success', 'Cliente creado correctamente.');
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Error creating client: ' . $e->getMessage());
-
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'Error al crear el cliente.');
-        }
-    }
-
-    /**
-     * Display the specified client.
-     */
-    public function show(Client $client): View
-    {
-        if (!Auth::user()->hasRole('super-admin')) {
-            abort(403, 'No tienes acceso a esta página.');
-        }
-
-        $client->load(['sites', 'workOrders.service', 'services']);
-
-        return view('admin.clients-show', compact('client'));
-    }
-
-    /**
-     * Show the form for editing the specified client.
-     */
-    public function edit(Client $client): View
-    {
-        if (!Auth::user()->hasRole('super-admin')) {
-            abort(403, 'No tienes acceso a esta página.');
-        }
-
-        return view('admin.clients-edit', compact('client'));
-    }
-
-    /**
-     * Update the specified client in storage.
-     */
-    public function update(Request $request, Client $client): RedirectResponse
-    {
-        if (!Auth::user()->hasRole('super-admin')) {
-            abort(403, 'No tienes acceso a esta acción.');
-        }
-
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'rut' => 'required|string|max:20|unique:clients,rut,' . $client->id,
-            'email' => 'required|email|max:255|unique:clients,email,' . $client->id,
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:500',
-            'city' => 'nullable|string|max:100',
-            'region' => 'nullable|string|max:100',
-            'country' => 'nullable|string|max:100',
-            'postal_code' => 'nullable|string|max:20',
-            'business_type' => 'nullable|string|max:100',
-            'industry' => 'nullable|string|max:100',
-            'notes' => 'nullable|string|max:1000',
-        ]);
-
-        try {
-            DB::beginTransaction();
-
-            $client->update($validated);
-
-            // Log activity
-            activity()
-                ->performedOn($client)
-                ->causedBy(Auth::user())
-                ->log('Cliente actualizado');
-
-            DB::commit();
-
-            return redirect()->route('admin.clients.index')
-                ->with('success', 'Cliente actualizado correctamente.');
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Error updating client: ' . $e->getMessage());
-
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'Error al actualizar el cliente.');
-        }
-    }
-
-    /**
-     * Remove the specified client from storage.
-     */
-    public function destroy(Client $client): RedirectResponse
-    {
-        if (!Auth::user()->hasRole('super-admin')) {
-            abort(403, 'No tienes acceso a esta acción.');
-        }
-
-        try {
-            DB::beginTransaction();
-
-            // Check if client has associated work orders
-            if ($client->workOrders()->exists()) {
-                return redirect()->back()
-                    ->with('error', 'No se puede eliminar un cliente con órdenes de trabajo asociadas.');
-            }
-
-            // Log activity before deletion
-            activity()
-                ->performedOn($client)
-                ->causedBy(Auth::user())
-                ->log('Cliente eliminado: ' . $client->name);
-
-            $client->delete();
-
-            DB::commit();
-
-            return redirect()->route('admin.clients.index')
-                ->with('success', 'Cliente eliminado correctamente.');
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Error deleting client: ' . $e->getMessage());
-
-            return redirect()->back()
-                ->with('error', 'Error al eliminar el cliente.');
-        }
     }
 
     /**
@@ -262,7 +84,7 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $client = $user->client;
-
+        
         if (!$client) {
             abort(403, 'Usuario no asociado a un cliente.');
         }
@@ -270,7 +92,7 @@ class ClientController extends Controller
         $today = Carbon::today();
         $thisWeek = Carbon::now()->startOfWeek();
         $thisMonth = Carbon::now()->startOfMonth();
-
+        
         // Work order statistics
         $totalWorkOrders = WorkOrder::where('client_id', $client->id)->count();
         $todayWorkOrders = WorkOrder::where('client_id', $client->id)
@@ -279,27 +101,27 @@ class ClientController extends Controller
             ->where('scheduled_date', '>=', $thisWeek)->count();
         $thisMonthWorkOrders = WorkOrder::where('client_id', $client->id)
             ->where('scheduled_date', '>=', $thisMonth)->count();
-
+        
         // Status distribution
         $statusDistribution = WorkOrder::where('client_id', $client->id)
             ->selectRaw('status, COUNT(*) as count')
             ->groupBy('status')
             ->pluck('count', 'status');
-
+        
         // Service distribution
         $serviceDistribution = WorkOrder::where('client_id', $client->id)
             ->selectRaw('s.name as service_name, COUNT(*) as count')
             ->join('services as s', 'work_orders.service_id', '=', 's.id')
             ->groupBy('s.id', 's.name')
             ->pluck('count', 'service_name');
-
+        
         // Recent work orders
         $recentWorkOrders = WorkOrder::where('client_id', $client->id)
             ->with(['site', 'service', 'assignedTechnicians.technician'])
             ->orderBy('scheduled_date', 'desc')
             ->limit(10)
             ->get();
-
+        
         // Upcoming work orders
         $upcomingWorkOrders = WorkOrder::where('client_id', $client->id)
             ->where('scheduled_date', '>=', $today)
@@ -308,13 +130,13 @@ class ClientController extends Controller
             ->orderBy('scheduled_date')
             ->limit(10)
             ->get();
-
+        
         // Sites
         $sites = $client->sites()->where('is_active', true)->get();
-
+        
         // Services
         $services = Service::where('is_active', true)->get();
-
+        
         // Quality metrics
         $qualityMetrics = ChecklistResponse::whereHas('workOrder', function ($query) use ($client) {
                 $query->where('client_id', $client->id);
@@ -327,7 +149,7 @@ class ClientController extends Controller
             ->where('created_at', '>=', $thisMonth)
             ->groupBy('status')
             ->get();
-
+        
         // Nonconformities
         $openNonconformities = Nonconformity::whereHas('workOrder', function ($query) use ($client) {
                 $query->where('client_id', $client->id);
@@ -337,7 +159,7 @@ class ClientController extends Controller
             ->orderBy('reported_at', 'desc')
             ->limit(10)
             ->get();
-
+        
         return view('client.dashboard', compact(
             'client',
             'totalWorkOrders',
@@ -362,7 +184,7 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $client = $user->client;
-
+        
         if (!$client) {
             abort(403, 'Usuario no asociado a un cliente.');
         }
@@ -379,14 +201,14 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $client = $user->client;
-
+        
         if (!$client) {
             abort(403, 'Usuario no asociado a un cliente.');
         }
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:500',
             'city' => 'nullable|string|max:100',
@@ -429,7 +251,7 @@ class ClientController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error updating client profile: ' . $e->getMessage());
-
+            
             return redirect()->back()
                 ->with('error', 'Error al actualizar el perfil.');
         }
@@ -442,7 +264,7 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $client = $user->client;
-
+        
         if (!$client) {
             abort(403, 'Usuario no asociado a un cliente.');
         }
@@ -476,13 +298,13 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $client = $user->client;
-
+        
         if (!$client || $site->client_id !== $client->id) {
             abort(403, 'No tienes acceso a este sitio.');
         }
 
         $site->load(['workOrders.service', 'workOrders.assignedTechnicians.technician']);
-
+        
         $workOrders = $site->workOrders()->with(['service', 'assignedTechnicians.technician'])->paginate(20);
 
         return view('client.site', compact('site', 'workOrders'));
@@ -495,7 +317,7 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $client = $user->client;
-
+        
         if (!$client) {
             abort(403, 'Usuario no asociado a un cliente.');
         }
@@ -521,7 +343,7 @@ class ClientController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error creating site: ' . $e->getMessage());
-
+            
             return redirect()->back()
                 ->with('error', 'Error al crear el sitio.');
         }
@@ -534,7 +356,7 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $client = $user->client;
-
+        
         if (!$client || $site->client_id !== $client->id) {
             abort(403, 'No tienes acceso a este sitio.');
         }
@@ -558,7 +380,7 @@ class ClientController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error updating site: ' . $e->getMessage());
-
+            
             return redirect()->back()
                 ->with('error', 'Error al actualizar el sitio.');
         }
@@ -571,7 +393,7 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $client = $user->client;
-
+        
         if (!$client) {
             abort(403, 'Usuario no asociado a un cliente.');
         }
@@ -616,7 +438,7 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $client = $user->client;
-
+        
         if (!$client || $workOrder->client_id !== $client->id) {
             abort(403, 'No tienes acceso a esta orden de trabajo.');
         }
@@ -651,7 +473,7 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $client = $user->client;
-
+        
         if (!$client) {
             abort(403, 'Usuario no asociado a un cliente.');
         }
@@ -683,7 +505,7 @@ class ClientController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error creating work order: ' . $e->getMessage());
-
+            
             return redirect()->back()
                 ->with('error', 'Error al crear la solicitud de orden de trabajo.');
         }
@@ -696,7 +518,7 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $client = $user->client;
-
+        
         if (!$client || $workOrder->client_id !== $client->id) {
             abort(403, 'No tienes acceso a esta orden de trabajo.');
         }
@@ -726,7 +548,7 @@ class ClientController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error updating work order: ' . $e->getMessage());
-
+            
             return redirect()->back()
                 ->with('error', 'Error al actualizar la solicitud de orden de trabajo.');
         }
@@ -739,7 +561,7 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $client = $user->client;
-
+        
         if (!$client || $workOrder->client_id !== $client->id) {
             abort(403, 'No tienes acceso a esta orden de trabajo.');
         }
@@ -774,7 +596,7 @@ class ClientController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error rating work order: ' . $e->getMessage());
-
+            
             return redirect()->back()
                 ->with('error', 'Error al calificar la orden de trabajo.');
         }
@@ -787,7 +609,7 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $client = $user->client;
-
+        
         if (!$client || $workOrder->client_id !== $client->id) {
             abort(403, 'No tienes acceso a esta orden de trabajo.');
         }
@@ -811,7 +633,7 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $client = $user->client;
-
+        
         if (!$client) {
             abort(403, 'Usuario no asociado a un cliente.');
         }
@@ -835,7 +657,7 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $client = $user->client;
-
+        
         if (!$client) {
             abort(403, 'Usuario no asociado a un cliente.');
         }
@@ -894,7 +716,7 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $client = $user->client;
-
+        
         if (!$client) {
             abort(403, 'Usuario no asociado a un cliente.');
         }
