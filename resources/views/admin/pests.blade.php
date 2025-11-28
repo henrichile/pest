@@ -4,21 +4,48 @@
 
 @section('content')
 <div class="space-y-4 sm:space-y-6 pt-12 md:pt-0">
-    @include('admin.partials.header', [
-        'title' => 'Catálogo de Plagas',
-        'subtitle' => 'Información sobre plagas comunes',
-        'searchPlaceholder' => 'Buscar plagas...',
-        'pageId' => 'pests'
-    ])
-
-    <!-- Botón Crear Nueva Plaga -->
-    <div class="flex justify-end mb-4">
-        <a href="{{ route('admin.pests.create') }}" class="inline-flex items-center justify-center px-5 py-3 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700 transition-colors">
-            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-            Crear Nueva Plaga
-        </a>
+    <!-- Header con hamburguesa y título -->
+    <div class="mb-4 sm:mb-6">
+        <!-- Primera fila: Hamburguesa + Título (móvil) -->
+        <div class="flex items-center gap-3 mb-4 md:hidden">
+            <!-- Hamburguesa (solo móvil) -->
+            <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50;">
+                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            
+            <!-- Título -->
+            <div class="flex-1">
+                <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
+                    Catálogo de Plagas
+                </h2>
+            </div>
+        </div>
+        
+        <!-- Segunda fila: Título completo (desktop) -->
+        <div class="hidden md:flex md:items-center md:justify-between">
+            <div class="min-w-0 flex-1">
+                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" style="color: #111827; font-weight: 700;">
+                    Catálogo de Plagas
+                </h2>
+                <p class="mt-1 text-xs sm:text-sm" style="color: #6b7280;">
+                    Información sobre plagas comunes
+                </p>
+            </div>
+            <div class="mt-3 sm:mt-4 md:mt-0 md:ml-4">
+                <a href="{{ route('admin.pests.create') }}" class="inline-flex items-center justify-center w-full sm:w-auto px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium text-white transition-colors" style="background: #22c55e; hover:background: #16a34a;">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                    <span class="hidden sm:inline">Crear Nueva Plaga</span>
+                    <span class="sm:hidden">Nueva Plaga</span>
+                </a>
+            </div>
+        </div>
     </div>
 
     <!-- Search Bar -->
@@ -107,7 +134,7 @@
 <div id="pest-modal" class="fixed hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" style="z-index: 9999; display: none; top: 0; left: 0; right: 0; bottom: 0;">
     <!-- Background overlay -->
     <div class="fixed bg-gray-900 transition-opacity" id="modal-overlay" style="z-index: 9998; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.75) !important;"></div>
-
+    
     <!-- Modal container - Centered -->
     <div class="fixed z-50 flex items-center justify-center p-2 sm:p-4" style="z-index: 10000; pointer-events: none; top: 0; left: 0; right: 0; bottom: 0;" id="modal-container">
         <!-- Modal panel -->
@@ -176,7 +203,7 @@
 <script>
     (function() {
         'use strict';
-
+        
         // Pest data from server
         @php
             $pestsArray = [];
@@ -193,7 +220,7 @@
             $pestsJson = json_encode($pestsArray ?? []);
         @endphp
         const pestsData = {!! $pestsJson !!};
-
+        
         console.log('Pests data loaded:', Object.keys(pestsData).length, 'pests');
 
         function initPestsModal() {
@@ -201,11 +228,11 @@
             const searchInput = document.getElementById('search-input');
             if (searchInput) {
                 let searchTimeout;
-
+                
                 searchInput.addEventListener('input', function() {
                     clearTimeout(searchTimeout);
                     const searchTerm = this.value.trim();
-
+                    
                     searchTimeout = setTimeout(() => {
                         if (searchTerm.length >= 2 || searchTerm.length === 0) {
                             const url = new URL(window.location.href);
@@ -258,7 +285,7 @@
             // Generate recommendations based on pest data
             function generateRecommendations(pest) {
                 const recommendations = [];
-
+                
                 // Recomendaciones basadas en la categoría
                 if (pest.category === 'Arañas') {
                     recommendations.push('Mantener áreas limpias y libres de escombros donde puedan esconderse.');
@@ -308,10 +335,10 @@
             function openModal(pestId) {
                 console.log('Opening modal for pest ID:', pestId, 'Type:', typeof pestId);
                 console.log('Available pests:', Object.keys(pestsData));
-
+                
                 // Convertir a número si es string
                 const id = typeof pestId === 'string' ? parseInt(pestId, 10) : pestId;
-
+                
                 if (!id || !pestsData || !pestsData[id]) {
                     console.error('Pest not found. ID:', id, 'Available:', Object.keys(pestsData));
                     alert('No se encontró la información de la plaga');
@@ -366,7 +393,7 @@
                                 methods = [pest.control_methods];
                             }
                         }
-
+                        
                         methods.forEach(method => {
                             if (method) {
                                 const li = document.createElement('li');
@@ -386,10 +413,10 @@
                 const recommendationsList = document.getElementById('modal-recommendations-list');
                 if (recommendationsDiv && recommendationsList) {
                     recommendationsList.innerHTML = '';
-
+                    
                     // Generar recomendaciones basadas en la información de la plaga
                     const recommendations = generateRecommendations(pest);
-
+                    
                     if (recommendations.length > 0) {
                         recommendations.forEach(rec => {
                             const li = document.createElement('li');
@@ -409,7 +436,7 @@
                     const isMobile = window.innerWidth < 768; // md breakpoint de Tailwind
                     const sidebar = document.getElementById('sidebar');
                     let sidebarWidth = 0;
-
+                    
                     // En desktop, calcular el ancho del sidebar solo si está visible
                     if (!isMobile && sidebar) {
                         const sidebarRect = sidebar.getBoundingClientRect();
@@ -418,7 +445,7 @@
                             sidebarWidth = sidebar.offsetWidth || 288; // 288px = w-72
                         }
                     }
-
+                    
                     // Aplicar estilos según el tamaño de pantalla
                     if (isMobile) {
                         // En móvil: ocupar toda la pantalla
@@ -426,7 +453,7 @@
                         modal.style.top = '0';
                         modal.style.right = '0';
                         modal.style.bottom = '0';
-
+                        
                         const overlay = document.getElementById('modal-overlay');
                         if (overlay) {
                             overlay.style.left = '0';
@@ -434,7 +461,7 @@
                             overlay.style.right = '0';
                             overlay.style.bottom = '0';
                         }
-
+                        
                         const modalContainer = document.getElementById('modal-container');
                         if (modalContainer) {
                             modalContainer.style.left = '0';
@@ -442,7 +469,7 @@
                             modalContainer.style.right = '0';
                             modalContainer.style.bottom = '0';
                         }
-
+                        
                         // En móvil, bloquear el scroll del body
                         document.body.style.overflow = 'hidden';
                     } else {
@@ -451,7 +478,7 @@
                         modal.style.top = '0';
                         modal.style.right = '0';
                         modal.style.bottom = '0';
-
+                        
                         const overlay = document.getElementById('modal-overlay');
                         if (overlay) {
                             overlay.style.left = sidebarWidth + 'px';
@@ -459,7 +486,7 @@
                             overlay.style.right = '0';
                             overlay.style.bottom = '0';
                         }
-
+                        
                         const modalContainer = document.getElementById('modal-container');
                         if (modalContainer) {
                             modalContainer.style.left = sidebarWidth + 'px';
@@ -467,18 +494,18 @@
                             modalContainer.style.right = '0';
                             modalContainer.style.bottom = '0';
                         }
-
+                        
                         // En desktop, solo bloquear el scroll del contenido principal
                         const mainContent = document.querySelector('main');
                         if (mainContent) {
                             mainContent.style.overflow = 'hidden';
                         }
                     }
-
+                    
                     modal.classList.remove('hidden');
                     modal.style.display = 'block';
                     modal.style.zIndex = '9999';
-
+                    
                     // Forzar reflow para asegurar que se muestre
                     void modal.offsetHeight;
                 }
@@ -489,7 +516,7 @@
                     modal.classList.add('hidden');
                     modal.style.display = 'none';
                     modal.style.zIndex = '';
-
+                    
                     // Restaurar scroll
                     document.body.style.overflow = '';
                     const mainContent = document.querySelector('main');
@@ -498,7 +525,7 @@
                     }
                 }
             }
-
+            
             // Ajustar modal al redimensionar la ventana
             let resizeTimeout;
             window.addEventListener('resize', function() {
@@ -509,7 +536,7 @@
                         const isMobile = window.innerWidth < 768;
                         const sidebar = document.getElementById('sidebar');
                         let sidebarWidth = 0;
-
+                        
                         if (!isMobile && sidebar) {
                             const sidebarRect = sidebar.getBoundingClientRect();
                             // Si el sidebar está visible (no está fuera de la pantalla)
@@ -517,7 +544,7 @@
                                 sidebarWidth = sidebar.offsetWidth || 288;
                             }
                         }
-
+                        
                         if (isMobile) {
                             modal.style.left = '0';
                             const overlay = document.getElementById('modal-overlay');
@@ -556,10 +583,10 @@
                         e.preventDefault();
                         e.stopPropagation();
                         e.stopImmediatePropagation();
-
+                        
                         const pestIdAttr = this.getAttribute('data-pest-id');
                         console.log('Card clicked, data-pest-id:', pestIdAttr);
-
+                        
                         if (pestIdAttr) {
                             const pestId = parseInt(pestIdAttr, 10);
                             if (pestId && !isNaN(pestId)) {
@@ -606,45 +633,101 @@
             initPestsModal();
         }
     })();
-
+    
     // Page Mobile Menu Button
     (function() {
-        const pageMenuButton = document.getElementById('page-mobile-menu-button');
-        const mainMenuButton = document.getElementById('mobile-menu-button');
-        const sidebar = document.getElementById('sidebar');
-        const mobileOverlay = document.getElementById('mobile-overlay');
-
-        function toggleMobileMenu() {
-            if (mainMenuButton) {
-                mainMenuButton.click();
-            } else {
-                const menuIcon = document.getElementById('page-menu-icon');
-                const closeIcon = document.getElementById('page-close-icon');
-
-                if (sidebar && sidebar.classList.contains('-translate-x-full')) {
-                    sidebar.classList.remove('-translate-x-full');
-                    sidebar.classList.add('translate-x-0');
-                    if (mobileOverlay) mobileOverlay.classList.remove('hidden');
-                    if (menuIcon) menuIcon.classList.add('hidden');
-                    if (closeIcon) closeIcon.classList.remove('hidden');
-                    document.body.style.overflow = 'hidden';
-                } else {
+        function initPageMenu() {
+            const pageMenuButton = document.getElementById('page-mobile-menu-button');
+            const sidebar = document.getElementById('sidebar');
+            const mobileOverlay = document.getElementById('mobile-overlay');
+            
+            if (!pageMenuButton) {
+                setTimeout(initPageMenu, 100);
+                return;
+            }
+            
+            if (!sidebar) {
+                console.error('Sidebar no encontrado');
+                return;
+            }
+            
+            function toggleMobileMenu() {
+                const computedStyle = window.getComputedStyle(sidebar);
+                const transform = computedStyle.transform;
+                const sidebarTransform = sidebar.style.transform || '';
+                const isOpen = sidebar.classList.contains('translate-x-0') || 
+                              transform === 'matrix(1, 0, 0, 1, 0, 0)' || 
+                              transform === 'none' ||
+                              sidebarTransform === 'translateX(0)' ||
+                              sidebarTransform.includes('translateX(0)') ||
+                              sidebarTransform === '';
+                
+                if (isOpen) {
                     sidebar.classList.remove('translate-x-0');
                     sidebar.classList.add('-translate-x-full');
-                    if (mobileOverlay) mobileOverlay.classList.add('hidden');
+                    const styleTag = document.getElementById('mobile-menu-override-style');
+                    if (styleTag) styleTag.remove();
+                    sidebar.style.transform = 'translateX(-100%)';
+                    if (mobileOverlay) {
+                        mobileOverlay.classList.add('hidden');
+                        mobileOverlay.style.display = 'none';
+                    }
+                    const menuIcon = document.getElementById('page-menu-icon');
+                    const closeIcon = document.getElementById('page-close-icon');
                     if (menuIcon) menuIcon.classList.remove('hidden');
                     if (closeIcon) closeIcon.classList.add('hidden');
                     document.body.style.overflow = '';
+                } else {
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebar.classList.add('translate-x-0');
+                    let styleTag = document.getElementById('mobile-menu-override-style');
+                    if (!styleTag) {
+                        styleTag = document.createElement('style');
+                        styleTag.id = 'mobile-menu-override-style';
+                        document.head.appendChild(styleTag);
+                    }
+                    styleTag.textContent = `#sidebar { transform: translateX(0) !important; display: flex !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; position: fixed !important; left: 0 !important; top: 0 !important; width: 288px !important; height: 100vh !important; }`;
+                    sidebar.style.cssText = `display: flex !important; transform: translateX(0) !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; position: fixed !important; left: 0 !important; top: 0 !important; width: 288px !important; height: 100vh !important;`;
+                    if (mobileOverlay) {
+                        mobileOverlay.classList.remove('hidden');
+                        mobileOverlay.style.cssText = `display: block !important; visibility: visible !important; z-index: 9998 !important;`;
+                    }
+                    const menuIcon = document.getElementById('page-menu-icon');
+                    const closeIcon = document.getElementById('page-close-icon');
+                    if (menuIcon) menuIcon.classList.add('hidden');
+                    if (closeIcon) closeIcon.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
                 }
             }
-        }
-
-        if (pageMenuButton) {
+            
             pageMenuButton.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 toggleMobileMenu();
             });
+            
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', function() {
+                    toggleMobileMenu();
+                });
+            }
+            
+            if (sidebar) {
+                const sidebarLinks = sidebar.querySelectorAll('a');
+                sidebarLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        if (window.innerWidth < 768) {
+                            toggleMobileMenu();
+                        }
+                    });
+                });
+            }
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPageMenu);
+        } else {
+            setTimeout(initPageMenu, 50);
         }
     })();
 </script>
