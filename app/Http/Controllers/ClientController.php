@@ -78,6 +78,55 @@ class ClientController extends Controller
     }
 
     /**
+     * Show the form for creating a new client.
+     */
+    public function create(): View
+    {
+        // Solo super-admin puede crear clientes
+        if (!Auth::user()->hasRole('super-admin')) {
+            abort(403, 'No tienes permisos para acceder a esta página');
+        }
+        
+        return view('admin.clients.create');
+    }
+
+    /**
+     * Store a newly created client.
+     */
+    public function store(\App\Http\Requests\Api\CreateClientRequest $request): RedirectResponse
+    {
+        // Solo super-admin puede crear clientes
+        if (!Auth::user()->hasRole('super-admin')) {
+            abort(403, 'No tienes permisos para acceder a esta página');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $client = Client::create($request->validated());
+
+            // Log activity
+            activity()
+                ->performedOn($client)
+                ->causedBy(Auth::user())
+                ->log('Cliente creado');
+
+            DB::commit();
+
+            return redirect()->route('admin.clients')
+                ->with('success', 'Cliente creado correctamente.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error creating client: ' . $e->getMessage());
+            
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Error al crear el cliente: ' . $e->getMessage());
+        }
+    }
+
+    /**
      * Show client dashboard.
      */
     public function dashboard(): View
