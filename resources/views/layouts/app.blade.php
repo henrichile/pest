@@ -334,7 +334,19 @@ function getTechnicianRoute($routeName, ...$params) {
 <body class="h-full" id="body-element" style="overflow-x: hidden; background: #f9fafb;">
     <div id="app" class="flex h-full flex-row">
         <!-- Mobile Menu Button (oculto por defecto, se muestra solo si la página no tiene su propia hamburguesa) -->
-        <button id="mobile-menu-button" class="md:hidden fixed top-3 left-3 z-50 p-2.5 rounded-lg bg-white border border-gray-300 shadow-lg hover:bg-gray-50 transition-colors" style="z-index: 10001; display: none;">
+        <button id="mobile-menu-button" class="md:hidden fixed top-3 left-3 z-50 p-2.5 rounded-lg bg-white border border-gray-300 shadow-lg hover:bg-gray-50 transition-colors" style="z-index: 10001;">
+            <style>
+                @media (min-width: 768px) {
+                    #mobile-menu-button {
+                        display: none !important;
+                    }
+                }
+                @media (max-width: 767px) {
+                    #mobile-menu-button {
+                        display: block !important;
+                    }
+                }
+            </style>
             <svg id="menu-icon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
             </svg>
@@ -871,9 +883,25 @@ function getTechnicianRoute($routeName, ...$params) {
                     if (mobileMenuButton) {
                         const dashboardButton = document.getElementById('dashboard-mobile-menu-button');
                         const pageButton = document.getElementById('page-mobile-menu-button');
+                        // Mostrar el botón si no hay otros botones de hamburguesa en la página
                         if (!dashboardButton && !pageButton) {
                             mobileMenuButton.style.display = 'block';
+                            mobileMenuButton.style.visibility = 'visible';
+                        } else {
+                            mobileMenuButton.style.display = 'none';
                         }
+                    }
+                }
+            }
+            
+            // Función para verificar y mostrar el botón en móvil
+            function checkAndShowMobileButton() {
+                if (window.innerWidth < 768 && mobileMenuButton) {
+                    const dashboardButton = document.getElementById('dashboard-mobile-menu-button');
+                    const pageButton = document.getElementById('page-mobile-menu-button');
+                    if (!dashboardButton && !pageButton) {
+                        mobileMenuButton.style.display = 'block';
+                        mobileMenuButton.style.visibility = 'visible';
                     }
                 }
             }
@@ -884,8 +912,14 @@ function getTechnicianRoute($routeName, ...$params) {
             }
             
             // Ejecutar al cargar y al redimensionar
-            document.addEventListener('DOMContentLoaded', ensureDesktopSidebar);
+            document.addEventListener('DOMContentLoaded', function() {
+                ensureDesktopSidebar();
+                // Verificar nuevamente después de un pequeño delay para asegurar que se muestre
+                setTimeout(checkAndShowMobileButton, 100);
+            });
             ensureDesktopSidebar();
+            // Verificar también inmediatamente
+            setTimeout(checkAndShowMobileButton, 50);
             
             // Cerrar menú al redimensionar a desktop
             window.addEventListener('resize', function() {
