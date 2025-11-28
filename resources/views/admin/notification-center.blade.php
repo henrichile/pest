@@ -171,13 +171,13 @@
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200" style="table-layout: fixed; width: 100%;">
                 <colgroup>
-                    <col style="width: 12%;">
-                    <col style="width: 8%;">
-                    <col style="width: 18%;">
-                    <col style="width: 32%;">
+                    <col style="width: 11%;">
+                    <col style="width: 7%;">
+                    <col style="width: 17%;">
+                    <col style="width: 30%;">
                     <col style="width: 8%;">
                     <col style="width: 10%;">
-                    <col style="width: 12%;">
+                    <col style="width: 17%;">
                 </colgroup>
                 <thead class="bg-gray-50">
                     <tr>
@@ -241,19 +241,21 @@
                             <td class="px-3 py-4 whitespace-nowrap text-sm" style="color: #6b7280; overflow: hidden; text-overflow: ellipsis;">
                                 {{ \Carbon\Carbon::parse($notification->created_at)->format('d/m/Y H:i') }}
                             </td>
-                            <td class="px-3 py-4 whitespace-nowrap text-right text-sm font-medium" style="overflow: hidden;">
-                                @if(!$notification->read_at)
-                                    <form action="{{ route('admin.notifications.mark-read', $notification->id) }}" method="POST" class="inline">
+                            <td class="px-3 py-4 text-sm font-medium" style="overflow: visible;">
+                                <div class="flex flex-col gap-1 items-end">
+                                    @if(!$notification->read_at)
+                                        <form action="{{ route('admin.notifications.mark-read', $notification->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="text-green-600 hover:text-green-900 text-xs whitespace-nowrap">Marcar como leída</button>
+                                        </form>
+                                    @endif
+                                    <form action="{{ route('admin.notifications.destroy', $notification->id) }}" method="POST" class="inline" onsubmit="return confirm('¿Estás seguro de eliminar esta notificación?');">
                                         @csrf
-                                        @method('PATCH')
-                                        <button type="submit" class="text-green-600 hover:text-green-900 mr-2 text-xs">Marcar como leída</button>
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:text-red-900 text-xs whitespace-nowrap">Eliminar</button>
                                     </form>
-                                @endif
-                                <form action="{{ route('admin.notifications.destroy', $notification->id) }}" method="POST" class="inline" onsubmit="return confirm('¿Estás seguro de eliminar esta notificación?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900 text-xs">Eliminar</button>
-                                </form>
+                                </div>
                             </td>
                         </tr>
                     @empty
