@@ -15,11 +15,33 @@ use Illuminate\Support\Facades\Log;
 
 class ServiceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $serviceTypes = ServiceType::where('is_active', true)->get();
-        $services = Service::with("client", "assignedUser", "serviceType")->orderBy("created_at", "desc")->paginate(10);
-        return view("services.index", compact("services", "serviceTypes"));
+        
+        // Construir query base
+        $query = Service::with("client", "assignedUser", "serviceType");
+        
+        // Aplicar filtros
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        
+        if ($request->filled('type')) {
+            $query->where('service_type', $request->type);
+        }
+        
+        if ($request->filled('priority')) {
+            $query->where('priority', $request->priority);
+        }
+        
+        // Ordenar y paginar
+        $services = $query->orderBy("created_at", "desc")->paginate(10);
+        
+        // Mantener los parámetros de filtro en la paginación
+        $services->appends($request->query());
+        
+        return view("admin.services", compact("services", "serviceTypes"));
     }
 
     public function create()
