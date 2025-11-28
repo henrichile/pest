@@ -140,6 +140,78 @@ class ClientController extends Controller
     }
 
     /**
+     * Show the form for editing the specified client.
+     */
+    public function edit(Client $client): View
+    {
+        // Solo super-admin puede editar clientes
+        if (!Auth::user()->hasRole('super-admin')) {
+            abort(403, 'No tienes permisos para acceder a esta página');
+        }
+        
+        return view('admin.clients.edit', compact('client'));
+    }
+
+    /**
+     * Update the specified client in storage.
+     */
+    public function update(\App\Http\Requests\Api\CreateClientRequest $request, Client $client): RedirectResponse
+    {
+        // Solo super-admin puede actualizar clientes
+        if (!Auth::user()->hasRole('super-admin')) {
+            abort(403, 'No tienes permisos para acceder a esta página');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $data = $request->validated();
+            
+            // Validar que el RUT sea único si cambió
+            if ($data['rut'] !== $client->rut) {
+                $exists = Client::where('rut', $data['rut'])->where('id', '!=', $client->id)->exists();
+                if ($exists) {
+                    return redirect()->back()
+                        ->withInput()
+                        ->with('error', 'El RUT ya está registrado para otro cliente.');
+                }
+            }
+            
+            // Preparar datos para actualizar el cliente
+            $clientData = [
+                'name' => $data['name'],
+                'rut' => $data['rut'],
+                'email' => $data['email'] ?? '',
+                'phone' => $data['phone'],
+                'address' => $data['address'],
+                'business_type' => $data['business_type'] ?? null,
+                'contact_person' => $data['contact_person'] ?? null,
+            ];
+
+            $client->update($clientData);
+
+            // Log activity
+            activity()
+                ->performedOn($client)
+                ->causedBy(Auth::user())
+                ->log('Cliente actualizado');
+
+            DB::commit();
+
+            return redirect()->route('admin.clients.index')
+                ->with('success', 'Cliente actualizado correctamente.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error updating client: ' . $e->getMessage());
+            
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Error al actualizar el cliente: ' . $e->getMessage());
+        }
+    }
+
+    /**
      * Remove the specified client from storage.
      */
     public function destroy(Client $client): RedirectResponse
