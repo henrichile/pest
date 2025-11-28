@@ -169,16 +169,16 @@
     <!-- Notifications List -->
     <div class="bg-white border dark:border-gray-700 rounded-lg overflow-hidden" style="border: 1px solid #e5e7eb !important;">
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
+            <table class="min-w-full divide-y divide-gray-200" style="table-layout: fixed;">
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 13%;">Usuario</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 6%;">Tipo</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 5%;">Tipo</th>
                         <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 18%;">Título</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 33%;">Mensaje</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 36%;">Mensaje</th>
                         <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 8%;">Estado</th>
                         <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 10%;">Fecha</th>
-                        <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 12%;">Acciones</th>
+                        <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 10%;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -204,21 +204,21 @@
                             $typeLabel = $typeLabels[$typeName] ?? $typeName;
                         @endphp
                         <tr class="hover:bg-gray-50">
-                            <td class="px-4 py-4 whitespace-nowrap text-sm" style="color: #111827;">
+                            <td class="px-4 py-4 whitespace-nowrap text-sm" style="color: #111827; width: 13%;">
                                 {{ $user->name ?? 'Usuario eliminado' }}
                             </td>
-                            <td class="px-4 py-4 whitespace-nowrap">
+                            <td class="px-4 py-4 whitespace-nowrap" style="width: 5%;">
                                 <span class="px-2 py-1 text-xs font-medium rounded-full whitespace-nowrap" style="background: #e0e7ff; color: #3730a3; display: inline-block;">
                                     {{ $typeLabel }}
                                 </span>
                             </td>
-                            <td class="px-4 py-4 text-sm" style="color: #111827;">
+                            <td class="px-4 py-4 text-sm" style="color: #111827; width: 18%;">
                                 {{ $data['title'] ?? 'Sin título' }}
                             </td>
-                            <td class="px-4 py-4 text-sm" style="color: #6b7280;">
-                                {{ Str::limit($data['message'] ?? '', 60) }}
+                            <td class="px-4 py-4 text-sm" style="color: #6b7280; width: 36%;">
+                                {{ Str::limit($data['message'] ?? '', 80) }}
                             </td>
-                            <td class="px-4 py-4 whitespace-nowrap">
+                            <td class="px-4 py-4 whitespace-nowrap" style="width: 8%;">
                                 @if($notification->read_at)
                                     <span class="px-2 py-1 text-xs font-medium rounded-full" style="background: #d1fae5; color: #065f46;">
                                         Leída
@@ -229,10 +229,10 @@
                                     </span>
                                 @endif
                             </td>
-                            <td class="px-4 py-4 whitespace-nowrap text-sm" style="color: #6b7280;">
+                            <td class="px-4 py-4 whitespace-nowrap text-sm" style="color: #6b7280; width: 10%;">
                                 {{ \Carbon\Carbon::parse($notification->created_at)->format('d/m/Y H:i') }}
                             </td>
-                            <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium" style="width: 10%;">
                                 @if(!$notification->read_at)
                                     <form action="{{ route('admin.notifications.mark-read', $notification->id) }}" method="POST" class="inline">
                                         @csrf
