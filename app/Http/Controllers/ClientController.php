@@ -126,7 +126,7 @@ class ClientController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.clients')
+            return redirect()->route('admin.clients.index')
                 ->with('success', 'Cliente creado correctamente.');
 
         } catch (\Exception $e) {
