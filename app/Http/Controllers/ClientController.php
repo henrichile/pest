@@ -155,7 +155,7 @@ class ClientController extends Controller
     /**
      * Update the specified client in storage.
      */
-    public function update(\App\Http\Requests\Api\CreateClientRequest $request, Client $client): RedirectResponse
+    public function update(\App\Http\Requests\Api\UpdateClientRequest $request, Client $client): RedirectResponse
     {
         // Solo super-admin puede actualizar clientes
         if (!Auth::user()->hasRole('super-admin')) {
