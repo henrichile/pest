@@ -56,12 +56,12 @@
             <div class="mb-6">
                 <h3 class="text-lg font-semibold mb-4" style="color: #111827;">Información Básica</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Nombre de la Empresa -->
+                    <!-- Nombre -->
                     <div>
-                        <label for="business_name" class="block text-sm font-medium mb-1" style="color: #374151;">
-                            Nombre de la Empresa <span class="text-red-500">*</span>
+                        <label for="name" class="block text-sm font-medium mb-1" style="color: #374151;">
+                            Nombre <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" name="business_name" id="business_name" value="{{ old('business_name') }}" required
+                        <input type="text" name="name" id="name" value="{{ old('name') }}" required
                                class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
@@ -72,6 +72,37 @@
                             RUT <span class="text-red-500">*</span>
                         </label>
                         <input type="text" name="rut" id="rut" value="{{ old('rut') }}" required
+                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                               style="border: 1px solid #e5e7eb !important; color: #111827;">
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium mb-1" style="color: #374151;">
+                            Email
+                        </label>
+                        <input type="email" name="email" id="email" value="{{ old('email') }}"
+                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                               style="border: 1px solid #e5e7eb !important; color: #111827;">
+                    </div>
+
+                    <!-- Teléfono -->
+                    <div>
+                        <label for="phone" class="block text-sm font-medium mb-1" style="color: #374151;">
+                            Teléfono <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="phone" id="phone" value="{{ old('phone') }}" required
+                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                               style="border: 1px solid #e5e7eb !important; color: #111827;">
+                    </div>
+
+                    <!-- Dirección -->
+                    <div class="md:col-span-2">
+                        <label for="address" class="block text-sm font-medium mb-1" style="color: #374151;">
+                            Dirección <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="address" id="address" value="{{ old('address') }}" required
+                               placeholder="Calle, número, piso, depto."
                                class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
@@ -87,60 +118,13 @@
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
 
-                    <!-- Método de Pago -->
+                    <!-- Persona de Contacto -->
                     <div>
-                        <label for="payment_method" class="block text-sm font-medium mb-1" style="color: #374151;">
-                            Método de Pago
+                        <label for="contact_person" class="block text-sm font-medium mb-1" style="color: #374151;">
+                            Persona de Contacto
                         </label>
-                        <input type="text" name="payment_method" id="payment_method" value="{{ old('payment_method') }}"
-                               placeholder="Ej: Transferencia, Factura 30 días, etc."
-                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                               style="border: 1px solid #e5e7eb !important; color: #111827;">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Contacto Principal -->
-            <div class="mb-6">
-                <h3 class="text-lg font-semibold mb-4" style="color: #111827;">Contacto Principal</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Nombre del Contacto -->
-                    <div>
-                        <label for="contact_name" class="block text-sm font-medium mb-1" style="color: #374151;">
-                            Nombre del Contacto
-                        </label>
-                        <input type="text" name="contact_name" id="contact_name" value="{{ old('contact_name') }}"
-                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                               style="border: 1px solid #e5e7eb !important; color: #111827;">
-                    </div>
-
-                    <!-- Cargo -->
-                    <div>
-                        <label for="contact_position" class="block text-sm font-medium mb-1" style="color: #374151;">
-                            Cargo
-                        </label>
-                        <input type="text" name="contact_position" id="contact_position" value="{{ old('contact_position') }}"
-                               placeholder="Ej: Gerente, Jefe de Operaciones"
-                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                               style="border: 1px solid #e5e7eb !important; color: #111827;">
-                    </div>
-
-                    <!-- Email del Contacto -->
-                    <div>
-                        <label for="contact_email" class="block text-sm font-medium mb-1" style="color: #374151;">
-                            Email del Contacto
-                        </label>
-                        <input type="email" name="contact_email" id="contact_email" value="{{ old('contact_email') }}"
-                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                               style="border: 1px solid #e5e7eb !important; color: #111827;">
-                    </div>
-
-                    <!-- Teléfono del Contacto -->
-                    <div>
-                        <label for="contact_phone" class="block text-sm font-medium mb-1" style="color: #374151;">
-                            Teléfono del Contacto
-                        </label>
-                        <input type="text" name="contact_phone" id="contact_phone" value="{{ old('contact_phone') }}"
+                        <input type="text" name="contact_person" id="contact_person" value="{{ old('contact_person') }}"
+                               placeholder="Ej: Juan Pérez - Gerente"
                                class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>

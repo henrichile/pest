@@ -105,40 +105,16 @@ class ClientController extends Controller
 
             $data = $request->validated();
             
-            // Procesar contactos si existen
-            if ($request->filled('contact_name') || $request->filled('contact_email') || $request->filled('contact_phone')) {
-                $contacts = [];
-                if ($request->filled('contact_name')) {
-                    $contacts[] = [
-                        'name' => $request->contact_name,
-                        'email' => $request->contact_email ?? null,
-                        'phone' => $request->contact_phone ?? null,
-                        'position' => $request->contact_position ?? null,
-                        'is_primary' => true,
-                    ];
-                }
-                $data['contacts'] = $contacts;
-            }
-            
-            // Asegurar que is_active tenga un valor por defecto
-            if (!isset($data['is_active'])) {
-                $data['is_active'] = true;
-            }
-
-            // Preparar datos para crear el cliente (solo campos fillable)
+            // Preparar datos para crear el cliente (solo campos que existen en la BD)
             $clientData = [
-                'business_name' => $data['business_name'] ?? null,
-                'rut' => $data['rut'] ?? null,
+                'name' => $data['name'],
+                'rut' => $data['rut'],
+                'email' => $data['email'] ?? '',
+                'phone' => $data['phone'],
+                'address' => $data['address'],
                 'business_type' => $data['business_type'] ?? null,
-                'contacts' => $data['contacts'] ?? null,
-                'payment_method' => $data['payment_method'] ?? null,
-                'is_active' => $data['is_active'] ?? true,
+                'contact_person' => $data['contact_person'] ?? null,
             ];
-            
-            // Remover campos null para evitar problemas
-            $clientData = array_filter($clientData, function($value) {
-                return $value !== null;
-            });
 
             $client = Client::create($clientData);
 

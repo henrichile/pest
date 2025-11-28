@@ -19,12 +19,13 @@ class Client extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'business_name',
+        'name',
         'rut',
+        'email',
+        'phone',
+        'address',
         'business_type',
-        'contacts',
-        'payment_method',
-        'is_active',
+        'contact_person',
     ];
 
     /**
