@@ -408,11 +408,34 @@
                 <div class="photo-grid">
                     @foreach($checklistData['monitoreo_datos']['service_photos'] as $photo)
                         @php
-                            $photoPath = str_replace('storage/', '', $photo);
+                            // Procesar ruta de la foto
+                            $photoPath = $photo;
+                            // Si la ruta ya incluye 'storage/', removerlo
+                            if (strpos($photoPath, 'storage/') === 0) {
+                                $photoPath = str_replace('storage/', '', $photoPath);
+                            }
+                            // Si la ruta comienza con '/', removerlo
+                            if (strpos($photoPath, '/') === 0) {
+                                $photoPath = substr($photoPath, 1);
+                            }
                             $fullPath = storage_path('app/public/' . $photoPath);
+                            
+                            // Intentar también con la ruta completa si no existe
+                            if (!file_exists($fullPath) && strpos($photo, 'storage/') !== false) {
+                                $altPath = storage_path('app/public/' . str_replace('storage/', '', $photo));
+                                if (file_exists($altPath)) {
+                                    $fullPath = $altPath;
+                                }
+                            }
+                            
                             if (file_exists($fullPath)) {
                                 $imageData = base64_encode(file_get_contents($fullPath));
-                                $imageSrc = 'data:image/' . pathinfo($fullPath, PATHINFO_EXTENSION) . ';base64,' . $imageData;
+                                $extension = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
+                                // Asegurar que la extensión sea válida para data URI
+                                if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+                                    $extension = 'png'; // Default a PNG si no se puede determinar
+                                }
+                                $imageSrc = 'data:image/' . ($extension === 'jpg' ? 'jpeg' : $extension) . ';base64,' . $imageData;
                             } else {
                                 $imageSrc = null;
                             }
@@ -443,11 +466,39 @@
             
             @if(isset($checklistData['monitoreo_croquis']['croquis_file']))
             @php
-                $croquisPath = str_replace('storage/', '', $checklistData['monitoreo_croquis']['croquis_file']);
+                // Procesar ruta del croquis
+                $croquisPath = $checklistData['monitoreo_croquis']['croquis_file'];
+                // Si la ruta ya incluye 'storage/', removerlo
+                if (strpos($croquisPath, 'storage/') === 0) {
+                    $croquisPath = str_replace('storage/', '', $croquisPath);
+                }
+                // Si la ruta comienza con '/', removerlo
+                if (strpos($croquisPath, '/') === 0) {
+                    $croquisPath = substr($croquisPath, 1);
+                }
                 $fullPath = storage_path('app/public/' . $croquisPath);
+                
+                // Intentar también con la ruta completa si no existe
+                if (!file_exists($fullPath) && strpos($checklistData['monitoreo_croquis']['croquis_file'], 'storage/') !== false) {
+                    $altPath = storage_path('app/public/' . str_replace('storage/', '', $checklistData['monitoreo_croquis']['croquis_file']));
+                    if (file_exists($altPath)) {
+                        $fullPath = $altPath;
+                    }
+                }
+                
                 if (file_exists($fullPath)) {
                     $imageData = base64_encode(file_get_contents($fullPath));
-                    $imageSrc = 'data:image/' . pathinfo($fullPath, PATHINFO_EXTENSION) . ';base64,' . $imageData;
+                    $extension = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
+                    // Asegurar que la extensión sea válida para data URI
+                    if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'pdf'])) {
+                        $extension = 'png'; // Default a PNG si no se puede determinar
+                    }
+                    // Para PDFs, usar una imagen placeholder o convertir
+                    if ($extension === 'pdf') {
+                        $imageSrc = null; // Los PDFs no se pueden mostrar directamente como imágenes
+                    } else {
+                        $imageSrc = 'data:image/' . ($extension === 'jpg' ? 'jpeg' : $extension) . ';base64,' . $imageData;
+                    }
                 } else {
                     $imageSrc = null;
                 }
@@ -456,6 +507,11 @@
             <div class="checklist-item">
                 <strong>Croquis:</strong><br>
                 <img src="{{ $imageSrc }}" alt="Croquis de cebaderas" class="croquis-image">
+            </div>
+            @elseif(isset($checklistData['monitoreo_croquis']['croquis_file']))
+            <div class="checklist-item">
+                <strong>Croquis:</strong><br>
+                <p style="color: #999; font-style: italic;">Archivo de croquis disponible pero no se puede mostrar (formato PDF o archivo no encontrado)</p>
             </div>
             @endif
             @endif
