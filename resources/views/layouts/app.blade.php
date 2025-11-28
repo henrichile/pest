@@ -10,14 +10,14 @@ function getTechnicianRoute($routeName, ...$params) {
     if ($isViewingAsTechnician) {
         // Mapear rutas de technician a technician-view
         $routeMap = [
-            'technician.service.detail' => 'admin.technician-view.service.detail',
-            'technician.service.checklist' => 'admin.technician-view.service.checklist',
-            'technician.service.checklist.stage' => 'admin.technician-view.service.checklist.stage',
-            'technician.service.checklist.location' => 'admin.technician-view.service.checklist.location',
-            'technician.service.checklist.process-location' => 'admin.technician-view.service.checklist.process-location',
+            'technician.service.detail' => 'technician-view.service.detail',
+            'technician.service.checklist' => 'technician-view.service.checklist',
+            'technician.service.checklist.stage' => 'technician-view.service.checklist.stage',
+            'technician.service.checklist.location' => 'technician-view.service.checklist.location',
+            'technician.service.checklist.process-location' => 'technician-view.service.checklist.process-location',
             'technician.service.checklist.submit' => 'technician-view.service.checklist.submit',
-            'technician.service.pdf' => 'admin.technician-view.service.pdf',
-            'technician.service.checklist-details' => 'admin.technician-view.service.checklist-details',
+            'technician.service.pdf' => 'technician-view.service.pdf',
+            'technician.service.checklist-details' => 'technician-view.service.checklist-details',
         ];
         
         $mappedRoute = $routeMap[$routeName] ?? $routeName;
@@ -393,27 +393,27 @@ function getTechnicianRoute($routeName, ...$params) {
                                 <div class="text-xs font-semibold uppercase mb-3" style="color: #6b7280; font-size: 10px; letter-spacing: 0.1em; line-height: 1.5;">Menú Principal</div>
                                 <ul role="list" class="-mx-2 space-y-1.5">
                                 <li>
-                                    <a href="{{ route('admin.technician-view.dashboard') }}" class="group flex items-center gap-x-6 rounded-md px-3 py-3 text-sm leading-5 font-medium {{ request()->routeIs('admin.technician-view.dashboard') ? 'bg-green-500 text-white' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800' }}" style="{{ !request()->routeIs('admin.technician-view.dashboard') ? 'color: #111827 !important;' : '' }}">
-                                        <svg class="h-5 w-5 shrink-0 {{ request()->routeIs('admin.technician-view.dashboard') ? 'text-white' : 'text-gray-900 dark:text-gray-400 group-hover:text-white' }}" style="margin-right: 20px !important; {{ !request()->routeIs('admin.technician-view.dashboard') ? 'color: #111827 !important;' : '' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <a href="{{ route('technician-view.dashboard') }}" class="group flex items-center gap-x-6 rounded-md px-3 py-3 text-sm leading-5 font-medium {{ request()->routeIs('technician-view.dashboard') ? 'bg-green-500 text-white' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800' }}" style="{{ !request()->routeIs('technician-view.dashboard') ? 'color: #111827 !important;' : '' }}">
+                                        <svg class="h-5 w-5 shrink-0 {{ request()->routeIs('technician-view.dashboard') ? 'text-white' : 'text-gray-900 dark:text-gray-400 group-hover:text-white' }}" style="margin-right: 20px !important; {{ !request()->routeIs('technician-view.dashboard') ? 'color: #111827 !important;' : '' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
                                         </svg>
-                                        <span class="{{ request()->routeIs('admin.technician-view.dashboard') ? 'text-white' : 'text-gray-900 dark:text-gray-300 group-hover:text-white' }}" style="font-size: 15px; font-weight: 500; {{ !request()->routeIs('admin.technician-view.dashboard') ? 'color: #111827 !important;' : '' }}">Dashboard</span>
+                                        <span class="{{ request()->routeIs('technician-view.dashboard') ? 'text-white' : 'text-gray-900 dark:text-gray-300 group-hover:text-white' }}" style="font-size: 15px; font-weight: 500; {{ !request()->routeIs('technician-view.dashboard') ? 'color: #111827 !important;' : '' }}">Dashboard</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin.technician-view.services') }}" class="group flex items-center gap-x-6 rounded-md px-3 py-3 text-sm leading-5 font-medium {{ request()->routeIs('admin.technician-view.services') || request()->routeIs('admin.technician-view.service.*') ? 'bg-green-500 text-white' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800' }}" style="{{ !(request()->routeIs('admin.technician-view.services') || request()->routeIs('admin.technician-view.service.*')) ? 'color: #111827 !important;' : '' }}">
-                                        <svg class="h-5 w-5 shrink-0 {{ request()->routeIs('admin.technician-view.services') || request()->routeIs('admin.technician-view.service.*') ? 'text-white' : 'text-gray-900 dark:text-gray-400 group-hover:text-white' }}" style="margin-right: 20px !important; {{ !(request()->routeIs('admin.technician-view.services') || request()->routeIs('admin.technician-view.service.*')) ? 'color: #111827 !important;' : '' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <a href="{{ route('technician-view.services') }}" class="group flex items-center gap-x-6 rounded-md px-3 py-3 text-sm leading-5 font-medium {{ request()->routeIs('technician-view.services') || request()->routeIs('technician-view.service.*') ? 'bg-green-500 text-white' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800' }}" style="{{ !(request()->routeIs('technician-view.services') || request()->routeIs('technician-view.service.*')) ? 'color: #111827 !important;' : '' }}">
+                                        <svg class="h-5 w-5 shrink-0 {{ request()->routeIs('technician-view.services') || request()->routeIs('technician-view.service.*') ? 'text-white' : 'text-gray-900 dark:text-gray-400 group-hover:text-white' }}" style="margin-right: 20px !important; {{ !(request()->routeIs('technician-view.services') || request()->routeIs('technician-view.service.*')) ? 'color: #111827 !important;' : '' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5a2.25 2.25 0 002.25-2.25m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5a2.25 2.25 0 012.25 2.25v7.5" />
                                         </svg>
-                                        <span class="{{ request()->routeIs('admin.technician-view.services') || request()->routeIs('admin.technician-view.service.*') ? 'text-white' : 'text-gray-900 dark:text-gray-300 group-hover:text-white' }}" style="font-size: 15px; font-weight: 500; {{ !(request()->routeIs('admin.technician-view.services') || request()->routeIs('admin.technician-view.service.*')) ? 'color: #111827 !important;' : '' }}">Mis Servicios</span>
+                                        <span class="{{ request()->routeIs('technician-view.services') || request()->routeIs('technician-view.service.*') ? 'text-white' : 'text-gray-900 dark:text-gray-300 group-hover:text-white' }}" style="font-size: 15px; font-weight: 500; {{ !(request()->routeIs('technician-view.services') || request()->routeIs('technician-view.service.*')) ? 'color: #111827 !important;' : '' }}">Mis Servicios</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin.technician-view.profile') }}" class="group flex items-center gap-x-6 rounded-md px-3 py-3 text-sm leading-5 font-medium {{ request()->routeIs('admin.technician-view.profile') ? 'bg-green-500 text-white' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800' }}" style="{{ !request()->routeIs('admin.technician-view.profile') ? 'color: #111827 !important;' : '' }}">
-                                        <svg class="h-5 w-5 shrink-0 {{ request()->routeIs('admin.technician-view.profile') ? 'text-white' : 'text-gray-900 dark:text-gray-400 group-hover:text-white' }}" style="margin-right: 20px !important; {{ !request()->routeIs('admin.technician-view.profile') ? 'color: #111827 !important;' : '' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <a href="{{ route('technician-view.profile') }}" class="group flex items-center gap-x-6 rounded-md px-3 py-3 text-sm leading-5 font-medium {{ request()->routeIs('technician-view.profile') ? 'bg-green-500 text-white' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800' }}" style="{{ !request()->routeIs('technician-view.profile') ? 'color: #111827 !important;' : '' }}">
+                                        <svg class="h-5 w-5 shrink-0 {{ request()->routeIs('technician-view.profile') ? 'text-white' : 'text-gray-900 dark:text-gray-400 group-hover:text-white' }}" style="margin-right: 20px !important; {{ !request()->routeIs('technician-view.profile') ? 'color: #111827 !important;' : '' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                                         </svg>
-                                        <span class="{{ request()->routeIs('admin.technician-view.profile') ? 'text-white' : 'text-gray-900 dark:text-gray-300 group-hover:text-white' }}" style="font-size: 15px; font-weight: 500; {{ !request()->routeIs('admin.technician-view.profile') ? 'color: #111827 !important;' : '' }}">Mi Perfil</span>
+                                        <span class="{{ request()->routeIs('technician-view.profile') ? 'text-white' : 'text-gray-900 dark:text-gray-300 group-hover:text-white' }}" style="font-size: 15px; font-weight: 500; {{ !request()->routeIs('technician-view.profile') ? 'color: #111827 !important;' : '' }}">Mi Perfil</span>
                                     </a>
                                 </li>
                                 </ul>
