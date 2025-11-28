@@ -172,10 +172,10 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 12%;">Usuario</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 10%;">Tipo</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 13%;">Usuario</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 6%;">Tipo</th>
                         <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 18%;">Título</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 30%;">Mensaje</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 33%;">Mensaje</th>
                         <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 8%;">Estado</th>
                         <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 10%;">Fecha</th>
                         <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider" style="color: #6b7280; width: 12%;">Acciones</th>
