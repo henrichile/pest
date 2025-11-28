@@ -207,10 +207,22 @@ class NotificationController extends Controller
     {
         try {
             $user = Auth::user();
-            $user->unreadNotifications()->update(['read_at' => now()]);
             
-            return redirect()->back()
-                ->with('success', 'Todas las notificaciones marcadas como leídas.');
+            // Si es admin, marcar todas las notificaciones no leídas de todos los usuarios
+            if ($user->hasRole('super-admin')) {
+                DB::table('notifications')
+                    ->whereNull('read_at')
+                    ->update(['read_at' => now()]);
+                
+                return redirect()->back()
+                    ->with('success', 'Todas las notificaciones marcadas como leídas.');
+            } else {
+                // Para técnicos, marcar solo sus notificaciones
+                $user->unreadNotifications()->update(['read_at' => now()]);
+                
+                return redirect()->back()
+                    ->with('success', 'Todas las notificaciones marcadas como leídas.');
+            }
                 
         } catch (\Exception $e) {
             Log::error('Error marking all notifications as read: ' . $e->getMessage());

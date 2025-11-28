@@ -14,7 +14,19 @@
                 Administra y envía notificaciones a los usuarios del sistema
             </p>
         </div>
-        <div class="mt-4 md:mt-0 md:ml-4">
+        <div class="mt-4 md:mt-0 md:ml-4 flex flex-col sm:flex-row gap-2">
+            @if($unreadNotifications > 0)
+            <form action="{{ route('admin.notifications.mark-all-read') }}" method="POST" class="inline">
+                @csrf
+                @method('PATCH')
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+                    <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Marcar Todas como Leídas
+                </button>
+            </form>
+            @endif
             <button type="button" onclick="openSendModal()" class="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors">
                 <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -102,16 +114,23 @@
 
     <!-- Filters -->
     <div class="bg-white border dark:border-gray-700 rounded-lg p-4 mb-6" style="border: 1px solid #e5e7eb !important;">
-        <form method="GET" action="{{ route('admin.notification-center') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <form method="GET" action="{{ route('admin.notification-center') }}" class="grid grid-cols-1 md:grid-cols-5 gap-4">
             <div>
                 <label for="search" class="block text-sm font-medium mb-2" style="color: #374151;">Buscar</label>
                 <input type="text" id="search" name="search" value="{{ request('search') }}" placeholder="Buscar en notificaciones..."
-                       class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                       class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                        style="border: 1px solid #e5e7eb !important; color: #111827;">
             </div>
 
-            <!-- Campo oculto para tipo siempre en "Todos" -->
-            <input type="hidden" name="type" value="">
+            <div>
+                <label for="type" class="block text-sm font-medium mb-2" style="color: #374151;">Tipo</label>
+                <select id="type" name="type" class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
+                    <option value="">Todos</option>
+                    @foreach($notificationsByType as $type => $count)
+                        <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>{{ $type }}</option>
+                    @endforeach
+                </select>
+            </div>
 
             <div>
                 <label for="read_status" class="block text-sm font-medium mb-2" style="color: #374151;">Estado</label>
@@ -125,18 +144,18 @@
             <div>
                 <label for="start_date" class="block text-sm font-medium mb-2" style="color: #374151;">Desde</label>
                 <input type="date" id="start_date" name="start_date" value="{{ request('start_date') }}"
-                       class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                       class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                        style="border: 1px solid #e5e7eb !important; color: #111827;">
             </div>
 
             <div>
                 <label for="end_date" class="block text-sm font-medium mb-2" style="color: #374151;">Hasta</label>
                 <input type="date" id="end_date" name="end_date" value="{{ request('end_date') }}"
-                       class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                       class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                        style="border: 1px solid #e5e7eb !important; color: #111827;">
             </div>
 
-            <div class="md:col-span-4 flex gap-2">
+            <div class="md:col-span-5 flex gap-2">
                 <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors">
                     Filtrar
                 </button>
@@ -167,36 +186,6 @@
                         @php
                             $data = json_decode($notification->data, true);
                             $user = \App\Models\User::find($notification->notifiable_id);
-
-                            // Mapear tipos de notificación a nombres legibles
-                            $typeNames = [
-                                // Formatos con namespace completo
-                                'App\\Notifications\\ServiceCreatedNotification' => 'Servicio Creado',
-                                'App\\Notifications\\ServiceUpdatedNotification' => 'Servicio Actualizado',
-                                'App\\Notifications\\ServiceCompletedNotification' => 'Servicio Completado',
-                                'App\\Notifications\\ServiceAssignedNotification' => 'Servicio Asignado',
-                                'App\\Notifications\\ServiceCancelledNotification' => 'Servicio Cancelado',
-                                'App\\Notifications\\NewUserNotification' => 'Nuevo Usuario',
-                                'App\\Notifications\\UserUpdatedNotification' => 'Usuario Actualizado',
-                                'App\\Notifications\\ReportGeneratedNotification' => 'Reporte Generado',
-                                'App\\Notifications\\SystemNotification' => 'Sistema',
-                                // Formatos sin namespace
-                                'AppNotificationsServiceCreatedNotification' => 'Servicio Creado',
-                                'AppNotificationsServiceUpdatedNotification' => 'Servicio Actualizado',
-                                'AppNotificationsServiceCompletedNotification' => 'Servicio Completado',
-                                'AppNotificationsServiceAssignedNotification' => 'Servicio Asignado',
-                                'AppNotificationsServiceAssigned' => 'Servicio Asignado',
-                                'AppNotificationsServiceCancelledNotification' => 'Servicio Cancelado',
-                                'AppNotificationsNewUserNotification' => 'Nuevo Usuario',
-                                'AppNotificationsUserUpdatedNotification' => 'Usuario Actualizado',
-                                'AppNotificationsReportGeneratedNotification' => 'Reporte Generado',
-                                'AppNotificationsSystemNotification' => 'Sistema',
-                            ];
-
-                            // Intentar con el tipo completo, luego sin barras, y finalmente el basename
-                            $typeName = $typeNames[$notification->type]
-                                ?? $typeNames[str_replace('\\', '', $notification->type)]
-                                ?? class_basename($notification->type);
                         @endphp
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: #111827;">
@@ -204,7 +193,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 py-1 text-xs font-medium rounded-full" style="background: #e0e7ff; color: #3730a3;">
-                                    {{ $typeName }}
+                                    {{ $notification->type }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-sm" style="color: #111827;">
@@ -294,14 +283,14 @@
                         <div>
                             <label for="title" class="block text-sm font-medium mb-2" style="color: #374151;">Título *</label>
                             <input type="text" id="title" name="title" required
-                                   class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                   class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                    style="border: 1px solid #e5e7eb !important; color: #111827;">
                         </div>
 
                         <div>
                             <label for="message" class="block text-sm font-medium mb-2" style="color: #374151;">Mensaje *</label>
                             <textarea id="message" name="message" rows="4" required
-                                      class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                      class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                       style="border: 1px solid #e5e7eb !important; color: #111827;"></textarea>
                         </div>
 
@@ -318,7 +307,7 @@
                         <div>
                             <label for="url" class="block text-sm font-medium mb-2" style="color: #374151;">URL (opcional)</label>
                             <input type="url" id="url" name="url"
-                                   class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                   class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                    style="border: 1px solid #e5e7eb !important; color: #111827;">
                         </div>
                     </div>
