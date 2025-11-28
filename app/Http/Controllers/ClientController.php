@@ -167,17 +167,7 @@ class ClientController extends Controller
 
             $data = $request->validated();
             
-            // Validar que el RUT sea único si cambió
-            if ($data['rut'] !== $client->rut) {
-                $exists = Client::where('rut', $data['rut'])->where('id', '!=', $client->id)->exists();
-                if ($exists) {
-                    return redirect()->back()
-                        ->withInput()
-                        ->with('error', 'El RUT ya está registrado para otro cliente.');
-                }
-            }
-            
-            // Preparar datos para actualizar el cliente
+            // Preparar datos para actualizar el cliente (solo campos que existen en la BD)
             $clientData = [
                 'name' => $data['name'],
                 'rut' => $data['rut'],
