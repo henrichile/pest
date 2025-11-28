@@ -322,7 +322,13 @@
             // Crear formulario para enviar la ubicación
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = '{{ (isset($isTechnicianView) && $isTechnicianView) ? route("technician-view.service.checklist.process-location", $service) : route("technician.service.checklist.process-location", $service) }}';
+            @php
+                $isViewingAsTechnician = (session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin')) 
+                    || request()->is('admin/technician-view/*')
+                    || (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], '/admin/technician-view/') !== false);
+                $processLocationRoute = $isViewingAsTechnician ? route('admin.technician-view.service.checklist.process-location', $service) : route('technician.service.checklist.process-location', $service);
+            @endphp
+            form.action = '{{ $processLocationRoute }}';
 
             // Agregar token CSRF
             const csrfToken = document.createElement('input');
