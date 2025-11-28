@@ -145,8 +145,75 @@
         </div>
         
         @if($services->hasPages())
-        <div class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6" style="border-top: 1px solid #e5e7eb !important;">
-            {{ $services->links() }}
+        <div class="bg-white px-2 sm:px-6 py-3 border-t border-gray-200" style="border-top: 1px solid #e5e7eb !important;">
+            <!-- Información de resultados - Solo en desktop -->
+            <div class="hidden sm:block text-sm text-gray-700 mb-3">
+                Mostrando
+                <span class="font-medium">{{ $services->firstItem() }}</span>
+                a
+                <span class="font-medium">{{ $services->lastItem() }}</span>
+                de
+                <span class="font-medium">{{ $services->total() }}</span>
+                resultados
+            </div>
+            
+            <!-- Números de página - Visible en móvil y desktop -->
+            <div class="flex items-center justify-center gap-1 overflow-x-auto w-full">
+                @if($services->onFirstPage())
+                    <span class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-400 cursor-not-allowed whitespace-nowrap">« Anterior</span>
+                @else
+                    <a href="{{ $services->previousPageUrl() }}" class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap">« Anterior</a>
+                @endif
+                
+                @php
+                    $currentPage = $services->currentPage();
+                    $lastPage = $services->lastPage();
+                    $startPage = max(1, $currentPage - 1);
+                    $endPage = min($lastPage, $currentPage + 1);
+                    
+                    // Si estamos cerca del inicio, mostrar más páginas al final
+                    if ($currentPage <= 2) {
+                        $endPage = min($lastPage, 4);
+                    }
+                    // Si estamos cerca del final, mostrar más páginas al inicio
+                    if ($currentPage >= $lastPage - 1) {
+                        $startPage = max(1, $lastPage - 3);
+                    }
+                @endphp
+                
+                @if($startPage > 1)
+                    <a href="{{ $services->url(1) }}" class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap">1</a>
+                    @if($startPage > 2)
+                        <span class="px-1 text-gray-400">...</span>
+                    @endif
+                @endif
+                
+                @foreach($services->getUrlRange($startPage, $endPage) as $page => $url)
+                    @if($page == $services->currentPage())
+                        <span class="px-2.5 py-1.5 text-xs sm:text-sm font-medium text-white bg-green-600 border border-green-600 rounded-md whitespace-nowrap">{{ $page }}</span>
+                    @else
+                        <a href="{{ $url }}" class="px-2.5 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap">{{ $page }}</a>
+                    @endif
+                @endforeach
+                
+                @if($endPage < $lastPage)
+                    @if($endPage < $lastPage - 1)
+                        <span class="px-1 text-gray-400">...</span>
+                    @endif
+                    <a href="{{ $services->url($lastPage) }}" class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap">{{ $lastPage }}</a>
+                @endif
+                
+                @if($services->hasMorePages())
+                    <a href="{{ $services->nextPageUrl() }}" class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap">Siguiente »</a>
+                @else
+                    <span class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-400 cursor-not-allowed whitespace-nowrap">Siguiente »</span>
+                @endif
+            </div>
+            
+            <!-- Información de resultados - Solo en móvil -->
+            <div class="sm:hidden text-xs text-gray-600 text-center mt-2">
+                Página {{ $services->currentPage() }} de {{ $services->lastPage() }}
+            </div>
         </div>
         @endif
     </div>
