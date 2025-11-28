@@ -266,7 +266,11 @@
 
             currentSearch = query;
 
-            fetch(`{{ route('technician.search') }}?q=${encodeURIComponent(query)}`, {
+            @php
+                // Usar la ruta de búsqueda general que funciona para todos los usuarios
+                $searchRoute = route('search');
+            @endphp
+            fetch(`{{ $searchRoute }}?q=${encodeURIComponent(query)}`, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'Accept': 'application/json',
