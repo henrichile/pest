@@ -32,6 +32,39 @@ $submitRoute = $isViewingAsTechnician ? route('admin.technician-view.service.che
     </div>
 
     <div class="form-section">
+        <h5>✍️ Firma del Cliente</h5>
+        <div class="signature-section">
+            <div class="signature-display">
+                @php
+                    $monitoreoFirma = $service->checklist_data['monitoreo_firma'] ?? [];
+                    $existingClientSignature = $monitoreoFirma['client_signature'] ?? $service->checklist_data['client_signature'] ?? null;
+                @endphp
+                @if($existingClientSignature)
+                    <div class="signature-loaded">
+                        <span class="check-icon">✔</span>
+                        <p>Firma del cliente ya registrada</p>
+                    </div>
+                    <div class="signature-preview">
+                        @if(strpos($existingClientSignature, 'data:image') === 0)
+                            <img src="{{ $existingClientSignature }}" alt="Firma del Cliente" class="signature-image">
+                        @else
+                            <img src="/{{ $existingClientSignature }}" alt="Firma del Cliente" class="signature-image">
+                        @endif
+                    </div>
+                @else
+                    <div class="signature-placeholder">
+                        <canvas id="client-signature-canvas" width="600" height="200"></canvas>
+                        <div class="signature-actions">
+                            <button type="button" class="btn-clear" onclick="clearClientSignature()">Limpiar</button>
+                        </div>
+                        <input type="hidden" name="client_signature" id="client_signature">
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section">
         <h5>👤 Información del Firmante</h5>
         <div class="form-grid">
             <div>
@@ -40,18 +73,18 @@ $submitRoute = $isViewingAsTechnician ? route('admin.technician-view.service.che
                        name="signer_name" 
                        id="signer_name" 
                        class="form-input" 
-                       value="{{ old('signer_name', $service->client->name ?? '') }}"
+                       value="{{ old('signer_name', $monitoreoFirma['signer_name'] ?? $service->client->name ?? '') }}"
                        required>
             </div>
             <div>
                 <label>Cargo / Relación</label>
                 <select name="signer_position" id="signer_position" class="form-select">
                     <option value="">Seleccionar</option>
-                    <option value="encargado" {{ old('signer_position', $service->checklist_data['signer_position'] ?? '') === 'encargado' ? 'selected' : '' }}>Encargado</option>
-                    <option value="gerente" {{ old('signer_position', $service->checklist_data['signer_position'] ?? '') === 'gerente' ? 'selected' : '' }}>Gerente</option>
-                    <option value="propietario" {{ old('signer_position', $service->checklist_data['signer_position'] ?? '') === 'propietario' ? 'selected' : '' }}>Propietario</option>
-                    <option value="representante" {{ old('signer_position', $service->checklist_data['signer_position'] ?? '') === 'representante' ? 'selected' : '' }}>Representante Legal</option>
-                    <option value="otro" {{ old('signer_position', $service->checklist_data['signer_position'] ?? '') === 'otro' ? 'selected' : '' }}>Otro</option>
+                    <option value="encargado" {{ old('signer_position', $monitoreoFirma['signer_position'] ?? $service->checklist_data['signer_position'] ?? '') === 'encargado' ? 'selected' : '' }}>Encargado</option>
+                    <option value="gerente" {{ old('signer_position', $monitoreoFirma['signer_position'] ?? $service->checklist_data['signer_position'] ?? '') === 'gerente' ? 'selected' : '' }}>Gerente</option>
+                    <option value="propietario" {{ old('signer_position', $monitoreoFirma['signer_position'] ?? $service->checklist_data['signer_position'] ?? '') === 'propietario' ? 'selected' : '' }}>Propietario</option>
+                    <option value="representante" {{ old('signer_position', $monitoreoFirma['signer_position'] ?? $service->checklist_data['signer_position'] ?? '') === 'representante' ? 'selected' : '' }}>Representante Legal</option>
+                    <option value="otro" {{ old('signer_position', $monitoreoFirma['signer_position'] ?? $service->checklist_data['signer_position'] ?? '') === 'otro' ? 'selected' : '' }}>Otro</option>
                 </select>
             </div>
         </div>
@@ -90,9 +123,12 @@ $submitRoute = $isViewingAsTechnician ? route('admin.technician-view.service.che
 
 <script>
 let canvas, ctx;
+let clientCanvas, clientCtx;
 let isDrawing = false;
+let isDrawingClient = false;
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Canvas del técnico
     canvas = document.getElementById('signature-canvas');
     if (canvas) {
         ctx = canvas.getContext('2d');
@@ -111,8 +147,29 @@ document.addEventListener('DOMContentLoaded', function() {
         canvas.addEventListener('touchmove', handleTouch);
         canvas.addEventListener('touchend', stopDrawing);
     }
+
+    // Canvas del cliente
+    clientCanvas = document.getElementById('client-signature-canvas');
+    if (clientCanvas) {
+        clientCtx = clientCanvas.getContext('2d');
+        clientCtx.strokeStyle = '#000';
+        clientCtx.lineWidth = 2;
+        clientCtx.lineCap = 'round';
+        clientCtx.lineJoin = 'round';
+
+        clientCanvas.addEventListener('mousedown', startDrawingClient);
+        clientCanvas.addEventListener('mousemove', drawClient);
+        clientCanvas.addEventListener('mouseup', stopDrawingClient);
+        clientCanvas.addEventListener('mouseout', stopDrawingClient);
+
+        // Touch events para móviles
+        clientCanvas.addEventListener('touchstart', handleTouchClient);
+        clientCanvas.addEventListener('touchmove', handleTouchClient);
+        clientCanvas.addEventListener('touchend', stopDrawingClient);
+    }
 });
 
+// Funciones para firma del técnico
 function startDrawing(e) {
     isDrawing = true;
     const rect = canvas.getBoundingClientRect();
@@ -156,13 +213,66 @@ function updateSignatureData() {
     document.getElementById('technician_signature').value = dataURL;
 }
 
+// Funciones para firma del cliente
+function startDrawingClient(e) {
+    isDrawingClient = true;
+    const rect = clientCanvas.getBoundingClientRect();
+    clientCtx.beginPath();
+    clientCtx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+}
+
+function drawClient(e) {
+    if (!isDrawingClient) return;
+    const rect = clientCanvas.getBoundingClientRect();
+    clientCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+    clientCtx.stroke();
+    updateClientSignatureData();
+}
+
+function stopDrawingClient() {
+    if (isDrawingClient) {
+        isDrawingClient = false;
+        updateClientSignatureData();
+    }
+}
+
+function handleTouchClient(e) {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 
+                                      e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
+        clientX: touch.clientX,
+        clientY: touch.clientY
+    });
+    clientCanvas.dispatchEvent(mouseEvent);
+}
+
+function clearClientSignature() {
+    clientCtx.clearRect(0, 0, clientCanvas.width, clientCanvas.height);
+    document.getElementById('client_signature').value = '';
+}
+
+function updateClientSignatureData() {
+    const dataURL = clientCanvas.toDataURL('image/png');
+    document.getElementById('client_signature').value = dataURL;
+}
+
 // Validar antes de enviar
 document.getElementById('firmaForm')?.addEventListener('submit', function(e) {
-    const signature = document.getElementById('technician_signature')?.value || 
-                     (document.querySelector('.signature-image') ? 'loaded' : '');
-    if (!signature) {
+    const technicianSignature = document.getElementById('technician_signature')?.value || 
+                                (document.querySelector('#signature-canvas') ? null : (document.querySelector('.signature-image') ? 'loaded' : null));
+    const clientSignature = document.getElementById('client_signature')?.value || 
+                            (document.querySelector('#client-signature-canvas') ? null : (document.querySelectorAll('.signature-image')[1] ? 'loaded' : null));
+    
+    if (!technicianSignature) {
         e.preventDefault();
-        alert('Por favor, proporciona una firma antes de completar el servicio.');
+        alert('Por favor, proporciona la firma del técnico antes de completar el servicio.');
+        return false;
+    }
+    
+    if (!clientSignature) {
+        e.preventDefault();
+        alert('Por favor, proporciona la firma del cliente antes de completar el servicio.');
         return false;
     }
 });
@@ -230,7 +340,7 @@ document.getElementById('firmaForm')?.addEventListener('submit', function(e) {
     border: 1px solid #e5e7eb;
 }
 
-#signature-canvas {
+#signature-canvas, #client-signature-canvas {
     border: 3px solid #dee2e6;
     border-radius: 12px;
     cursor: crosshair;
@@ -243,7 +353,7 @@ document.getElementById('firmaForm')?.addEventListener('submit', function(e) {
     transition: border-color 0.3s ease;
 }
 
-#signature-canvas:hover {
+#signature-canvas:hover, #client-signature-canvas:hover {
     border-color: #22c55e;
 }
 
@@ -265,7 +375,7 @@ document.getElementById('firmaForm')?.addEventListener('submit', function(e) {
         margin-bottom: 20px;
     }
     
-    #signature-canvas {
+    #signature-canvas, #client-signature-canvas {
         max-width: 100%;
     }
     
