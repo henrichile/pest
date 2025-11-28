@@ -34,10 +34,7 @@ class Client extends Model
      */
     protected function casts(): array
     {
-        return [
-            'contacts' => 'array',
-            'is_active' => 'boolean',
-        ];
+        return [];
     }
 
     /**
@@ -46,7 +43,7 @@ class Client extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['business_name', 'rut', 'business_type', 'is_active'])
+            ->logOnly(['name', 'rut', 'business_type'])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
@@ -91,20 +88,4 @@ class Client extends Model
         return $this->sites()->where('is_active', true);
     }
 
-    /**
-     * Get primary contact from contacts array.
-     */
-    public function getPrimaryContactAttribute(): ?array
-    {
-        $contacts = $this->contacts ?? [];
-        return $contacts[0] ?? null;
-    }
-
-    /**
-     * Scope to get only active clients.
-     */
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', true);
-    }
 }
