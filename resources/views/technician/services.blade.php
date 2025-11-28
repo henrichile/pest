@@ -5,6 +5,11 @@
 
 @section("content")
 <div class="max-w-7xl mx-auto space-y-6">
+    @include('technician.partials.header', [
+        'title' => 'Mis Servicios',
+        'searchPlaceholder' => 'Buscar servicios...',
+        'pageId' => 'services'
+    ])
 
     <!-- Filtros -->
     <div class="bg-white rounded-lg shadow-lg p-6">
