@@ -5,8 +5,30 @@ $isViewingAsTechnician = session('view_as_technician', false) && auth()->check()
 
 // Compartir contador de notificaciones no leídas globalmente
 if (auth()->check()) {
-    $unreadCount = auth()->user()->unreadNotifications()->count();
-    $recentNotifications = auth()->user()->notifications()->orderBy('created_at', 'desc')->limit(10)->get();
+    try {
+        $user = auth()->user();
+        // Usar el método unreadNotifications() de Laravel
+        $unreadCount = $user->unreadNotifications()->count();
+        // Obtener notificaciones recientes (incluyendo leídas para el dropdown)
+        $recentNotifications = $user->notifications()
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+    } catch (\Exception $e) {
+        // Fallback: consultar directamente la tabla si hay error
+        \Log::error('Error obteniendo notificaciones: ' . $e->getMessage());
+        try {
+            $unreadCount = DB::table('notifications')
+                ->where('notifiable_type', 'App\Models\User')
+                ->where('notifiable_id', auth()->id())
+                ->whereNull('read_at')
+                ->count();
+            $recentNotifications = collect();
+        } catch (\Exception $e2) {
+            $unreadCount = 0;
+            $recentNotifications = collect();
+        }
+    }
 } else {
     $unreadCount = 0;
     $recentNotifications = collect();
