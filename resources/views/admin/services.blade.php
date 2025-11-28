@@ -53,10 +53,13 @@
                     <option value="alta" {{ request('priority') === 'alta' ? 'selected' : '' }}>Alta</option>
                 </select>
             </div>
-            <div class="flex items-end col-span-full lg:col-span-3">
-                <button type="submit" class="w-full lg:w-auto px-6 py-3.5 bg-gray-700 hover:bg-gray-800 text-white rounded-lg transition-colors text-base font-medium">
+            <div class="flex items-end gap-3 col-span-full lg:col-span-3">
+                <button type="submit" id="filter-submit-btn" class="flex-1 lg:flex-none px-6 py-3.5 bg-gray-700 hover:bg-gray-800 text-white rounded-lg transition-colors text-base font-medium">
                     Filtrar
                 </button>
+                <a href="{{ route('admin.services.index') }}" class="flex-1 lg:flex-none px-6 py-3.5 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition-colors text-base font-medium text-center">
+                    Limpiar
+                </a>
             </div>
         </form>
     </div>
@@ -158,6 +161,54 @@
 
 @push('scripts')
 <script>
+    // Prevenir envío automático del formulario
+    (function() {
+        const filterForm = document.querySelector('form[method="GET"]');
+        const statusSelect = document.getElementById('status');
+        const typeSelect = document.getElementById('type');
+        const prioritySelect = document.getElementById('priority');
+        const filterSubmitBtn = document.getElementById('filter-submit-btn');
+
+        // Prevenir envío automático cuando se cambia un select
+        if (statusSelect) {
+            statusSelect.addEventListener('change', function(e) {
+                e.preventDefault();
+                // No hacer nada, solo esperar a que se haga clic en el botón
+            });
+        }
+
+        if (typeSelect) {
+            typeSelect.addEventListener('change', function(e) {
+                e.preventDefault();
+                // No hacer nada, solo esperar a que se haga clic en el botón
+            });
+        }
+
+        if (prioritySelect) {
+            prioritySelect.addEventListener('change', function(e) {
+                e.preventDefault();
+                // No hacer nada, solo esperar a que se haga clic en el botón
+            });
+        }
+
+        // Prevenir envío cuando se presiona Enter en un select
+        if (filterForm) {
+            filterForm.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && (e.target.tagName === 'SELECT')) {
+                    e.preventDefault();
+                    // Solo permitir envío si se presiona Enter en el botón
+                }
+            });
+        }
+
+        // Permitir envío solo cuando se hace clic en el botón
+        if (filterSubmitBtn) {
+            filterSubmitBtn.addEventListener('click', function(e) {
+                // Permitir el envío normal del formulario
+            });
+        }
+    })();
+
     // Page Mobile Menu Button
     (function() {
         const pageMenuButton = document.getElementById('page-mobile-menu-button');
