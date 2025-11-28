@@ -3,68 +3,95 @@
 @section('title', 'Gestión de Usuarios')
 
 @section('content')
-<div class="space-y-4 sm:space-y-6">
-    @include('admin.partials.header', [
-        'title' => request('role') === 'technician' ? 'Técnicos' : 'Gestión de Usuarios',
-        'subtitle' => 'Administra los usuarios del sistema',
-        'searchPlaceholder' => 'Buscar usuarios...',
-        'pageId' => 'users'
-    ])
-
-    <div class="flex justify-end mb-4">
-        <a href="{{ route('admin.users.create') }}" class="inline-flex items-center justify-center px-5 py-3 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700 transition-colors">
-            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-            Crear Nuevo Usuario
-        </a>
+<div class="space-y-4 sm:space-y-6 pt-12 md:pt-0">
+    <!-- Header con hamburguesa y título -->
+    <div class="mb-4 sm:mb-6">
+        <!-- Primera fila: Hamburguesa + Título (móvil) / Título solo (desktop) -->
+        <div class="flex items-center gap-3 mb-4 md:hidden">
+            <!-- Hamburguesa (solo móvil) -->
+            <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50;">
+                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            
+            <!-- Título -->
+            <div class="flex-1">
+                <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
+                    Gestión de Usuarios
+                </h2>
+            </div>
+        </div>
+        
+        <!-- Segunda fila: Título completo (desktop) -->
+        <div class="hidden md:block md:flex md:items-center md:justify-between">
+            <div class="min-w-0 flex-1">
+                <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" style="color: #111827; font-weight: 700;">
+                    Gestión de Usuarios
+                </h2>
+                <p class="mt-1 text-sm" style="color: #6b7280;">
+                    Administra los usuarios del sistema
+                </p>
+            </div>
+        </div>
+        
+        <!-- Botón de acción -->
+        <div class="mt-3 sm:mt-4 md:mt-0 md:ml-4 md:flex md:items-center">
+            <a href="{{ route('admin.users.create') }}" class="inline-flex items-center justify-center w-full sm:w-auto px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium text-white transition-colors" style="background: #22c55e; hover:background: #16a34a;">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                <span class="hidden sm:inline">Crear Nuevo Usuario</span>
+                <span class="sm:hidden">Nuevo Usuario</span>
+            </a>
+        </div>
     </div>
 
     <!-- Filters -->
-    <div class="bg-white border dark:border-gray-700 rounded-lg p-4 sm:p-6 mb-6" style="border: 1px solid #e5e7eb !important;">
-        <form method="GET" action="{{ route('admin.users.index') }}" class="space-y-4">
+    <div class="bg-white border dark:border-gray-700 rounded-lg p-4 mb-6" style="border: 1px solid #e5e7eb !important;">
+        <form method="GET" action="{{ route('admin.users.index') }}" class="flex flex-wrap gap-4 items-end">
             <!-- Search -->
-            <div class="w-full">
-                <label for="search" class="block text-sm font-medium mb-2" style="color: #374151;">Buscar</label>
+            <div class="flex-1 min-w-[200px]">
+                <label for="search" class="block text-sm font-medium mb-1" style="color: #374151;">Buscar</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #6b7280;">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
                     </div>
-                    <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Nombre o email..." class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;padding-left:20px;">
+                    <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Nombre o email..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
                 </div>
             </div>
 
-            <!-- Role and Status Filters -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <!-- Role Filter -->
-                <div class="w-full">
-                    <label for="role" class="block text-sm font-medium mb-2" style="color: #374151;">Rol</label>
-                    <select name="role" id="role" class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
-                        <option value="">Todos los roles</option>
-                        @foreach($roles as $role)
-                            <option value="{{ $role->name }}" {{ request('role') === $role->name ? 'selected' : '' }}>
-                                {{ ucfirst($role->name) }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+            <!-- Role Filter -->
+            <div class="min-w-[150px]">
+                <label for="role" class="block text-sm font-medium mb-1" style="color: #374151;">Rol</label>
+                <select name="role" id="role" class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
+                    <option value="">Todos los roles</option>
+                    @foreach($roles as $role)
+                        <option value="{{ $role->name }}" {{ request('role') === $role->name ? 'selected' : '' }}>
+                            {{ ucfirst($role->name) }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-                <!-- Status Filter -->
-                <div class="w-full">
-                    <label for="is_active" class="block text-sm font-medium mb-2" style="color: #374151;">Estado</label>
-                    <select name="is_active" id="is_active" class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
-                        <option value="">Todos</option>
-                        <option value="1" {{ request('is_active') === '1' ? 'selected' : '' }}>Activos</option>
-                        <option value="0" {{ request('is_active') === '0' ? 'selected' : '' }}>Inactivos</option>
-                    </select>
-                </div>
+            <!-- Status Filter -->
+            <div class="min-w-[150px]">
+                <label for="is_active" class="block text-sm font-medium mb-1" style="color: #374151;">Estado</label>
+                <select name="is_active" id="is_active" class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
+                    <option value="">Todos</option>
+                    <option value="1" {{ request('is_active') === '1' ? 'selected' : '' }}>Activos</option>
+                    <option value="0" {{ request('is_active') === '0' ? 'selected' : '' }}>Inactivos</option>
+                </select>
             </div>
 
             <!-- Submit Button -->
-            <div class="w-full">
-                <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2.5 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors" style="background: #22c55e; hover:background: #16a34a;">
+            <div>
+                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors" style="background: #22c55e; hover:background: #16a34a;">
                     <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>
@@ -167,7 +194,7 @@
                                     </a>
                                     <a href="{{ route('admin.users.edit', $user) }}" class="text-blue-600 hover:text-blue-900" title="Editar">
                                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13L2.685 21.75 3.485 19.5a4.5 4.5 0 011.13-1.897L16.862 4.487z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21h-4.5A2.25 2.25 0 019 18.75V14a3 3 0 013-3h2.25z" />
                                         </svg>
                                     </a>
                                 </div>
@@ -202,45 +229,98 @@
 <script>
     // Page Mobile Menu Button
     (function() {
-        const pageMenuButton = document.getElementById('page-mobile-menu-button');
-        const mainMenuButton = document.getElementById('mobile-menu-button');
-        const sidebar = document.getElementById('sidebar');
-        const mobileOverlay = document.getElementById('mobile-overlay');
-
-        function toggleMobileMenu() {
-            if (mainMenuButton) {
-                mainMenuButton.click();
-            } else {
-                // Si no existe el botón principal, usar la lógica directamente
-                const menuIcon = document.getElementById('page-menu-icon');
-                const closeIcon = document.getElementById('page-close-icon');
-
-                if (sidebar && sidebar.classList.contains('-translate-x-full')) {
-                    // Abrir
-                    sidebar.classList.remove('-translate-x-full');
-                    sidebar.classList.add('translate-x-0');
-                    if (mobileOverlay) mobileOverlay.classList.remove('hidden');
-                    if (menuIcon) menuIcon.classList.add('hidden');
-                    if (closeIcon) closeIcon.classList.remove('hidden');
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    // Cerrar
+        function initPageMenu() {
+            const pageMenuButton = document.getElementById('page-mobile-menu-button');
+            const sidebar = document.getElementById('sidebar');
+            const mobileOverlay = document.getElementById('mobile-overlay');
+            
+            if (!pageMenuButton) {
+                setTimeout(initPageMenu, 100);
+                return;
+            }
+            
+            if (!sidebar) {
+                console.error('Sidebar no encontrado');
+                return;
+            }
+            
+            function toggleMobileMenu() {
+                const computedStyle = window.getComputedStyle(sidebar);
+                const transform = computedStyle.transform;
+                const sidebarTransform = sidebar.style.transform || '';
+                const isOpen = sidebar.classList.contains('translate-x-0') || 
+                              transform === 'matrix(1, 0, 0, 1, 0, 0)' || 
+                              transform === 'none' ||
+                              sidebarTransform === 'translateX(0)' ||
+                              sidebarTransform.includes('translateX(0)') ||
+                              sidebarTransform === '';
+                
+                if (isOpen) {
                     sidebar.classList.remove('translate-x-0');
                     sidebar.classList.add('-translate-x-full');
-                    if (mobileOverlay) mobileOverlay.classList.add('hidden');
+                    const styleTag = document.getElementById('mobile-menu-override-style');
+                    if (styleTag) styleTag.remove();
+                    sidebar.style.transform = 'translateX(-100%)';
+                    if (mobileOverlay) {
+                        mobileOverlay.classList.add('hidden');
+                        mobileOverlay.style.display = 'none';
+                    }
+                    const menuIcon = document.getElementById('page-menu-icon');
+                    const closeIcon = document.getElementById('page-close-icon');
                     if (menuIcon) menuIcon.classList.remove('hidden');
                     if (closeIcon) closeIcon.classList.add('hidden');
                     document.body.style.overflow = '';
+                } else {
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebar.classList.add('translate-x-0');
+                    let styleTag = document.getElementById('mobile-menu-override-style');
+                    if (!styleTag) {
+                        styleTag = document.createElement('style');
+                        styleTag.id = 'mobile-menu-override-style';
+                        document.head.appendChild(styleTag);
+                    }
+                    styleTag.textContent = `#sidebar { transform: translateX(0) !important; display: flex !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; position: fixed !important; left: 0 !important; top: 0 !important; width: 288px !important; height: 100vh !important; }`;
+                    sidebar.style.cssText = `display: flex !important; transform: translateX(0) !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; position: fixed !important; left: 0 !important; top: 0 !important; width: 288px !important; height: 100vh !important;`;
+                    if (mobileOverlay) {
+                        mobileOverlay.classList.remove('hidden');
+                        mobileOverlay.style.cssText = `display: block !important; visibility: visible !important; z-index: 9998 !important;`;
+                    }
+                    const menuIcon = document.getElementById('page-menu-icon');
+                    const closeIcon = document.getElementById('page-close-icon');
+                    if (menuIcon) menuIcon.classList.add('hidden');
+                    if (closeIcon) closeIcon.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
                 }
             }
-        }
-
-        if (pageMenuButton) {
+            
             pageMenuButton.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 toggleMobileMenu();
             });
+            
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', function() {
+                    toggleMobileMenu();
+                });
+            }
+            
+            if (sidebar) {
+                const sidebarLinks = sidebar.querySelectorAll('a');
+                sidebarLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        if (window.innerWidth < 768) {
+                            toggleMobileMenu();
+                        }
+                    });
+                });
+            }
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPageMenu);
+        } else {
+            setTimeout(initPageMenu, 50);
         }
     })();
 </script>
