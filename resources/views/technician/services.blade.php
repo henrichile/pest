@@ -50,8 +50,8 @@
             <h3 class="text-lg font-semibold text-gray-900">Servicios Asignados</h3>
         </div>
         
+        @if($services->count() > 0)
         <div class="overflow-x-auto">
-            @if($services->count() > 0)
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
@@ -178,21 +178,23 @@
                     @endforeach
                 </tbody>
             </table>
-            
-            <!-- Paginación -->
-            <div class="px-6 py-4 border-t border-gray-200">
+        </div>
+        
+        <!-- Paginación - Fuera del overflow-x-auto para que sea visible en móvil -->
+        <div class="px-4 sm:px-6 py-4 border-t border-gray-200 bg-white overflow-x-auto">
+            <div class="flex justify-center">
                 {{ $services->links() }}
             </div>
-            @else
-            <div class="text-center py-12">
-                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                </svg>
-                <h3 class="mt-2 text-sm font-medium text-gray-900">No hay servicios asignados</h3>
-                <p class="mt-1 text-sm text-gray-500">No tienes servicios asignados en este momento.</p>
-            </div>
-            @endif
         </div>
+        @else
+        <div class="text-center py-12">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+            </svg>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">No hay servicios asignados</h3>
+            <p class="mt-1 text-sm text-gray-500">No tienes servicios asignados en este momento.</p>
+        </div>
+        @endif
     </div>
 </div>
 
