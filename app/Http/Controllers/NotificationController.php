@@ -154,13 +154,39 @@ class NotificationController extends Controller
     {
         try {
             $user = Auth::user();
-            $notification = $user->notifications()->find($id);
             
-            if ($notification) {
-                $notification->markAsRead();
+            // Si es admin, buscar la notificación directamente en la tabla
+            if ($user->hasRole('super-admin')) {
+                $notification = DB::table('notifications')->where('id', $id)->first();
                 
-                return redirect()->back()
-                    ->with('success', 'Notificación marcada como leída.');
+                if ($notification) {
+                    // Obtener el usuario al que pertenece la notificación
+                    $notifiableType = $notification->notifiable_type;
+                    $notifiableId = $notification->notifiable_id;
+                    
+                    if ($notifiableType === 'App\Models\User') {
+                        $targetUser = User::find($notifiableId);
+                        if ($targetUser) {
+                            $userNotification = $targetUser->notifications()->find($id);
+                            if ($userNotification) {
+                                $userNotification->markAsRead();
+                                
+                                return redirect()->back()
+                                    ->with('success', 'Notificación marcada como leída.');
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Para técnicos, buscar solo en sus notificaciones
+                $notification = $user->notifications()->find($id);
+                
+                if ($notification) {
+                    $notification->markAsRead();
+                    
+                    return redirect()->back()
+                        ->with('success', 'Notificación marcada como leída.');
+                }
             }
             
             return redirect()->back()
