@@ -16,18 +16,10 @@ class TechnicianController extends Controller
     public function dashboard()
     {
         $user = auth()->user();
-
-        // Si está en modo "view_as_technician" y es super-admin, mostrar todos los servicios
-        // para que pueda ver cómo funciona el sistema
-        $isViewingAsTechnician = session('view_as_technician', false) && $user->hasRole('super-admin');
-
-        if ($isViewingAsTechnician) {
-            // Mostrar todos los servicios para que el admin pueda ver el flujo completo
-            $query = Service::query();
-        } else {
-            // Filtrar por técnico asignado
-            $query = Service::where('assigned_to', $user->id);
-        }
+        
+        // Siempre filtrar por técnico asignado para que los KPIs sean correctos
+        // Incluso en modo "view_as_technician", mostrar solo los servicios del técnico actual
+        $query = Service::where('assigned_to', $user->id);
 
         // Servicios completados hoy
         $completedToday = (clone $query)
@@ -72,7 +64,7 @@ class TechnicianController extends Controller
     {
         $user = auth()->user();
         $isViewingAsTechnician = session('view_as_technician', false) && $user->hasRole('super-admin');
-
+        
         if ($isViewingAsTechnician) {
             // Mostrar todos los servicios para que el admin pueda ver el flujo completo
             $services = Service::with(['client', 'serviceType', 'assignedUser'])
@@ -87,7 +79,7 @@ class TechnicianController extends Controller
         }
 
         // Detectar si estamos en modo technician-view
-        $isTechnicianView = request()->is('admin/technician-view/*') ||
+        $isTechnicianView = request()->is('admin/technician-view/*') || 
                            request()->routeIs('technician-view.*') ||
                            (session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin'));
 
@@ -108,9 +100,9 @@ class TechnicianController extends Controller
         }
 
         $service->load(['client', 'serviceType', 'assignedUser']);
-
+        
         // Detectar si estamos en modo technician-view
-        $isTechnicianView = request()->is('admin/technician-view/*') ||
+        $isTechnicianView = request()->is('admin/technician-view/*') || 
                            request()->routeIs('technician-view.*') ||
                            (session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin'));
 
@@ -168,7 +160,7 @@ class TechnicianController extends Controller
         }
 
         // Detectar si estamos en modo technician-view (admin viendo como técnico)
-        $isTechnicianView = request()->is('admin/technician-view/*') ||
+        $isTechnicianView = request()->is('admin/technician-view/*') || 
                            request()->routeIs('technician-view.*') ||
                            (request()->header('referer') && strpos(request()->header('referer'), '/admin/technician-view/') !== false);
 
@@ -177,7 +169,7 @@ class TechnicianController extends Controller
         if ($isTechnicianView) {
             return redirect('/admin/technician-view/services/' . $service->id . '/checklist/location');
         }
-
+        
         return redirect('/technician/services/' . $service->id . '/checklist/location');
     }
 
@@ -194,7 +186,7 @@ class TechnicianController extends Controller
         }
 
         // Detectar si estamos en modo technician-view
-        $isTechnicianView = request()->is('admin/technician-view/*') ||
+        $isTechnicianView = request()->is('admin/technician-view/*') || 
                            request()->routeIs('technician-view.*');
 
         return view("technician.capture-location-simple", compact("service", "isTechnicianView"));
@@ -272,7 +264,7 @@ class TechnicianController extends Controller
         }
 
         // Detectar si estamos en modo technician-view
-        $isTechnicianView = request()->is('admin/technician-view/*') ||
+        $isTechnicianView = request()->is('admin/technician-view/*') || 
                            request()->routeIs('technician-view.*') ||
                            (request()->header('referer') && strpos(request()->header('referer'), '/admin/technician-view/') !== false);
 
@@ -298,7 +290,7 @@ class TechnicianController extends Controller
         }
 
         // Detectar si estamos en modo technician-view
-        $isTechnicianView = request()->is('admin/technician-view/*') ||
+        $isTechnicianView = request()->is('admin/technician-view/*') || 
                            request()->routeIs('technician-view.*');
 
         // Verificar que la ubicación haya sido capturada
@@ -377,13 +369,13 @@ class TechnicianController extends Controller
                 $validStages = ["points", "products", "results", "observations", "sites", "description"];
             }
         }
-
+        
         if (!in_array($stage, $validStages)) {
             abort(404, "Etapa no válida");
         }
 
         // Detectar si estamos en modo technician-view
-        $isTechnicianView = request()->is('admin/technician-view/*') ||
+        $isTechnicianView = request()->is('admin/technician-view/*') || 
                            request()->routeIs('technician-view.*');
 
         // ✅ NUEVO: Para sanitización, saltarse la etapa de results
@@ -443,7 +435,7 @@ class TechnicianController extends Controller
     }
 
 
-     public function submitChecklist(Request $request, Service $service)
+     public function saveChecklistStage(Request $request, Service $service)
     {
         // Verificar permisos
         if ($service->assigned_to !== auth()->id() && !auth()->user()->hasRole("super-admin")) {
@@ -451,14 +443,14 @@ class TechnicianController extends Controller
         }
 
         // Detectar si estamos en modo technician-view
-        $isTechnicianView = request()->is('admin/technician-view/*') ||
+        $isTechnicianView = request()->is('admin/technician-view/*') || 
                            request()->routeIs('technician-view.*') ||
                            (request()->header('referer') && strpos(request()->header('referer'), '/admin/technician-view/') !== false);
 
         // Obtener la etapa actual del formulario
         $stage = $request->input('checklist_stage') ?? $request->input('current_stage') ?? $request->input('stage') ?? $request->input('data_stage') ?? 'unknown';
         $nextStage = $request->input('next_stage') ?? $request->input('data_next_stage') ?? null;
-
+        
         // Verificar estado del servicio (permitir si se está completando el servicio)
         $isCompletingService = ($stage === 'monitoreo-firma' || $nextStage === 'completed' || $stage === 'description');
         if ($service->status !== "en_progreso" && !$isCompletingService) {
@@ -486,7 +478,7 @@ class TechnicianController extends Controller
                 $validStages = ["points", "products", "results", "observations", "sites", "description"];
             }
         }
-
+        
         if (!in_array($stage, $validStages)) {
             return response()->json(['success' => false, 'message' => 'Etapa no válida ('.$stage.')'], 400);
         }
@@ -517,26 +509,14 @@ class TechnicianController extends Controller
                     $checklistData['monitoreo_datos'] = $this->processMonitoreoDatosData($request);
                     break;
                 case 'monitoreo-croquis':
-               // Validar archivo de croquis si existe
-               if ($request->hasFile('croquis_file')) {
-                   $request->validate([
-                       'croquis_file' => 'required|file|mimes:jpeg,jpg,png,pdf|max:10240', // 10MB max
-                   ], [
-                       'croquis_file.max' => 'El archivo de croquis no puede superar los 10MB.',
-                       'croquis_file.mimes' => 'El archivo debe ser una imagen (JPEG, JPG, PNG) o PDF.',
-                   ]);
-               }
-               // Merge with existing data to preserve file if not updated
-               $currentCroquisData = $checklistData['monitoreo_croquis'] ?? [];
-               $newCroquisData = $this->processMonitoreoCroquisData($request);
-               $checklistData['monitoreo_croquis'] = array_merge($currentCroquisData, $newCroquisData);
-               break;
+                    $checklistData['monitoreo_croquis'] = $this->processMonitoreoCroquisData($request);
+                    break;
                 case 'monitoreo-completo':
                     $checklistData['monitoreo_completo'] = $this->processMonitoreoCompletoData($request);
                     break;
                 case 'monitoreo-estadisticas':
                     $checklistData['monitoreo_estadisticas'] = $this->processMonitoreoEstadisticasData($request);
-                break;
+                    break;
                 case 'monitoreo-analisis':
                     $checklistData['monitoreo_analisis'] = $this->processMonitoreoAnalisisData($request);
                     break;
@@ -562,6 +542,7 @@ class TechnicianController extends Controller
                     }
                     return redirect('/technician/services/' . $service->id . '/detail')
                         ->with('success', 'Servicio completado exitosamente. Puedes descargar el informe en PDF.');
+                    break;
                 case 'points':
                     $checklistData['points'] = $this->processPointsData($request);
                     break;
@@ -608,19 +589,7 @@ class TechnicianController extends Controller
             }
             // Actualizar la base de datos (solo si no se completó en monitoreo-firma)
             if ($stage !== 'monitoreo-firma') {
-                Log::info('Saving checklist_data to database', [
-                    'service_id' => $service->id,
-                    'stage' => $stage,
-                    'checklist_data' => $checklistData
-                ]);
                 $service->update(['checklist_data' => $checklistData]);
-
-                // Verificar que se guardó correctamente
-                $service->refresh();
-                Log::info('Checklist data saved, verifying', [
-                    'service_id' => $service->id,
-                    'saved_data' => $service->checklist_data
-                ]);
             }
             $stageInstruction = $this->getProductStageInstruction($service->service_type);
             // Determinar la siguiente etapa
@@ -663,24 +632,6 @@ class TechnicianController extends Controller
 
     private function processPointsData(Request $request)
     {
-        $data = [];
-
-        // Guardar checkboxes de puntos de control
-        $checkboxFields = [
-            'installed_points_check',
-            'existing_points_check',
-            'spare_points_check',
-            'bait_weight_check',
-            'physical_installed_check',
-            'physical_existing_check',
-            'physical_spare_check'
-        ];
-
-        foreach ($checkboxFields as $field) {
-            $data[$field] = $request->has($field) ? true : false;
-        }
-
-        // Guardar puntos de ubicación si existen
         $points = [];
         $pointsData = $request->input('points', []);
 
@@ -696,11 +647,7 @@ class TechnicianController extends Controller
             }
         }
 
-        if (!empty($points)) {
-            $data['locations'] = $points;
-        }
-
-        return $data;
+        return $points;
     }
 
     private function processProductsData(Request $request)
@@ -791,7 +738,7 @@ class TechnicianController extends Controller
     private function generateNextCebaderaCode($existingObservations)
     {
         $maxNumber = 0;
-
+        
         // Buscar el número más alto en los códigos existentes
         foreach ($existingObservations as $observation) {
             if (isset($observation['cebadera_code']) && !empty($observation['cebadera_code'])) {
@@ -804,7 +751,7 @@ class TechnicianController extends Controller
                 }
             }
         }
-
+        
         // Generar el siguiente código
         $nextNumber = $maxNumber + 1;
         return sprintf('CE-%03d', $nextNumber);
@@ -818,12 +765,12 @@ class TechnicianController extends Controller
         if ($request->has('cebadera_code') || $request->has('detail')) {
             // Obtener el código de cebadera del request o generar uno automáticamente
             $cebaderaCode = trim($request->input('cebadera_code', ''));
-
+            
             // Si no se proporcionó un código o está vacío, generar uno automáticamente
             if (empty($cebaderaCode)) {
                 $cebaderaCode = $this->generateNextCebaderaCode($existingObservations);
             }
-
+            
             $newObservation = [
                 'cebadera_code' => $cebaderaCode,
                 'observation_number' => $request->input('observation_number', 1),
@@ -862,7 +809,7 @@ class TechnicianController extends Controller
                     if (empty($cebaderaCode)) {
                         $cebaderaCode = $this->generateNextCebaderaCode(array_merge($existingObservations, $observations));
                     }
-
+                    
                     $observations[] = [
                         'cebadera_code' => $cebaderaCode,
                         'observation_number' => $obs['observation_number'] ?? count($observations) + 1,
@@ -943,63 +890,12 @@ class TechnicianController extends Controller
             'croquis_notes' => $request->input('croquis_notes', ''),
         ];
 
-        // Log para debug
-        Log::info('Processing croquis data', [
-            'has_file' => $request->hasFile('croquis_file'),
-            'all_files' => $request->allFiles(),
-            'all_input' => $request->except(['_token'])
-        ]);
-
         // Procesar archivo de croquis si hay
         if ($request->hasFile('croquis_file')) {
             $file = $request->file('croquis_file');
-
-            // Validar que el archivo sea válido
-            if ($file->isValid()) {
-                try {
-                    // Asegurar que el directorio existe
-                    $directory = 'services/croquis';
-                    if (!Storage::disk('public')->exists($directory)) {
-                        Storage::disk('public')->makeDirectory($directory);
-                        Log::info('Created croquis directory', ['directory' => $directory]);
-                    }
-
-                    $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                $path = $file->storeAs($directory, $filename, 'public');
-
-                if ($path) {
-                    $fullPath = storage_path('app/public/' . $path);
-                    if (file_exists($fullPath)) {
-                        $data['croquis_file'] = 'storage/services/croquis/' . $filename;
-                        Log::info('Croquis file saved successfully', [
-                            'filename' => $filename,
-                            'path' => $path,
-                            'full_path' => $data['croquis_file']
-                        ]);
-                    } else {
-                        Log::error('Croquis file stored but not found on disk', ['path' => $fullPath]);
-                    }
-                } else {
-                    Log::error('Failed to store croquis file');
-                }
-                } catch (\Exception $e) {
-                    Log::error('Error saving croquis file', [
-                        'error' => $e->getMessage(),
-                        'trace' => $e->getTraceAsString()
-                    ]);
-                    throw $e;
-                }
-            } else {
-                Log::error('Croquis file is not valid', [
-                    'error' => $file->getErrorMessage()
-                ]);
-            }
-        } else {
-            Log::warning('No croquis_file in request', [
-                'content_length' => $_SERVER['CONTENT_LENGTH'] ?? 'unknown',
-                'post_max_size' => ini_get('post_max_size'),
-                'upload_max_filesize' => ini_get('upload_max_filesize')
-            ]);
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('services/croquis', $filename, 'public');
+            $data['croquis_file'] = 'storage/services/croquis/' . $filename;
         }
 
         return $data;
@@ -1017,15 +913,6 @@ class TechnicianController extends Controller
         ];
 
         // Procesar cebaderas
-        // Debug raw request data
-        Log::info('Raw Monitoreo Completo Request', [
-            'files_keys' => array_keys($_FILES),
-            'post_keys' => array_keys($_POST),
-            'bait_stations_files' => $_FILES['bait_stations'] ?? 'null',
-            'traps_files' => $_FILES['traps'] ?? 'null',
-            'content_length' => $_SERVER['CONTENT_LENGTH'] ?? 'unknown'
-        ]);
-
         $baitStationsInput = $request->input('bait_stations', []);
         if (!empty($baitStationsInput)) {
             foreach ($baitStationsInput as $index => $station) {
@@ -1039,40 +926,21 @@ class TechnicianController extends Controller
                         'observations' => is_array($station['observations'] ?? null) ? $station['observations'] : [],
                     ];
 
-                    // Procesar fotos de la cebadera
+                    // Procesar fotos de la cebadera si se enviaron
                     $photos = [];
-                    
-                    // 1. Recuperar fotos existentes
-                    if (isset($station['existing_photos']) && is_array($station['existing_photos'])) {
-                        $photos = $station['existing_photos'];
-                    }
-
-                    // 2. Agregar nuevas fotos si se enviaron
-                    if ($request->hasFile("bait_stations.$index.photos")) {
-                        foreach ($request->file("bait_stations.$index.photos") as $photo) {
-                            if ($photo && $photo->isValid()) {
-                                $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
-                                $path = $photo->storeAs('services/bait-stations', $filename, 'public');
-                                
-                                if ($path && file_exists(storage_path('app/public/' . $path))) {
+                    if ($request->hasFile("bait_stations")) {
+                        $allFiles = $request->file("bait_stations");
+                        if (isset($allFiles[$index]['photos']) && is_array($allFiles[$index]['photos'])) {
+                            foreach ($allFiles[$index]['photos'] as $photo) {
+                                if ($photo && $photo->isValid()) {
+                                    $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
+                                    $photo->storeAs('services/bait-stations', $filename, 'public');
                                     $photos[] = 'storage/services/bait-stations/' . $filename;
-                                } else {
-                                    Log::error('Failed to save bait station photo', ['filename' => $filename]);
                                 }
-                            } else {
-                                Log::warning('Invalid bait station photo', [
-                                    'error' => $photo ? $photo->getErrorMessage() : 'Photo object is null',
-                                    'size' => $photo ? $photo->getSize() : 0
-                                ]);
                             }
                         }
-                    } else {
-                         Log::warning('No bait_stations files in request for index ' . $index, [
-                            'content_length' => $_SERVER['CONTENT_LENGTH'] ?? 'unknown',
-                            'has_file_root' => $request->hasFile("bait_stations")
-                        ]);
                     }
-                $stationData['photos'] = $photos;
+                    $stationData['photos'] = $photos;
 
                     $data['bait_stations'][] = $stationData;
                 }
@@ -1093,40 +961,21 @@ class TechnicianController extends Controller
                         'notes' => $trap['notes'] ?? '',
                     ];
 
-                    // Procesar fotos de la trampa
+                    // Procesar fotos de la trampa si se enviaron
                     $photos = [];
-                    
-                    // 1. Recuperar fotos existentes
-                    if (isset($trap['existing_photos']) && is_array($trap['existing_photos'])) {
-                        $photos = $trap['existing_photos'];
-                    }
-
-                    // 2. Agregar nuevas fotos si se enviaron
-                    if ($request->hasFile("traps.$index.photos")) {
-                        foreach ($request->file("traps.$index.photos") as $photo) {
-                            if ($photo && $photo->isValid()) {
-                                $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
-                                $path = $photo->storeAs('services/traps', $filename, 'public');
-                                
-                                if ($path && file_exists(storage_path('app/public/' . $path))) {
+                    if ($request->hasFile("traps")) {
+                        $allFiles = $request->file("traps");
+                        if (isset($allFiles[$index]['photos']) && is_array($allFiles[$index]['photos'])) {
+                            foreach ($allFiles[$index]['photos'] as $photo) {
+                                if ($photo && $photo->isValid()) {
+                                    $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
+                                    $photo->storeAs('services/traps', $filename, 'public');
                                     $photos[] = 'storage/services/traps/' . $filename;
-                                } else {
-                                    Log::error('Failed to save trap photo', ['filename' => $filename]);
                                 }
-                            } else {
-                                Log::warning('Invalid trap photo', [
-                                    'error' => $photo ? $photo->getErrorMessage() : 'Photo object is null',
-                                    'size' => $photo ? $photo->getSize() : 0
-                                ]);
                             }
                         }
-                    } else {
-                         Log::warning('No traps files in request for index ' . $index, [
-                            'content_length' => $_SERVER['CONTENT_LENGTH'] ?? 'unknown',
-                            'has_file_root' => $request->hasFile("traps")
-                        ]);
                     }
-                $trapData['photos'] = $photos;
+                    $trapData['photos'] = $photos;
 
                     $data['traps'][] = $trapData;
                 }
@@ -1176,29 +1025,9 @@ class TechnicianController extends Controller
                 $image = str_replace('data:image/png;base64,', '', $signatureData);
                 $image = str_replace(' ', '+', $image);
                 $imageData = base64_decode($image);
-                $filename = 'signature_tech_' . time() . '_' . uniqid() . '.png';
+                $filename = 'signature_' . time() . '_' . uniqid() . '.png';
                 Storage::disk('public')->put('signatures/' . $filename, $imageData);
                 $data['technician_signature'] = 'storage/signatures/' . $filename;
-            } else {
-                // Si no es base64, asumimos que es la ruta existente
-                $data['technician_signature'] = $signatureData;
-            }
-        }
-
-        // Procesar firma del cliente si se proporcionó
-        if ($request->has('client_signature') && !empty($request->input('client_signature'))) {
-            $signatureData = $request->input('client_signature');
-            // Si es una imagen en base64, guardarla
-            if (strpos($signatureData, 'data:image') === 0) {
-                $image = str_replace('data:image/png;base64,', '', $signatureData);
-                $image = str_replace(' ', '+', $image);
-                $imageData = base64_decode($image);
-                $filename = 'signature_client_' . time() . '_' . uniqid() . '.png';
-                Storage::disk('public')->put('signatures/' . $filename, $imageData);
-                $data['client_signature'] = 'storage/signatures/' . $filename;
-            } else {
-                // Si no es base64, asumimos que es la ruta existente
-                $data['client_signature'] = $signatureData;
             }
         }
 
@@ -1626,25 +1455,14 @@ class TechnicianController extends Controller
         ]);
 
         $pdf = Pdf::loadView('technician.service-pdf', compact('service', 'validationId', 'integrityHash', 'qrCode'));
-
-        // Configurar opciones de DomPDF para manejar imágenes correctamente y codificación UTF-8
+        
+        // Configurar opciones de DomPDF para manejar imágenes correctamente
         $pdf->setPaper('A4', 'portrait');
         $pdf->setOptions([
             'isHtml5ParserEnabled' => true,
             'isRemoteEnabled' => true, // Necesario para cargar imágenes desde rutas del sistema
             'isPhpEnabled' => true, // Necesario para funciones PHP en las vistas
-            'defaultFont' => 'DejaVu Sans', // DejaVu Sans tiene mejor soporte UTF-8 que Arial
-            'fontHeightRatio' => 1.1,
-            'enable_font_subsetting' => true,
-            'pdf_backend' => 'CPDF',
-            'debugPng' => false,
-            'debugKeepTemp' => false,
-            'debugCss' => false,
-            'debugLayout' => false,
-            'debugLayoutLines' => false,
-            'debugLayoutBlocks' => false,
-            'debugLayoutInline' => false,
-            'debugLayoutPaddingBox' => false,
+            'defaultFont' => 'Arial',
         ]);
 
         $filename = "servicio-{$service->id}-{$service->client->name}-{$validationId}.pdf";
