@@ -69,23 +69,35 @@ class TechnicianController extends Controller
         ));
     }
 
-    public function services()
+    public function services(Request $request)
     {
         $user = auth()->user();
         $isViewingAsTechnician = session('view_as_technician', false) && $user->hasRole('super-admin');
         
+        // Construir query base
         if ($isViewingAsTechnician) {
             // Mostrar todos los servicios para que el admin pueda ver el flujo completo
-            $services = Service::with(['client', 'serviceType', 'assignedUser'])
-                ->orderBy('created_at', 'desc')
-                ->paginate(10);
+            $query = Service::with(['client', 'serviceType', 'assignedUser']);
         } else {
             // Filtrar por técnico asignado
-            $services = Service::where('assigned_to', auth()->id())
-                ->with(['client', 'serviceType', 'assignedUser'])
-                ->orderBy('created_at', 'desc')
-                ->paginate(10);
+            $query = Service::where('assigned_to', auth()->id())
+                ->with(['client', 'serviceType', 'assignedUser']);
         }
+        
+        // Aplicar filtros
+        if ($request->filled('estado')) {
+            $query->where('status', $request->estado);
+        }
+        
+        if ($request->filled('tipo')) {
+            $query->where('service_type', $request->tipo);
+        }
+        
+        // Ordenar y paginar
+        $services = $query->orderBy('created_at', 'desc')->paginate(10);
+        
+        // Mantener los parámetros de filtro en la paginación
+        $services->appends($request->query());
 
         // Detectar si estamos en modo technician-view
         $isTechnicianView = request()->is('admin/technician-view/*') || 
