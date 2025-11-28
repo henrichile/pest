@@ -143,12 +143,44 @@ function removePhoto(index) {
 }
 
 // Cargar plagas existentes si hay
-@if(isset($service->checklist_data['monitoreo_datos']['pests_detected_list']))
-    selectedPests = @json($service->checklist_data['monitoreo_datos']['pests_detected_list'] ?? []);
+@php
+    $monitoreoDatos = $service->checklist_data['monitoreo_datos'] ?? [];
+    $existingPests = $monitoreoDatos['pests_detected_list'] ?? $service->checklist_data['pests_detected_list'] ?? [];
+    $existingPhotos = $monitoreoDatos['service_photos'] ?? $service->checklist_data['service_photos'] ?? [];
+@endphp
+
+@if(count($existingPests) > 0)
+    selectedPests = @json($existingPests);
     updatePestsList();
-@elseif(isset($service->checklist_data['pests_detected_list']))
-    selectedPests = @json($service->checklist_data['pests_detected_list'] ?? []);
-    updatePestsList();
+@endif
+
+// Cargar fotos existentes si hay
+@if(count($existingPhotos) > 0)
+    document.addEventListener('DOMContentLoaded', function() {
+        const preview = document.getElementById('photos-preview');
+        if (preview) {
+            const existingPhotos = @json($existingPhotos);
+            existingPhotos.forEach((photoPath, index) => {
+                const div = document.createElement('div');
+                div.className = 'photo-preview-item';
+                div.innerHTML = `
+                    <img src="/${photoPath}" alt="Foto existente">
+                    <button type="button" onclick="removeExistingPhoto(${index})" class="photo-remove">×</button>
+                `;
+                preview.appendChild(div);
+            });
+        }
+    });
+    
+    function removeExistingPhoto(index) {
+        // En una implementación completa, esto debería enviar una petición al servidor
+        // para eliminar la foto del almacenamiento. Por ahora, solo la removemos del DOM.
+        const preview = document.getElementById('photos-preview');
+        const items = preview.querySelectorAll('.photo-preview-item');
+        if (items[index]) {
+            items[index].remove();
+        }
+    }
 @endif
 </script>
 
