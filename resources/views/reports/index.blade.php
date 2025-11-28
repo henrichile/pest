@@ -3,13 +3,41 @@
 @section('title', 'Reportes')
 
 @section('content')
-<div class="space-y-4 sm:space-y-6">
-    @include('admin.partials.header', [
-        'title' => 'Reportes',
-        'subtitle' => 'Genera, exporta y programa reportes personalizados',
-        'searchPlaceholder' => 'Buscar reportes...',
-        'pageId' => 'reports'
-    ])
+<div class="space-y-4 sm:space-y-6 pt-3 md:pt-0">
+    <!-- Header con hamburguesa y título -->
+    <div class="mb-4 sm:mb-6">
+        <!-- Primera fila: Hamburguesa + Título (móvil) -->
+        <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
+            <!-- Hamburguesa (solo móvil) -->
+            <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50;">
+                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            
+            <!-- Título -->
+            <div class="flex-1">
+                <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
+                    Reportes
+                </h2>
+            </div>
+        </div>
+        
+        <!-- Segunda fila: Título completo (desktop) -->
+        <div class="hidden md:flex md:items-center md:justify-between">
+            <div class="min-w-0 flex-1">
+                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" style="color: #111827; font-weight: 700;">
+                    Reportes
+                </h2>
+                <p class="mt-1 text-xs sm:text-sm" style="color: #6b7280;">
+                    Genera, exporta y programa reportes personalizados
+                </p>
+            </div>
+        </div>
+    </div>
 
     <!-- Filtros de Reporte -->
     <div class="bg-white rounded-lg shadow-md border mb-6" style="border: 1px solid #e5e7eb;">
@@ -357,41 +385,101 @@
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Botón de hamburguesa para móvil
-    const pageMobileMenuButton = document.getElementById('page-mobile-menu-button');
-    const mainMobileMenuButton = document.getElementById('mobile-menu-button');
-
-    if (pageMobileMenuButton && mainMobileMenuButton) {
-        pageMobileMenuButton.addEventListener('click', function(e) {
+(function() {
+    function initPageMenu() {
+        const pageMenuButton = document.getElementById('page-mobile-menu-button');
+        const sidebar = document.getElementById('sidebar');
+        const mobileOverlay = document.getElementById('mobile-overlay');
+        
+        if (!pageMenuButton) {
+            setTimeout(initPageMenu, 100);
+            return;
+        }
+        
+        if (!sidebar) {
+            console.error('Sidebar no encontrado');
+            return;
+        }
+        
+        function toggleMobileMenu() {
+            const computedStyle = window.getComputedStyle(sidebar);
+            const transform = computedStyle.transform;
+            const sidebarTransform = sidebar.style.transform || '';
+            const isOpen = sidebar.classList.contains('translate-x-0') || 
+                          transform === 'matrix(1, 0, 0, 1, 0, 0)' || 
+                          transform === 'none' ||
+                          sidebarTransform === 'translateX(0)' ||
+                          sidebarTransform.includes('translateX(0)') ||
+                          sidebarTransform === '';
+            
+            if (isOpen) {
+                sidebar.classList.remove('translate-x-0');
+                sidebar.classList.add('-translate-x-full');
+                const styleTag = document.getElementById('mobile-menu-override-style');
+                if (styleTag) styleTag.remove();
+                sidebar.style.transform = 'translateX(-100%)';
+                if (mobileOverlay) {
+                    mobileOverlay.classList.add('hidden');
+                    mobileOverlay.style.display = 'none';
+                }
+                const menuIcon = document.getElementById('page-menu-icon');
+                const closeIcon = document.getElementById('page-close-icon');
+                if (menuIcon) menuIcon.classList.remove('hidden');
+                if (closeIcon) closeIcon.classList.add('hidden');
+                document.body.style.overflow = '';
+            } else {
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+                let styleTag = document.getElementById('mobile-menu-override-style');
+                if (!styleTag) {
+                    styleTag = document.createElement('style');
+                    styleTag.id = 'mobile-menu-override-style';
+                    document.head.appendChild(styleTag);
+                }
+                styleTag.textContent = `#sidebar { transform: translateX(0) !important; display: flex !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; position: fixed !important; left: 0 !important; top: 0 !important; width: 288px !important; height: 100vh !important; }`;
+                sidebar.style.cssText = `display: flex !important; transform: translateX(0) !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; position: fixed !important; left: 0 !important; top: 0 !important; width: 288px !important; height: 100vh !important;`;
+                if (mobileOverlay) {
+                    mobileOverlay.classList.remove('hidden');
+                    mobileOverlay.style.cssText = `display: block !important; visibility: visible !important; z-index: 9998 !important;`;
+                }
+                const menuIcon = document.getElementById('page-menu-icon');
+                const closeIcon = document.getElementById('page-close-icon');
+                if (menuIcon) menuIcon.classList.add('hidden');
+                if (closeIcon) closeIcon.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        pageMenuButton.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            mainMobileMenuButton.click();
+            toggleMobileMenu();
         });
+        
+        if (mobileOverlay) {
+            mobileOverlay.addEventListener('click', function() {
+                toggleMobileMenu();
+            });
+        }
+        
+        if (sidebar) {
+            const sidebarLinks = sidebar.querySelectorAll('a');
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth < 768) {
+                        toggleMobileMenu();
+                    }
+                });
+            });
+        }
     }
-
-    // Sincronizar iconos
-    const pageMenuIcon = document.getElementById('page-menu-icon');
-    const pageCloseIcon = document.getElementById('page-close-icon');
-    const menuIcon = document.getElementById('menu-icon');
-    const closeIcon = document.getElementById('close-icon');
-
-    if (pageMenuIcon && pageCloseIcon && menuIcon && closeIcon) {
-        // Observar cambios en los iconos principales
-        const observer = new MutationObserver(function() {
-            if (menuIcon.classList.contains('hidden')) {
-                pageMenuIcon.classList.add('hidden');
-                pageCloseIcon.classList.remove('hidden');
-            } else {
-                pageMenuIcon.classList.remove('hidden');
-                pageCloseIcon.classList.add('hidden');
-            }
-        });
-
-        observer.observe(menuIcon, { attributes: true, attributeFilter: ['class'] });
-        observer.observe(closeIcon, { attributes: true, attributeFilter: ['class'] });
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPageMenu);
+    } else {
+        setTimeout(initPageMenu, 50);
     }
-});
+})();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
@@ -399,20 +487,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Dropdown de exportación
     const exportBtn = document.getElementById('exportBtn');
     const exportDropdown = document.getElementById('exportDropdown');
-
+    
     if (exportBtn && exportDropdown) {
         exportBtn.addEventListener('click', function(e) {
             e.stopPropagation();
             exportDropdown.classList.toggle('hidden');
         });
-
+        
         document.addEventListener('click', function(e) {
             if (!exportBtn.contains(e.target) && !exportDropdown.contains(e.target)) {
                 exportDropdown.classList.add('hidden');
             }
         });
     }
-
+    
     // Rangos rápidos
     const quickRangeButtons = document.querySelectorAll('.quick-range-btn');
     quickRangeButtons.forEach(btn => {
@@ -442,7 +530,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             document.getElementById('start_date').value = startDate.toISOString().split('T')[0];
             document.getElementById('end_date').value = endDate.toISOString().split('T')[0];
-
+            
             // Remover selección de otros botones
             quickRangeButtons.forEach(b => {
                 b.style.background = '#f3f4f6';
@@ -539,7 +627,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (temporalCtx) {
         const temporalData = @json($temporalData);
         const months = @json($months);
-
+        
         new Chart(temporalCtx, {
             type: 'line',
             data: {

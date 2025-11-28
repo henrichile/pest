@@ -3,22 +3,49 @@
 @section('title', 'Servicios')
 
 @section('content')
-<div class="space-y-4 sm:space-y-6 pt-12 md:pt-0">
-    @include('admin.partials.header', [
-        'title' => 'Servicios',
-        'subtitle' => 'Gestiona todos los servicios de control de plagas',
-        'searchPlaceholder' => 'Buscar servicios...',
-        'pageId' => 'services'
-    ])
-
-    <!-- Botón Nuevo Servicio -->
-    <div class="flex justify-end mb-4">
-        <a href="{{ route('admin.services.create') ?? route('services.create') ?? '#' }}" class="inline-flex items-center justify-center px-5 py-3 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700 transition-colors">
-            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-            Nuevo Servicio
-        </a>
+<div class="space-y-4 sm:space-y-6 pt-3 md:pt-0">
+    <!-- Header con hamburguesa y título -->
+    <div class="mb-4 sm:mb-6">
+        <!-- Primera fila: Hamburguesa + Título (móvil) -->
+        <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem; display: flex !important; flex-direction: row !important; align-items: center !important;">
+            <!-- Hamburguesa (solo móvil) -->
+            <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50; display: flex !important; align-items: center !important; justify-content: center !important;">
+                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            
+            <!-- Título -->
+            <div class="flex-1" style="flex: 1 1 0% !important; min-width: 0 !important;">
+                <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700; margin: 0 !important;">
+                    Servicios
+                </h2>
+            </div>
+        </div>
+        
+        <!-- Segunda fila: Título completo (desktop) -->
+        <div class="hidden md:flex md:items-center md:justify-between">
+            <div class="min-w-0 flex-1">
+                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" style="color: #111827; font-weight: 700;">
+                    Servicios
+                </h2>
+                <p class="mt-1 text-xs sm:text-sm" style="color: #6b7280;">
+                    Gestiona todos los servicios de control de plagas
+                </p>
+            </div>
+            <div class="mt-3 sm:mt-4 md:mt-0 md:ml-4">
+                <a href="{{ route('admin.services.create') ?? route('services.create') ?? '#' }}" class="inline-flex items-center justify-center w-full sm:w-auto px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium text-white transition-colors" style="background: #22c55e; hover:background: #16a34a;">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                    <span class="hidden sm:inline">Nuevo Servicio</span>
+                    <span class="sm:hidden">Nuevo</span>
+                </a>
+            </div>
+        </div>
     </div>
 
     <!-- Filters -->
@@ -67,93 +94,56 @@
         </form>
     </div>
 
-    <!-- Services Table -->
-    <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+    <!-- Services List -->
+    <div class="bg-white border dark:border-gray-700 rounded-lg overflow-hidden" style="border: 1px solid #e5e7eb !important;">
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prioridad</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @forelse($services as $service)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4">
-                            <div class="font-medium text-gray-900">{{ $service->client->name ?? 'Cliente no encontrado' }}</div>
-                            @if($service->address)
-                                <div class="text-sm text-gray-500">{{ $service->address }}</div>
-                            @endif
-                        </td>
-                        <td class="px-6 py-4">
-                            @if($service->serviceType)
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                    {{ $service->serviceType->name ?? 'N/A' }}
-                                </span>
-                            @else
-                                <span class="text-sm text-gray-400">Sin tipo</span>
-                            @endif
-                        </td>
-                        <td class="px-6 py-4 text-sm text-gray-900">
-                            {{ $service->scheduled_date ? \Carbon\Carbon::parse($service->scheduled_date)->format('d/m/Y H:i') : 'Sin fecha' }}
-                        </td>
-                        <td class="px-6 py-4">
-                            @if($service->status)
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
-                                    @if($service->status == 'pendiente') bg-yellow-100 text-yellow-800
-                                    @elseif($service->status == 'en_progreso') bg-blue-100 text-blue-800
-                                    @elseif($service->status == 'finalizado') bg-green-100 text-green-800
-                                    @else bg-gray-100 text-gray-800
-                                    @endif">
-                                    {{ ucfirst(str_replace('_', ' ', $service->status)) }}
-                                </span>
-                            @else
-                                <span class="text-sm text-gray-400">Sin estado</span>
-                            @endif
-                        </td>
-                        <td class="px-6 py-4">
-                            @if($service->priority)
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
-                                    @if($service->priority == 'alta') bg-red-100 text-red-800
-                                    @elseif($service->priority == 'media') bg-yellow-100 text-yellow-800
-                                    @else bg-gray-100 text-gray-800
-                                    @endif">
-                                    {{ ucfirst($service->priority) }}
-                                </span>
-                            @else
-                                <span class="text-sm text-gray-400">Sin prioridad</span>
-                            @endif
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <a href="{{ route('admin.services.show', $service) ?? route('services.show', $service) ?? '#' }}" class="text-green-600 hover:text-green-700 font-medium" title="Ver">
-                                    Ver
-                                </a>
-                                <a href="{{ route('admin.services.edit', $service) ?? '#' }}" class="text-blue-600 hover:text-blue-700 font-medium" title="Editar">
-                                    Editar
-                                </a>
-                                <button class="text-red-600 hover:text-red-700 font-medium" title="Eliminar">
-                                    Eliminar
-                                </button>
+            @forelse($services as $service)
+                <div class="p-4 sm:p-6 border-b border-gray-200 hover:bg-gray-50" style="border-bottom: 1px solid #e5e7eb;">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div class="flex-1">
+                            <div class="mb-2">
+                                <h3 class="text-lg font-semibold" style="color: #111827;">
+                                    {{ $service->client->name ?? 'Cliente no encontrado' }}
+                                </h3>
+                                @if($service->address)
+                                    <p class="text-sm" style="color: #6b7280;">{{ $service->address }}</p>
+                                @endif
                             </div>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="6" class="px-6 py-8 text-center text-sm text-gray-500">
-                            No se encontraron servicios
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                            <div class="flex flex-wrap gap-2">
+                                @if($service->status)
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                        @if($service->status == 'pendiente') bg-yellow-100 text-yellow-800
+                                        @elseif($service->status == 'en_progreso') bg-blue-100 text-blue-800
+                                        @elseif($service->status == 'completado') bg-green-100 text-green-800
+                                        @else bg-gray-100 text-gray-800
+                                        @endif">
+                                        {{ ucfirst(str_replace('_', ' ', $service->status)) }}
+                                    </span>
+                                @endif
+                                @if($service->serviceType)
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                        {{ $service->serviceType->name ?? 'N/A' }}
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <a href="{{ route('admin.services.show', $service) ?? route('services.show', $service) ?? '#' }}" class="text-blue-600 hover:text-blue-900" title="Ver">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="p-8 text-center">
+                    <p class="text-sm" style="color: #6b7280;">No se encontraron servicios</p>
+                </div>
+            @endforelse
         </div>
-
+        
         @if($services->hasPages())
         <div class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6" style="border-top: 1px solid #e5e7eb !important;">
             {{ $services->links() }}
@@ -214,42 +204,98 @@
 
     // Page Mobile Menu Button
     (function() {
-        const pageMenuButton = document.getElementById('page-mobile-menu-button');
-        const mainMenuButton = document.getElementById('mobile-menu-button');
-        const sidebar = document.getElementById('sidebar');
-        const mobileOverlay = document.getElementById('mobile-overlay');
-
-        function toggleMobileMenu() {
-            if (mainMenuButton) {
-                mainMenuButton.click();
-            } else {
-                const menuIcon = document.getElementById('page-menu-icon');
-                const closeIcon = document.getElementById('page-close-icon');
-
-                if (sidebar && sidebar.classList.contains('-translate-x-full')) {
-                    sidebar.classList.remove('-translate-x-full');
-                    sidebar.classList.add('translate-x-0');
-                    if (mobileOverlay) mobileOverlay.classList.remove('hidden');
-                    if (menuIcon) menuIcon.classList.add('hidden');
-                    if (closeIcon) closeIcon.classList.remove('hidden');
-                    document.body.style.overflow = 'hidden';
-                } else {
+        function initPageMenu() {
+            const pageMenuButton = document.getElementById('page-mobile-menu-button');
+            const sidebar = document.getElementById('sidebar');
+            const mobileOverlay = document.getElementById('mobile-overlay');
+            
+            if (!pageMenuButton) {
+                setTimeout(initPageMenu, 100);
+                return;
+            }
+            
+            if (!sidebar) {
+                console.error('Sidebar no encontrado');
+                return;
+            }
+            
+            function toggleMobileMenu() {
+                const computedStyle = window.getComputedStyle(sidebar);
+                const transform = computedStyle.transform;
+                const sidebarTransform = sidebar.style.transform || '';
+                const isOpen = sidebar.classList.contains('translate-x-0') || 
+                              transform === 'matrix(1, 0, 0, 1, 0, 0)' || 
+                              transform === 'none' ||
+                              sidebarTransform === 'translateX(0)' ||
+                              sidebarTransform.includes('translateX(0)') ||
+                              sidebarTransform === '';
+                
+                if (isOpen) {
                     sidebar.classList.remove('translate-x-0');
                     sidebar.classList.add('-translate-x-full');
-                    if (mobileOverlay) mobileOverlay.classList.add('hidden');
+                    const styleTag = document.getElementById('mobile-menu-override-style');
+                    if (styleTag) styleTag.remove();
+                    sidebar.style.transform = 'translateX(-100%)';
+                    if (mobileOverlay) {
+                        mobileOverlay.classList.add('hidden');
+                        mobileOverlay.style.display = 'none';
+                    }
+                    const menuIcon = document.getElementById('page-menu-icon');
+                    const closeIcon = document.getElementById('page-close-icon');
                     if (menuIcon) menuIcon.classList.remove('hidden');
                     if (closeIcon) closeIcon.classList.add('hidden');
                     document.body.style.overflow = '';
+                } else {
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebar.classList.add('translate-x-0');
+                    let styleTag = document.getElementById('mobile-menu-override-style');
+                    if (!styleTag) {
+                        styleTag = document.createElement('style');
+                        styleTag.id = 'mobile-menu-override-style';
+                        document.head.appendChild(styleTag);
+                    }
+                    styleTag.textContent = `#sidebar { transform: translateX(0) !important; display: flex !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; position: fixed !important; left: 0 !important; top: 0 !important; width: 288px !important; height: 100vh !important; }`;
+                    sidebar.style.cssText = `display: flex !important; transform: translateX(0) !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; position: fixed !important; left: 0 !important; top: 0 !important; width: 288px !important; height: 100vh !important;`;
+                    if (mobileOverlay) {
+                        mobileOverlay.classList.remove('hidden');
+                        mobileOverlay.style.cssText = `display: block !important; visibility: visible !important; z-index: 9998 !important;`;
+                    }
+                    const menuIcon = document.getElementById('page-menu-icon');
+                    const closeIcon = document.getElementById('page-close-icon');
+                    if (menuIcon) menuIcon.classList.add('hidden');
+                    if (closeIcon) closeIcon.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
                 }
             }
-        }
-
-        if (pageMenuButton) {
+            
             pageMenuButton.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 toggleMobileMenu();
             });
+            
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', function() {
+                    toggleMobileMenu();
+                });
+            }
+            
+            if (sidebar) {
+                const sidebarLinks = sidebar.querySelectorAll('a');
+                sidebarLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        if (window.innerWidth < 768) {
+                            toggleMobileMenu();
+                        }
+                    });
+                });
+            }
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPageMenu);
+        } else {
+            setTimeout(initPageMenu, 50);
         }
     })();
 </script>
