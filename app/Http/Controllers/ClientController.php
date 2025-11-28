@@ -140,6 +140,48 @@ class ClientController extends Controller
     }
 
     /**
+     * Remove the specified client from storage.
+     */
+    public function destroy(Client $client): RedirectResponse
+    {
+        // Solo super-admin puede eliminar clientes
+        if (!Auth::user()->hasRole('super-admin')) {
+            abort(403, 'No tienes permisos para acceder a esta página');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            // Verificar si el cliente tiene servicios asociados
+            $servicesCount = Service::where('client_id', $client->id)->count();
+            if ($servicesCount > 0) {
+                return redirect()->back()
+                    ->with('error', 'No se puede eliminar el cliente porque tiene servicios asociados.');
+            }
+
+            // Log activity
+            activity()
+                ->performedOn($client)
+                ->causedBy(Auth::user())
+                ->log('Cliente eliminado: ' . $client->name);
+
+            $client->delete();
+
+            DB::commit();
+
+            return redirect()->route('admin.clients.index')
+                ->with('success', 'Cliente eliminado correctamente.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error deleting client: ' . $e->getMessage());
+
+            return redirect()->back()
+                ->with('error', 'Error al eliminar el cliente: ' . $e->getMessage());
+        }
+    }
+
+    /**
      * Show client dashboard.
      */
     public function dashboard(): View
