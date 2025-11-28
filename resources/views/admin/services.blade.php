@@ -53,11 +53,11 @@
                     <option value="alta" {{ request('priority') === 'alta' ? 'selected' : '' }}>Alta</option>
                 </select>
             </div>
-            <div class="flex items-end gap-3 col-span-full lg:col-span-3" style="display: flex !important; flex-direction: row !important; align-items: flex-end !important;">
-                <button type="submit" id="filter-submit-btn" class="px-6 py-3.5 bg-gray-700 hover:bg-gray-800 text-white rounded-lg transition-colors text-base font-medium" style="display: inline-block !important; visibility: visible !important; min-width: 120px !important; opacity: 1 !important; flex-shrink: 0 !important;">
+            <div class="flex items-end gap-3 col-span-full lg:col-span-3" style="display: flex !important; flex-direction: row !important; align-items: flex-end !important; justify-content: flex-start !important;">
+                <button type="submit" id="filter-submit-btn" class="px-6 py-3.5 bg-gray-700 hover:bg-gray-800 text-white rounded-lg transition-colors text-base font-medium" style="display: block !important; visibility: visible !important; min-width: 120px !important; width: auto !important; opacity: 1 !important; flex-shrink: 0 !important; order: 1 !important;">
                     Filtrar
                 </button>
-                <a href="{{ route('admin.services.index') }}" class="px-6 py-3.5 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition-colors text-base font-medium text-center" style="display: inline-block !important; visibility: visible !important; min-width: 120px !important; opacity: 1 !important; flex-shrink: 0 !important; text-decoration: none !important;">
+                <a href="{{ route('admin.services.index') }}" class="px-6 py-3.5 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition-colors text-base font-medium text-center" style="display: block !important; visibility: visible !important; min-width: 120px !important; width: auto !important; opacity: 1 !important; flex-shrink: 0 !important; text-decoration: none !important; order: 2 !important;">
                     Limpiar
                 </a>
             </div>
