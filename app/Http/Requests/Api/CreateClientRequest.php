@@ -30,7 +30,6 @@ class CreateClientRequest extends FormRequest
             'contacts.*.position' => 'nullable|string|max:255',
             'contacts.*.is_primary' => 'nullable|boolean',
             'payment_method' => 'nullable|string|max:255',
-            'notes' => 'nullable|string|max:1000',
             'is_active' => 'nullable|boolean',
         ];
     }

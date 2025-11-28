@@ -125,7 +125,22 @@ class ClientController extends Controller
                 $data['is_active'] = true;
             }
 
-            $client = Client::create($data);
+            // Preparar datos para crear el cliente (solo campos fillable)
+            $clientData = [
+                'business_name' => $data['business_name'] ?? null,
+                'rut' => $data['rut'] ?? null,
+                'business_type' => $data['business_type'] ?? null,
+                'contacts' => $data['contacts'] ?? null,
+                'payment_method' => $data['payment_method'] ?? null,
+                'is_active' => $data['is_active'] ?? true,
+            ];
+            
+            // Remover campos null para evitar problemas
+            $clientData = array_filter($clientData, function($value) {
+                return $value !== null;
+            });
+
+            $client = Client::create($clientData);
 
             // Log activity
             activity()

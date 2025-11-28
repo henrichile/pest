@@ -147,21 +147,6 @@
                 </div>
             </div>
 
-            <!-- Información Adicional -->
-            <div class="mb-6">
-                <h3 class="text-lg font-semibold mb-4" style="color: #111827;">Información Adicional</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Notas -->
-                    <div class="md:col-span-2">
-                        <label for="notes" class="block text-sm font-medium mb-1" style="color: #374151;">
-                            Notas
-                        </label>
-                        <textarea name="notes" id="notes" rows="3"
-                                  class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                                  style="border: 1px solid #e5e7eb !important; color: #111827;">{{ old('notes') }}</textarea>
-                    </div>
-                </div>
-            </div>
 
             <!-- Botones -->
             <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
