@@ -83,7 +83,7 @@
                     <tr>
                         <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">CLIENTE</th>
                         <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">RUT</th>
-                        <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">CONTAC</th>
+                        <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">CONTACTO</th>
                         <th class="px-4 sm:px-6 py-3 text-right text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">ACCIONES</th>
                     </tr>
                 </thead>
