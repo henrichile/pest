@@ -2,24 +2,24 @@
 // Helper function para obtener la ruta correcta según el modo
 function getTechnicianRoute($routeName, ...$params) {
     $isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
-
+    
     if ($isViewingAsTechnician) {
         // Mapear rutas de technician a technician-view
         $routeMap = [
-            'technician.service.detail' => 'technician-view.service.detail',
-            'technician.service.checklist' => 'technician-view.service.checklist',
-            'technician.service.checklist.stage' => 'technician-view.service.checklist.stage',
-            'technician.service.checklist.location' => 'technician-view.service.checklist.location',
-            'technician.service.checklist.process-location' => 'technician-view.service.checklist.process-location',
-            'technician.service.checklist.submit' => 'technician-view.service.checklist.submit',
-            'technician.service.pdf' => 'technician-view.service.pdf',
-            'technician.service.checklist-details' => 'technician-view.service.checklist-details',
+            'technician.service.detail' => 'admin.technician-view.service.detail',
+            'technician.service.checklist' => 'admin.technician-view.service.checklist',
+            'technician.service.checklist.stage' => 'admin.technician-view.service.checklist.stage',
+            'technician.service.checklist.location' => 'admin.technician-view.service.checklist.location',
+            'technician.service.checklist.process-location' => 'admin.technician-view.service.checklist.process-location',
+            'technician.service.checklist.submit' => 'admin.technician-view.service.checklist.submit',
+            'technician.service.pdf' => 'admin.technician-view.service.pdf',
+            'technician.service.checklist-details' => 'admin.technician-view.service.checklist-details',
         ];
-
+        
         $mappedRoute = $routeMap[$routeName] ?? $routeName;
         return route($mappedRoute, ...$params);
     }
-
+    
     return route($routeName, ...$params);
 }
 @endphp
@@ -238,86 +238,86 @@ function getTechnicianRoute($routeName, ...$params) {
             body {
                 padding: 10px;
             }
-
+            
             .container {
                 padding: 16px;
                 border-radius: 8px;
             }
-
+            
             h1 {
                 font-size: 22px;
             }
-
+            
             .subtitle {
                 font-size: 14px;
             }
-
+            
             .service-info {
                 padding: 16px;
             }
-
+            
             .client-info-bar {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 12px;
                 padding: 12px 16px;
             }
-
+            
             .info-row {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 4px;
             }
-
+            
             .progress-box {
                 padding: 12px;
             }
-
+            
             .stages-list-compact {
                 flex-direction: column;
                 gap: 8px;
             }
-
+            
             .stage-item-compact {
                 flex: none;
             }
-
+            
             .stage-box {
                 padding: 16px;
             }
-
+            
             .stage-box h4 {
                 font-size: 16px;
                 margin-bottom: 16px;
                 padding-bottom: 12px;
             }
-
+            
             .form-grid {
                 grid-template-columns: 1fr !important;
             }
-
+            
             .buttons-container {
                 flex-direction: column;
             }
-
+            
             .next-button, .back-button {
                 width: 100%;
             }
         }
-
+        
         @media (max-width: 640px) {
             .container {
                 padding: 12px;
             }
-
+            
             h1 {
                 font-size: 20px;
             }
-
+            
             .progress-box h4 {
                 font-size: 12px;
             }
-
+            
             .stage-text-compact {
                 font-size: 11px;
             }
@@ -689,7 +689,7 @@ function getTechnicianRoute($routeName, ...$params) {
         }
     </style>
 </head>
-<body style="background: #f9fafb !important; padding-top: 80px;">
+<body style="background: #f9fafb !important;">
     <div class="container">
         <div style="text-align: center; margin-bottom: 32px;">
             <h1 style="font-size: 32px; margin-bottom: 8px; color: #111827;">Checklist de Servicio</h1>
@@ -703,7 +703,7 @@ function getTechnicianRoute($routeName, ...$params) {
                 </svg>
                 Detalles del Servicio
             </h3>
-
+            
             <!-- Información del Servicio (movida aquí desde monitoreo-datos) -->
             @if($service->service_type === 'monitoreo-cebaderas' && $service->checklist_stage === 'monitoreo-datos')
             <div class="info-row" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e5e7eb;">
@@ -722,7 +722,7 @@ function getTechnicianRoute($routeName, ...$params) {
                 <span class="info-value">{{ $service->scheduled_date ? \Carbon\Carbon::parse($service->scheduled_date)->format('Y-m-d') : date('Y-m-d') }}</span>
             </div>
             @endif
-
+            
             <!-- Barra azul de información del cliente -->
             <div class="client-info-bar" style="margin-top: 20px;">
                 @if($service->service_type !== 'monitoreo-cebaderas' || $service->checklist_stage !== 'monitoreo-datos')
@@ -750,7 +750,7 @@ function getTechnicianRoute($routeName, ...$params) {
             <div class="info-row">
                 <span class="info-label">Prioridad:</span>
                 <span class="info-value">
-                    <span style="display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600;
+                    <span style="display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; 
                         @if(strtolower($service->priority ?? 'media') === 'alta') background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5;
                         @elseif(strtolower($service->priority ?? 'media') === 'media') background: #fef3c7; color: #d97706; border: 1px solid #fcd34d;
                         @else background: #dbeafe; color: #2563eb; border: 1px solid #93c5fd;
@@ -775,7 +775,7 @@ function getTechnicianRoute($routeName, ...$params) {
                     </span>
                 </div>
                 <div style="text-align: center;">
-                <a href="{{ getTechnicianRoute('technician.service.checklist.location', $service) }}"
+                <a href="{{ getTechnicianRoute('technician.service.checklist.location', $service) }}" 
                    class="geolocation-retry-btn">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px;">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.25 18.002h4.992m-.01-13.5v4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
@@ -800,7 +800,7 @@ function getTechnicianRoute($routeName, ...$params) {
                 <div class="progress-fill" style="width: {{ $service->getProgressPercentage() }}%"></div>
             </div>
             <div class="progress-text" style="font-size: 11px; margin-top: 6px;">Etapa {{ $service->getStageNumber() }} de {{ $service->getTotalStage() }}</div>
-
+            
             <!-- Lista de Etapas -->
             <div class="stages-list-compact" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb;">
                 @if($service->service_type === 'monitoreo-cebaderas')
