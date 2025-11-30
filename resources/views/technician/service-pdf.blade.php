@@ -986,45 +986,83 @@
             
             <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
                 <table style="width: 100%; border-collapse: collapse;">
+                    {{-- Valores sobre las barras --}}
                     <tr>
                         @foreach($historicalData as $data)
-                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 5px; text-align: center; vertical-align: bottom;">
-                            @php
-                                $consumptionPercent = $data['consumption_percent'] ?? 0;
-                                $captures = $data['captures'] ?? 0;
-                                $date = \Carbon\Carbon::parse($data['date']);
-                                
-                                // Calcular altura de las barras (máximo 100px)
-                                $consumptionHeight = $maxValue > 0 ? ($consumptionPercent / $maxValue) * 100 : 0;
-                                $capturesHeight = $maxValue > 0 ? ($captures / $maxValue) * 100 : 0;
-                                
-                                // Mínimo 5px para valores > 0
-                                if ($consumptionPercent > 0 && $consumptionHeight < 5) $consumptionHeight = 5;
-                                if ($captures > 0 && $capturesHeight < 5) $capturesHeight = 5;
-                            @endphp
-                            
-                            <div style="height: 120px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 3px;">
-                                {{-- Barra de Consumo --}}
-                                <div style="width: 35%; background: #ef4444; height: {{ $consumptionHeight }}px; border-radius: 3px 3px 0 0; position: relative;">
-                                    @if($consumptionPercent > 0)
-                                    <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); font-size: 8px; color: #111827; font-weight: bold; white-space: nowrap;">
-                                        {{ number_format($consumptionPercent, 0) }}%
-                                    </div>
-                                    @endif
-                                </div>
-                                
-                                {{-- Barra de Capturas --}}
-                                <div style="width: 35%; background: #6b7280; height: {{ $capturesHeight }}px; border-radius: 3px 3px 0 0; position: relative;">
-                                    @if($captures > 0)
-                                    <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); font-size: 8px; color: #111827; font-weight: bold;">
-                                        {{ $captures }}
-                                    </div>
-                                    @endif
-                                </div>
+                        @php
+                            $consumptionPercent = $data['consumption_percent'] ?? 0;
+                            $captures = $data['captures'] ?? 0;
+                        @endphp
+                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 2px; text-align: center; vertical-align: bottom;">
+                            <div style="font-size: 8px; color: #ef4444; font-weight: bold; margin-bottom: 2px;">
+                                @if($consumptionPercent > 0){{ number_format($consumptionPercent, 0) }}%@endif
                             </div>
-                            
-                            {{-- Fecha --}}
-                            <div style="font-size: 8px; color: #6b7280; margin-top: 5px;">
+                        </td>
+                        @endforeach
+                    </tr>
+                    
+                    {{-- Barras de consumo --}}
+                    <tr>
+                        @foreach($historicalData as $data)
+                        @php
+                            $consumptionPercent = $data['consumption_percent'] ?? 0;
+                            $consumptionHeight = $maxValue > 0 ? ($consumptionPercent / $maxValue) * 80 : 0;
+                            if ($consumptionPercent > 0 && $consumptionHeight < 5) $consumptionHeight = 5;
+                        @endphp
+                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 2px; text-align: center; vertical-align: bottom; height: 80px;">
+                            @if($consumptionPercent > 0)
+                            <div style="background: #ef4444; height: {{ $consumptionHeight }}px; width: 25px; margin: 0 auto; border-radius: 3px 3px 0 0;"></div>
+                            @endif
+                        </td>
+                        @endforeach
+                    </tr>
+                    
+                    {{-- Valores de capturas --}}
+                    <tr>
+                        @foreach($historicalData as $data)
+                        @php
+                            $captures = $data['captures'] ?? 0;
+                        @endphp
+                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 2px; text-align: center; vertical-align: bottom;">
+                            <div style="font-size: 8px; color: #6b7280; font-weight: bold; margin-bottom: 2px;">
+                                @if($captures > 0){{ $captures }}@endif
+                            </div>
+                        </td>
+                        @endforeach
+                    </tr>
+                    
+                    {{-- Barras de capturas --}}
+                    <tr>
+                        @foreach($historicalData as $data)
+                        @php
+                            $captures = $data['captures'] ?? 0;
+                            $capturesHeight = $maxValue > 0 ? ($captures / $maxValue) * 60 : 0;
+                            if ($captures > 0 && $capturesHeight < 5) $capturesHeight = 5;
+                        @endphp
+                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 2px; text-align: center; vertical-align: bottom; height: 60px;">
+                            @if($captures > 0)
+                            <div style="background: #6b7280; height: {{ $capturesHeight }}px; width: 25px; margin: 0 auto; border-radius: 3px 3px 0 0;"></div>
+                            @endif
+                        </td>
+                        @endforeach
+                    </tr>
+                    
+                    {{-- Línea base --}}
+                    <tr>
+                        @foreach($historicalData as $data)
+                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 0; text-align: center; border-top: 2px solid #e5e7eb;">
+                        </td>
+                        @endforeach
+                    </tr>
+                    
+                    {{-- Fechas --}}
+                    <tr>
+                        @foreach($historicalData as $data)
+                        @php
+                            $date = \Carbon\Carbon::parse($data['date']);
+                        @endphp
+                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 5px 2px 2px 2px; text-align: center; vertical-align: top;">
+                            <div style="font-size: 8px; color: #6b7280;">
                                 {{ $date->format('d/m') }}
                             </div>
                         </td>
