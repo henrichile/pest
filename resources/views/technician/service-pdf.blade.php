@@ -907,40 +907,144 @@
                 <strong style="color: #1a472a; font-size: 14px;">📊 Resumen de Monitoreo</strong>
             </div>
             
-            <div class="stats-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
-                <div class="stat-item" style="background: #f9fafb; padding: 10px; border-radius: 5px; border: 1px solid #e5e7eb; text-align: center;">
-                    <div class="stat-label" style="font-size: 9px; color: #6b7280; margin-bottom: 5px; font-weight: 600; text-transform: uppercase;">CEBADERAS MONITOREADAS</div>
-                    <div class="stat-value" style="font-size: 20px; font-weight: bold; color: #111827;">{{ $totalMonitoreadas }}</div>
-                </div>
-                <div class="stat-item" style="background: #f0fdf4; padding: 10px; border-radius: 5px; border: 1px solid #22c55e; text-align: center;">
-                    <div class="stat-label" style="font-size: 9px; color: #6b7280; margin-bottom: 5px; font-weight: 600; text-transform: uppercase;">CEBADERAS ACTIVAS</div>
-                    <div class="stat-value" style="font-size: 20px; font-weight: bold; color: #22c55e;">{{ $totalActivas }}</div>
-                </div>
-                <div class="stat-item" style="background: #fef3c7; padding: 10px; border-radius: 5px; border: 1px solid #f59e0b; text-align: center;">
-                    <div class="stat-label" style="font-size: 9px; color: #6b7280; margin-bottom: 5px; font-weight: 600; text-transform: uppercase;">CON PROBLEMAS</div>
-                    <div class="stat-value" style="font-size: 20px; font-weight: bold; color: #f59e0b;">{{ $totalConProblemas }}</div>
-                </div>
-            </div>
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                <tr>
+                    <td style="width: 33.33%; padding: 10px; background: #f9fafb; border-radius: 5px; border: 1px solid #e5e7eb; text-align: center; vertical-align: top;">
+                        <div style="font-size: 9px; color: #6b7280; margin-bottom: 5px; font-weight: 600; text-transform: uppercase;">CEBADERAS MONITOREADAS</div>
+                        <div style="font-size: 20px; font-weight: bold; color: #111827;">{{ $totalMonitoreadas }}</div>
+                    </td>
+                    <td style="width: 10px;"></td>
+                    <td style="width: 33.33%; padding: 10px; background: #f0fdf4; border-radius: 5px; border: 1px solid #22c55e; text-align: center; vertical-align: top;">
+                        <div style="font-size: 9px; color: #6b7280; margin-bottom: 5px; font-weight: 600; text-transform: uppercase;">CEBADERAS ACTIVAS</div>
+                        <div style="font-size: 20px; font-weight: bold; color: #22c55e;">{{ $totalActivas }}</div>
+                    </td>
+                    <td style="width: 10px;"></td>
+                    <td style="width: 33.33%; padding: 10px; background: #fef3c7; border-radius: 5px; border: 1px solid #f59e0b; text-align: center; vertical-align: top;">
+                        <div style="font-size: 9px; color: #6b7280; margin-bottom: 5px; font-weight: 600; text-transform: uppercase;">CON PROBLEMAS</div>
+                        <div style="font-size: 20px; font-weight: bold; color: #f59e0b;">{{ $totalConProblemas }}</div>
+                    </td>
+                </tr>
+            </table>
             
             {{-- Métricas Clave --}}
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; background: #f9fafb; padding: 12px; border-radius: 5px; border: 1px solid #e5e7eb;">
-                <div style="text-align: center;">
-                    <div style="font-size: 10px; color: #6b7280; margin-bottom: 4px;">Total Monitoreos</div>
-                    <div style="font-size: 18px; font-weight: bold; color: #111827;">{{ $totalMonitoreadas }}</div>
-                </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 10px; color: #6b7280; margin-bottom: 4px;">Consumo Promedio</div>
-                    <div style="font-size: 18px; font-weight: bold; color: {{ $consumoPromedio > 30 ? '#ef4444' : ($consumoPromedio > 10 ? '#f59e0b' : '#22c55e') }};">
-                        {{ number_format($consumoPromedio, 1) }}%
-                    </div>
-                </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 10px; color: #6b7280; margin-bottom: 4px;">Nivel Actual</div>
-                    <div style="display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 10px; font-weight: bold; background: {{ $nivelColor }}; color: white; text-transform: uppercase;">
-                        {{ $nivelActual }}
-                    </div>
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; background: #f9fafb; border-radius: 5px; border: 1px solid #e5e7eb;">
+                <tr>
+                    <td style="width: 33.33%; padding: 12px; text-align: center; vertical-align: top;">
+                        <div style="font-size: 10px; color: #6b7280; margin-bottom: 4px;">Total Monitoreos</div>
+                        <div style="font-size: 18px; font-weight: bold; color: #111827;">{{ $totalMonitoreadas }}</div>
+                    </td>
+                    <td style="width: 33.33%; padding: 12px; text-align: center; vertical-align: top;">
+                        <div style="font-size: 10px; color: #6b7280; margin-bottom: 4px;">Consumo Promedio</div>
+                        <div style="font-size: 18px; font-weight: bold; color: {{ $consumoPromedio > 30 ? '#ef4444' : ($consumoPromedio > 10 ? '#f59e0b' : '#22c55e') }};">
+                            {{ number_format($consumoPromedio, 1) }}%
+                        </div>
+                    </td>
+                    <td style="width: 33.33%; padding: 12px; text-align: center; vertical-align: top;">
+                        <div style="font-size: 10px; color: #6b7280; margin-bottom: 4px;">Nivel Actual</div>
+                        <div>
+                            <span style="display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 10px; font-weight: bold; background: {{ $nivelColor }}; color: white; text-transform: uppercase;">
+                                {{ $nivelActual }}
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            
+            {{-- Gráfico de Evolución del Consumo --}}
+            @php
+                // Obtener datos históricos o crear datos basados en el monitoreo actual
+                $historicalData = $monitoreoCompleto['historical_data'] ?? [];
+                
+                // Si no hay datos históricos, crear datos de ejemplo para los últimos 7 días
+                if (empty($historicalData) && $totalMonitoreadas > 0) {
+                    $today = \Carbon\Carbon::today();
+                    $historicalData = [];
+                    for ($i = 6; $i >= 0; $i--) {
+                        $date = $today->copy()->subDays($i);
+                        $historicalData[] = [
+                            'date' => $date->format('Y-m-d'),
+                            'consumption_percent' => $i === 0 ? $consumoPromedio : 0,
+                            'captures' => $i === 0 ? $totalCapturas : 0
+                        ];
+                    }
+                }
+                
+                // Calcular el valor máximo para escalar las barras
+                $maxConsumption = 0;
+                $maxCaptures = 0;
+                foreach ($historicalData as $data) {
+                    $maxConsumption = max($maxConsumption, $data['consumption_percent'] ?? 0);
+                    $maxCaptures = max($maxCaptures, $data['captures'] ?? 0);
+                }
+                $maxValue = max($maxConsumption, $maxCaptures, 1); // Evitar división por cero
+            @endphp
+            
+            @if(count($historicalData) > 0)
+            <div style="margin-bottom: 15px; margin-top: 15px;">
+                <strong style="color: #1a472a; font-size: 14px;">📊 Evolución del Consumo (Últimos 7 días)</strong>
+            </div>
+            
+            <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        @foreach($historicalData as $data)
+                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 5px; text-align: center; vertical-align: bottom;">
+                            @php
+                                $consumptionPercent = $data['consumption_percent'] ?? 0;
+                                $captures = $data['captures'] ?? 0;
+                                $date = \Carbon\Carbon::parse($data['date']);
+                                
+                                // Calcular altura de las barras (máximo 100px)
+                                $consumptionHeight = $maxValue > 0 ? ($consumptionPercent / $maxValue) * 100 : 0;
+                                $capturesHeight = $maxValue > 0 ? ($captures / $maxValue) * 100 : 0;
+                                
+                                // Mínimo 5px para valores > 0
+                                if ($consumptionPercent > 0 && $consumptionHeight < 5) $consumptionHeight = 5;
+                                if ($captures > 0 && $capturesHeight < 5) $capturesHeight = 5;
+                            @endphp
+                            
+                            <div style="height: 120px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 3px;">
+                                {{-- Barra de Consumo --}}
+                                <div style="width: 35%; background: #ef4444; height: {{ $consumptionHeight }}px; border-radius: 3px 3px 0 0; position: relative;">
+                                    @if($consumptionPercent > 0)
+                                    <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); font-size: 8px; color: #111827; font-weight: bold; white-space: nowrap;">
+                                        {{ number_format($consumptionPercent, 0) }}%
+                                    </div>
+                                    @endif
+                                </div>
+                                
+                                {{-- Barra de Capturas --}}
+                                <div style="width: 35%; background: #6b7280; height: {{ $capturesHeight }}px; border-radius: 3px 3px 0 0; position: relative;">
+                                    @if($captures > 0)
+                                    <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); font-size: 8px; color: #111827; font-weight: bold;">
+                                        {{ $captures }}
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                            
+                            {{-- Fecha --}}
+                            <div style="font-size: 8px; color: #6b7280; margin-top: 5px;">
+                                {{ $date->format('d/m') }}
+                            </div>
+                        </td>
+                        @endforeach
+                    </tr>
+                </table>
+                
+                {{-- Leyenda --}}
+                <div style="margin-top: 15px; text-align: center;">
+                    <span style="display: inline-block; margin-right: 15px;">
+                        <span style="display: inline-block; width: 15px; height: 3px; background: #ef4444; vertical-align: middle; margin-right: 5px;"></span>
+                        <span style="font-size: 10px; color: #6b7280;">% Consumo</span>
+                    </span>
+                    <span style="display: inline-block;">
+                        <span style="display: inline-block; width: 15px; height: 3px; background: #6b7280; vertical-align: middle; margin-right: 5px;"></span>
+                        <span style="font-size: 10px; color: #6b7280;">Capturas</span>
+                    </span>
                 </div>
             </div>
+            @endif
             
             {{-- Plagas Detectadas --}}
             @if(count($pestsDetected) > 0)
