@@ -819,48 +819,144 @@
         @endif
         
         {{-- 4. ESTADÍSTICAS --}}
-        @if(isset($checklistData['monitoreo_estadisticas']))
-        <div class="section">
-            <div class="section-title">4. ESTADÍSTICAS</div>
+        @php
+            // Calcular estadísticas automáticamente desde las cebaderas
+            $monitoreoCompleto = $checklistData['monitoreo_completo'] ?? [];
+            $baitStations = $monitoreoCompleto['bait_stations'] ?? [];
+            $monitoreoDatos = $checklistData['monitoreo_datos'] ?? [];
             
-            <div class="stats-grid">
-                @if(isset($checklistData['monitoreo_estadisticas']['total_monitored']))
-                <div class="stat-item">
-                    <div class="stat-label">Cebaderas Monitoreadas</div>
-                    <div class="stat-value">{{ $checklistData['monitoreo_estadisticas']['total_monitored'] }}</div>
-                </div>
-                @endif
+            $totalMonitoreadas = count($baitStations);
+            $totalActivas = 0;
+            $totalConProblemas = 0;
+            $totalConsumo = 0;
+            $totalCapturas = 0;
+            $consumoPromedio = 0;
+            $nivelActual = 'bajo';
+            
+            foreach ($baitStations as $station) {
+                // Verificar si está activa
+                $isActive = true;
+                $hasProblems = false;
                 
-                @if(isset($checklistData['monitoreo_estadisticas']['total_active']))
-                <div class="stat-item">
-                    <div class="stat-label">Cebaderas Activas</div>
-                    <div class="stat-value">{{ $checklistData['monitoreo_estadisticas']['total_active'] }}</div>
-                </div>
-                @endif
+                if (isset($station['observations']) && is_array($station['observations'])) {
+                    if (in_array('bloqueada', $station['observations']) || in_array('sustraida', $station['observations'])) {
+                        $isActive = false;
+                    }
+                    if (in_array('bloqueada', $station['observations']) || 
+                        in_array('sustraida', $station['observations']) || 
+                        in_array('hongos', $station['observations']) || 
+                        in_array('sucia', $station['observations'])) {
+                        $hasProblems = true;
+                    }
+                }
                 
-                @if(isset($checklistData['monitoreo_estadisticas']['total_problems']))
-                <div class="stat-item">
-                    <div class="stat-label">Con Problemas</div>
-                    <div class="stat-value">{{ $checklistData['monitoreo_estadisticas']['total_problems'] }}</div>
-                </div>
-                @endif
+                if ($isActive) {
+                    $totalActivas++;
+                }
+                if ($hasProblems) {
+                    $totalConProblemas++;
+                }
                 
-                @if(isset($checklistData['monitoreo_estadisticas']['average_consumption_percent']))
-                <div class="stat-item">
-                    <div class="stat-label">Consumo Promedio</div>
-                    <div class="stat-value">{{ number_format($checklistData['monitoreo_estadisticas']['average_consumption_percent'], 1) }}%</div>
-                </div>
-                @endif
+                // Calcular consumo
+                if (isset($station['observations']) && is_array($station['observations']) && in_array('consumo_50', $station['observations'])) {
+                    $totalConsumo += 50;
+                } elseif (isset($station['consumption'])) {
+                    $totalConsumo += floatval($station['consumption']);
+                }
+                
+                // Contar capturas
+                if (isset($station['captures'])) {
+                    $totalCapturas += intval($station['captures']);
+                }
+            }
+            
+            if ($totalMonitoreadas > 0) {
+                $consumoPromedio = ($totalConsumo / $totalMonitoreadas);
+                // Determinar nivel actual
+                if ($consumoPromedio > 50) {
+                    $nivelActual = 'crítico';
+                    $nivelColor = '#dc2626';
+                } elseif ($consumoPromedio > 30) {
+                    $nivelActual = 'alto';
+                    $nivelColor = '#ef4444';
+                } elseif ($consumoPromedio > 10) {
+                    $nivelActual = 'medio';
+                    $nivelColor = '#f59e0b';
+                } else {
+                    $nivelActual = 'bajo';
+                    $nivelColor = '#22c55e';
+                }
+            }
+            
+            // Obtener plagas detectadas
+            $pestsDetected = $monitoreoDatos['pests_detected_list'] ?? $monitoreoDatos['pests_detected'] ?? [];
+            if (is_string($pestsDetected)) {
+                $pestsDetected = json_decode($pestsDetected, true) ?? [];
+            }
+            if (!is_array($pestsDetected)) {
+                $pestsDetected = [];
+            }
+        @endphp
+        
+        @if($totalMonitoreadas > 0)
+        <div class="section">
+            <div class="section-title">4. ESTADÍSTICAS Y ANÁLISIS</div>
+            
+            {{-- Resumen de Monitoreo --}}
+            <div style="margin-bottom: 15px;">
+                <strong style="color: #1a472a; font-size: 14px;">📊 Resumen de Monitoreo</strong>
             </div>
             
-            @if(isset($checklistData['monitoreo_estadisticas']['activity_level']))
-            <div class="checklist-item" style="margin-top: 15px;">
-                <strong>Nivel de Actividad:</strong> {{ strtoupper($checklistData['monitoreo_estadisticas']['activity_level']) }}
+            <div class="stats-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
+                <div class="stat-item" style="background: #f9fafb; padding: 10px; border-radius: 5px; border: 1px solid #e5e7eb; text-align: center;">
+                    <div class="stat-label" style="font-size: 9px; color: #6b7280; margin-bottom: 5px; font-weight: 600; text-transform: uppercase;">CEBADERAS MONITOREADAS</div>
+                    <div class="stat-value" style="font-size: 20px; font-weight: bold; color: #111827;">{{ $totalMonitoreadas }}</div>
+                </div>
+                <div class="stat-item" style="background: #f0fdf4; padding: 10px; border-radius: 5px; border: 1px solid #22c55e; text-align: center;">
+                    <div class="stat-label" style="font-size: 9px; color: #6b7280; margin-bottom: 5px; font-weight: 600; text-transform: uppercase;">CEBADERAS ACTIVAS</div>
+                    <div class="stat-value" style="font-size: 20px; font-weight: bold; color: #22c55e;">{{ $totalActivas }}</div>
+                </div>
+                <div class="stat-item" style="background: #fef3c7; padding: 10px; border-radius: 5px; border: 1px solid #f59e0b; text-align: center;">
+                    <div class="stat-label" style="font-size: 9px; color: #6b7280; margin-bottom: 5px; font-weight: 600; text-transform: uppercase;">CON PROBLEMAS</div>
+                    <div class="stat-value" style="font-size: 20px; font-weight: bold; color: #f59e0b;">{{ $totalConProblemas }}</div>
+                </div>
+            </div>
+            
+            {{-- Métricas Clave --}}
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; background: #f9fafb; padding: 12px; border-radius: 5px; border: 1px solid #e5e7eb;">
+                <div style="text-align: center;">
+                    <div style="font-size: 10px; color: #6b7280; margin-bottom: 4px;">Total Monitoreos</div>
+                    <div style="font-size: 18px; font-weight: bold; color: #111827;">{{ $totalMonitoreadas }}</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 10px; color: #6b7280; margin-bottom: 4px;">Consumo Promedio</div>
+                    <div style="font-size: 18px; font-weight: bold; color: {{ $consumoPromedio > 30 ? '#ef4444' : ($consumoPromedio > 10 ? '#f59e0b' : '#22c55e') }};">
+                        {{ number_format($consumoPromedio, 1) }}%
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 10px; color: #6b7280; margin-bottom: 4px;">Nivel Actual</div>
+                    <div style="display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 10px; font-weight: bold; background: {{ $nivelColor }}; color: white; text-transform: uppercase;">
+                        {{ $nivelActual }}
+                    </div>
+                </div>
+            </div>
+            
+            {{-- Plagas Detectadas --}}
+            @if(count($pestsDetected) > 0)
+            <div style="margin-bottom: 15px;">
+                <strong style="color: #1a472a; font-size: 12px;">🔍 Plagas Detectadas:</strong>
+                <div style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 5px;">
+                    @foreach($pestsDetected as $pest)
+                        <span style="background: #d4edda; color: #155724; padding: 3px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; border: 1px solid #28a745;">{{ $pest }}</span>
+                    @endforeach
+                </div>
             </div>
             @endif
             
-            @if(isset($checklistData['monitoreo_estadisticas']['executive_summary']))
-            <div class="checklist-item">
+            {{-- Resumen Ejecutivo (si existe) --}}
+            @if(isset($checklistData['monitoreo_estadisticas']['executive_summary']) && !empty($checklistData['monitoreo_estadisticas']['executive_summary']))
+            <div class="checklist-item" style="background: #e8f5e8; padding: 10px; border-radius: 5px; margin-top: 10px;">
                 <strong>Resumen Ejecutivo:</strong><br>
                 {{ $checklistData['monitoreo_estadisticas']['executive_summary'] }}
             </div>
