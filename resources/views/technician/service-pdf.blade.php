@@ -955,6 +955,15 @@
                 // Obtener datos históricos o crear datos basados en el monitoreo actual
                 $historicalData = $monitoreoCompleto['historical_data'] ?? [];
                 
+                // Log para debugging
+                \Log::info('PDF - Historical data', [
+                    'has_data' => !empty($historicalData),
+                    'count' => count($historicalData),
+                    'total_monitoreadas' => $totalMonitoreadas,
+                    'consumo_promedio' => $consumoPromedio,
+                    'total_capturas' => $totalCapturas
+                ]);
+                
                 // Si no hay datos históricos, crear datos de ejemplo para los últimos 7 días
                 if (empty($historicalData) && $totalMonitoreadas > 0) {
                     $today = \Carbon\Carbon::today();
@@ -967,6 +976,10 @@
                             'captures' => $i === 0 ? $totalCapturas : 0
                         ];
                     }
+                    
+                    \Log::info('PDF - Generated historical data', [
+                        'data' => $historicalData
+                    ]);
                 }
                 
                 // Calcular el valor máximo para escalar las barras
@@ -977,11 +990,20 @@
                     $maxCaptures = max($maxCaptures, $data['captures'] ?? 0);
                 }
                 $maxValue = max($maxConsumption, $maxCaptures, 1); // Evitar división por cero
+                
+                \Log::info('PDF - Chart max values', [
+                    'maxConsumption' => $maxConsumption,
+                    'maxCaptures' => $maxCaptures,
+                    'maxValue' => $maxValue
+                ]);
             @endphp
             
             @if(count($historicalData) > 0)
             <div style="margin-bottom: 15px; margin-top: 15px;">
                 <strong style="color: #1a472a; font-size: 14px;">📊 Evolución del Consumo (Últimos 7 días)</strong>
+                <div style="font-size: 9px; color: #6b7280; margin-top: 3px;">
+                    Datos: {{ count($historicalData) }} días | Max: {{ number_format($maxValue, 1) }}
+                </div>
             </div>
             
             <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
@@ -1008,11 +1030,15 @@
                             $consumptionPercent = $data['consumption_percent'] ?? 0;
                             $consumptionHeight = $maxValue > 0 ? ($consumptionPercent / $maxValue) * 80 : 0;
                             if ($consumptionPercent > 0 && $consumptionHeight < 5) $consumptionHeight = 5;
+                            
+                            \Log::info('PDF - Bar data', [
+                                'consumption' => $consumptionPercent,
+                                'height' => $consumptionHeight,
+                                'maxValue' => $maxValue
+                            ]);
                         @endphp
-                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 2px; text-align: center; vertical-align: bottom; height: 80px;">
-                            @if($consumptionPercent > 0)
-                            <div style="background: #ef4444; height: {{ $consumptionHeight }}px; width: 25px; margin: 0 auto; border-radius: 3px 3px 0 0;"></div>
-                            @endif
+                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 2px; text-align: center; vertical-align: bottom; height: 80px; background: #f9fafb;">
+                            <div style="background: {{ $consumptionPercent > 0 ? '#ef4444' : '#e5e7eb' }}; height: {{ $consumptionPercent > 0 ? $consumptionHeight : 3 }}px; width: 25px; margin: 0 auto; border-radius: 3px 3px 0 0;"></div>
                         </td>
                         @endforeach
                     </tr>
@@ -1039,10 +1065,8 @@
                             $capturesHeight = $maxValue > 0 ? ($captures / $maxValue) * 60 : 0;
                             if ($captures > 0 && $capturesHeight < 5) $capturesHeight = 5;
                         @endphp
-                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 2px; text-align: center; vertical-align: bottom; height: 60px;">
-                            @if($captures > 0)
-                            <div style="background: #6b7280; height: {{ $capturesHeight }}px; width: 25px; margin: 0 auto; border-radius: 3px 3px 0 0;"></div>
-                            @endif
+                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 2px; text-align: center; vertical-align: bottom; height: 60px; background: #f9fafb;">
+                            <div style="background: {{ $captures > 0 ? '#6b7280' : '#e5e7eb' }}; height: {{ $captures > 0 ? $capturesHeight : 3 }}px; width: 25px; margin: 0 auto; border-radius: 3px 3px 0 0;"></div>
                         </td>
                         @endforeach
                     </tr>
