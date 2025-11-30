@@ -570,7 +570,6 @@ class TechnicianController extends Controller
                     }
                     return redirect('/technician/services/' . $service->id . '/detail')
                         ->with('success', 'Servicio completado exitosamente. Puedes descargar el informe en PDF.');
-                    break;
                 case 'points':
                     $checklistData['points'] = $this->processPointsData($request);
                     break;
@@ -931,6 +930,14 @@ class TechnicianController extends Controller
 
     private function processMonitoreoCompletoData(Request $request)
     {
+        // Log para debug - ver qué se está recibiendo
+        Log::info('processMonitoreoCompletoData called', [
+            'all_input' => $request->all(),
+            'all_files' => $request->allFiles(),
+            'has_bait_stations' => $request->has('bait_stations'),
+            'has_traps' => $request->has('traps'),
+        ]);
+        
         $data = [
             'monitoring_date' => $request->input('monitoring_date', date('Y-m-d')),
             'total_bait_stations' => $request->input('total_bait_stations', 0),
@@ -956,18 +963,46 @@ class TechnicianController extends Controller
 
                     // Procesar fotos de la cebadera si se enviaron
                     $photos = [];
-                    if ($request->hasFile("bait_stations")) {
-                        $allFiles = $request->file("bait_stations");
-                        if (isset($allFiles[$index]['photos']) && is_array($allFiles[$index]['photos'])) {
-                            foreach ($allFiles[$index]['photos'] as $photo) {
+                    
+                    // Log para debug
+                    Log::info('Processing bait station photos', [
+                        'index' => $index,
+                        'has_file' => $request->hasFile("bait_stations.{$index}.photos"),
+                        'all_files' => $request->allFiles()
+                    ]);
+                    
+                    // Verificar si hay fotos para esta cebadera específica
+                    if ($request->hasFile("bait_stations.{$index}.photos")) {
+                        $stationPhotos = $request->file("bait_stations.{$index}.photos");
+                        
+                        // Si es un array de fotos
+                        if (is_array($stationPhotos)) {
+                            foreach ($stationPhotos as $photo) {
                                 if ($photo && $photo->isValid()) {
                                     $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
-                                    $photo->storeAs('services/bait-stations', $filename, 'public');
+                                    $path = $photo->storeAs('services/bait-stations', $filename, 'public');
                                     $photos[] = 'storage/services/bait-stations/' . $filename;
+                                    
+                                    Log::info('Bait station photo saved', [
+                                        'filename' => $filename,
+                                        'path' => $path
+                                    ]);
                                 }
                             }
+                        } 
+                        // Si es una sola foto
+                        elseif ($stationPhotos->isValid()) {
+                            $filename = time() . '_' . uniqid() . '.' . $stationPhotos->getClientOriginalExtension();
+                            $path = $stationPhotos->storeAs('services/bait-stations', $filename, 'public');
+                            $photos[] = 'storage/services/bait-stations/' . $filename;
+                            
+                            Log::info('Bait station photo saved', [
+                                'filename' => $filename,
+                                'path' => $path
+                            ]);
                         }
                     }
+                    
                     $stationData['photos'] = $photos;
 
                     $data['bait_stations'][] = $stationData;
@@ -991,18 +1026,45 @@ class TechnicianController extends Controller
 
                     // Procesar fotos de la trampa si se enviaron
                     $photos = [];
-                    if ($request->hasFile("traps")) {
-                        $allFiles = $request->file("traps");
-                        if (isset($allFiles[$index]['photos']) && is_array($allFiles[$index]['photos'])) {
-                            foreach ($allFiles[$index]['photos'] as $photo) {
+                    
+                    // Log para debug
+                    Log::info('Processing trap photos', [
+                        'index' => $index,
+                        'has_file' => $request->hasFile("traps.{$index}.photos"),
+                    ]);
+                    
+                    // Verificar si hay fotos para esta trampa específica
+                    if ($request->hasFile("traps.{$index}.photos")) {
+                        $trapPhotos = $request->file("traps.{$index}.photos");
+                        
+                        // Si es un array de fotos
+                        if (is_array($trapPhotos)) {
+                            foreach ($trapPhotos as $photo) {
                                 if ($photo && $photo->isValid()) {
                                     $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
-                                    $photo->storeAs('services/traps', $filename, 'public');
+                                    $path = $photo->storeAs('services/traps', $filename, 'public');
                                     $photos[] = 'storage/services/traps/' . $filename;
+                                    
+                                    Log::info('Trap photo saved', [
+                                        'filename' => $filename,
+                                        'path' => $path
+                                    ]);
                                 }
                             }
+                        } 
+                        // Si es una sola foto
+                        elseif ($trapPhotos->isValid()) {
+                            $filename = time() . '_' . uniqid() . '.' . $trapPhotos->getClientOriginalExtension();
+                            $path = $trapPhotos->storeAs('services/traps', $filename, 'public');
+                            $photos[] = 'storage/services/traps/' . $filename;
+                            
+                            Log::info('Trap photo saved', [
+                                'filename' => $filename,
+                                'path' => $path
+                            ]);
                         }
                     }
+                    
                     $trapData['photos'] = $photos;
 
                     $data['traps'][] = $trapData;

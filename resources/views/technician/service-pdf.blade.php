@@ -614,6 +614,14 @@
                                 @php
                                     // Procesar ruta de la foto
                                     $photoPath = $photo;
+                                    
+                                    // Log para debugging
+                                    \Log::info('PDF - Processing bait station photo', [
+                                        'original_path' => $photo,
+                                        'station_code' => $station['code'] ?? 'N/A',
+                                        'station_index' => $index
+                                    ]);
+                                    
                                     // Si la ruta ya incluye 'storage/', removerlo
                                     if (strpos($photoPath, 'storage/') === 0) {
                                         $photoPath = str_replace('storage/', '', $photoPath);
@@ -624,16 +632,28 @@
                                     }
                                     $fullPath = storage_path('app/public/' . $photoPath);
                                     
+                                    \Log::info('PDF - Processed paths', [
+                                        'photo_path' => $photoPath,
+                                        'full_path' => $fullPath,
+                                        'file_exists' => file_exists($fullPath)
+                                    ]);
+                                    
                                     // Intentar también con la ruta completa si no existe
                                     if (!file_exists($fullPath) && strpos($photo, 'storage/') !== false) {
                                         $altPath = storage_path('app/public/' . str_replace('storage/', '', $photo));
                                         if (file_exists($altPath)) {
                                             $fullPath = $altPath;
+                                            \Log::info('PDF - Using alternative path', ['alt_path' => $altPath]);
                                         }
                                     }
                                     
                                     if (file_exists($fullPath)) {
                                         $fileSize = filesize($fullPath);
+                                        \Log::info('PDF - File found', [
+                                            'path' => $fullPath,
+                                            'size' => $fileSize
+                                        ]);
+                                        
                                         if ($fileSize > 100 && $fileSize < 5242880) {
                                             try {
                                                 $imageData = base64_encode(file_get_contents($fullPath));
@@ -643,17 +663,34 @@
                                                 }
                                                 if (!empty($imageData)) {
                                                     $imageSrc = 'data:image/' . ($extension === 'jpg' ? 'jpeg' : $extension) . ';base64,' . $imageData;
+                                                    \Log::info('PDF - Image encoded successfully', [
+                                                        'extension' => $extension,
+                                                        'data_length' => strlen($imageData)
+                                                    ]);
                                                 } else {
                                                     $imageSrc = null;
+                                                    \Log::warning('PDF - Image data is empty');
                                                 }
                                             } catch (\Exception $e) {
                                                 $imageSrc = null;
+                                                \Log::error('PDF - Error encoding image', [
+                                                    'error' => $e->getMessage(),
+                                                    'path' => $fullPath
+                                                ]);
                                             }
                                         } else {
                                             $imageSrc = null;
+                                            \Log::warning('PDF - File size out of range', [
+                                                'size' => $fileSize,
+                                                'path' => $fullPath
+                                            ]);
                                         }
                                     } else {
                                         $imageSrc = null;
+                                        \Log::warning('PDF - File not found', [
+                                            'path' => $fullPath,
+                                            'original' => $photo
+                                        ]);
                                     }
                                 @endphp
                                 @if($imageSrc)
