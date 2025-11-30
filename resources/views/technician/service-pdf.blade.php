@@ -429,13 +429,28 @@
                             }
                             
                             if (file_exists($fullPath)) {
-                                $imageData = base64_encode(file_get_contents($fullPath));
-                                $extension = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
-                                // Asegurar que la extensión sea válida para data URI
-                                if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
-                                    $extension = 'png'; // Default a PNG si no se puede determinar
+                                // Verificar que el archivo no sea demasiado grande (máx 5MB)
+                                $fileSize = filesize($fullPath);
+                                if ($fileSize > 100 && $fileSize < 5242880) { // 5MB
+                                    try {
+                                        $imageData = base64_encode(file_get_contents($fullPath));
+                                        $extension = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
+                                        // Asegurar que la extensión sea válida para data URI
+                                        if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+                                            $extension = 'png'; // Default a PNG si no se puede determinar
+                                        }
+                                        // Verificar que la imagen base64 no esté vacía
+                                        if (!empty($imageData)) {
+                                            $imageSrc = 'data:image/' . ($extension === 'jpg' ? 'jpeg' : $extension) . ';base64,' . $imageData;
+                                        } else {
+                                            $imageSrc = null;
+                                        }
+                                    } catch (\Exception $e) {
+                                        $imageSrc = null;
+                                    }
+                                } else {
+                                    $imageSrc = null;
                                 }
-                                $imageSrc = 'data:image/' . ($extension === 'jpg' ? 'jpeg' : $extension) . ';base64,' . $imageData;
                             } else {
                                 $imageSrc = null;
                             }
@@ -487,17 +502,31 @@
                 }
                 
                 if (file_exists($fullPath)) {
-                    $imageData = base64_encode(file_get_contents($fullPath));
-                    $extension = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
-                    // Asegurar que la extensión sea válida para data URI
-                    if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'pdf'])) {
-                        $extension = 'png'; // Default a PNG si no se puede determinar
-                    }
-                    // Para PDFs, usar una imagen placeholder o convertir
-                    if ($extension === 'pdf') {
-                        $imageSrc = null; // Los PDFs no se pueden mostrar directamente como imágenes
+                    // Verificar que el archivo no sea demasiado grande (máx 5MB)
+                    $fileSize = filesize($fullPath);
+                    if ($fileSize > 100 && $fileSize < 5242880) { // 5MB
+                        try {
+                            $imageData = base64_encode(file_get_contents($fullPath));
+                            $extension = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
+                            // Asegurar que la extensión sea válida para data URI
+                            if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'pdf'])) {
+                                $extension = 'png'; // Default a PNG si no se puede determinar
+                            }
+                            // Para PDFs, usar una imagen placeholder o convertir
+                            if ($extension === 'pdf') {
+                                $imageSrc = null; // Los PDFs no se pueden mostrar directamente como imágenes
+                            } else {
+                                if (!empty($imageData)) {
+                                    $imageSrc = 'data:image/' . ($extension === 'jpg' ? 'jpeg' : $extension) . ';base64,' . $imageData;
+                                } else {
+                                    $imageSrc = null;
+                                }
+                            }
+                        } catch (\Exception $e) {
+                            $imageSrc = null;
+                        }
                     } else {
-                        $imageSrc = 'data:image/' . ($extension === 'jpg' ? 'jpeg' : $extension) . ';base64,' . $imageData;
+                        $imageSrc = null;
                     }
                 } else {
                     $imageSrc = null;
@@ -604,13 +633,25 @@
                                     }
                                     
                                     if (file_exists($fullPath)) {
-                                        $imageData = base64_encode(file_get_contents($fullPath));
-                                        $extension = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
-                                        // Asegurar que la extensión sea válida para data URI
-                                        if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
-                                            $extension = 'png'; // Default a PNG si no se puede determinar
+                                        $fileSize = filesize($fullPath);
+                                        if ($fileSize > 100 && $fileSize < 5242880) {
+                                            try {
+                                                $imageData = base64_encode(file_get_contents($fullPath));
+                                                $extension = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
+                                                if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+                                                    $extension = 'png';
+                                                }
+                                                if (!empty($imageData)) {
+                                                    $imageSrc = 'data:image/' . ($extension === 'jpg' ? 'jpeg' : $extension) . ';base64,' . $imageData;
+                                                } else {
+                                                    $imageSrc = null;
+                                                }
+                                            } catch (\Exception $e) {
+                                                $imageSrc = null;
+                                            }
+                                        } else {
+                                            $imageSrc = null;
                                         }
-                                        $imageSrc = 'data:image/' . ($extension === 'jpg' ? 'jpeg' : $extension) . ';base64,' . $imageData;
                                     } else {
                                         $imageSrc = null;
                                     }
@@ -687,13 +728,25 @@
                                     }
                                     
                                     if (file_exists($fullPath)) {
-                                        $imageData = base64_encode(file_get_contents($fullPath));
-                                        $extension = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
-                                        // Asegurar que la extensión sea válida para data URI
-                                        if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
-                                            $extension = 'png'; // Default a PNG si no se puede determinar
+                                        $fileSize = filesize($fullPath);
+                                        if ($fileSize > 100 && $fileSize < 5242880) {
+                                            try {
+                                                $imageData = base64_encode(file_get_contents($fullPath));
+                                                $extension = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
+                                                if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+                                                    $extension = 'png';
+                                                }
+                                                if (!empty($imageData)) {
+                                                    $imageSrc = 'data:image/' . ($extension === 'jpg' ? 'jpeg' : $extension) . ';base64,' . $imageData;
+                                                } else {
+                                                    $imageSrc = null;
+                                                }
+                                            } catch (\Exception $e) {
+                                                $imageSrc = null;
+                                            }
+                                        } else {
+                                            $imageSrc = null;
                                         }
-                                        $imageSrc = 'data:image/' . ($extension === 'jpg' ? 'jpeg' : $extension) . ';base64,' . $imageData;
                                     } else {
                                         $imageSrc = null;
                                     }
@@ -909,11 +962,23 @@
                     @php
                         $photoPath = str_replace('storage/', '', $observation['photo']);
                         $fullPath = storage_path('app/public/' . $photoPath);
+                        $imageSrc = null;
                         if (file_exists($fullPath)) {
-                            $imageData = base64_encode(file_get_contents($fullPath));
-                            $imageSrc = 'data:image/' . pathinfo($fullPath, PATHINFO_EXTENSION) . ';base64,' . $imageData;
-                        } else {
-                            $imageSrc = null;
+                            $fileSize = filesize($fullPath);
+                            if ($fileSize > 100 && $fileSize < 5242880) {
+                                try {
+                                    $imageData = base64_encode(file_get_contents($fullPath));
+                                    $extension = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
+                                    if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+                                        $extension = 'png';
+                                    }
+                                    if (!empty($imageData)) {
+                                        $imageSrc = 'data:image/' . ($extension === 'jpg' ? 'jpeg' : $extension) . ';base64,' . $imageData;
+                                    }
+                                } catch (\Exception $e) {
+                                    $imageSrc = null;
+                                }
+                            }
                         }
                     @endphp
                     @if($imageSrc)
@@ -963,8 +1028,10 @@
                 $technicianSignature = $checklistData['description']['technician_signature'];
             }
             
-            // Buscar firma del cliente
-            if(isset($checklistData['description']['client_signature'])) {
+            // Buscar firma del cliente en diferentes ubicaciones
+            if($isMonitoreoCebaderas && isset($checklistData['monitoreo_firma']['client_signature'])) {
+                $clientSignature = $checklistData['monitoreo_firma']['client_signature'];
+            } elseif(isset($checklistData['description']['client_signature'])) {
                 $clientSignature = $checklistData['description']['client_signature'];
             }
         @endphp
@@ -972,16 +1039,24 @@
         @if($technicianSignature)
         @php
             // Si es base64, usarlo directamente, si no, cargar desde archivo
+            $signatureSrc = null;
             if (strpos($technicianSignature, 'data:image') === 0) {
                 $signatureSrc = $technicianSignature;
             } else {
                 $photoPath = str_replace('storage/', '', $technicianSignature);
                 $fullPath = storage_path('app/public/' . $photoPath);
                 if (file_exists($fullPath)) {
-                    $imageData = base64_encode(file_get_contents($fullPath));
-                    $signatureSrc = 'data:image/png;base64,' . $imageData;
-                } else {
-                    $signatureSrc = null;
+                    $fileSize = filesize($fullPath);
+                    if ($fileSize > 100 && $fileSize < 5242880) {
+                        try {
+                            $imageData = base64_encode(file_get_contents($fullPath));
+                            if (!empty($imageData)) {
+                                $signatureSrc = 'data:image/png;base64,' . $imageData;
+                            }
+                        } catch (\Exception $e) {
+                            $signatureSrc = null;
+                        }
+                    }
                 }
             }
         @endphp
@@ -1001,16 +1076,24 @@
         
         @if($clientSignature)
         @php
+            $signatureSrc = null;
             if (strpos($clientSignature, 'data:image') === 0) {
                 $signatureSrc = $clientSignature;
             } else {
                 $photoPath = str_replace('storage/', '', $clientSignature);
                 $fullPath = storage_path('app/public/' . $photoPath);
                 if (file_exists($fullPath)) {
-                    $imageData = base64_encode(file_get_contents($fullPath));
-                    $signatureSrc = 'data:image/png;base64,' . $imageData;
-                } else {
-                    $signatureSrc = null;
+                    $fileSize = filesize($fullPath);
+                    if ($fileSize > 100 && $fileSize < 5242880) {
+                        try {
+                            $imageData = base64_encode(file_get_contents($fullPath));
+                            if (!empty($imageData)) {
+                                $signatureSrc = 'data:image/png;base64,' . $imageData;
+                            }
+                        } catch (\Exception $e) {
+                            $signatureSrc = null;
+                        }
+                    }
                 }
             }
         @endphp
