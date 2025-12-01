@@ -901,11 +901,29 @@ class TechnicianController extends Controller
         if ($request->hasFile('service_photos')) {
             $photos = [];
             foreach ($request->file('service_photos') as $photo) {
-                $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
-                $photo->storeAs('services/photos', $filename, 'public');
-                $photos[] = 'storage/services/photos/' . $filename;
+                if ($photo && $photo->isValid()) {
+                    $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
+                    $path = $photo->storeAs('services/photos', $filename, 'public');
+                    $photos[] = 'storage/services/photos/' . $filename;
+                    
+                    \Log::info('Service photo saved', [
+                        'filename' => $filename,
+                        'path' => $path,
+                        'size' => $photo->getSize()
+                    ]);
+                }
             }
             $data['service_photos'] = $photos;
+            
+            \Log::info('All service photos processed', [
+                'total_photos' => count($photos),
+                'photos' => $photos
+            ]);
+        } else {
+            \Log::warning('No service photos uploaded', [
+                'has_file' => $request->hasFile('service_photos'),
+                'all_files' => $request->allFiles()
+            ]);
         }
 
         return $data;
