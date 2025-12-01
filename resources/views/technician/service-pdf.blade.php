@@ -19,19 +19,22 @@
             border-bottom: 3px solid #1a472a;
             padding-bottom: 20px;
             position: relative;
+            min-height: 80px; /* Asegurar espacio para logo y QR */
         }
         
         .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #1a472a;
-            margin-bottom: 10px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 150px; /* Ajustar según necesidad */
         }
         
         .title {
             font-size: 20px;
             font-weight: bold;
             color: #333;
+            padding-top: 20px; /* Bajar un poco el título */
+            margin: 0 90px; /* Margen para no chocar con logo y QR */
         }
         
         .qr-code {
@@ -291,7 +294,14 @@
     <div class="header">
         <div class="logo">
             @php
-                $logoPath = public_path('logo.jpg');
+                // Intentar usar el logo específico descargado
+                $logoPath = public_path('logo-pest.png');
+                
+                // Si no existe, intentar con el logo genérico
+                if (!file_exists($logoPath)) {
+                    $logoPath = public_path('logo.jpg');
+                }
+                
                 $logoBase64 = '';
                 if (file_exists($logoPath)) {
                     $type = pathinfo($logoPath, PATHINFO_EXTENSION);
@@ -300,9 +310,9 @@
                 }
             @endphp
             @if($logoBase64)
-                <img src="{{ $logoBase64 }}" alt="Pest Controller" style="max-height: 50px; width: auto;">
+                <img src="{{ $logoBase64 }}" alt="Pest Controller" style="max-width: 100%; height: auto; max-height: 80px;">
             @else
-                PEST CONTROLLER
+                <div style="font-size: 24px; font-weight: bold; color: #1a472a;">PEST CONTROLLER</div>
             @endif
         </div>
         <div class="title">REPORTE DE SERVICIO COMPLETADO</div>
