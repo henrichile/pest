@@ -71,6 +71,7 @@
     });
 </script>
 @endpush
+<!-- View Updated: {{ now() }} -->
 <div class="max-w-4xl mx-auto pt-12 md:pt-0">
     <div class="bg-white rounded-lg shadow-lg overflow-hidden">
         <!-- Header -->
