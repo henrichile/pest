@@ -327,35 +327,35 @@
                 // Intentar generar el mapa estático
                 try {
                     // Generar imagen de 600x300 con zoom 15
+                    // Esto descarga la imagen y devuelve la URL pública
                     $mapUrl = $service->generateMapImage(600, 300, 15);
                     
-                    // Si tenemos URL, intentar convertirla a path local para DomPDF
-                    // DomPDF funciona mejor con rutas absolutas del sistema de archivos
-                    $mapPath = null;
+                    $mapBase64 = null;
                     if ($mapUrl) {
                         // Extraer el nombre del archivo de la URL
                         $filename = basename($mapUrl);
-                        // Construir ruta absoluta al archivo
+                        // Construir ruta absoluta al archivo en el sistema de archivos
                         $localPath = storage_path('app/public/maps/' . $filename);
                         
                         if (file_exists($localPath)) {
-                            $mapPath = $localPath;
-                            \Log::info('PDF - Using local map path: ' . $mapPath);
+                            // Leer contenido y convertir a base64
+                            $type = pathinfo($localPath, PATHINFO_EXTENSION);
+                            $data = file_get_contents($localPath);
+                            $mapBase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                            \Log::info('PDF - Map converted to Base64 successfully');
                         } else {
-                            // Fallback a URL si no encontramos el archivo local
-                            $mapPath = $mapUrl;
-                            \Log::info('PDF - Using map URL: ' . $mapPath);
+                            \Log::warning('PDF - Map file not found at: ' . $localPath);
                         }
                     }
                 } catch (\Exception $e) {
-                    $mapPath = null;
+                    $mapBase64 = null;
                     \Log::error('Error generando mapa para PDF: ' . $e->getMessage());
                 }
             @endphp
 
-            @if(isset($mapPath) && $mapPath)
+            @if(isset($mapBase64) && $mapBase64)
                 <div style="margin-top: 10px; margin-bottom: 5px; border: 1px solid #e5e7eb; border-radius: 4px; overflow: hidden;">
-                    <img src="{{ $mapPath }}" style="width: 100%; max-height: 200px; object-fit: cover; display: block;" alt="Mapa de ubicación">
+                    <img src="{{ $mapBase64 }}" style="width: 100%; max-height: 200px; object-fit: cover; display: block;" alt="Mapa de ubicación">
                 </div>
             @endif
         </div>
