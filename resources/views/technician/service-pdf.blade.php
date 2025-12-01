@@ -322,6 +322,42 @@
                 <span class="info-label">Enlace Google Maps:</span>
                 <span class="info-value">https://maps.google.com/?q={{ $service->latitude }},{{ $service->longitude }}</span>
             </div>
+            
+            @php
+                // Intentar generar el mapa estático
+                try {
+                    // Generar imagen de 600x300 con zoom 15
+                    $mapUrl = $service->generateMapImage(600, 300, 15);
+                    
+                    // Si tenemos URL, intentar convertirla a path local para DomPDF
+                    // DomPDF funciona mejor con rutas absolutas del sistema de archivos
+                    $mapPath = null;
+                    if ($mapUrl) {
+                        // Extraer el nombre del archivo de la URL
+                        $filename = basename($mapUrl);
+                        // Construir ruta absoluta al archivo
+                        $localPath = storage_path('app/public/maps/' . $filename);
+                        
+                        if (file_exists($localPath)) {
+                            $mapPath = $localPath;
+                            \Log::info('PDF - Using local map path: ' . $mapPath);
+                        } else {
+                            // Fallback a URL si no encontramos el archivo local
+                            $mapPath = $mapUrl;
+                            \Log::info('PDF - Using map URL: ' . $mapPath);
+                        }
+                    }
+                } catch (\Exception $e) {
+                    $mapPath = null;
+                    \Log::error('Error generando mapa para PDF: ' . $e->getMessage());
+                }
+            @endphp
+
+            @if(isset($mapPath) && $mapPath)
+                <div style="margin-top: 10px; margin-bottom: 5px; border: 1px solid #e5e7eb; border-radius: 4px; overflow: hidden;">
+                    <img src="{{ $mapPath }}" style="width: 100%; max-height: 200px; object-fit: cover; display: block;" alt="Mapa de ubicación">
+                </div>
+            @endif
         </div>
         @endif
         <div class="info-row">

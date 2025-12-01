@@ -277,7 +277,7 @@ class Service extends Model
         }
 
         try {
-            return \App\Helpers\MapboxHelper::generateMapboxImageUrl(
+            return \App\Helpers\MapboxHelper::generateMapboxImage(
                 $this->latitude,
                 $this->longitude,
                 $width,
