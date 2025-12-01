@@ -584,25 +584,7 @@
                         });
                     </script>
                     @endpush
-                    @endif
 
-                    @if(isset($checklistData['monitoreo_estadisticas']['activity_level']))
-                    <div class="mb-4">
-                        <strong class="text-gray-900">Nivel de Actividad:</strong>
-                        <span class="ml-2 px-3 py-1 rounded-full text-sm font-semibold bg-purple-100 text-purple-800">
-                            {{ strtoupper($checklistData['monitoreo_estadisticas']['activity_level']) }}
-                        </span>
-                    </div>
-                    @endif
-
-                    @if(isset($checklistData['monitoreo_estadisticas']['executive_summary']))
-                    <div class="mb-4">
-                        <strong class="text-gray-900">Resumen Ejecutivo:</strong>
-                        <p class="text-gray-700 mt-2 whitespace-pre-wrap">{{ $checklistData['monitoreo_estadisticas']['executive_summary'] }}</p>
-                    </div>
-                    @endif
-                </div>
-                @endif
 
                 {{-- 5. ANÁLISIS IA --}}
                 @if(isset($checklistData['monitoreo_analisis']))
