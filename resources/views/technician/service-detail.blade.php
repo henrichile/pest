@@ -103,6 +103,100 @@
                 </div>
             </div>
 
+            <!-- Ubicación del Servicio (Mapa) -->
+            @if($service->hasCoordinates())
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Ubicación del Servicio</h2>
+                <div class="bg-gray-100 rounded-lg overflow-hidden border border-gray-200 relative" style="height: 300px;">
+                    <div id="mapbox-map" style="width: 100%; height: 100%;"></div>
+                    <!-- Fallback si no carga el mapa interactivo -->
+                    <div id="map-fallback" class="hidden absolute inset-0 flex items-center justify-center bg-gray-100">
+                        <div class="text-center">
+                            <p class="text-gray-500 mb-2">Mapa interactivo no disponible</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query={{ $service->latitude }},{{ $service->longitude }}" target="_blank" class="text-blue-600 hover:underline">
+                                Ver en Google Maps
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2 text-sm text-gray-600 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        <span>{{ number_format($service->latitude, 6) }}, {{ number_format($service->longitude, 6) }}</span>
+                        @if($service->location_accuracy)
+                            <span class="ml-2 text-gray-500">(Precisión: {{ $service->location_accuracy }}m)</span>
+                        @endif
+                    </div>
+                    <a href="https://www.google.com/maps/search/?api=1&query={{ $service->latitude }},{{ $service->longitude }}" target="_blank" class="text-blue-600 hover:text-blue-800 flex items-center">
+                        <span>Abrir en Google Maps</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            @push('styles')
+            <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+            <style>
+                .mapboxgl-popup {
+                    max-width: 200px;
+                }
+                .mapboxgl-popup-content {
+                    text-align: center;
+                    font-family: 'Open Sans', sans-serif;
+                }
+            </style>
+            @endpush
+
+            @push('scripts')
+            <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const accessToken = '{{ config('services.mapbox.access_token') ?: env('MAPBOX_ACCESS_TOKEN') }}';
+                    
+                    if (!accessToken) {
+                        console.error('Mapbox Access Token no configurado');
+                        document.getElementById('mapbox-map').style.display = 'none';
+                        document.getElementById('map-fallback').classList.remove('hidden');
+                        return;
+                    }
+
+                    try {
+                        mapboxgl.accessToken = accessToken;
+                        const map = new mapboxgl.Map({
+                            container: 'mapbox-map',
+                            style: 'mapbox://styles/mapbox/streets-v11',
+                            center: [{{ $service->longitude }}, {{ $service->latitude }}],
+                            zoom: 15
+                        });
+
+                        // Agregar controles de navegación
+                        map.addControl(new mapboxgl.NavigationControl());
+
+                        // Agregar marcador
+                        new mapboxgl.Marker({ color: '#ef4444' }) // red-500
+                            .setLngLat([{{ $service->longitude }}, {{ $service->latitude }}])
+                            .setPopup(new mapboxgl.Popup({ offset: 25 })
+                                .setHTML('<strong>{{ $service->client->name }}</strong><br>{{ $service->serviceType->name ?? "Servicio" }}'))
+                            .addTo(map);
+                            
+                        // Asegurar que el mapa se redimensione correctamente
+                        map.on('load', function() {
+                            map.resize();
+                        });
+                    } catch (e) {
+                        console.error('Error inicializando Mapbox:', e);
+                        document.getElementById('mapbox-map').style.display = 'none';
+                        document.getElementById('map-fallback').classList.remove('hidden');
+                    }
+                });
+            </script>
+            @endpush
+            @endif
             <!-- Acciones del Servicio -->
             <div class="mb-8">
                 <h2 class="text-xl font-semibold text-gray-800 mb-4">Acciones del Servicio</h2>
