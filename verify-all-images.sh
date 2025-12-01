@@ -10,14 +10,8 @@ echo ""
 echo "1. VERIFICANDO DIRECTORIOS..."
 echo ""
 
-dirs=(
-    "storage/app/public/services/croquis"
-    "storage/app/public/services/bait-stations"
-    "storage/app/public/services/traps"
-    "storage/app/public/services/photos"
-)
-
-for dir in "${dirs[@]}"; do
+# Verificar cada directorio
+for dir in "storage/app/public/services/croquis" "storage/app/public/services/bait-stations" "storage/app/public/services/traps" "storage/app/public/services/photos"; do
     if [ -d "$dir" ]; then
         count=$(find "$dir" -type f 2>/dev/null | wc -l)
         size=$(du -sh "$dir" 2>/dev/null | cut -f1)
