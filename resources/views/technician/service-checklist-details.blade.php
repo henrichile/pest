@@ -344,8 +344,12 @@
 
                 {{-- 4. ESTADÍSTICAS --}}
                 @php
-                    // Fallback: Si no hay estadísticas guardadas pero hay datos de monitoreo, calcularlas al vuelo
-                    if (!isset($checklistData['monitoreo_estadisticas']) && isset($checklistData['monitoreo_completo'])) {
+                    // Fallback: Calcular estadísticas si no existen O si están en cero pero hay datos reales
+                    $stats = $checklistData['monitoreo_estadisticas'] ?? null;
+                    $hasStations = isset($checklistData['monitoreo_completo']['bait_stations']) && count($checklistData['monitoreo_completo']['bait_stations']) > 0;
+                    $statsAreEmpty = !isset($stats) || (isset($stats['total_monitored']) && $stats['total_monitored'] == 0 && $hasStations);
+
+                    if ($statsAreEmpty && isset($checklistData['monitoreo_completo'])) {
                         $monitoreoCompleto = $checklistData['monitoreo_completo'];
                         $baitStations = $monitoreoCompleto['bait_stations'] ?? [];
                         
@@ -625,7 +629,7 @@
                         @if(isset($checklistData['monitoreo_firma']['technician_signature']))
                         <div class="text-center">
                             <h3 class="font-semibold text-gray-900 mb-2">Firma del Técnico</h3>
-                            <img src="{{ $checklistData['monitoreo_firma']['technician_signature'] }}"
+                            <img src="{{ asset($checklistData['monitoreo_firma']['technician_signature']) }}"
                                  alt="Firma del Técnico"
                                  class="max-w-xs mx-auto border border-gray-200 rounded-lg">
                             <p class="text-sm text-gray-600 mt-2">{{ $service->assignedUser->name ?? "Técnico" }}</p>
@@ -635,7 +639,7 @@
                         @if(isset($checklistData['monitoreo_firma']['client_signature']))
                         <div class="text-center">
                             <h3 class="font-semibold text-gray-900 mb-2">Firma del Cliente</h3>
-                            <img src="{{ $checklistData['monitoreo_firma']['client_signature'] }}"
+                            <img src="{{ asset($checklistData['monitoreo_firma']['client_signature']) }}"
                                  alt="Firma del Cliente"
                                  class="max-w-xs mx-auto border border-gray-200 rounded-lg">
                             <p class="text-sm text-gray-600 mt-2">{{ $checklistData['monitoreo_firma']['signer_name'] ?? 'Cliente' }}</p>
