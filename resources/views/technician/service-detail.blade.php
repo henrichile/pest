@@ -75,7 +75,7 @@
     <div class="bg-white rounded-lg shadow-lg overflow-hidden">
         <!-- Header -->
         <div class="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
-            <h1 class="text-2xl font-bold text-white">Detalle del Servicio</h1>
+            <h1 class="text-2xl font-bold text-white" style="color: white !important;">Detalle del Servicio</h1>
         </div>
 
         <!-- Content -->
