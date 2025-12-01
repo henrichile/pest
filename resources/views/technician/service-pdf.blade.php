@@ -1127,129 +1127,564 @@
         </div>
         @endif
         
-    @else
-        {{-- PROCESO ESTÁNDAR (NO MONITOREO CEBADERAS) --}}
-        
-        {{-- Tipo de Servicio y Hallazgos Técnicos --}}
-        @if($checklistData)
-            <div class="section">
-                <div class="section-title">Hallazgos Técnicos - Puntos de Control</div>
-                <ul class="points-list">
-                    @if(isset($checklistData["points"]) && count($checklistData["points"]) > 0)
-                        @foreach($checklistData["points"] as $point)
-                        <li>{{ $point }}</li>
-                        @endforeach
-                    @else
-                        <li>No hay puntos de control registrados</li>
-                    @endif
+    @endif
+
+{{-- SECCIÓN ESPECÍFICA PARA DESRATIZACIÓN --}}
+    @if($service->service_type === 'desratizacion')
+    <div class="section" style="page-break-before: auto; margin-top: 30px;">
+        <div class="section-title" style="font-size: 18px; color: #1a472a; border-bottom: 2px solid #1a472a; padding-bottom: 10px; margin-bottom: 20px;">
+            INFORME DE DESRATIZACIÓN
+        </div>
+
+        {{-- Productos Aplicados --}}
+        @if(isset($checklistData['products']))
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Producto Aplicado y Dosis
+            </div>
+            <div class="checklist-item" style="background: #f8f9fa; padding: 12px; border-radius: 5px;">
+                <strong>Producto:</strong> {{ $checklistData['products']['applied_product'] ?? 'No especificado' }}<br>
+                <strong>Dosis:</strong> {{ $checklistData['products']['dosis'] ?? 'No especificado' }} cc<br>
+                <strong>Agua:</strong> {{ $checklistData['products']['agua'] ?? 'No especificado' }} Lts
+            </div>
+        </div>
+        @endif
+
+        {{-- Resultados Observados --}}
+        @if(isset($checklistData['results']))
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Resultados Observados
+            </div>
+            @if(isset($checklistData['results']['observed_results']) && is_array($checklistData['results']['observed_results']))
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; margin-bottom: 10px;">
+                <ul style="margin: 0; padding-left: 20px;">
+                    @foreach($checklistData['results']['observed_results'] as $result)
+                    <li style="margin-bottom: 5px;">{{ $result }}</li>
+                    @endforeach
                 </ul>
             </div>
-            
-            @if(isset($checklistData["results"]) && count($checklistData["results"]) > 0)
-            <div class="section">
-                <div class="section-title">Hallazgos Técnicos - Resultados Observados</div>
-                <div class="technical-findings">
-                    <ul class="points-list">
-                        @if(isset($checklistData["results"]["observed_results"]) && count($checklistData["results"]["observed_results"]) > 0)
-                            @foreach($checklistData["results"]["observed_results"] as $result)
-                            <li>{{ $result }}</li>
-                            @endforeach
-                        @else
-                            <li>No hay resultados observados registrados</li>
-                        @endif
-                    </ul>
+            @endif
+            @if(isset($checklistData['results']['total_installed_points']) || isset($checklistData['results']['total_consumption_activity']))
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                @if(isset($checklistData['results']['total_installed_points']))
+                <div style="background: #e8f5e8; padding: 10px; border-radius: 5px;">
+                    <div style="font-size: 11px; color: #666; margin-bottom: 3px;">Puntos Instalados</div>
+                    <div style="font-size: 16px; font-weight: bold; color: #1a472a;">{{ $checklistData['results']['total_installed_points'] }}</div>
                 </div>
+                @endif
+                @if(isset($checklistData['results']['total_consumption_activity']))
+                <div style="background: #e8f5e8; padding: 10px; border-radius: 5px;">
+                    <div style="font-size: 11px; color: #666; margin-bottom: 3px;">Actividad de Consumo Total</div>
+                    <div style="font-size: 16px; font-weight: bold; color: #1a472a;">{{ $checklistData['results']['total_consumption_activity'] }}</div>
+                </div>
+                @endif
             </div>
             @endif
-        
-            {{-- Insumos Utilizados (Producto + Lote) --}}
-            @if(isset($checklistData["products"]["applied_product"]))
-            <div class="section">
-                <div class="section-title">Insumos Utilizados</div>
-                <div class="product-info">
-                    <strong>Producto:</strong> {{ $checklistData["products"]["applied_product"] }}
-                </div>
+        </div>
+        @endif
+
+        {{-- Observaciones --}}
+        @if(isset($checklistData['observations']) && is_array($checklistData['observations']) && count($checklistData['observations']) > 0)
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Observaciones
             </div>
-            @else
-                <div class="section">
-                    <div class="section-title">Insumos Utilizados</div>
-                    <div class="product-info">No hay productos aplicados registrados</div>
-                </div>
-            @endif
-            
-            {{-- Observaciones con Imágenes --}}
-            @if(isset($checklistData["observations"]) && count($checklistData["observations"]) > 0)
-            <div class="section">
-                <div class="section-title">Observaciones Detalladas con Fotografías</div>
-                @foreach($checklistData["observations"] as $index => $observation)
-                <div class="observation-item">
-                    <div class="observation-header">
-                        Observación #{{ $observation['observation_number'] ?? ($index + 1) }}
-                        @if(isset($observation['cebadera_code']))
-                            - CE: {{ $observation['cebadera_code'] }}
+            @foreach($checklistData['observations'] as $observation)
+                @if(isset($observation['detail']) || isset($observation['photo']))
+                <div style="background: #f8f9fa; padding: 12px; margin-bottom: 10px; border-radius: 5px; border-left: 4px solid #1a472a;">
+                    @if(isset($observation['cebadera_code']))
+                    <div style="font-weight: bold; color: #1a472a; margin-bottom: 5px;">
+                        {{ $observation['cebadera_code'] }}
+                        @if(isset($observation['observation_number']))
+                        - Obs #{{ $observation['observation_number'] }}
                         @endif
-                    </div>
-                    <div class="observation-detail">
-                        <strong>Detalle:</strong> {{ $observation['detail'] ?? 'No especificado' }}
-                    </div>
-                    @if(isset($observation['created_at']))
-                    <div class="observation-detail">
-                        <strong>Fecha:</strong> {{ \Carbon\Carbon::parse($observation['created_at'])->format('d/m/Y H:i') }}
                     </div>
                     @endif
-                    @if(isset($observation['photo']) && $observation['photo'])
+                    @if(isset($observation['detail']))
+                    <div style="margin-bottom: 8px;">{{ $observation['detail'] }}</div>
+                    @endif
+                    @if(isset($observation['photo']))
                     @php
                         $photoPath = str_replace('storage/', '', $observation['photo']);
-                        $fullPath = storage_path('app/public/' . $photoPath);
+                        $paths = [
+                            storage_path('app/public/' . $photoPath),
+                            storage_path('app/' . $photoPath),
+                            public_path('storage/' . $photoPath),
+                            public_path($photoPath)
+                        ];
                         $imageSrc = null;
-                        if (file_exists($fullPath)) {
-                            $fileSize = filesize($fullPath);
-                            if ($fileSize > 100 && $fileSize < 5242880) {
-                                try {
-                                    $imageData = base64_encode(file_get_contents($fullPath));
-                                    $extension = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
-                                    if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
-                                        $extension = 'png';
-                                    }
-                                    if (!empty($imageData)) {
-                                        $imageSrc = 'data:image/' . ($extension === 'jpg' ? 'jpeg' : $extension) . ';base64,' . $imageData;
-                                    }
-                                } catch (\Exception $e) {
-                                    $imageSrc = null;
-                                }
+                        foreach ($paths as $path) {
+                            if (file_exists($path)) {
+                                $imageData = base64_encode(file_get_contents($path));
+                                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                                $mimeType = finfo_file($finfo, $path);
+                                finfo_close($finfo);
+                                $imageSrc = 'data:' . $mimeType . ';base64,' . $imageData;
+                                break;
                             }
                         }
                     @endphp
                     @if($imageSrc)
-                    <div class="observation-detail">
-                        <strong>Fotografía:</strong><br>
-                        <img src="{{ $imageSrc }}" alt="Foto de observación" class="observation-photo">
+                    <div style="margin-top: 8px;">
+                        <img src="{{ $imageSrc }}" alt="Foto de observación" style="max-width: 300px; height: auto; border-radius: 5px;">
                     </div>
                     @endif
                     @endif
                 </div>
-                @endforeach
-            </div>
-            @else
-                <div class="observation-item">No hay observaciones registradas</div>
-            @endif
-            
-            {{-- Sitios Tratados --}}
-            @if(isset($checklistData["sites"]["treated_sites"]) && !empty($checklistData["sites"]["treated_sites"]))
-            <div class="section">
-                <div class="section-title">Sitios Tratados</div>
-                <div class="checklist-item">{{ $checklistData["sites"]["treated_sites"] }}</div>
-            </div>
-            @endif
-            
-            {{-- Descripción del Servicio --}}
-            @if(isset($checklistData["description"]["content"]))
-            <div class="section">
-                <div class="section-title">Descripción del Servicio</div>
-                <div class="checklist-item">{{ $checklistData["description"]["content"] }}</div>
-            </div>
-            @endif
+                @endif
+            @endforeach
+        </div>
         @endif
+
+        {{-- Sitios Tratados --}}
+        @if(isset($checklistData['sites']['treated_sites']))
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Sitios Tratados
+            </div>
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+                {{ $checklistData['sites']['treated_sites'] }}
+            </div>
+        </div>
+        @endif
+
+        {{-- DEBUG: Mostrar toda la estructura de description --}}
+        @php
+            if (isset($checklistData['description'])) {
+                error_log("=== DEBUG PDF DESRATIZACIÓN - Servicio ID: {$service->id} ===");
+                error_log("Campos en description: " . json_encode(array_keys($checklistData['description'])));
+                if (isset($checklistData['description']['service_description'])) {
+                    error_log("service_description existe: '" . $checklistData['description']['service_description'] . "'");
+                    error_log("service_description empty: " . (empty($checklistData['description']['service_description']) ? 'SI' : 'NO'));
+                }
+                if (isset($checklistData['description']['service_sugerencia'])) {
+                    error_log("service_sugerencia existe: '" . $checklistData['description']['service_sugerencia'] . "'");
+                    error_log("service_sugerencia empty: " . (empty($checklistData['description']['service_sugerencia']) ? 'SI' : 'NO'));
+                }
+            } else {
+                error_log("=== DEBUG PDF DESRATIZACIÓN - Servicio ID: {$service->id} ===");
+                error_log("NO EXISTE checklistData['description']");
+            }
+        @endphp
+
+        {{-- Descripción del Servicio --}}
+        @if(isset($checklistData['description']['service_description']))
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Descripción del Servicio
+            </div>
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+                {{ $checklistData['description']['service_description'] }}
+            </div>
+        </div>
+        @elseif(isset($checklistData['description']['content']) && trim($checklistData['description']['content']) !== '')
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Descripción del Servicio
+            </div>
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+                {{ $checklistData['description']['content'] }}
+            </div>
+        </div>
+        @endif
+
+        {{-- Sugerencias --}}
+        @if(isset($checklistData['description']['service_sugerencia']) && trim($checklistData['description']['service_sugerencia']) !== '')
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Sugerencias
+            </div>
+            <div style="background: #fff3cd; padding: 12px; border-radius: 5px; border-left: 4px solid #856404; line-height: 1.6;">
+                {{ $checklistData['description']['service_sugerencia'] }}
+            </div>
+                <div style="page-break-after: always;"></div>
+        </div>
+        @endif
+    </div>
+    @endif
+
+    {{-- SECCIÓN ESPECÍFICA PARA DESINFECCIÓN --}}
+    @if($service->service_type === 'desinfeccion')
+    <div class="section" style="page-break-before: auto; margin-top: 30px;">
+        <div class="section-title" style="font-size: 18px; color: #1a472a; border-bottom: 2px solid #1a472a; padding-bottom: 10px; margin-bottom: 20px;">
+            INFORME DE DESINFECCIÓN
+        </div>
+
+        {{-- Productos Aplicados --}}
+        @if(isset($checklistData['products']))
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Productos Aplicados
+            </div>
+            <div class="checklist-item" style="background: #f8f9fa; padding: 12px; border-radius: 5px;">
+                <strong>Producto aplicado:</strong> {{ $checklistData['products']['applied_product'] ?? 'No especificado' }}<br>
+                <strong>Dosis aplicada:</strong> {{ $checklistData['products']['dosis_aplicada'] ?? ($checklistData['products']['dosis'] ?? 'No especificado') }} cc<br>
+                <strong>Agua aplicada:</strong> {{ $checklistData['products']['agua_aplicada'] ?? ($checklistData['products']['agua'] ?? 'No especificado') }} Lts
+            </div>
+        </div>
+        @endif
+
+        {{-- Observaciones --}}
+        @if(isset($checklistData['observations']) && is_array($checklistData['observations']) && count($checklistData['observations']) > 0)
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Observaciones
+            </div>
+            @foreach($checklistData['observations'] as $observation)
+                @if(isset($observation['detail']) || isset($observation['photo']))
+                <div style="background: #f8f9fa; padding: 12px; margin-bottom: 10px; border-radius: 5px; border-left: 4px solid #1a472a;">
+                    @if(isset($observation['cebadera_code']))
+                    <div style="font-weight: bold; color: #1a472a; margin-bottom: 5px;">
+                        {{ $observation['cebadera_code'] }}
+                        @if(isset($observation['observation_number']))
+                        - Obs #{{ $observation['observation_number'] }}
+                        @endif
+                    </div>
+                    @endif
+                    @if(isset($observation['detail']))
+                    <div style="margin-bottom: 8px;">{{ $observation['detail'] }}</div>
+                    @endif
+                    @if(isset($observation['photo']))
+                    @php
+                        $photoPath = str_replace('storage/', '', $observation['photo']);
+                        $paths = [
+                            storage_path('app/public/' . $photoPath),
+                            storage_path('app/' . $photoPath),
+                            public_path('storage/' . $photoPath),
+                            public_path($photoPath)
+                        ];
+                        $imageSrc = null;
+                        foreach ($paths as $path) {
+                            if (file_exists($path)) {
+                                $imageData = base64_encode(file_get_contents($path));
+                                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                                $mimeType = finfo_file($finfo, $path);
+                                finfo_close($finfo);
+                                $imageSrc = 'data:' . $mimeType . ';base64,' . $imageData;
+                                break;
+                            }
+                        }
+                    @endphp
+                    @if($imageSrc)
+                    <div style="margin-top: 8px;">
+                        <img src="{{ $imageSrc }}" alt="Foto de observación" style="max-width: 300px; height: auto; border-radius: 5px;">
+                    </div>
+                    @endif
+                    @endif
+                </div>
+                @endif
+            @endforeach
+        </div>
+        @endif
+
+        {{-- Sitios Tratados --}}
+        @if(isset($checklistData['sites']['treated_sites']))
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Sitios Tratados
+            </div>
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+                {{ $checklistData['sites']['treated_sites'] }}
+            </div>
+        </div>
+        @endif
+
+        {{-- Descripción del Servicio --}}
+        @if(isset($checklistData['description']['service_description']) && trim($checklistData['description']['service_description']) !== '')
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Descripción del Servicio
+            </div>
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+                {{ $checklistData['description']['service_description'] }}
+            </div>
+        </div>
+        @elseif(isset($checklistData['description']['content']) && trim($checklistData['description']['content']) !== '')
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Descripción del Servicio
+            </div>
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+                {{ $checklistData['description']['content'] }}
+            </div>
+        </div>
+        @endif
+
+        {{-- Sugerencias --}}
+        @if(isset($checklistData['description']['service_sugerencia']) && trim($checklistData['description']['service_sugerencia']) !== '')
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Sugerencias
+            </div>
+            <div style="background: #fff3cd; padding: 12px; border-radius: 5px; border-left: 4px solid #856404; line-height: 1.6;">
+                {{ $checklistData['description']['service_sugerencia'] }}
+            </div>
+                <div style="page-break-after: always;"></div>
+        </div>
+        @endif
+    </div>
+    @endif
+
+    {{-- SECCIÓN ESPECÍFICA PARA DESINSECTACIÓN --}}
+    @if($service->service_type === 'desinsectacion')
+    <div class="section" style="page-break-before: auto; margin-top: 30px;">
+        <div class="section-title" style="font-size: 18px; color: #1a472a; border-bottom: 2px solid #1a472a; padding-bottom: 10px; margin-bottom: 20px;">
+            INFORME DE DESINSECTACIÓN
+        </div>
+
+        {{-- Productos Aplicados --}}
+        @if(isset($checklistData['products']))
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Productos Aplicados
+            </div>
+            <div class="checklist-item" style="background: #f8f9fa; padding: 12px; border-radius: 5px;">
+                    <strong>Producto aplicado:</strong> {{ $checklistData['products']['applied_product'] ?? 'No especificado' }}<br>
+                    <strong>Dosis aplicada:</strong> {{ $checklistData['products']['dosis_aplicada'] ?? ($checklistData['products']['dosis'] ?? 'No especificado') }} cc<br>
+                    <strong>Agua aplicada:</strong> {{ $checklistData['products']['agua_aplicada'] ?? ($checklistData['products']['agua'] ?? 'No especificado') }} Lts
+            </div>
+        </div>
+        @endif
+
+        {{-- Lámparas Ultravioletas --}}
+        @if(isset($checklistData['results']))
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Resultados Observados
+            </div>
+            @if(isset($checklistData['results']['uv_lamps']) || isset($checklistData['results']['tuv']) || isset($checklistData['results']['installed_devices']))
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px;">
+                @if(isset($checklistData['results']['uv_lamps']))
+                <div style="background: #e8f5e8; padding: 10px; border-radius: 5px;">
+                    <div style="font-size: 11px; color: #666; margin-bottom: 3px;">Lámparas UV</div>
+                    <div style="font-size: 16px; font-weight: bold; color: #1a472a;">{{ $checklistData['results']['uv_lamps'] }}</div>
+                </div>
+                @endif
+                @if(isset($checklistData['results']['tuv']))
+                <div style="background: #e8f5e8; padding: 10px; border-radius: 5px;">
+                    <div style="font-size: 11px; color: #666; margin-bottom: 3px;">TUV</div>
+                    <div style="font-size: 16px; font-weight: bold; color: #1a472a;">{{ $checklistData['results']['tuv'] }}</div>
+                </div>
+                @endif
+                @if(isset($checklistData['results']['installed_devices']))
+                <div style="background: #e8f5e8; padding: 10px; border-radius: 5px;">
+                    <div style="font-size: 11px; color: #666; margin-bottom: 3px;">Dispositivos Instalados</div>
+                    <div style="font-size: 16px; font-weight: bold; color: #1a472a;">{{ $checklistData['results']['installed_devices'] }}</div>
+                </div>
+                @endif
+            </div>
+            @endif
+        </div>
+        @endif
+
+        {{-- Observaciones --}}
+        @if(isset($checklistData['observations']) && is_array($checklistData['observations']) && count($checklistData['observations']) > 0)
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Observaciones
+            </div>
+            @foreach($checklistData['observations'] as $observation)
+                @if(isset($observation['detail']) || isset($observation['photo']))
+                <div style="background: #f8f9fa; padding: 12px; margin-bottom: 10px; border-radius: 5px; border-left: 4px solid #1a472a;">
+                    @if(isset($observation['cebadera_code']))
+                    <div style="font-weight: bold; color: #1a472a; margin-bottom: 5px;">
+                        {{ $observation['cebadera_code'] }}
+                        @if(isset($observation['observation_number']))
+                        - Obs #{{ $observation['observation_number'] }}
+                        @endif
+                    </div>
+                    @endif
+                    @if(isset($observation['detail']))
+                    <div style="margin-bottom: 8px;">{{ $observation['detail'] }}</div>
+                    @endif
+                    @if(isset($observation['photo']))
+                    @php
+                        $photoPath = str_replace('storage/', '', $observation['photo']);
+                        $paths = [
+                            storage_path('app/public/' . $photoPath),
+                            storage_path('app/' . $photoPath),
+                            public_path('storage/' . $photoPath),
+                            public_path($photoPath)
+                        ];
+                        $imageSrc = null;
+                        foreach ($paths as $path) {
+                            if (file_exists($path)) {
+                                $imageData = base64_encode(file_get_contents($path));
+                                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                                $mimeType = finfo_file($finfo, $path);
+                                finfo_close($finfo);
+                                $imageSrc = 'data:' . $mimeType . ';base64,' . $imageData;
+                                break;
+                            }
+                        }
+                    @endphp
+                    @if($imageSrc)
+                    <div style="margin-top: 8px;">
+                        <img src="{{ $imageSrc }}" alt="Foto de observación" style="max-width: 300px; height: auto; border-radius: 5px;">
+                    </div>
+                    @endif
+                    @endif
+                </div>
+                @endif
+            @endforeach
+        </div>
+        @endif
+
+        {{-- Sitios Tratados --}}
+        @if(isset($checklistData['sites']['treated_sites']))
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Sitios Tratados
+            </div>
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+                {{ $checklistData['sites']['treated_sites'] }}
+            </div>
+        </div>
+        @endif
+
+        {{-- Descripción del Servicio --}}
+        @if(isset($checklistData['description']['service_description']) && trim($checklistData['description']['service_description']) !== '')
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Descripción del Servicio
+            </div>
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+                {{ $checklistData['description']['service_description'] }}
+            </div>
+        </div>
+        @elseif(isset($checklistData['description']['content']) && trim($checklistData['description']['content']) !== '')
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Descripción del Servicio
+            </div>
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+                {{ $checklistData['description']['content'] }}
+            </div>
+        </div>
+        @endif
+
+        {{-- Sugerencias --}}
+        @if(isset($checklistData['description']['service_sugerencia']) && trim($checklistData['description']['service_sugerencia']) !== '')
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Sugerencias
+            </div>
+            <div style="background: #fff3cd; padding: 12px; border-radius: 5px; border-left: 4px solid #856404; line-height: 1.6;">
+                {{ $checklistData['description']['service_sugerencia'] }}
+            </div>
+                <div style="page-break-after: always;"></div>
+        </div>
+        @endif
+    </div>
+    @endif
+
+     {{-- SECCIÓN ESPECÍFICA PARA SERVICIOS ESPECIALES --}}
+    @if($service->service_type === 'servicios-especiales' || strtolower($service->service_type) === 'servicios especiales' || strtolower($service->service_type) === 'servicio personalizado' || strtolower($service->service_type) === 'servicios personalizados')
+    <div class="section" style="page-break-before: auto; margin-top: 30px;">
+        <div class="section-title" style="font-size: 18px; color: #1a472a; border-bottom: 2px solid #1a472a; padding-bottom: 10px; margin-bottom: 20px;">
+            INFORME DE SERVICIO PERSONALIZADO
+        </div>
+
+        {{-- Observaciones --}}
+        @if(isset($checklistData['observations']) && is_array($checklistData['observations']) && count($checklistData['observations']) > 0)
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Observaciones
+            </div>
+            @foreach($checklistData['observations'] as $observation)
+                @if(isset($observation['detail']) || isset($observation['photo']))
+                <div style="background: #f8f9fa; padding: 12px; margin-bottom: 10px; border-radius: 5px; border-left: 4px solid #1a472a;">
+                    @if(isset($observation['cebadera_code']))
+                    <div style="font-weight: bold; color: #1a472a; margin-bottom: 5px;">
+                        {{ $observation['cebadera_code'] }}
+                        @if(isset($observation['observation_number']))
+                        - Obs #{{ $observation['observation_number'] }}
+                        @endif
+                    </div>
+                    @endif
+                    @if(isset($observation['detail']))
+                    <div style="margin-bottom: 8px;">{{ $observation['detail'] }}</div>
+                    @endif
+                    @if(isset($observation['photo']))
+                    @php
+                        $photoPath = str_replace('storage/', '', $observation['photo']);
+                        $paths = [
+                            storage_path('app/public/' . $photoPath),
+                            storage_path('app/' . $photoPath),
+                            public_path('storage/' . $photoPath),
+                            public_path($photoPath)
+                        ];
+                        $imageSrc = null;
+                        foreach ($paths as $path) {
+                            if (file_exists($path)) {
+                                $imageData = base64_encode(file_get_contents($path));
+                                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                                $mimeType = finfo_file($finfo, $path);
+                                finfo_close($finfo);
+                                $imageSrc = 'data:' . $mimeType . ';base64,' . $imageData;
+                                break;
+                            }
+                        }
+                    @endphp
+                    @if($imageSrc)
+                    <div style="margin-top: 8px;">
+                        <img src="{{ $imageSrc }}" alt="Foto de observación" style="max-width: 300px; height: auto; border-radius: 5px;">
+                    </div>
+                    @endif
+                    @endif
+                </div>
+                @endif
+            @endforeach
+        </div>
+        @endif
+
+        {{-- Sitios Tratados --}}
+        @if(isset($checklistData['sites']['treated_sites']))
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Sitios Tratados
+            </div>
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+                {{ $checklistData['sites']['treated_sites'] }}
+            </div>
+        </div>
+        @endif
+
+        {{-- Descripción del Servicio --}}
+        @if(isset($checklistData['description']['service_description']) && trim($checklistData['description']['service_description']) !== '')
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Descripción del Servicio
+            </div>
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+                {{ $checklistData['description']['service_description'] }}
+            </div>
+        </div>
+        @elseif(isset($checklistData['description']['content']) && trim($checklistData['description']['content']) !== '')
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Descripción del Servicio
+            </div>
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+                {{ $checklistData['description']['content'] }}
+            </div>
+        </div>
+        @endif
+
+        {{-- Sugerencias --}}
+        @if(isset($checklistData['description']['service_sugerencia']) && trim($checklistData['description']['service_sugerencia']) !== '')
+        <div class="subsection" style="margin-bottom: 20px;">
+            <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
+                Sugerencias
+            </div>
+            <div style="background: #fff3cd; padding: 12px; border-radius: 5px; border-left: 4px solid #856404; line-height: 1.6;">
+                {{ $checklistData['description']['service_sugerencia'] }}
+            </div>
+                <div style="page-break-after: always;"></div>
+        </div>
+        @endif
+    </div>
     @endif
     
     {{-- Firmas del Cliente y Técnico --}}
