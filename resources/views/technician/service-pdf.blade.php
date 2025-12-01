@@ -988,19 +988,21 @@
             
             {{-- Gráfico de Evolución del Consumo --}}
             @php
-                // Obtener datos históricos o crear datos basados en el monitoreo actual
-                $historicalData = $monitoreoCompleto['historical_data'] ?? [];
+                // Obtener datos históricos de las estadísticas
+                $monitoreoEstadisticas = $checklistData['monitoreo_estadisticas'] ?? [];
+                $historicalData = $monitoreoEstadisticas['historical_data'] ?? [];
                 
                 // Log para debugging
-                \Log::info('PDF - Historical data', [
-                    'has_data' => !empty($historicalData),
+                \Log::info('PDF - Historical data from estadisticas', [
+                    'has_estadisticas' => !empty($monitoreoEstadisticas),
+                    'has_historical_data' => !empty($historicalData),
                     'count' => count($historicalData),
                     'total_monitoreadas' => $totalMonitoreadas,
                     'consumo_promedio' => $consumoPromedio,
                     'total_capturas' => $totalCapturas
                 ]);
                 
-                // Si no hay datos históricos, crear datos de ejemplo para los últimos 7 días
+                // Si no hay datos históricos, crear datos basados en el monitoreo actual
                 if (empty($historicalData) && $totalMonitoreadas > 0) {
                     $today = \Carbon\Carbon::today();
                     $historicalData = [];
@@ -1013,7 +1015,7 @@
                         ];
                     }
                     
-                    \Log::info('PDF - Generated historical data', [
+                    \Log::info('PDF - Generated historical data from current monitoring', [
                         'data' => $historicalData
                     ]);
                 }
