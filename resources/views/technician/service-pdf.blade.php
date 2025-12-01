@@ -483,6 +483,11 @@
             @php
                 // Procesar ruta del croquis
                 $croquisPath = $checklistData['monitoreo_croquis']['croquis_file'];
+                
+                \Log::info('PDF - Processing croquis', [
+                    'original_path' => $croquisPath
+                ]);
+                
                 // Si la ruta ya incluye 'storage/', removerlo
                 if (strpos($croquisPath, 'storage/') === 0) {
                     $croquisPath = str_replace('storage/', '', $croquisPath);
@@ -493,17 +498,30 @@
                 }
                 $fullPath = storage_path('app/public/' . $croquisPath);
                 
+                \Log::info('PDF - Croquis paths', [
+                    'processed_path' => $croquisPath,
+                    'full_path' => $fullPath,
+                    'file_exists' => file_exists($fullPath)
+                ]);
+                
                 // Intentar también con la ruta completa si no existe
                 if (!file_exists($fullPath) && strpos($checklistData['monitoreo_croquis']['croquis_file'], 'storage/') !== false) {
                     $altPath = storage_path('app/public/' . str_replace('storage/', '', $checklistData['monitoreo_croquis']['croquis_file']));
                     if (file_exists($altPath)) {
                         $fullPath = $altPath;
+                        \Log::info('PDF - Using alternative croquis path', ['alt_path' => $altPath]);
                     }
                 }
                 
+                $imageSrc = null;
                 if (file_exists($fullPath)) {
                     // Verificar que el archivo no sea demasiado grande (máx 5MB)
                     $fileSize = filesize($fullPath);
+                    \Log::info('PDF - Croquis file found', [
+                        'path' => $fullPath,
+                        'size' => $fileSize
+                    ]);
+                    
                     if ($fileSize > 100 && $fileSize < 5242880) { // 5MB
                         try {
                             $imageData = base64_encode(file_get_contents($fullPath));
@@ -515,21 +533,39 @@
                             // Para PDFs, usar una imagen placeholder o convertir
                             if ($extension === 'pdf') {
                                 $imageSrc = null; // Los PDFs no se pueden mostrar directamente como imágenes
+                                \Log::warning('PDF - Croquis is PDF format, cannot display');
                             } else {
                                 if (!empty($imageData)) {
                                     $imageSrc = 'data:image/' . ($extension === 'jpg' ? 'jpeg' : $extension) . ';base64,' . $imageData;
+                                    \Log::info('PDF - Croquis encoded successfully', [
+                                        'extension' => $extension,
+                                        'data_length' => strlen($imageData)
+                                    ]);
                                 } else {
                                     $imageSrc = null;
+                                    \Log::warning('PDF - Croquis data is empty');
                                 }
                             }
                         } catch (\Exception $e) {
                             $imageSrc = null;
+                            \Log::error('PDF - Error encoding croquis', [
+                                'error' => $e->getMessage(),
+                                'path' => $fullPath
+                            ]);
                         }
                     } else {
                         $imageSrc = null;
+                        \Log::warning('PDF - Croquis file size out of range', [
+                            'size' => $fileSize,
+                            'path' => $fullPath
+                        ]);
                     }
                 } else {
                     $imageSrc = null;
+                    \Log::warning('PDF - Croquis file not found', [
+                        'path' => $fullPath,
+                        'original' => $checklistData['monitoreo_croquis']['croquis_file']
+                    ]);
                 }
             @endphp
             @if($imageSrc)
@@ -1050,11 +1086,12 @@
                         <td style="width: {{ 100 / count($historicalData) }}%; padding: 2px; text-align: center; vertical-align: bottom; height: 100px; background: #f9fafb;">
                             <table style="width: 100%; height: 100%; border-collapse: collapse;">
                                 <tr>
-                                    <td style="width: 50%; vertical-align: bottom; text-align: center; height: 100px;">
-                                        <div style="background: {{ $consumptionPercent > 0 ? '#ef4444' : '#e5e7eb' }}; height: {{ $consumptionPercent > 0 ? $consumptionHeight : 3 }}px; width: 20px; margin: 0 auto; border-radius: 3px 3px 0 0;"></div>
+                                    <td style="width: 45%; vertical-align: bottom; text-align: center; height: 100px; padding-right: 2px;">
+                                        <div style="background: {{ $consumptionPercent > 0 ? '#ef4444' : '#e5e7eb' }}; height: {{ $consumptionPercent > 0 ? $consumptionHeight : 3 }}px; width: 100%; margin: 0 auto; border-radius: 3px 3px 0 0;"></div>
                                     </td>
-                                    <td style="width: 50%; vertical-align: bottom; text-align: center; height: 100px;">
-                                        <div style="background: {{ $captures > 0 ? '#6b7280' : '#e5e7eb' }}; height: {{ $captures > 0 ? $capturesHeight : 3 }}px; width: 20px; margin: 0 auto; border-radius: 3px 3px 0 0;"></div>
+                                    <td style="width: 10%;"></td>
+                                    <td style="width: 45%; vertical-align: bottom; text-align: center; height: 100px; padding-left: 2px;">
+                                        <div style="background: {{ $captures > 0 ? '#6b7280' : '#e5e7eb' }}; height: {{ $captures > 0 ? $capturesHeight : 3 }}px; width: 100%; margin: 0 auto; border-radius: 3px 3px 0 0;"></div>
                                     </td>
                                 </tr>
                             </table>
