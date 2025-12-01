@@ -1093,6 +1093,61 @@ class TechnicianController extends Controller
 
     private function processMonitoreoEstadisticasData(Request $request)
     {
+        // Obtener datos del monitoreo completo para calcular historical_data
+        $serviceId = $request->route('service');
+        $service = \App\Models\Service::find($serviceId);
+        $monitoreoCompleto = $service->checklist_data['monitoreo_completo'] ?? [];
+        $baitStations = $monitoreoCompleto['bait_stations'] ?? [];
+        
+        // Calcular datos históricos basados en las cebaderas
+        $historicalData = [];
+        $today = \Carbon\Carbon::today();
+        
+        // Calcular totales del día actual
+        $totalConsumption = 0;
+        $totalCaptures = 0;
+        $count = 0;
+        
+        foreach ($baitStations as $station) {
+            if (isset($station['consumption'])) {
+                $totalConsumption += floatval($station['consumption']);
+                $count++;
+            }
+            if (isset($station['captures'])) {
+                $totalCaptures += intval($station['captures']);
+            }
+        }
+        
+        $avgConsumption = $count > 0 ? $totalConsumption / $count : 0;
+        
+        // Generar datos para los últimos 7 días
+        for ($i = 6; $i >= 0; $i--) {
+            $date = $today->copy()->subDays($i);
+            
+            if ($i === 0) {
+                // Día actual con datos reales
+                $historicalData[] = [
+                    'date' => $date->format('Y-m-d'),
+                    'consumption_percent' => round($avgConsumption, 1),
+                    'captures' => $totalCaptures
+                ];
+            } else {
+                // Días anteriores sin datos
+                $historicalData[] = [
+                    'date' => $date->format('Y-m-d'),
+                    'consumption_percent' => 0,
+                    'captures' => 0
+                ];
+            }
+        }
+        
+        \Log::info('Estadísticas - Historical data generated', [
+            'service_id' => $serviceId,
+            'historical_data' => $historicalData,
+            'avg_consumption' => $avgConsumption,
+            'total_captures' => $totalCaptures
+        ]);
+        
         return [
             'total_monitored' => $request->input('total_monitored', 0),
             'total_active' => $request->input('total_active', 0),
@@ -1103,6 +1158,7 @@ class TechnicianController extends Controller
             'detected_species' => $request->input('detected_species', ''),
             'activity_level' => $request->input('activity_level', ''),
             'executive_summary' => $request->input('executive_summary', ''),
+            'historical_data' => $historicalData,
         ];
     }
 
