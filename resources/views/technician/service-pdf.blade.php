@@ -289,7 +289,22 @@
 </head>
 <body>
     <div class="header">
-        <div class="logo">PEST CONTROLLER</div>
+        <div class="logo">
+            @php
+                $logoPath = public_path('logo.jpg');
+                $logoBase64 = '';
+                if (file_exists($logoPath)) {
+                    $type = pathinfo($logoPath, PATHINFO_EXTENSION);
+                    $data = file_get_contents($logoPath);
+                    $logoBase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                }
+            @endphp
+            @if($logoBase64)
+                <img src="{{ $logoBase64 }}" alt="Pest Controller" style="max-height: 50px; width: auto;">
+            @else
+                PEST CONTROLLER
+            @endif
+        </div>
         <div class="title">REPORTE DE SERVICIO COMPLETADO</div>
         @if(isset($qrCode))
         <div class="qr-code">
