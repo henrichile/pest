@@ -1042,81 +1042,101 @@
                 </div>
             </div>
             
-            <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
-                <table style="width: 100%; border-collapse: collapse;">
-                    {{-- Valores --}}
-                    <tr>
-                        @foreach($historicalData as $data)
+            <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin-bottom: 15px;">
+                @php
+                    // Calcular escala del gráfico
+                    $chartHeight = 120;
+                    $chartWidth = 100; // porcentaje
+                    $gridLines = 5; // Líneas horizontales del grid
+                    $maxValueRounded = ceil($maxValue);
+                    if ($maxValueRounded < 5) $maxValueRounded = 5;
+                @endphp
+                
+                {{-- Grid y área del gráfico --}}
+                <div style="position: relative; height: {{ $chartHeight }}px; border-left: 2px solid #d1d5db; border-bottom: 2px solid #d1d5db; margin-bottom: 30px;">
+                    {{-- Líneas horizontales del grid --}}
+                    @for($i = 0; $i <= $gridLines; $i++)
                         @php
-                            $consumptionPercent = $data['consumption_percent'] ?? 0;
-                            $captures = $data['captures'] ?? 0;
+                            $yPos = ($i / $gridLines) * 100;
+                            $value = $maxValueRounded - ($i / $gridLines) * $maxValueRounded;
                         @endphp
-                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 2px; text-align: center; vertical-align: bottom;">
-                            <table style="width: 100%; border-collapse: collapse;">
-                                <tr>
-                                    <td style="width: 50%; text-align: center;">
-                                        <div style="font-size: 8px; color: #ef4444; font-weight: bold; margin-bottom: 2px;">
-                                            @if($consumptionPercent > 0){{ number_format($consumptionPercent, 0) }}%@endif
-                                        </div>
-                                    </td>
-                                    <td style="width: 50%; text-align: center;">
-                                        <div style="font-size: 8px; color: #6b7280; font-weight: bold; margin-bottom: 2px;">
-                                            @if($captures > 0){{ $captures }}@endif
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                        @endforeach
-                    </tr>
+                        <div style="position: absolute; left: 0; right: 0; top: {{ $yPos }}%; border-top: 1px solid #e5e7eb;">
+                            <span style="position: absolute; left: -30px; top: -8px; font-size: 9px; color: #9ca3af;">{{ number_format($value, 0) }}</span>
+                        </div>
+                    @endfor
                     
-                    {{-- Barras lado a lado --}}
-                    <tr>
-                        @foreach($historicalData as $data)
+                    {{-- Línea de consumo (roja) --}}
+                    <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" viewBox="0 0 {{ count($historicalData) * 100 }} {{ $chartHeight }}">
                         @php
-                            $consumptionPercent = $data['consumption_percent'] ?? 0;
-                            $captures = $data['captures'] ?? 0;
-                            
-                            $consumptionHeight = $maxValue > 0 ? ($consumptionPercent / $maxValue) * 100 : 0;
-                            $capturesHeight = $maxValue > 0 ? ($captures / $maxValue) * 100 : 0;
-                            
-                            if ($consumptionPercent > 0 && $consumptionHeight < 5) $consumptionHeight = 5;
-                            if ($captures > 0 && $capturesHeight < 5) $capturesHeight = 5;
+                            $points = [];
+                            foreach($historicalData as $index => $data) {
+                                $x = ($index + 0.5) * 100;
+                                $consumption = $data['consumption_percent'] ?? 0;
+                                $y = $chartHeight - (($consumption / $maxValueRounded) * $chartHeight);
+                                $points[] = "$x,$y";
+                            }
+                            $polyline = implode(' ', $points);
                         @endphp
-                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 2px; text-align: center; vertical-align: bottom; height: 100px; background: #f9fafb;">
-                            <table style="width: 100%; height: 100%; border-collapse: collapse;">
-                                <tr>
-                                    <td style="width: 45%; vertical-align: bottom; text-align: center; height: 100px; padding-right: 2px;">
-                                        <div style="background: {{ $consumptionPercent > 0 ? '#ef4444' : '#e5e7eb' }}; height: {{ $consumptionPercent > 0 ? $consumptionHeight : 3 }}px; width: 100%; margin: 0 auto; border-radius: 3px 3px 0 0;"></div>
-                                    </td>
-                                    <td style="width: 10%;"></td>
-                                    <td style="width: 45%; vertical-align: bottom; text-align: center; height: 100px; padding-left: 2px;">
-                                        <div style="background: {{ $captures > 0 ? '#6b7280' : '#e5e7eb' }}; height: {{ $captures > 0 ? $capturesHeight : 3 }}px; width: 100%; margin: 0 auto; border-radius: 3px 3px 0 0;"></div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
+                        <polyline points="{{ $polyline }}" 
+                                  fill="none" 
+                                  stroke="#ef4444" 
+                                  stroke-width="3" 
+                                  style="stroke-linecap: round; stroke-linejoin: round;"/>
+                        
+                        {{-- Puntos en la línea --}}
+                        @foreach($historicalData as $index => $data)
+                            @php
+                                $x = ($index + 0.5) * 100;
+                                $consumption = $data['consumption_percent'] ?? 0;
+                                $y = $chartHeight - (($consumption / $maxValueRounded) * $chartHeight);
+                            @endphp
+                            @if($consumption > 0)
+                                <circle cx="{{ $x }}" cy="{{ $y }}" r="4" fill="#ef4444" stroke="#ffffff" stroke-width="2"/>
+                            @endif
                         @endforeach
-                    </tr>
+                    </svg>
                     
-                    {{-- Línea base --}}
-                    <tr>
-                        @foreach($historicalData as $data)
-                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 0; text-align: center; border-top: 2px solid #e5e7eb;">
-                        </td>
+                    {{-- Línea de capturas (gris oscuro) --}}
+                    <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" viewBox="0 0 {{ count($historicalData) * 100 }} {{ $chartHeight }}">
+                        @php
+                            $points = [];
+                            foreach($historicalData as $index => $data) {
+                                $x = ($index + 0.5) * 100;
+                                $captures = $data['captures'] ?? 0;
+                                $y = $chartHeight - (($captures / $maxValueRounded) * $chartHeight);
+                                $points[] = "$x,$y";
+                            }
+                            $polyline = implode(' ', $points);
+                        @endphp
+                        <polyline points="{{ $polyline }}" 
+                                  fill="none" 
+                                  stroke="#6b7280" 
+                                  stroke-width="3" 
+                                  style="stroke-linecap: round; stroke-linejoin: round;"/>
+                        
+                        {{-- Puntos en la línea --}}
+                        @foreach($historicalData as $index => $data)
+                            @php
+                                $x = ($index + 0.5) * 100;
+                                $captures = $data['captures'] ?? 0;
+                                $y = $chartHeight - (($captures / $maxValueRounded) * $chartHeight);
+                            @endphp
+                            @if($captures > 0)
+                                <circle cx="{{ $x }}" cy="{{ $y }}" r="4" fill="#6b7280" stroke="#ffffff" stroke-width="2"/>
+                            @endif
                         @endforeach
-                    </tr>
-                    
-                    {{-- Fechas --}}
+                    </svg>
+                </div>
+                
+                {{-- Fechas en el eje X --}}
+                <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
                     <tr>
                         @foreach($historicalData as $data)
                         @php
                             $date = \Carbon\Carbon::parse($data['date']);
                         @endphp
-                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 5px 2px 2px 2px; text-align: center; vertical-align: top;">
-                            <div style="font-size: 8px; color: #6b7280;">
-                                {{ $date->format('d/m') }}
-                            </div>
+                        <td style="width: {{ 100 / count($historicalData) }}%; text-align: center; font-size: 9px; color: #6b7280;">
+                            {{ $date->format('d/m') }}
                         </td>
                         @endforeach
                     </tr>
@@ -1125,11 +1145,11 @@
                 {{-- Leyenda --}}
                 <div style="margin-top: 15px; text-align: center;">
                     <span style="display: inline-block; margin-right: 15px;">
-                        <span style="display: inline-block; width: 15px; height: 3px; background: #ef4444; vertical-align: middle; margin-right: 5px;"></span>
+                        <span style="display: inline-block; width: 20px; height: 3px; background: #ef4444; vertical-align: middle; margin-right: 5px;"></span>
                         <span style="font-size: 10px; color: #6b7280;">% Consumo</span>
                     </span>
                     <span style="display: inline-block;">
-                        <span style="display: inline-block; width: 15px; height: 3px; background: #6b7280; vertical-align: middle; margin-right: 5px;"></span>
+                        <span style="display: inline-block; width: 20px; height: 3px; background: #6b7280; vertical-align: middle; margin-right: 5px;"></span>
                         <span style="font-size: 10px; color: #6b7280;">Capturas</span>
                     </span>
                 </div>
