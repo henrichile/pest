@@ -1001,7 +1001,7 @@
             
             {{-- Resumen de Monitoreo --}}
             <div style="margin-bottom: 15px;">
-                <strong style="color: #1a472a; font-size: 14px;">📊 Resumen de Monitoreo</strong>
+                <strong style="color: #1a472a; font-size: 14px;">Resumen de Monitoreo</strong>
             </div>
             
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
@@ -1047,183 +1047,11 @@
                 </tr>
             </table>
             
-            {{-- Gráfico de Evolución del Consumo (OCULTO POR SOLICITUD) --}}
-            @php
-                // Obtener datos históricos de las estadísticas
-                $monitoreoEstadisticas = $checklistData['monitoreo_estadisticas'] ?? [];
-                $historicalData = $monitoreoEstadisticas['historical_data'] ?? [];
-                
-                // Log para debugging
-                \Log::info('PDF - Historical data from estadisticas', [
-                    'has_estadisticas' => !empty($monitoreoEstadisticas),
-                    'has_historical_data' => !empty($historicalData),
-                    'count' => count($historicalData),
-                    'total_monitoreadas' => $totalMonitoreadas,
-                    'consumo_promedio' => $consumoPromedio,
-                    'total_capturas' => $totalCapturas
-                ]);
-                
-                // Si no hay datos históricos, crear datos basados en el monitoreo actual
-                if (empty($historicalData) && $totalMonitoreadas > 0) {
-                    $today = \Carbon\Carbon::today();
-                    $historicalData = [];
-                    for ($i = 6; $i >= 0; $i--) {
-                        $date = $today->copy()->subDays($i);
-                        $historicalData[] = [
-                            'date' => $date->format('Y-m-d'),
-                            'consumption_percent' => $i === 0 ? $consumoPromedio : 0,
-                            'captures' => $i === 0 ? $totalCapturas : 0
-                        ];
-                    }
-                    
-                    \Log::info('PDF - Generated historical data from current monitoring', [
-                        'data' => $historicalData
-                    ]);
-                }
-                
-                // Calcular el valor máximo para escalar las barras
-                $maxConsumption = 0;
-                $maxCaptures = 0;
-                foreach ($historicalData as $data) {
-                    $maxConsumption = max($maxConsumption, $data['consumption_percent'] ?? 0);
-                    $maxCaptures = max($maxCaptures, $data['captures'] ?? 0);
-                }
-                $maxValue = max($maxConsumption, $maxCaptures, 1); // Evitar división por cero
-                
-                \Log::info('PDF - Chart max values', [
-                    'maxConsumption' => $maxConsumption,
-                    'maxCaptures' => $maxCaptures,
-                    'maxValue' => $maxValue
-                ]);
-            @endphp
-            
-            @if(count($historicalData) > 0)
-            <div style="margin-bottom: 15px; margin-top: 15px;">
-                <strong style="color: #1a472a; font-size: 14px;">📊 Evolución del Consumo (Últimos 7 días)</strong>
-                <div style="font-size: 9px; color: #6b7280; margin-top: 3px;">
-                    Datos: {{ count($historicalData) }} días | Max: {{ number_format($maxValue, 1) }}
-                </div>
-            </div>
-            
-            <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin-bottom: 15px;">
-                @php
-                    // Calcular escala del gráfico
-                    $chartHeight = 120;
-                    $chartWidth = 100; // porcentaje
-                    $gridLines = 5; // Líneas horizontales del grid
-                    $maxValueRounded = ceil($maxValue);
-                    if ($maxValueRounded < 5) $maxValueRounded = 5;
-                @endphp
-                
-                {{-- Grid y área del gráfico --}}
-                <div style="position: relative; height: {{ $chartHeight }}px; border-left: 2px solid #d1d5db; border-bottom: 2px solid #d1d5db; margin-bottom: 30px;">
-                    {{-- Líneas horizontales del grid --}}
-                    @for($i = 0; $i <= $gridLines; $i++)
-                        @php
-                            $yPos = ($i / $gridLines) * 100;
-                            $value = $maxValueRounded - ($i / $gridLines) * $maxValueRounded;
-                        @endphp
-                        <div style="position: absolute; left: 0; right: 0; top: {{ $yPos }}%; border-top: 1px solid #e5e7eb;">
-                            <span style="position: absolute; left: -30px; top: -8px; font-size: 9px; color: #9ca3af;">{{ number_format($value, 0) }}</span>
-                        </div>
-                    @endfor
-                    
-                    {{-- Línea de consumo (roja) --}}
-                    <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" viewBox="0 0 {{ count($historicalData) * 100 }} {{ $chartHeight }}">
-                        @php
-                            $points = [];
-                            foreach($historicalData as $index => $data) {
-                                $x = ($index + 0.5) * 100;
-                                $consumption = $data['consumption_percent'] ?? 0;
-                                $y = $chartHeight - (($consumption / $maxValueRounded) * $chartHeight);
-                                $points[] = "$x,$y";
-                            }
-                            $polyline = implode(' ', $points);
-                        @endphp
-                        <polyline points="{{ $polyline }}" 
-                                  fill="none" 
-                                  stroke="#ef4444" 
-                                  stroke-width="3" 
-                                  style="stroke-linecap: round; stroke-linejoin: round;"/>
-                        
-                        {{-- Puntos en la línea --}}
-                        @foreach($historicalData as $index => $data)
-                            @php
-                                $x = ($index + 0.5) * 100;
-                                $consumption = $data['consumption_percent'] ?? 0;
-                                $y = $chartHeight - (($consumption / $maxValueRounded) * $chartHeight);
-                            @endphp
-                            @if($consumption > 0)
-                                <circle cx="{{ $x }}" cy="{{ $y }}" r="4" fill="#ef4444" stroke="#ffffff" stroke-width="2"/>
-                            @endif
-                        @endforeach
-                    </svg>
-                    
-                    {{-- Línea de capturas (gris oscuro) --}}
-                    <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" viewBox="0 0 {{ count($historicalData) * 100 }} {{ $chartHeight }}">
-                        @php
-                            $points = [];
-                            foreach($historicalData as $index => $data) {
-                                $x = ($index + 0.5) * 100;
-                                $captures = $data['captures'] ?? 0;
-                                $y = $chartHeight - (($captures / $maxValueRounded) * $chartHeight);
-                                $points[] = "$x,$y";
-                            }
-                            $polyline = implode(' ', $points);
-                        @endphp
-                        <polyline points="{{ $polyline }}" 
-                                  fill="none" 
-                                  stroke="#6b7280" 
-                                  stroke-width="3" 
-                                  style="stroke-linecap: round; stroke-linejoin: round;"/>
-                        
-                        {{-- Puntos en la línea --}}
-                        @foreach($historicalData as $index => $data)
-                            @php
-                                $x = ($index + 0.5) * 100;
-                                $captures = $data['captures'] ?? 0;
-                                $y = $chartHeight - (($captures / $maxValueRounded) * $chartHeight);
-                            @endphp
-                            @if($captures > 0)
-                                <circle cx="{{ $x }}" cy="{{ $y }}" r="4" fill="#6b7280" stroke="#ffffff" stroke-width="2"/>
-                            @endif
-                        @endforeach
-                    </svg>
-                </div>
-                
-                {{-- Fechas en el eje X --}}
-                <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-                    <tr>
-                        @foreach($historicalData as $data)
-                        @php
-                            $date = \Carbon\Carbon::parse($data['date']);
-                        @endphp
-                        <td style="width: {{ 100 / count($historicalData) }}%; text-align: center; font-size: 9px; color: #6b7280;">
-                            {{ $date->format('d/m') }}
-                        </td>
-                        @endforeach
-                    </tr>
-                </table>
-                
-                {{-- Leyenda --}}
-                <div style="margin-top: 15px; text-align: center;">
-                    <span style="display: inline-block; margin-right: 15px;">
-                        <span style="display: inline-block; width: 20px; height: 3px; background: #ef4444; vertical-align: middle; margin-right: 5px;"></span>
-                        <span style="font-size: 10px; color: #6b7280;">% Consumo</span>
-                    </span>
-                    <span style="display: inline-block;">
-                        <span style="display: inline-block; width: 20px; height: 3px; background: #6b7280; vertical-align: middle; margin-right: 5px;"></span>
-                        <span style="font-size: 10px; color: #6b7280;">Capturas</span>
-                    </span>
-                </div>
-            </div>
-            @endif
-            --}}
-            
+           
             {{-- Plagas Detectadas --}}
             @if(count($pestsDetected) > 0)
             <div style="margin-bottom: 15px;">
-                <strong style="color: #1a472a; font-size: 12px;">🔍 Plagas Detectadas:</strong>
+                <strong style="color: #1a472a; font-size: 12px;">Plagas Detectadas:</strong>
                 <div style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 5px;">
                     @foreach($pestsDetected as $pest)
                         <span style="background: #d4edda; color: #155724; padding: 3px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; border: 1px solid #28a745;">{{ $pest }}</span>
