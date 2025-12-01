@@ -31,10 +31,12 @@
             @php
                 $checklistData = $service->checklist_data ?? [];
                 $isMonitoreoCebaderas = $service->service_type === 'monitoreo-cebaderas';
+                // Permitir mostrar secciones de monitoreo si existen los datos, independientemente del tipo exacto
+                $hasMonitoreoData = isset($checklistData['monitoreo_completo']) || isset($checklistData['monitoreo_datos']) || isset($checklistData['monitoreo_estadisticas']);
             @endphp
 
             {{-- SECCIÓN ESPECÍFICA PARA MONITOREO DE CEBADERAS --}}
-            @if($isMonitoreoCebaderas)
+            @if($isMonitoreoCebaderas || $hasMonitoreoData)
                 {{-- 1. DATOS DEL SERVICIO --}}
                 @if(isset($checklistData['monitoreo_datos']))
                 <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
@@ -341,6 +343,48 @@
                 @endif
 
                 {{-- 4. ESTADÍSTICAS --}}
+                @php
+                    // Fallback: Si no hay estadísticas guardadas pero hay datos de monitoreo, calcularlas al vuelo
+                    if (!isset($checklistData['monitoreo_estadisticas']) && isset($checklistData['monitoreo_completo'])) {
+                        $monitoreoCompleto = $checklistData['monitoreo_completo'];
+                        $baitStations = $monitoreoCompleto['bait_stations'] ?? [];
+                        
+                        $totalMonitored = count($baitStations);
+                        $totalActive = 0;
+                        $totalConsumption = 0;
+                        $countConsumption = 0;
+                        $totalProblems = 0;
+                        
+                        foreach ($baitStations as $station) {
+                            $consumption = floatval($station['consumption'] ?? 0);
+                            $status = $station['status'] ?? '';
+                            
+                            if ($consumption > 0 || $status === 'consumo' || $status === 'activa') {
+                                $totalActive++;
+                            }
+                            
+                            if (isset($station['consumption'])) {
+                                $totalConsumption += $consumption;
+                                $countConsumption++;
+                            }
+                            
+                            if (in_array($status, ['dañada', 'inaccesible', 'extraviada'])) {
+                                $totalProblems++;
+                            }
+                        }
+                        
+                        $avgConsumption = $countConsumption > 0 ? $totalConsumption / $countConsumption : 0;
+                        
+                        $checklistData['monitoreo_estadisticas'] = [
+                            'total_monitored' => $totalMonitored,
+                            'total_active' => $totalActive,
+                            'total_problems' => $totalProblems,
+                            'average_consumption_percent' => $avgConsumption,
+                            'activity_level' => $avgConsumption > 20 ? 'Alto' : ($avgConsumption > 5 ? 'Medio' : 'Bajo'),
+                            'executive_summary' => 'Resumen generado automáticamente basado en los datos de monitoreo.'
+                        ];
+                    }
+                @endphp
                 @if(isset($checklistData['monitoreo_estadisticas']))
                 <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                     <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
@@ -604,7 +648,7 @@
             @endif
 
             <!-- Etapa 1: Puntos de Control - Oculto para desinsectación, desinfección, sanitizacion, desratización, servicios-especiales Y monitoreo-cebaderas -->
-            @if($service->service_type !== 'desinsectacion' && $service->service_type !== 'desinfeccion' && $service->service_type !== 'sanitizacion' && $service->service_type !== 'desratizacion' && $service->service_type !== 'servicios-especiales' && !$isMonitoreoCebaderas)
+            @if($service->service_type !== 'desinsectacion' && $service->service_type !== 'desinfeccion' && $service->service_type !== 'sanitizacion' && $service->service_type !== 'desratizacion' && $service->service_type !== 'servicios-especiales' && !$isMonitoreoCebaderas && !$hasMonitoreoData)
             <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                 <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                     <svg class="w-6 h-6 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -663,7 +707,7 @@
             @endif
 
             <!-- Etapa 2: Productos Aplicados - Oculto para servicios-especiales Y monitoreo-cebaderas -->
-            @if($service->service_type !== 'servicios-especiales' && !$isMonitoreoCebaderas)
+            @if($service->service_type !== 'servicios-especiales' && !$isMonitoreoCebaderas && !$hasMonitoreoData)
             <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                 <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                     <svg class="w-6 h-6 text-blue-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -850,7 +894,7 @@
             @endif
 
             <!-- Etapa 5: Sitios Tratados - Oculto para monitoreo-cebaderas -->
-            @if(!$isMonitoreoCebaderas)
+            @if(!$isMonitoreoCebaderas && !$hasMonitoreoData)
             <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                 <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                     <svg class="w-6 h-6 text-indigo-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
