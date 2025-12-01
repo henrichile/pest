@@ -499,7 +499,7 @@
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             const ctx = document.getElementById('consumptionChart').getContext('2d');
-                            const historicalData = @json($checklistData['monitoreo_estadisticas']['historical_data']);
+                            const historicalData = @json($checklistData['monitoreo_estadisticas']['historical_data'] ?? []);
                             
                             const labels = historicalData.map(data => {
                                 // Ajustar fecha para evitar problemas de zona horaria
