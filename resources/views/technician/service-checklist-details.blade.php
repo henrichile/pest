@@ -379,6 +379,106 @@
                         @endif
                     </div>
 
+                    @if(isset($checklistData['monitoreo_estadisticas']['historical_data']) && count($checklistData['monitoreo_estadisticas']['historical_data']) > 0)
+                    <div class="mb-6">
+                        <h3 class="font-semibold text-gray-900 mb-3">Evolución del Consumo (Últimos 7 días)</h3>
+                        <div class="bg-white border border-gray-200 rounded-lg p-4" style="height: 300px;">
+                            <canvas id="consumptionChart"></canvas>
+                        </div>
+                    </div>
+
+                    @push('scripts')
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const ctx = document.getElementById('consumptionChart').getContext('2d');
+                            const historicalData = @json($checklistData['monitoreo_estadisticas']['historical_data']);
+                            
+                            const labels = historicalData.map(data => {
+                                // Ajustar fecha para evitar problemas de zona horaria
+                                const parts = data.date.split('-');
+                                return `${parts[2]}/${parts[1]}`;
+                            });
+                            
+                            const consumptionData = historicalData.map(data => data.consumption_percent || 0);
+                            const capturesData = historicalData.map(data => data.captures || 0);
+                            
+                            new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: labels,
+                                    datasets: [
+                                        {
+                                            label: '% Consumo',
+                                            data: consumptionData,
+                                            borderColor: '#ef4444', // red-500
+                                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                                            borderWidth: 2,
+                                            pointBackgroundColor: '#ef4444',
+                                            tension: 0.3,
+                                            fill: true
+                                        },
+                                        {
+                                            label: 'Capturas',
+                                            data: capturesData,
+                                            borderColor: '#6b7280', // gray-500
+                                            backgroundColor: 'rgba(107, 114, 128, 0.1)',
+                                            borderWidth: 2,
+                                            borderDash: [5, 5],
+                                            pointBackgroundColor: '#6b7280',
+                                            tension: 0.3,
+                                            fill: false
+                                        }
+                                    ]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    interaction: {
+                                        mode: 'index',
+                                        intersect: false,
+                                    },
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            grid: {
+                                                color: '#f3f4f6'
+                                            },
+                                            ticks: {
+                                                stepSize: 1
+                                            }
+                                        },
+                                        x: {
+                                            grid: {
+                                                display: false
+                                            }
+                                        }
+                                    },
+                                    plugins: {
+                                        legend: {
+                                            position: 'bottom',
+                                            labels: {
+                                                usePointStyle: true,
+                                                padding: 20
+                                            }
+                                        },
+                                        tooltip: {
+                                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                                            titleColor: '#1f2937',
+                                            bodyColor: '#4b5563',
+                                            borderColor: '#e5e7eb',
+                                            borderWidth: 1,
+                                            padding: 10,
+                                            displayColors: true
+                                        }
+                                    }
+                                }
+                            });
+                        });
+                    </script>
+                    @endpush
+                    @endif
+
                     @if(isset($checklistData['monitoreo_estadisticas']['activity_level']))
                     <div class="mb-4">
                         <strong class="text-gray-900">Nivel de Actividad:</strong>

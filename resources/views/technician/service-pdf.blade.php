@@ -1047,7 +1047,7 @@
                 </tr>
             </table>
             
-            {{-- Gráfico de Evolución del Consumo --}}
+            {{-- Gráfico de Evolución del Consumo (OCULTO POR SOLICITUD) --}}
             @php
                 // Obtener datos históricos de las estadísticas
                 $monitoreoEstadisticas = $checklistData['monitoreo_estadisticas'] ?? [];
@@ -1218,6 +1218,7 @@
                 </div>
             </div>
             @endif
+            --}}
             
             {{-- Plagas Detectadas --}}
             @if(count($pestsDetected) > 0)
