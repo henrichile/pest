@@ -921,8 +921,24 @@ class TechnicianController extends Controller
         if ($request->hasFile('croquis_file')) {
             $file = $request->file('croquis_file');
             $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('services/croquis', $filename, 'public');
+            $path = $file->storeAs('services/croquis', $filename, 'public');
+            
+            // Guardar con prefijo 'storage/' para consistencia con las fotos
             $data['croquis_file'] = 'storage/services/croquis/' . $filename;
+            
+            \Log::info('Croquis file saved', [
+                'filename' => $filename,
+                'path' => $path,
+                'saved_in_data' => $data['croquis_file'],
+                'full_path' => storage_path('app/public/' . $path),
+                'file_exists' => file_exists(storage_path('app/public/' . $path)),
+                'file_size' => file_exists(storage_path('app/public/' . $path)) ? filesize(storage_path('app/public/' . $path)) : 0
+            ]);
+        } else {
+            \Log::warning('No croquis file uploaded', [
+                'has_file' => $request->hasFile('croquis_file'),
+                'all_files' => $request->allFiles()
+            ]);
         }
 
         return $data;
