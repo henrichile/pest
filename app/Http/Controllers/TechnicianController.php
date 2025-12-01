@@ -1094,8 +1094,7 @@ class TechnicianController extends Controller
     private function processMonitoreoEstadisticasData(Request $request)
     {
         // Obtener datos del monitoreo completo para calcular historical_data
-        $serviceId = $request->route('service');
-        $service = \App\Models\Service::find($serviceId);
+        $service = $request->route('service');
         $monitoreoCompleto = $service->checklist_data['monitoreo_completo'] ?? [];
         $baitStations = $monitoreoCompleto['bait_stations'] ?? [];
         
@@ -1142,7 +1141,7 @@ class TechnicianController extends Controller
         }
         
         \Log::info('Estadísticas - Historical data generated', [
-            'service_id' => $serviceId,
+            'service_id' => $service->id,
             'historical_data' => $historicalData,
             'avg_consumption' => $avgConsumption,
             'total_captures' => $totalCaptures
