@@ -1008,7 +1008,7 @@
             
             <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
                 <table style="width: 100%; border-collapse: collapse;">
-                    {{-- Valores sobre las barras --}}
+                    {{-- Valores --}}
                     <tr>
                         @foreach($historicalData as $data)
                         @php
@@ -1016,57 +1016,48 @@
                             $captures = $data['captures'] ?? 0;
                         @endphp
                         <td style="width: {{ 100 / count($historicalData) }}%; padding: 2px; text-align: center; vertical-align: bottom;">
-                            <div style="font-size: 8px; color: #ef4444; font-weight: bold; margin-bottom: 2px;">
-                                @if($consumptionPercent > 0){{ number_format($consumptionPercent, 0) }}%@endif
-                            </div>
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <tr>
+                                    <td style="width: 50%; text-align: center;">
+                                        <div style="font-size: 8px; color: #ef4444; font-weight: bold; margin-bottom: 2px;">
+                                            @if($consumptionPercent > 0){{ number_format($consumptionPercent, 0) }}%@endif
+                                        </div>
+                                    </td>
+                                    <td style="width: 50%; text-align: center;">
+                                        <div style="font-size: 8px; color: #6b7280; font-weight: bold; margin-bottom: 2px;">
+                                            @if($captures > 0){{ $captures }}@endif
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                         @endforeach
                     </tr>
                     
-                    {{-- Barras de consumo --}}
+                    {{-- Barras lado a lado --}}
                     <tr>
                         @foreach($historicalData as $data)
                         @php
                             $consumptionPercent = $data['consumption_percent'] ?? 0;
-                            $consumptionHeight = $maxValue > 0 ? ($consumptionPercent / $maxValue) * 80 : 0;
-                            if ($consumptionPercent > 0 && $consumptionHeight < 5) $consumptionHeight = 5;
+                            $captures = $data['captures'] ?? 0;
                             
-                            \Log::info('PDF - Bar data', [
-                                'consumption' => $consumptionPercent,
-                                'height' => $consumptionHeight,
-                                'maxValue' => $maxValue
-                            ]);
-                        @endphp
-                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 2px; text-align: center; vertical-align: bottom; height: 80px; background: #f9fafb;">
-                            <div style="background: {{ $consumptionPercent > 0 ? '#ef4444' : '#e5e7eb' }}; height: {{ $consumptionPercent > 0 ? $consumptionHeight : 3 }}px; width: 25px; margin: 0 auto; border-radius: 3px 3px 0 0;"></div>
-                        </td>
-                        @endforeach
-                    </tr>
-                    
-                    {{-- Valores de capturas --}}
-                    <tr>
-                        @foreach($historicalData as $data)
-                        @php
-                            $captures = $data['captures'] ?? 0;
-                        @endphp
-                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 2px; text-align: center; vertical-align: bottom;">
-                            <div style="font-size: 8px; color: #6b7280; font-weight: bold; margin-bottom: 2px;">
-                                @if($captures > 0){{ $captures }}@endif
-                            </div>
-                        </td>
-                        @endforeach
-                    </tr>
-                    
-                    {{-- Barras de capturas --}}
-                    <tr>
-                        @foreach($historicalData as $data)
-                        @php
-                            $captures = $data['captures'] ?? 0;
-                            $capturesHeight = $maxValue > 0 ? ($captures / $maxValue) * 60 : 0;
+                            $consumptionHeight = $maxValue > 0 ? ($consumptionPercent / $maxValue) * 100 : 0;
+                            $capturesHeight = $maxValue > 0 ? ($captures / $maxValue) * 100 : 0;
+                            
+                            if ($consumptionPercent > 0 && $consumptionHeight < 5) $consumptionHeight = 5;
                             if ($captures > 0 && $capturesHeight < 5) $capturesHeight = 5;
                         @endphp
-                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 2px; text-align: center; vertical-align: bottom; height: 60px; background: #f9fafb;">
-                            <div style="background: {{ $captures > 0 ? '#6b7280' : '#e5e7eb' }}; height: {{ $captures > 0 ? $capturesHeight : 3 }}px; width: 25px; margin: 0 auto; border-radius: 3px 3px 0 0;"></div>
+                        <td style="width: {{ 100 / count($historicalData) }}%; padding: 2px; text-align: center; vertical-align: bottom; height: 100px; background: #f9fafb;">
+                            <table style="width: 100%; height: 100%; border-collapse: collapse;">
+                                <tr>
+                                    <td style="width: 50%; vertical-align: bottom; text-align: center; height: 100px;">
+                                        <div style="background: {{ $consumptionPercent > 0 ? '#ef4444' : '#e5e7eb' }}; height: {{ $consumptionPercent > 0 ? $consumptionHeight : 3 }}px; width: 20px; margin: 0 auto; border-radius: 3px 3px 0 0;"></div>
+                                    </td>
+                                    <td style="width: 50%; vertical-align: bottom; text-align: center; height: 100px;">
+                                        <div style="background: {{ $captures > 0 ? '#6b7280' : '#e5e7eb' }}; height: {{ $captures > 0 ? $capturesHeight : 3 }}px; width: 20px; margin: 0 auto; border-radius: 3px 3px 0 0;"></div>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                         @endforeach
                     </tr>
