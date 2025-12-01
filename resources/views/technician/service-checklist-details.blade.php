@@ -4,26 +4,28 @@
 <div class="min-h-screen bg-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Header -->
-        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <a href="{{ route('technician.service.detail', $service) }}"
-                            class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                            </svg>
-                            Volver al Servicio
-                        </a>
-                    <h1 class="text-2xl font-bold text-gray-900">Detalles Completos del servicio</h1>
-                    <p class="text-gray-600 mt-1">Servicio #{{ $service->id }} - {{ $service->client->name ?? 'Cliente' }}</p>
-                    <p class="text-gray-600">Tipo de Servicio: <strong>{{ ucfirst($service->service_type) }}</strong></p>
-                    @if($service->service_type === 'servicios-especiales' && $service->special_service_title)
-                    <p class="text-green-700 font-semibold text-lg mt-2">
-                        📋 {{ $service->special_service_title }}
-                    </p>
-                    @endif
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+            <div class="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <a href="{{ route('technician.service.detail', $service) }}"
+                                class="inline-flex items-center px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-colors mb-4">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                                </svg>
+                                Volver al Servicio
+                            </a>
+                        <h1 class="text-2xl font-bold text-white" style="color: white !important;">Detalles Completos del servicio</h1>
+                        <p class="text-green-100 mt-1">Servicio #{{ $service->id }} - {{ $service->client->name ?? 'Cliente' }}</p>
+                        <p class="text-green-100">Tipo de Servicio: <strong>{{ ucfirst($service->service_type) }}</strong></p>
+                        @if($service->service_type === 'servicios-especiales' && $service->special_service_title)
+                        <p class="text-white font-semibold text-lg mt-2">
+                            📋 {{ $service->special_service_title }}
+                        </p>
+                        @endif
+                    </div>
                 </div>
-
             </div>
         </div>
         @if($service->checklist_data)
