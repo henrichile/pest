@@ -375,7 +375,6 @@
     </div>
 </div>
 
-@push('scripts')
 @endsection
 
 @push('scripts')
@@ -577,6 +576,5 @@
     })();
 </script>
 @endpush
-@endsection
 
 
