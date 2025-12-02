@@ -4,12 +4,38 @@
 @section("page-title", "Mis Servicios")
 
 @section("content")
-<div class="max-w-7xl mx-auto space-y-6">
-    @include('technician.partials.header', [
-        'title' => 'Mis Servicios',
-        'searchPlaceholder' => 'Buscar servicios...',
-        'pageId' => 'services'
-    ])
+<div class="max-w-7xl mx-auto space-y-6 pt-3 md:pt-0">
+    <!-- Header con hamburguesa y título -->
+    <div class="mb-4 sm:mb-6">
+        <!-- Primera fila: Hamburguesa + Título (móvil) -->
+        <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
+            <!-- Hamburguesa (solo móvil) -->
+            <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50;">
+                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            
+            <!-- Título -->
+            <div class="flex-1">
+                <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
+                    Mis Servicios
+                </h2>
+            </div>
+        </div>
+        
+        <!-- Header original (desktop) -->
+        <div class="hidden md:block">
+            @include('technician.partials.header', [
+                'title' => 'Mis Servicios',
+                'searchPlaceholder' => 'Buscar servicios...',
+                'pageId' => 'services'
+            ])
+        </div>
+    </div>
 
     <!-- Filtros -->
     <div class="bg-white rounded-lg shadow-lg p-6">
@@ -51,7 +77,105 @@
         </div>
         
         @if($services->count() > 0)
-        <div class="overflow-x-auto">
+        @if($services->count() > 0)
+        <!-- Vista Móvil (Cards) -->
+        <div class="md:hidden space-y-4 p-4">
+            @foreach($services as $service)
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 space-y-3">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-900">{{ $service->client->name ?? "N/A" }}</h3>
+                        @if($service->address)
+                        <p class="text-sm text-gray-500">{{ Str::limit($service->address, 30) }}</p>
+                        @endif
+                    </div>
+                    <span class="px-2 py-1 text-xs font-medium rounded-full
+                        @if($service->service_type == 'desratizacion') bg-red-100 text-red-800
+                        @elseif($service->service_type == 'desinsectacion') bg-yellow-100 text-yellow-800
+                        @else bg-blue-100 text-blue-800
+                        @endif">
+                        {{ ucfirst($service->service_type) }}
+                    </span>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                    <div>
+                        <span class="text-gray-500 block text-xs">Fecha</span>
+                        <span class="font-medium">{{ $service->scheduled_date->format("d/m/Y H:i") }}</span>
+                        @if($service->scheduled_date < now() && $service->status == "pendiente")
+                        <span class="text-xs text-red-600 font-medium block">Vencido</span>
+                        @endif
+                    </div>
+                    <div>
+                        <span class="text-gray-500 block text-xs">Estado</span>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
+                            @if($service->status == 'pendiente') bg-gray-100 text-gray-800
+                            @elseif($service->status == 'en_progreso') bg-blue-100 text-blue-800
+                            @elseif($service->status == 'vencido') bg-red-100 text-red-800
+                            @else bg-green-100 text-green-800
+                            @endif">
+                            {{ ucfirst(str_replace("_", " ", $service->status)) }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-3 border-t border-gray-100">
+                    @php
+                        // Lógica de URLs (reutilizada)
+                        $isTechView = false;
+                        if (auth()->check() && auth()->user()->hasRole('super-admin')) {
+                            $viewAsTechnician = session('view_as_technician', false);
+                            if (!$viewAsTechnician && request()->hasSession()) {
+                                $viewAsTechnician = request()->session()->get('view_as_technician', false);
+                            }
+                            if ($viewAsTechnician) $isTechView = true;
+                        }
+                        if (!$isTechView && (request()->is('admin/technician-view/*') || request()->routeIs('technician-view.*'))) $isTechView = true;
+                        if (!$isTechView && isset($isTechnicianView) && $isTechnicianView) $isTechView = true;
+                        
+                        if ($isTechView) {
+                            $startUrl = url('/admin/technician-view/services/' . $service->id . '/start');
+                            $detailUrl = url('/admin/technician-view/services/' . $service->id . '/detail');
+                            $pdfUrl = url('/admin/technician-view/services/' . $service->id . '/pdf');
+                        } else {
+                            try {
+                                $startUrl = route("technician.service.start", $service);
+                                $detailUrl = route("technician.service.detail", $service);
+                                $pdfUrl = route("technician.service.pdf", $service);
+                            } catch (\Exception $e) {
+                                $startUrl = url('/technician/services/' . $service->id . '/start');
+                                $detailUrl = url('/technician/services/' . $service->id . '/detail');
+                                $pdfUrl = url('/technician/services/' . $service->id . '/pdf');
+                            }
+                        }
+                    @endphp
+
+                    @if($service->status == "pendiente")
+                    <form method="POST" action="{{ $startUrl }}" class="inline" id="mobile-start-form-{{ $service->id }}">
+                        @csrf
+                        <button type="submit" class="text-blue-600 hover:text-blue-900 font-medium text-sm">
+                            Iniciar
+                        </button>
+                    </form>
+                    @elseif($service->status == "en_progreso")
+                    <a href="{{ $detailUrl }}" class="text-green-600 hover:text-green-900 font-medium text-sm">
+                        Completar
+                    </a>
+                    @elseif($service->status == "finalizado")
+                    <a href="{{ $pdfUrl }}" class="text-blue-600 hover:text-blue-900 font-medium text-sm">
+                        PDF
+                    </a>
+                    @endif
+                    <a href="{{ $detailUrl }}" class="text-gray-600 hover:text-gray-900 font-medium text-sm">
+                        Ver Detalle
+                    </a>
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+        <!-- Vista Desktop (Tabla) -->
+        <div class="hidden md:block overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
@@ -111,32 +235,18 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <div class="flex items-center space-x-2">
                                 @php
-                                    // PRIORIDAD 1: Verificar sesión PRIMERO (más confiable)
+                                    // Lógica de URLs (reutilizada)
                                     $isTechView = false;
                                     if (auth()->check() && auth()->user()->hasRole('super-admin')) {
                                         $viewAsTechnician = session('view_as_technician', false);
-                                        // También verificar en request()->session() por si acaso
                                         if (!$viewAsTechnician && request()->hasSession()) {
                                             $viewAsTechnician = request()->session()->get('view_as_technician', false);
                                         }
-                                        if ($viewAsTechnician) {
-                                            $isTechView = true;
-                                        }
+                                        if ($viewAsTechnician) $isTechView = true;
                                     }
+                                    if (!$isTechView && (request()->is('admin/technician-view/*') || request()->routeIs('technician-view.*'))) $isTechView = true;
+                                    if (!$isTechView && isset($isTechnicianView) && $isTechnicianView) $isTechView = true;
                                     
-                                    // PRIORIDAD 2: Verificar URL actual
-                                    if (!$isTechView) {
-                                        if (request()->is('admin/technician-view/*') || request()->routeIs('technician-view.*')) {
-                                            $isTechView = true;
-                                        }
-                                    }
-                                    
-                                    // PRIORIDAD 3: Usar variable del controlador si está disponible
-                                    if (!$isTechView && isset($isTechnicianView) && $isTechnicianView) {
-                                        $isTechView = true;
-                                    }
-                                    
-                                    // Generar URLs correctas
                                     if ($isTechView) {
                                         $startUrl = url('/admin/technician-view/services/' . $service->id . '/start');
                                         $detailUrl = url('/admin/technician-view/services/' . $service->id . '/detail');
@@ -266,6 +376,9 @@
 </div>
 
 @push('scripts')
+@endsection
+
+@push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // El filtrado ahora se hace en el servidor, no necesitamos JavaScript del lado del cliente
@@ -294,14 +407,15 @@
             body.classList.add('technician-view-mode');
         }
         
-        // Manejar todos los formularios de inicio de servicio
-        document.querySelectorAll('form[id^="start-form-"]').forEach(function(form) {
+        // Manejar todos los formularios de inicio de servicio (tanto desktop como móvil)
+        const forms = document.querySelectorAll('form[id^="start-form-"], form[id^="mobile-start-form-"]');
+        forms.forEach(function(form) {
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 
                 const formId = form.id;
-                const serviceId = formId.replace('start-form-', '');
+                const serviceId = formId.replace('start-form-', '').replace('mobile-start-form-', '');
                 const submitBtn = form.querySelector('button[type="submit"]');
                 
                 // Deshabilitar botón
@@ -364,6 +478,103 @@
             });
         });
     });
+
+    // Page Mobile Menu Button
+    (function() {
+        function initPageMenu() {
+            const pageMenuButton = document.getElementById('page-mobile-menu-button');
+            const sidebar = document.getElementById('sidebar');
+            const mobileOverlay = document.getElementById('mobile-overlay');
+            
+            if (!pageMenuButton) {
+                setTimeout(initPageMenu, 100);
+                return;
+            }
+            
+            if (!sidebar) {
+                console.error('Sidebar no encontrado');
+                return;
+            }
+            
+            function toggleMobileMenu() {
+                const computedStyle = window.getComputedStyle(sidebar);
+                const transform = computedStyle.transform;
+                const sidebarTransform = sidebar.style.transform || '';
+                const isOpen = sidebar.classList.contains('translate-x-0') || 
+                              transform === 'matrix(1, 0, 0, 1, 0, 0)' || 
+                              transform === 'none' ||
+                              sidebarTransform === 'translateX(0)' ||
+                              sidebarTransform.includes('translateX(0)') ||
+                              sidebarTransform === '';
+                
+                if (isOpen) {
+                    sidebar.classList.remove('translate-x-0');
+                    sidebar.classList.add('-translate-x-full');
+                    const styleTag = document.getElementById('mobile-menu-override-style');
+                    if (styleTag) styleTag.remove();
+                    sidebar.style.transform = 'translateX(-100%)';
+                    if (mobileOverlay) {
+                        mobileOverlay.classList.add('hidden');
+                        mobileOverlay.style.display = 'none';
+                    }
+                    const menuIcon = document.getElementById('page-menu-icon');
+                    const closeIcon = document.getElementById('page-close-icon');
+                    if (menuIcon) menuIcon.classList.remove('hidden');
+                    if (closeIcon) closeIcon.classList.add('hidden');
+                    document.body.style.overflow = '';
+                } else {
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebar.classList.add('translate-x-0');
+                    let styleTag = document.getElementById('mobile-menu-override-style');
+                    if (!styleTag) {
+                        styleTag = document.createElement('style');
+                        styleTag.id = 'mobile-menu-override-style';
+                        document.head.appendChild(styleTag);
+                    }
+                    styleTag.textContent = `#sidebar { transform: translateX(0) !important; display: flex !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; position: fixed !important; left: 0 !important; top: 0 !important; width: 288px !important; height: 100vh !important; }`;
+                    sidebar.style.cssText = `display: flex !important; transform: translateX(0) !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; position: fixed !important; left: 0 !important; top: 0 !important; width: 288px !important; height: 100vh !important;`;
+                    if (mobileOverlay) {
+                        mobileOverlay.classList.remove('hidden');
+                        mobileOverlay.style.cssText = `display: block !important; visibility: visible !important; z-index: 9998 !important;`;
+                    }
+                    const menuIcon = document.getElementById('page-menu-icon');
+                    const closeIcon = document.getElementById('page-close-icon');
+                    if (menuIcon) menuIcon.classList.add('hidden');
+                    if (closeIcon) closeIcon.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+            
+            pageMenuButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleMobileMenu();
+            });
+            
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', function() {
+                    toggleMobileMenu();
+                });
+            }
+            
+            if (sidebar) {
+                const sidebarLinks = sidebar.querySelectorAll('a');
+                sidebarLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        if (window.innerWidth < 768) {
+                            toggleMobileMenu();
+                        }
+                    });
+                });
+            }
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPageMenu);
+        } else {
+            setTimeout(initPageMenu, 50);
+        }
+    })();
 </script>
 @endpush
 @endsection
