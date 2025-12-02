@@ -585,9 +585,6 @@
             </div>
         </div>
     </div>
-</div>
-@endsection
-
 @push('scripts')
 <script>
     // Page Mobile Menu Button
