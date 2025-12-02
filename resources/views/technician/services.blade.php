@@ -38,34 +38,59 @@
     </div>
 
     <!-- Filtros -->
-    <div class="bg-white rounded-lg shadow-lg p-6">
-        <form method="GET" action="{{ request()->url() }}" id="filter-form" class="flex items-center space-x-4">
-            <div class="flex items-center space-x-2">
-                <label class="text-sm font-medium text-gray-700">Estado:</label>
-                <select name="estado" id="filter-estado" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Todos</option>
-                    <option value="pendiente" {{ request('estado') === 'pendiente' ? 'selected' : '' }}>Pendientes</option>
-                    <option value="en_progreso" {{ request('estado') === 'en_progreso' ? 'selected' : '' }}>En Progreso</option>
-                    <option value="finalizado" {{ request('estado') === 'finalizado' ? 'selected' : '' }}>Finalizados</option>
-                    <option value="vencido" {{ request('estado') === 'vencido' ? 'selected' : '' }}>Vencidos</option>
-                </select>
-            </div>
-            <div class="flex items-center space-x-2">
-                <label class="text-sm font-medium text-gray-700">Tipo:</label>
-                <select name="tipo" id="filter-tipo" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Todos</option>
-                    <option value="desratizacion" {{ request('tipo') === 'desratizacion' ? 'selected' : '' }}>Desratización</option>
-                    <option value="desinsectacion" {{ request('tipo') === 'desinsectacion' ? 'selected' : '' }}>Desinsectación</option>
-                    <option value="sanitizacion" {{ request('tipo') === 'sanitizacion' ? 'selected' : '' }}>Sanitización</option>
-                </select>
-            </div>
-            <div class="flex items-center space-x-2">
-                <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
-                    Filtrar
-                </button>
-                <a href="{{ request()->url() }}" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg text-sm font-medium transition-colors">
-                    Limpiar
-                </a>
+    <div class="bg-white rounded-lg shadow-lg p-4 md:p-6">
+        <!-- Título del filtro (solo móvil) -->
+        <div class="flex items-center justify-between mb-3 md:hidden">
+            <h3 class="text-sm font-semibold text-gray-900">Filtrar Servicios</h3>
+            <button type="button" id="toggle-filters" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                <span id="filter-toggle-text">Ocultar</span>
+            </button>
+        </div>
+
+        <form method="GET" action="{{ request()->url() }}" id="filter-form" class="space-y-4 md:space-y-0 md:flex md:items-center md:space-x-4">
+            <div id="filter-content" class="space-y-4 md:space-y-0 md:flex md:items-center md:space-x-4 md:flex-1">
+                <!-- Filtro Estado -->
+                <div class="flex flex-col md:flex-row md:items-center md:space-x-2 w-full md:w-auto">
+                    <label class="text-sm font-medium text-gray-700 mb-1.5 md:mb-0">Estado:</label>
+                    <select name="estado" id="filter-estado" class="w-full md:w-auto border border-gray-300 rounded-lg px-4 py-2.5 md:px-3 md:py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                        <option value="">Todos</option>
+                        <option value="pendiente" {{ request('estado') === 'pendiente' ? 'selected' : '' }}>Pendientes</option>
+                        <option value="en_progreso" {{ request('estado') === 'en_progreso' ? 'selected' : '' }}>En Progreso</option>
+                        <option value="finalizado" {{ request('estado') === 'finalizado' ? 'selected' : '' }}>Finalizados</option>
+                        <option value="vencido" {{ request('estado') === 'vencido' ? 'selected' : '' }}>Vencidos</option>
+                    </select>
+                </div>
+
+                <!-- Filtro Tipo -->
+                <div class="flex flex-col md:flex-row md:items-center md:space-x-2 w-full md:w-auto">
+                    <label class="text-sm font-medium text-gray-700 mb-1.5 md:mb-0">Tipo:</label>
+                    <select name="tipo" id="filter-tipo" class="w-full md:w-auto border border-gray-300 rounded-lg px-4 py-2.5 md:px-3 md:py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                        <option value="">Todos</option>
+                        <option value="desratizacion" {{ request('tipo') === 'desratizacion' ? 'selected' : '' }}>Desratización</option>
+                        <option value="desinsectacion" {{ request('tipo') === 'desinsectacion' ? 'selected' : '' }}>Desinsectación</option>
+                        <option value="sanitizacion" {{ request('tipo') === 'sanitizacion' ? 'selected' : '' }}>Sanitización</option>
+                    </select>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="flex flex-col md:flex-row gap-2 md:gap-2 w-full md:w-auto pt-2 md:pt-0">
+                    <button type="submit" class="w-full md:w-auto px-4 py-2.5 md:py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors shadow-sm hover:shadow-md">
+                        <span class="flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                            </svg>
+                            Filtrar
+                        </span>
+                    </button>
+                    <a href="{{ request()->url() }}" class="w-full md:w-auto px-4 py-2.5 md:py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg text-sm font-medium transition-colors text-center shadow-sm hover:shadow-md">
+                        <span class="flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            Limpiar
+                        </span>
+                    </a>
+                </div>
             </div>
         </form>
     </div>
@@ -380,6 +405,23 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Toggle de filtros en móvil
+        const toggleFiltersBtn = document.getElementById('toggle-filters');
+        const filterContent = document.getElementById('filter-content');
+        const filterToggleText = document.getElementById('filter-toggle-text');
+        
+        if (toggleFiltersBtn && filterContent) {
+            toggleFiltersBtn.addEventListener('click', function() {
+                if (filterContent.style.display === 'none') {
+                    filterContent.style.display = '';
+                    filterToggleText.textContent = 'Ocultar';
+                } else {
+                    filterContent.style.display = 'none';
+                    filterToggleText.textContent = 'Mostrar';
+                }
+            });
+        }
+
         // El filtrado ahora se hace en el servidor, no necesitamos JavaScript del lado del cliente
         
         // Código existente para formularios
