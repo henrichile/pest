@@ -322,8 +322,8 @@
 
                 <!-- Perfil -->
                 <a href="{{ Route::has('admin.profile') ? route('admin.profile') : (Route::has('profile') ? route('profile') : '#') }}" class="flex-shrink-0">
-                    <div class="h-9 w-9 rounded-full bg-green-600 flex items-center justify-center">
-                        <span class="text-white font-medium text-sm">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
+                    <div class="h-10 w-10 rounded-full bg-green-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                        <span class="text-white font-medium text-base">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
                     </div>
                 </a>
             </div>
