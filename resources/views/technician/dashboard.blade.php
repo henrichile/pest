@@ -30,9 +30,9 @@
             </div>
 
             <!-- Iconos Header Móvil -->
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-4">
                 <!-- Notificaciones -->
-                <a href="{{ route('technician.notifications.index') }}" class="p-2 text-gray-500 hover:text-gray-700 relative">
+                <a href="{{ route('technician.notifications.index') }}" class="text-gray-500 hover:text-gray-700 relative">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                     </svg>
@@ -40,15 +40,13 @@
                         $unreadCount = auth()->check() ? auth()->user()->unreadNotifications()->count() : 0;
                     @endphp
                     @if($unreadCount > 0)
-                    <span class="absolute text-white text-xs rounded-full flex items-center justify-center font-semibold" style="background: #22c55e; min-width: 18px; height: 18px; padding: 0 4px; top: 4px; right: 4px; border: 2px solid white;">
-                        {{ $unreadCount > 99 ? '99+' : $unreadCount }}
-                    </span>
+                    <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white transform translate-x-1/4 -translate-y-1/4"></span>
                     @endif
                 </a>
 
-                <!-- Perfil (Estilo Desktop) -->
-                <a href="{{ route('technician.profile') }}" class="flex-shrink-0 ml-1">
-                    <div class="bg-green-600 rounded-full flex items-center justify-center shadow-sm" style="width: 32px; height: 32px;">
+                <!-- Perfil -->
+                <a href="{{ route('technician.profile') }}" class="flex-shrink-0">
+                    <div class="h-9 w-9 rounded-full bg-green-600 flex items-center justify-center">
                         <span class="text-white font-medium text-sm">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
                     </div>
                 </a>
