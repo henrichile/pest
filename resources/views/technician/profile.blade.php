@@ -24,6 +24,29 @@
                         Mi Perfil
                     </h2>
                 </div>
+
+                <!-- Iconos Header Móvil -->
+                <div class="flex items-center gap-4">
+                    <!-- Notificaciones -->
+                    <a href="{{ route('admin.notification-center') ?? '#' }}" class="text-gray-500 hover:text-gray-700 relative">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                        </svg>
+                        @php
+                            $unreadCount = auth()->check() ? auth()->user()->unreadNotifications()->count() : 0;
+                        @endphp
+                        @if($unreadCount > 0)
+                        <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white transform translate-x-1/4 -translate-y-1/4"></span>
+                        @endif
+                    </a>
+
+                    <!-- Perfil -->
+                    <a href="{{ Route::has('admin.profile') ? route('admin.profile') : (Route::has('profile') ? route('profile') : '#') }}" class="flex-shrink-0">
+                        <div class="h-10 w-10 rounded-full bg-green-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                            <span class="text-white font-medium text-base">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
 
