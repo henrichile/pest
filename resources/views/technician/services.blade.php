@@ -77,7 +77,7 @@
         </div>
         
         @if($services->count() > 0)
-        @if($services->count() > 0)
+
         <!-- Vista Móvil (Cards) -->
         <div class="md:hidden space-y-4 p-4">
             @foreach($services as $service)
