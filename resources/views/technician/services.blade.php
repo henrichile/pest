@@ -106,6 +106,23 @@
         <!-- Vista Móvil (Cards) -->
         <div class="md:hidden space-y-4 p-4">
             @foreach($services as $service)
+            @php
+                $iconBg = '#dbeafe'; // blue-100 default
+                $iconColor = '#1e40af'; // blue-800 default
+                $iconPath = 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z'; // Shield check default
+
+                if($service->service_type == 'desratizacion') {
+                    $iconBg = '#fee2e2'; // red-100
+                    $iconColor = '#991b1b'; // red-800
+                    $iconPath = 'M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z';
+                } elseif($service->service_type == 'desinsectacion') {
+                    $iconBg = '#fef9c3'; // yellow-100
+                    $iconColor = '#854d0e'; // yellow-800
+                    $iconPath = 'M12 7.462c-2.502 0-4.853 1.558-5.738 3.808A2.999 2.999 0 014 13.5v3.75a3 3 0 003 3h10a3 3 0 003-3v-3.75a2.999 2.999 0 01-2.262-2.23c-.885-2.25-3.236-3.808-5.738-3.808zM6.75 8.25a.75.75 0 01.75-.75h9a.75.75 0 010 1.5h-9a.75.75 0 01-.75-.75zM6.75 18.75a.75.75 0 01.75-.75h9a.75.75 0 010 1.5h-9a.75.75 0 01-.75-.75zM3.75 15a.75.75 0 01.75-.75h15a.75.75 0 010 1.5h-15a.75.75 0 01-.75-.75zM3 12.75a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z';
+                } elseif($service->service_type == 'sanitizacion') {
+                     // Keep default blue
+                }
+            @endphp
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 space-y-3">
                 <div class="flex justify-between items-start">
                     <div>
@@ -114,11 +131,10 @@
                         <p class="text-sm text-gray-500">{{ Str::limit($service->address, 30) }}</p>
                         @endif
                     </div>
-                    <span class="px-2 py-1 text-xs font-medium rounded-full
-                        @if($service->service_type == 'desratizacion') bg-red-100 text-red-800
-                        @elseif($service->service_type == 'desinsectacion') bg-yellow-100 text-yellow-800
-                        @else bg-blue-100 text-blue-800
-                        @endif">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full" style="background-color: {{ $iconBg }}; color: {{ $iconColor }};">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="{{ $iconPath }}" />
+                        </svg>
                         {{ ucfirst($service->service_type) }}
                     </span>
                 </div>
@@ -214,6 +230,23 @@
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200" id="services-table-body">
                     @foreach($services as $service)
+                    @php
+                        $iconBg = '#dbeafe'; // blue-100 default
+                        $iconColor = '#1e40af'; // blue-800 default
+                        $iconPath = 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z'; // Shield check default
+
+                        if($service->service_type == 'desratizacion') {
+                            $iconBg = '#fee2e2'; // red-100
+                            $iconColor = '#991b1b'; // red-800
+                            $iconPath = 'M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z';
+                        } elseif($service->service_type == 'desinsectacion') {
+                            $iconBg = '#fef9c3'; // yellow-100
+                            $iconColor = '#854d0e'; // yellow-800
+                            $iconPath = 'M12 7.462c-2.502 0-4.853 1.558-5.738 3.808A2.999 2.999 0 014 13.5v3.75a3 3 0 003 3h10a3 3 0 003-3v-3.75a2.999 2.999 0 01-2.262-2.23c-.885-2.25-3.236-3.808-5.738-3.808zM6.75 8.25a.75.75 0 01.75-.75h9a.75.75 0 010 1.5h-9a.75.75 0 01-.75-.75zM6.75 18.75a.75.75 0 01.75-.75h9a.75.75 0 010 1.5h-9a.75.75 0 01-.75-.75zM3.75 15a.75.75 0 01.75-.75h15a.75.75 0 010 1.5h-15a.75.75 0 01-.75-.75zM3 12.75a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z';
+                        } elseif($service->service_type == 'sanitizacion') {
+                             // Keep default blue
+                        }
+                    @endphp
                     <tr class="hover:bg-gray-50 service-row" 
                         data-status="{{ $service->status }}" 
                         data-service-type="{{ $service->service_type }}">
@@ -224,11 +257,10 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                @if($service->service_type == "desratizacion") bg-red-100 text-red-800
-                                @elseif($service->service_type == "desinsectacion") bg-yellow-100 text-yellow-800
-                                @else bg-blue-100 text-blue-800
-                                @endif">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium" style="background-color: {{ $iconBg }}; color: {{ $iconColor }};">
+                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="{{ $iconPath }}" />
+                                </svg>
                                 {{ ucfirst($service->service_type) }}
                             </span>
                         </td>
