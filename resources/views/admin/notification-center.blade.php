@@ -168,7 +168,85 @@
 
     <!-- Notifications List -->
     <div class="bg-white border dark:border-gray-700 rounded-lg overflow-hidden" style="border: 1px solid #e5e7eb !important;">
-        <div class="overflow-x-auto">
+        <!-- Mobile View (Cards) -->
+        <div class="md:hidden space-y-4 p-4">
+            @forelse($notifications as $notification)
+                @php
+                    $data = json_decode($notification->data, true);
+                    $user = \App\Models\User::find($notification->notifiable_id);
+                    $typeName = $notification->type;
+                    if (strpos($typeName, '\\') !== false) {
+                        $typeParts = explode('\\', $typeName);
+                        $typeName = end($typeParts);
+                        $typeName = str_replace('Notification', '', $typeName);
+                    }
+                    $typeLabels = [
+                        'ServiceAssigned' => 'Asignado',
+                        'ServiceCompleted' => 'Completado',
+                        'ServiceUpdated' => 'Actualizado',
+                        'Generic' => 'General',
+                    ];
+                    $typeLabel = $typeLabels[$typeName] ?? (strlen($typeName) > 12 ? substr($typeName, 0, 12) : $typeName);
+                @endphp
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 space-y-3">
+                    <!-- Header: Tipo y Estado -->
+                    <div class="flex justify-between items-start">
+                        <span class="px-2 py-1 text-xs font-medium rounded bg-indigo-100 text-indigo-800">
+                            {{ $typeLabel }}
+                        </span>
+                        @if($notification->read_at)
+                            <span class="px-2 py-1 text-xs font-medium rounded bg-green-100 text-green-800">
+                                Leída
+                            </span>
+                        @else
+                            <span class="px-2 py-1 text-xs font-medium rounded bg-red-100 text-red-800">
+                                No Leída
+                            </span>
+                        @endif
+                    </div>
+
+                    <!-- Content -->
+                    <div>
+                        <h4 class="text-sm font-bold text-gray-900 mb-1">{{ $data['title'] ?? 'Sin título' }}</h4>
+                        <p class="text-sm text-gray-600 mb-2">{{ Str::limit($data['message'] ?? '', 150) }}</p>
+                        <div class="flex items-center text-xs text-gray-500 gap-2">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                            </svg>
+                            {{ $user->name ?? 'Usuario eliminado' }}
+                        </div>
+                    </div>
+
+                    <!-- Footer: Fecha y Acciones -->
+                    <div class="flex justify-between items-center pt-3 border-t border-gray-100 mt-2">
+                        <span class="text-xs text-gray-400">
+                            {{ \Carbon\Carbon::parse($notification->created_at)->format('d/m/Y H:i') }}
+                        </span>
+                        <div class="flex gap-3">
+                            @if(!$notification->read_at)
+                                <form action="{{ route('admin.notifications.mark-read', $notification->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="text-green-600 hover:text-green-800 text-sm font-medium">Marcar leída</button>
+                                </form>
+                            @endif
+                            <form action="{{ route('admin.notifications.destroy', $notification->id) }}" method="POST" class="inline" onsubmit="return confirm('¿Estás seguro de eliminar esta notificación?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium">Eliminar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="text-center py-8 text-gray-500 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                    No se encontraron notificaciones
+                </div>
+            @endforelse
+        </div>
+
+        <!-- Desktop View (Table) -->
+        <div class="hidden md:block overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200" style="table-layout: fixed; width: 100%;">
                 <colgroup>
                     <col style="width: 11%;">
@@ -195,15 +273,12 @@
                         @php
                             $data = json_decode($notification->data, true);
                             $user = \App\Models\User::find($notification->notifiable_id);
-                            // Extraer nombre corto del tipo de notificación
                             $typeName = $notification->type;
                             if (strpos($typeName, '\\') !== false) {
                                 $typeParts = explode('\\', $typeName);
                                 $typeName = end($typeParts);
-                                // Remover "Notification" del final si existe
                                 $typeName = str_replace('Notification', '', $typeName);
                             }
-                            // Mapear tipos comunes a nombres más cortos
                             $typeLabels = [
                                 'ServiceAssigned' => 'Asignado',
                                 'ServiceCompleted' => 'Completado',
