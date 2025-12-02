@@ -5,34 +5,50 @@
 @section('content')
 <div class="space-y-4 sm:space-y-6 pt-12 md:pt-0">
     <!-- Header -->
-    <div class="md:flex md:items-center md:justify-between mb-6">
-        <div class="min-w-0 flex-1">
-            <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight" style="color: #111827; font-weight: 700;">
-                Centro de Notificaciones
-            </h2>
-            <p class="mt-1 text-sm" style="color: #6b7280;">
-                Administra y envía notificaciones a los usuarios del sistema
-            </p>
-        </div>
-        <div class="mt-4 md:mt-0 md:ml-4 flex flex-col sm:flex-row gap-2">
-            @if($unreadNotifications > 0)
-            <form action="{{ route('admin.notifications.mark-all-read') }}" method="POST" class="inline">
-                @csrf
-                @method('PATCH')
-                <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
-                    <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Marcar Todas como Leídas
-                </button>
-            </form>
-            @endif
-            <button type="button" onclick="openSendModal()" class="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors">
-                <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+    <div class="mb-6">
+        <!-- Mobile Header -->
+        <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
+            <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50;">
+                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
-                Enviar Notificación
+                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
             </button>
+            <h2 class="text-2xl font-bold text-gray-900">Centro de Notificaciones</h2>
+        </div>
+
+        <!-- Desktop Header -->
+        <div class="md:flex md:items-center md:justify-between">
+            <div class="min-w-0 flex-1 hidden md:block">
+                <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight" style="color: #111827; font-weight: 700;">
+                    Centro de Notificaciones
+                </h2>
+                <p class="mt-1 text-sm" style="color: #6b7280;">
+                    Administra y envía notificaciones a los usuarios del sistema
+                </p>
+            </div>
+            <div class="mt-4 md:mt-0 md:ml-4 flex flex-col sm:flex-row gap-2">
+                @if($unreadNotifications > 0)
+                <form action="{{ route('admin.notifications.mark-all-read') }}" method="POST" class="inline">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" class="inline-flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors w-full sm:w-auto">
+                        <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Marcar Todas como Leídas
+                    </button>
+                </form>
+                @endif
+                <button type="button" onclick="openSendModal()" class="inline-flex items-center justify-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors w-full sm:w-auto">
+                    <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                    Enviar Notificación
+                </button>
+            </div>
         </div>
     </div>
 
