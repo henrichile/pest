@@ -79,11 +79,11 @@
         <div class="flex items-center justify-between mb-3 md:hidden">
             <h3 class="text-sm font-semibold text-gray-900">Filtros</h3>
             <button type="button" id="toggle-filters" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
-                <span id="filter-toggle-text">Mostrar</span>
+                <span id="filter-toggle-text">Ocultar</span>
             </button>
         </div>
 
-        <form method="GET" action="{{ route('admin.users.index') }}" id="filter-form" class="hidden md:flex flex-wrap gap-4 items-end">
+        <form method="GET" action="{{ route('admin.users.index') }}" id="filter-form" class="flex flex-col md:flex-row flex-wrap gap-4 md:items-end">
             <!-- Search -->
             <div class="w-full md:flex-1 md:min-w-[200px]">
                 <label for="search" class="block text-sm font-medium mb-1" style="color: #374151;">Buscar</label>
