@@ -30,24 +30,27 @@
             </div>
 
             <!-- Iconos Header Móvil -->
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-3">
                 <!-- Notificaciones -->
-                <button type="button" class="p-2 text-gray-500 hover:text-gray-700 relative">
-                    <span class="absolute top-2 right-2 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>
+                <a href="{{ route('technician.notifications.index') }}" class="p-2 text-gray-500 hover:text-gray-700 relative">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                     </svg>
-                </button>
-
-                <!-- Perfil -->
-                <a href="{{ route('technician.profile') }}" class="flex-shrink-0 ml-1">
-                    @if(auth()->check() && auth()->user()->profile_photo_path)
-                        <img class="h-8 w-8 rounded-full object-cover border border-gray-200" src="{{ asset('storage/' . auth()->user()->profile_photo_path) }}" alt="{{ auth()->user()->name }}">
-                    @else
-                        <div class="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center border border-indigo-200 text-indigo-700 font-bold text-xs">
-                            {{ substr(auth()->user()->name ?? 'U', 0, 2) }}
-                        </div>
+                    @php
+                        $unreadCount = auth()->check() ? auth()->user()->unreadNotifications()->count() : 0;
+                    @endphp
+                    @if($unreadCount > 0)
+                    <span class="absolute text-white text-xs rounded-full flex items-center justify-center font-semibold" style="background: #22c55e; min-width: 18px; height: 18px; padding: 0 4px; top: 4px; right: 4px; border: 2px solid white;">
+                        {{ $unreadCount > 99 ? '99+' : $unreadCount }}
+                    </span>
                     @endif
+                </a>
+
+                <!-- Perfil (Estilo Desktop) -->
+                <a href="{{ route('technician.profile') }}" class="flex-shrink-0 ml-1">
+                    <div class="bg-green-600 rounded-full flex items-center justify-center shadow-sm" style="width: 32px; height: 32px;">
+                        <span class="text-white font-medium text-sm">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
+                    </div>
                 </a>
             </div>
         </div>
