@@ -3,11 +3,11 @@
 @section('title', 'Crear Nuevo Usuario')
 
 @section('content')
-<div class="space-y-4 sm:space-y-6 pt-12 md:pt-0">
+<div class="space-y-4 sm:space-y-6 pt-3 md:pt-0">
     <!-- Header con hamburguesa y título -->
     <div class="mb-4 sm:mb-6">
         <!-- Primera fila: Hamburguesa + Título (móvil) -->
-        <div class="flex items-center gap-3 mb-4 md:hidden">
+        <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
             <!-- Hamburguesa (solo móvil) -->
             <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50;">
                 <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
