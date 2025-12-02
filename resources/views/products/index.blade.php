@@ -4,26 +4,106 @@
 @section("page-title", "Gestión de Productos")
 
 @section("content")
-<div class="space-y-4 sm:space-y-6" style="margin-top: -50px;">
-    @include('admin.partials.header', [
-        'title' => 'Productos',
-        'subtitle' => 'Gestiona el inventario de productos',
-        'searchPlaceholder' => 'Buscar productos...',
-        'pageId' => 'products'
-    ])
-
-    <div class="flex justify-end mb-4">
-        <a href="{{ route("admin.products.create") }}" 
-           class="inline-flex items-center justify-center px-5 py-3 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700 transition-colors">
-            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path>
-            </svg>
-            <span>Nuevo Producto</span>
-        </a>
+<div class="space-y-4 sm:space-y-6 pt-3 md:pt-0">
+    <!-- Header con hamburguesa y título -->
+    <div class="mb-4 sm:mb-6">
+        <!-- Primera fila: Hamburguesa + Título (móvil) -->
+        <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
+            <!-- Hamburguesa (solo móvil) -->
+            <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50;">
+                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            
+            <!-- Título -->
+            <div class="flex-1">
+                <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
+                    Productos
+                </h2>
+            </div>
+        </div>
+        
+        <!-- Botón Nuevo Producto (móvil) -->
+        <div class="mb-4 md:hidden">
+            <a href="{{ route("admin.products.create") }}" class="inline-flex items-center justify-center w-full px-4 py-2.5 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors" style="background: #22c55e; hover:background: #16a34a;">
+                <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                <span>Nuevo Producto</span>
+            </a>
+        </div>
+        
+        <!-- Segunda fila: Título completo (desktop) -->
+        <div class="hidden md:flex md:items-center md:justify-between">
+            <div class="min-w-0 flex-1">
+                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" style="color: #111827; font-weight: 700;">
+                    Productos
+                </h2>
+                <p class="mt-1 text-xs sm:text-sm" style="color: #6b7280;">
+                    Gestiona el inventario de productos
+                </p>
+            </div>
+            <div class="mt-3 sm:mt-4 md:mt-0 md:ml-4">
+                <a href="{{ route("admin.products.create") }}" class="inline-flex items-center justify-center w-full sm:w-auto px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium text-white transition-colors" style="background: #22c55e; hover:background: #16a34a;">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                    <span class="hidden sm:inline">Nuevo Producto</span>
+                    <span class="sm:hidden">Nuevo</span>
+                </a>
+            </div>
+        </div>
     </div>
 
-    <!-- Products Table -->
-    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+    <!-- Mobile View (Cards) -->
+    <div class="md:hidden space-y-4">
+        @forelse($products as $product)
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 space-y-3">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-900">{{ $product->name }}</h3>
+                        <p class="text-sm text-gray-500">{{ $product->active_ingredient }}</p>
+                    </div>
+                    <span class="px-2 py-1 text-xs font-medium rounded bg-blue-100 text-blue-800">
+                        {{ ucfirst($product->service_type) }}
+                    </span>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                    <div>
+                        <span class="text-gray-500 block text-xs">Stock</span>
+                        <span class="font-medium">{{ $product->stock }} {{ $product->unit }}</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-500 block text-xs">Registro</span>
+                        <span class="font-medium text-xs block">SAG: {{ $product->sag_registration ?? 'N/A' }}</span>
+                        <span class="font-medium text-xs block">ISP: {{ $product->isp_registration ?? 'N/A' }}</span>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-3 border-t border-gray-100">
+                    <a href="{{ route("admin.products.show", $product) }}" class="text-green-600 hover:text-green-800 text-sm font-medium">Ver</a>
+                    <a href="{{ route("admin.products.edit", $product) }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">Editar</a>
+                    <form method="POST" action="{{ route("admin.products.destroy", $product) }}" class="inline">
+                        @csrf
+                        @method("DELETE")
+                        <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium" onclick="return confirm('¿Está seguro de eliminar este producto?')">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        @empty
+            <div class="text-center py-8 text-gray-500 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                No hay productos registrados
+            </div>
+        @endforelse
+    </div>
+
+    <!-- Desktop View (Table) -->
+    <div class="hidden md:block bg-white rounded-lg shadow-lg overflow-hidden">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
@@ -86,4 +166,105 @@
         @endif
     </div>
 </div>
+
+@push('scripts')
+<script>
+    // Page Mobile Menu Button
+    (function() {
+        function initPageMenu() {
+            const pageMenuButton = document.getElementById('page-mobile-menu-button');
+            const sidebar = document.getElementById('sidebar');
+            const mobileOverlay = document.getElementById('mobile-overlay');
+            
+            if (!pageMenuButton) {
+                setTimeout(initPageMenu, 100);
+                return;
+            }
+            
+            if (!sidebar) {
+                console.error('Sidebar no encontrado');
+                return;
+            }
+            
+            function toggleMobileMenu() {
+                const computedStyle = window.getComputedStyle(sidebar);
+                const transform = computedStyle.transform;
+                const sidebarTransform = sidebar.style.transform || '';
+                const isOpen = sidebar.classList.contains('translate-x-0') || 
+                              transform === 'matrix(1, 0, 0, 1, 0, 0)' || 
+                              transform === 'none' ||
+                              sidebarTransform === 'translateX(0)' ||
+                              sidebarTransform.includes('translateX(0)') ||
+                              sidebarTransform === '';
+                
+                if (isOpen) {
+                    sidebar.classList.remove('translate-x-0');
+                    sidebar.classList.add('-translate-x-full');
+                    const styleTag = document.getElementById('mobile-menu-override-style');
+                    if (styleTag) styleTag.remove();
+                    sidebar.style.transform = 'translateX(-100%)';
+                    if (mobileOverlay) {
+                        mobileOverlay.classList.add('hidden');
+                        mobileOverlay.style.display = 'none';
+                    }
+                    const menuIcon = document.getElementById('page-menu-icon');
+                    const closeIcon = document.getElementById('page-close-icon');
+                    if (menuIcon) menuIcon.classList.remove('hidden');
+                    if (closeIcon) closeIcon.classList.add('hidden');
+                    document.body.style.overflow = '';
+                } else {
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebar.classList.add('translate-x-0');
+                    let styleTag = document.getElementById('mobile-menu-override-style');
+                    if (!styleTag) {
+                        styleTag = document.createElement('style');
+                        styleTag.id = 'mobile-menu-override-style';
+                        document.head.appendChild(styleTag);
+                    }
+                    styleTag.textContent = `#sidebar { transform: translateX(0) !important; display: flex !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; position: fixed !important; left: 0 !important; top: 0 !important; width: 288px !important; height: 100vh !important; }`;
+                    sidebar.style.cssText = `display: flex !important; transform: translateX(0) !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; position: fixed !important; left: 0 !important; top: 0 !important; width: 288px !important; height: 100vh !important;`;
+                    if (mobileOverlay) {
+                        mobileOverlay.classList.remove('hidden');
+                        mobileOverlay.style.cssText = `display: block !important; visibility: visible !important; z-index: 9998 !important;`;
+                    }
+                    const menuIcon = document.getElementById('page-menu-icon');
+                    const closeIcon = document.getElementById('page-close-icon');
+                    if (menuIcon) menuIcon.classList.add('hidden');
+                    if (closeIcon) closeIcon.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+            
+            pageMenuButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleMobileMenu();
+            });
+            
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', function() {
+                    toggleMobileMenu();
+                });
+            }
+            
+            if (sidebar) {
+                const sidebarLinks = sidebar.querySelectorAll('a');
+                sidebarLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        if (window.innerWidth < 768) {
+                            toggleMobileMenu();
+                        }
+                    });
+                });
+            }
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPageMenu);
+        } else {
+            setTimeout(initPageMenu, 50);
+        }
+    })();
+</script>
+@endpush
 @endsection
