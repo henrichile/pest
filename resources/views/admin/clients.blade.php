@@ -9,11 +9,11 @@
         <!-- Primera fila: Hamburguesa + Título (móvil) -->
         <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
             <!-- Hamburguesa (solo móvil) -->
-            <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors cursor-pointer" style="z-index: 100;">
-                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+            <button id="dashboard-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 1000; position: relative;">
+                <svg id="dashboard-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
-                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                <svg id="dashboard-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
@@ -183,7 +183,7 @@
     // Page Mobile Menu Button
     (function() {
         function initPageMenu() {
-            const pageMenuButton = document.getElementById('page-mobile-menu-button');
+            const pageMenuButton = document.getElementById('dashboard-mobile-menu-button');
             const sidebar = document.getElementById('sidebar');
             const mobileOverlay = document.getElementById('mobile-overlay');
             
@@ -223,8 +223,8 @@
                         mobileOverlay.style.display = 'block';
                     }
                     
-                    const menuIcon = document.getElementById('page-menu-icon');
-                    const closeIcon = document.getElementById('page-close-icon');
+                    const menuIcon = document.getElementById('dashboard-menu-icon');
+                    const closeIcon = document.getElementById('dashboard-close-icon');
                     if (menuIcon) menuIcon.classList.add('hidden');
                     if (closeIcon) closeIcon.classList.remove('hidden');
                     
@@ -243,8 +243,8 @@
                         mobileOverlay.style.display = 'none';
                     }
                     
-                    const menuIcon = document.getElementById('page-menu-icon');
-                    const closeIcon = document.getElementById('page-close-icon');
+                    const menuIcon = document.getElementById('dashboard-menu-icon');
+                    const closeIcon = document.getElementById('dashboard-close-icon');
                     if (menuIcon) menuIcon.classList.remove('hidden');
                     if (closeIcon) closeIcon.classList.add('hidden');
                     
