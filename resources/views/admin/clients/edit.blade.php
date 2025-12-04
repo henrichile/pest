@@ -263,6 +263,7 @@
             }
             
             pageMenuButton.addEventListener('click', function(e) {
+                console.log('Botón de menú presionado');
                 e.preventDefault();
                 e.stopPropagation();
                 toggleMobileMenu();
@@ -270,6 +271,7 @@
             
             if (mobileOverlay) {
                 mobileOverlay.addEventListener('click', function() {
+                    console.log('Overlay presionado');
                     toggleMobileMenu();
                 });
             }
