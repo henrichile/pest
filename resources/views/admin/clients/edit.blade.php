@@ -209,6 +209,7 @@
             }
             
             function toggleMobileMenu() {
+                console.log('Botón de menú presionado 4');
                 const currentTransform = sidebar.style.transform || '';
                 // Asumimos cerrado si tiene -100% o si no tiene la clase translate-x-0
                 const isClosed = currentTransform.includes('-100%') || !sidebar.classList.contains('translate-x-0');
@@ -265,7 +266,9 @@
             pageMenuButton.addEventListener('click', function(e) {
                 console.log('Botón de menú presionado');
                 e.preventDefault();
+                console.log('Botón de menú presionado 2');
                 e.stopPropagation();
+                console.log('Botón de menú presionado 3');
                 toggleMobileMenu();
             });
             
