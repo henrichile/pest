@@ -409,305 +409,39 @@
 @push('scripts')
 <script>
 (function() {
-    function initPageMenu() {
+    function initPageMenuButton() {
         const pageMenuButton = document.getElementById('page-mobile-menu-button');
-        const sidebar = document.getElementById('sidebar');
-        const mobileOverlay = document.getElementById('mobile-overlay');
         
         if (!pageMenuButton) {
-            setTimeout(initPageMenu, 100);
+            console.warn('[PAGE MENU] Botón page-mobile-menu-button no encontrado, reintentando...');
+            setTimeout(initPageMenuButton, 100);
             return;
         }
         
-        if (!sidebar) {
-            console.error('Sidebar no encontrado');
-            return;
-        }
-        
-        function toggleMobileMenu() {
-            const currentTransform = sidebar.style.transform || '';
-            // Asumimos cerrado si tiene -100% o si no tiene la clase translate-x-0
-            const isClosed = currentTransform.includes('-100%') || !sidebar.classList.contains('translate-x-0');
-            
-            if (isClosed) {
-                // Abrir
-                sidebar.classList.remove('-translate-x-full');
-                sidebar.classList.add('translate-x-0');
-                sidebar.style.transform = 'translateX(0)';
-                
-                // Forzar estilos críticos
-                let styleTag = document.getElementById('mobile-menu-override-style');
-                if (!styleTag) {
-                    styleTag = document.createElement('style');
-                    styleTag.id = 'mobile-menu-override-style';
-                    document.head.appendChild(styleTag);
-                }
-                styleTag.textContent = `#sidebar { transform: translateX(0) !important; display: flex !important; z-index: 9999 !important; position: fixed !important; left: 0 !important; top: 0 !important; height: 100vh !important; }`;
-                
-                if (mobileOverlay) {
-                    mobileOverlay.classList.remove('hidden');
-                    mobileOverlay.style.display = 'block';
-                }
-                
-                const menuIcon = document.getElementById('page-menu-icon');
-                const closeIcon = document.getElementById('page-close-icon');
-                if (menuIcon) menuIcon.classList.add('hidden');
-                if (closeIcon) closeIcon.classList.remove('hidden');
-                
-                document.body.style.overflow = 'hidden';
-            } else {
-                // Cerrar
-                sidebar.classList.remove('translate-x-0');
-                sidebar.classList.add('-translate-x-full');
-                sidebar.style.transform = 'translateX(-100%)';
-                
-                const styleTag = document.getElementById('mobile-menu-override-style');
-                if (styleTag) styleTag.remove();
-                
-                if (mobileOverlay) {
-                    mobileOverlay.classList.add('hidden');
-                    mobileOverlay.style.display = 'none';
-                }
-                
-                const menuIcon = document.getElementById('page-menu-icon');
-                const closeIcon = document.getElementById('page-close-icon');
-                if (menuIcon) menuIcon.classList.remove('hidden');
-                if (closeIcon) closeIcon.classList.add('hidden');
-                
-                document.body.style.overflow = '';
-            }
-        }
+        console.log('[PAGE MENU] Botón encontrado, configurando listener...');
         
         pageMenuButton.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            toggleMobileMenu();
+            console.log('[PAGE MENU] Click detectado, llamando a window.openMobileMenu()');
+            
+            if (typeof window.openMobileMenu === 'function') {
+                window.openMobileMenu();
+            } else {
+                console.error('[PAGE MENU] window.openMobileMenu no está definida!');
+            }
         });
         
-        if (mobileOverlay) {
-            mobileOverlay.addEventListener('click', function() {
-                toggleMobileMenu();
-            });
-        }
-        
-        if (sidebar) {
-            const sidebarLinks = sidebar.querySelectorAll('a');
-            sidebarLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    if (window.innerWidth < 768) {
-                        toggleMobileMenu();
-                    }
-                });
-            });
-        }
+        console.log('[PAGE MENU] Listener configurado correctamente');
     }
     
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initPageMenu);
+        document.addEventListener('DOMContentLoaded', initPageMenuButton);
     } else {
-        initPageMenu();
+        initPageMenuButton();
     }
 })();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Dropdown de exportación
-    const exportBtn = document.getElementById('exportBtn');
-    const exportDropdown = document.getElementById('exportDropdown');
-    
-    if (exportBtn && exportDropdown) {
-        exportBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            exportDropdown.classList.toggle('hidden');
-        });
-        
-        document.addEventListener('click', function(e) {
-            if (!exportBtn.contains(e.target) && !exportDropdown.contains(e.target)) {
-                exportDropdown.classList.add('hidden');
-            }
-        });
-    }
-    
-    // Rangos rápidos
-    const quickRangeButtons = document.querySelectorAll('.quick-range-btn');
-    quickRangeButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const range = this.dataset.range;
-            const today = new Date();
-            let startDate, endDate;
-
-            switch(range) {
-                case 'this-month':
-                    startDate = new Date(today.getFullYear(), today.getMonth(), 1);
-                    endDate = today;
-                    break;
-                case 'last-month':
-                    startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-                    endDate = new Date(today.getFullYear(), today.getMonth(), 0);
-                    break;
-                case 'last-3-months':
-                    startDate = new Date(today.getFullYear(), today.getMonth() - 3, 1);
-                    endDate = today;
-                    break;
-                case 'this-year':
-                    startDate = new Date(today.getFullYear(), 0, 1);
-                    endDate = today;
-                    break;
-            }
-
-            document.getElementById('start_date').value = startDate.toISOString().split('T')[0];
-            document.getElementById('end_date').value = endDate.toISOString().split('T')[0];
-            
-            // Remover selección de otros botones
-            quickRangeButtons.forEach(b => {
-                b.style.background = '#f3f4f6';
-                b.style.color = '#6b7280';
-            });
-            // Seleccionar este botón
-            this.style.background = '#22c55e';
-            this.style.color = '#ffffff';
-        });
-    });
-
-    // Resetear filtros
-    document.getElementById('resetFilters')?.addEventListener('click', function() {
-        document.getElementById('reportFiltersForm').reset();
-        document.getElementById('start_date').value = '{{ Carbon\Carbon::now()->startOfMonth()->format("Y-m-d") }}';
-        document.getElementById('end_date').value = '{{ Carbon\Carbon::now()->format("Y-m-d") }}';
-        quickRangeButtons.forEach(b => {
-            b.style.background = '#f3f4f6';
-            b.style.color = '#6b7280';
-        });
-        document.getElementById('reportFiltersForm').submit();
-    });
-
-    // Auto-submit al cambiar filtros
-    const filterInputs = document.querySelectorAll('#reportFiltersForm select, #reportFiltersForm input[type="date"]');
-    filterInputs.forEach(input => {
-        input.addEventListener('change', function() {
-            document.getElementById('reportFiltersForm').submit();
-        });
-    });
-
-    // Gráfico de Estado (Barras)
-    const statusCtx = document.getElementById('statusChart');
-    if (statusCtx) {
-        new Chart(statusCtx, {
-            type: 'bar',
-            data: {
-                labels: @json($statusLabels),
-                datasets: [{
-                    label: 'Servicios',
-                    data: @json($statusData),
-                    backgroundColor: '#3b82f6',
-                    borderColor: '#2563eb',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                aspectRatio: 1.5,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    // Gráfico de Tipo (Pastel)
-    const typeCtx = document.getElementById('typeChart');
-    if (typeCtx) {
-        new Chart(typeCtx, {
-            type: 'pie',
-            data: {
-                labels: @json($typeLabels),
-                datasets: [{
-                    data: @json($typeData),
-                    backgroundColor: @json(array_slice($typeColors, 0, count($typeLabels)))
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-    }
-
-    // Gráfico Temporal (Líneas)
-    const temporalCtx = document.getElementById('temporalChart');
-    if (temporalCtx) {
-        const temporalData = @json($temporalData);
-        const months = @json($months);
-        
-        new Chart(temporalCtx, {
-            type: 'line',
-            data: {
-                labels: months,
-                datasets: [
-                    {
-                        label: 'Completados',
-                        data: temporalData.map(d => d.completed),
-                        borderColor: '#22c55e',
-                        backgroundColor: '#22c55e40',
-                        tension: 0.4,
-                        fill: true
-                    },
-                    {
-                        label: 'Pendientes',
-                        data: temporalData.map(d => d.pending),
-                        borderColor: '#f59e0b',
-                        backgroundColor: '#f59e0b40',
-                        tension: 0.4,
-                        fill: true
-                    },
-                    {
-                        label: 'Total',
-                        data: temporalData.map(d => d.total),
-                        borderColor: '#000000',
-                        backgroundColor: '#00000040',
-                        tension: 0.4,
-                        fill: true
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1
-                        }
-                    }
-                }
-            }
-        });
-    }
-});
-</script>
 @endpush
-@endsection
 
+@endsection

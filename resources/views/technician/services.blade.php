@@ -459,224 +459,39 @@
 
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Toggle de filtros en móvil
-        const toggleFiltersBtn = document.getElementById('toggle-filters');
-        const filterContent = document.getElementById('filter-content');
-        const filterToggleText = document.getElementById('filter-toggle-text');
+(function() {
+    function initPageMenuButton() {
+        const pageMenuButton = document.getElementById('page-mobile-menu-button');
         
-        if (toggleFiltersBtn && filterContent) {
-            toggleFiltersBtn.addEventListener('click', function() {
-                if (filterContent.style.display === 'none') {
-                    filterContent.style.display = '';
-                    filterToggleText.textContent = 'Ocultar';
-                } else {
-                    filterContent.style.display = 'none';
-                    filterToggleText.textContent = 'Mostrar';
-                }
-            });
+        if (!pageMenuButton) {
+            console.warn('[PAGE MENU] Botón page-mobile-menu-button no encontrado, reintentando...');
+            setTimeout(initPageMenuButton, 100);
+            return;
         }
-
-        // El filtrado ahora se hace en el servidor, no necesitamos JavaScript del lado del cliente
         
-        // Código existente para formularios
-        // PRIORIDAD 1: Verificar atributo del body (viene del servidor basado en sesión)
-        let isTechnicianView = false;
-        const body = document.body;
-        if (body) {
-            const hasAttribute = body.getAttribute('data-technician-view') === 'true';
-            const hasClass = body.classList.contains('technician-view-mode');
-            if (hasAttribute || hasClass) {
-                isTechnicianView = true;
+        console.log('[PAGE MENU] Botón encontrado, configurando listener...');
+        
+        pageMenuButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('[PAGE MENU] Click detectado, llamando a window.openMobileMenu()');
+            
+            if (typeof window.openMobileMenu === 'function') {
+                window.openMobileMenu();
+            } else {
+                console.error('[PAGE MENU] window.openMobileMenu no está definida!');
             }
-        }
-        
-        // PRIORIDAD 2: Verificar URL actual
-        if (!isTechnicianView) {
-            isTechnicianView = window.location.href.includes('/admin/technician-view/') || 
-                             window.location.pathname.includes('/admin/technician-view/');
-        }
-        
-        // Agregar atributo al body para detección si no está presente
-        if (isTechnicianView && body) {
-            body.setAttribute('data-technician-view', 'true');
-            body.classList.add('technician-view-mode');
-        }
-        
-        // Manejar todos los formularios de inicio de servicio (tanto desktop como móvil)
-        const forms = document.querySelectorAll('form[id^="start-form-"], form[id^="mobile-start-form-"]');
-        forms.forEach(function(form) {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const formId = form.id;
-                const serviceId = formId.replace('start-form-', '').replace('mobile-start-form-', '');
-                const submitBtn = form.querySelector('button[type="submit"]');
-                
-                // Deshabilitar botón
-                if (submitBtn) {
-                    submitBtn.disabled = true;
-                    submitBtn.textContent = 'Iniciando...';
-                }
-                
-                // FORZAR URL correcta si estamos en technician-view
-                let submitUrl = form.action;
-                if (isTechnicianView) {
-                    submitUrl = '/admin/technician-view/services/' + serviceId + '/start';
-                    form.action = submitUrl;
-                    console.log('✅ URL FORZADA a technician-view:', submitUrl);
-                } else if (!isTechnicianView && submitUrl.includes('/admin/technician-view/')) {
-                    // Si NO estamos en technician-view pero la URL lo indica, corregir
-                    submitUrl = '/technician/services/' + serviceId + '/start';
-                    form.action = submitUrl;
-                    console.log('⚠️ URL corregida a technician normal:', submitUrl);
-                }
-                
-                console.log('Enviando formulario a:', submitUrl);
-                
-                const formData = new FormData(form);
-                
-                fetch(submitUrl, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    credentials: 'same-origin'
-                })
-                .then(function(response) {
-                    console.log('Respuesta recibida:', response.status, response.url);
-                    
-                    if (response.redirected) {
-                        window.location.href = response.url;
-                    } else if (response.ok) {
-                        return response.text().then(function(text) {
-                            const match = text.match(/window\.location\.href\s*=\s*['"]([^'"]+)['"]/);
-                            if (match) {
-                                window.location.href = match[1];
-                            } else {
-                                window.location.reload();
-                            }
-                        });
-                    } else {
-                        throw new Error('HTTP ' + response.status);
-                    }
-                })
-                .catch(function(error) {
-                    console.error('Error:', error);
-                    alert('Error al iniciar el servicio: ' + error.message);
-                    if (submitBtn) {
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = 'Iniciar';
-                    }
-                });
-            });
         });
-    });
-
-    // Page Mobile Menu Button
-    (function() {
-        function initPageMenu() {
-            const pageMenuButton = document.getElementById('page-mobile-menu-button');
-            const sidebar = document.getElementById('sidebar');
-            const mobileOverlay = document.getElementById('mobile-overlay');
-            
-            if (!pageMenuButton) {
-                setTimeout(initPageMenu, 100);
-                return;
-            }
-            
-            if (!sidebar) {
-                console.error('Sidebar no encontrado');
-                return;
-            }
-            
-            function toggleMobileMenu() {
-                const currentTransform = sidebar.style.transform || '';
-                // Asumimos cerrado si tiene -100% o si no tiene la clase translate-x-0
-                const isClosed = currentTransform.includes('-100%') || !sidebar.classList.contains('translate-x-0');
-                
-                if (isClosed) {
-                    // Abrir
-                    sidebar.classList.remove('-translate-x-full');
-                    sidebar.classList.add('translate-x-0');
-                    sidebar.style.transform = 'translateX(0)';
-                    
-                    // Forzar estilos críticos
-                    let styleTag = document.getElementById('mobile-menu-override-style');
-                    if (!styleTag) {
-                        styleTag = document.createElement('style');
-                        styleTag.id = 'mobile-menu-override-style';
-                        document.head.appendChild(styleTag);
-                    }
-                    styleTag.textContent = `#sidebar { transform: translateX(0) !important; display: flex !important; z-index: 9999 !important; position: fixed !important; left: 0 !important; top: 0 !important; height: 100vh !important; }`;
-                    
-                    if (mobileOverlay) {
-                        mobileOverlay.classList.remove('hidden');
-                        mobileOverlay.style.display = 'block';
-                    }
-                    
-                    const menuIcon = document.getElementById('page-menu-icon');
-                    const closeIcon = document.getElementById('page-close-icon');
-                    if (menuIcon) menuIcon.classList.add('hidden');
-                    if (closeIcon) closeIcon.classList.remove('hidden');
-                    
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    // Cerrar
-                    sidebar.classList.remove('translate-x-0');
-                    sidebar.classList.add('-translate-x-full');
-                    sidebar.style.transform = 'translateX(-100%)';
-                    
-                    const styleTag = document.getElementById('mobile-menu-override-style');
-                    if (styleTag) styleTag.remove();
-                    
-                    if (mobileOverlay) {
-                        mobileOverlay.classList.add('hidden');
-                        mobileOverlay.style.display = 'none';
-                    }
-                    
-                    const menuIcon = document.getElementById('page-menu-icon');
-                    const closeIcon = document.getElementById('page-close-icon');
-                    if (menuIcon) menuIcon.classList.remove('hidden');
-                    if (closeIcon) closeIcon.classList.add('hidden');
-                    
-                    document.body.style.overflow = '';
-                }
-            }
-            
-            pageMenuButton.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                toggleMobileMenu();
-            });
-            
-            if (mobileOverlay) {
-                mobileOverlay.addEventListener('click', function() {
-                    toggleMobileMenu();
-                });
-            }
-            
-            if (sidebar) {
-                const sidebarLinks = sidebar.querySelectorAll('a');
-                sidebarLinks.forEach(link => {
-                    link.addEventListener('click', function() {
-                        if (window.innerWidth < 768) {
-                            toggleMobileMenu();
-                        }
-                    });
-                });
-            }
-        }
         
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initPageMenu);
-        } else {
-            initPageMenu();
-        }
-    })();
+        console.log('[PAGE MENU] Listener configurado correctamente');
+    }
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPageMenuButton);
+    } else {
+        initPageMenuButton();
+    }
+})();
 </script>
 @endpush
-
 

@@ -1,5 +1,5 @@
 // Service Worker para PestController
-const CACHE_NAME = 'pestcontroller-v1';
+const CACHE_NAME = 'pestcontroller-v4-1764781998';
 const urlsToCache = [
     '/',
     '/manifest.json',

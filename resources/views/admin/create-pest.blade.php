@@ -216,178 +216,40 @@
 
 @push('scripts')
 <script>
-    function addControlMethod() {
-        const container = document.getElementById('control-methods-container');
-        const div = document.createElement('div');
-        div.className = 'flex gap-2';
-        div.innerHTML = `
-            <input type="text" name="control_methods[]"
-                   class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-                   placeholder="Ej: Spray residual">
-            <button type="button" onclick="removeControlMethod(this)" class="px-3 py-2 text-red-600 hover:text-red-800">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        `;
-        container.appendChild(div);
+(function() {
+    function initPageMenuButton() {
+        const pageMenuButton = document.getElementById('page-mobile-menu-button');
         
-        // Mostrar botones de eliminar en todos los elementos
-        updateRemoveButtons('control-methods-container');
-    }
-
-    function removeControlMethod(button) {
-        button.parentElement.remove();
-        updateRemoveButtons('control-methods-container');
-    }
-
-    function addRisk() {
-        const container = document.getElementById('risks-container');
-        const div = document.createElement('div');
-        div.className = 'flex gap-2';
-        div.innerHTML = `
-            <input type="text" name="risks[]"
-                   class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-                   placeholder="Ej: Peligroso para humanos">
-            <button type="button" onclick="removeRisk(this)" class="px-3 py-2 text-red-600 hover:text-red-800">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        `;
-        container.appendChild(div);
+        if (!pageMenuButton) {
+            console.warn('[PAGE MENU] Botón page-mobile-menu-button no encontrado, reintentando...');
+            setTimeout(initPageMenuButton, 100);
+            return;
+        }
         
-        // Mostrar botones de eliminar en todos los elementos
-        updateRemoveButtons('risks-container');
-    }
-
-    function removeRisk(button) {
-        button.parentElement.remove();
-        updateRemoveButtons('risks-container');
-    }
-
-    function updateRemoveButtons(containerId) {
-        const container = document.getElementById(containerId);
-        const items = container.querySelectorAll('div');
-        items.forEach((item, index) => {
-            const removeBtn = item.querySelector('button');
-            if (items.length > 1) {
-                removeBtn.classList.remove('hidden');
+        console.log('[PAGE MENU] Botón encontrado, configurando listener...');
+        
+        pageMenuButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('[PAGE MENU] Click detectado, llamando a window.openMobileMenu()');
+            
+            if (typeof window.openMobileMenu === 'function') {
+                window.openMobileMenu();
             } else {
-                removeBtn.classList.add('hidden');
+                console.error('[PAGE MENU] window.openMobileMenu no está definida!');
             }
         });
-    }
-
-    // Inicializar botones de eliminar
-    document.addEventListener('DOMContentLoaded', function() {
-        updateRemoveButtons('control-methods-container');
-        updateRemoveButtons('risks-container');
-    });
-    
-    // Page Mobile Menu Button
-    (function() {
-        function initPageMenu() {
-            const pageMenuButton = document.getElementById('page-mobile-menu-button');
-            const sidebar = document.getElementById('sidebar');
-            const mobileOverlay = document.getElementById('mobile-overlay');
-            
-            if (!pageMenuButton) {
-                setTimeout(initPageMenu, 100);
-                return;
-            }
-            
-            if (!sidebar) {
-                console.error('Sidebar no encontrado');
-                return;
-            }
-            
-            function toggleMobileMenu() {
-                const currentTransform = sidebar.style.transform || '';
-                // Asumimos cerrado si tiene -100% o si no tiene la clase translate-x-0
-                const isClosed = currentTransform.includes('-100%') || !sidebar.classList.contains('translate-x-0');
-                
-                if (isClosed) {
-                    // Abrir
-                    sidebar.classList.remove('-translate-x-full');
-                    sidebar.classList.add('translate-x-0');
-                    sidebar.style.transform = 'translateX(0)';
-                    
-                    // Forzar estilos críticos
-                    let styleTag = document.getElementById('mobile-menu-override-style');
-                    if (!styleTag) {
-                        styleTag = document.createElement('style');
-                        styleTag.id = 'mobile-menu-override-style';
-                        document.head.appendChild(styleTag);
-                    }
-                    styleTag.textContent = `#sidebar { transform: translateX(0) !important; display: flex !important; z-index: 9999 !important; position: fixed !important; left: 0 !important; top: 0 !important; height: 100vh !important; }`;
-                    
-                    if (mobileOverlay) {
-                        mobileOverlay.classList.remove('hidden');
-                        mobileOverlay.style.display = 'block';
-                    }
-                    
-                    const menuIcon = document.getElementById('page-menu-icon');
-                    const closeIcon = document.getElementById('page-close-icon');
-                    if (menuIcon) menuIcon.classList.add('hidden');
-                    if (closeIcon) closeIcon.classList.remove('hidden');
-                    
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    // Cerrar
-                    sidebar.classList.remove('translate-x-0');
-                    sidebar.classList.add('-translate-x-full');
-                    sidebar.style.transform = 'translateX(-100%)';
-                    
-                    const styleTag = document.getElementById('mobile-menu-override-style');
-                    if (styleTag) styleTag.remove();
-                    
-                    if (mobileOverlay) {
-                        mobileOverlay.classList.add('hidden');
-                        mobileOverlay.style.display = 'none';
-                    }
-                    
-                    const menuIcon = document.getElementById('page-menu-icon');
-                    const closeIcon = document.getElementById('page-close-icon');
-                    if (menuIcon) menuIcon.classList.remove('hidden');
-                    if (closeIcon) closeIcon.classList.add('hidden');
-                    
-                    document.body.style.overflow = '';
-                }
-            }
-            
-            pageMenuButton.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                toggleMobileMenu();
-            });
-            
-            if (mobileOverlay) {
-                mobileOverlay.addEventListener('click', function() {
-                    toggleMobileMenu();
-                });
-            }
-            
-            if (sidebar) {
-                const sidebarLinks = sidebar.querySelectorAll('a');
-                sidebarLinks.forEach(link => {
-                    link.addEventListener('click', function() {
-                        if (window.innerWidth < 768) {
-                            toggleMobileMenu();
-                        }
-                    });
-                });
-            }
-        }
         
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initPageMenu);
-        } else {
-            initPageMenu();
-        }
-    })();
+        console.log('[PAGE MENU] Listener configurado correctamente');
+    }
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPageMenuButton);
+    } else {
+        initPageMenuButton();
+    }
+})();
 </script>
 @endpush
+
 @endsection
-
-

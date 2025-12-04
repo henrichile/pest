@@ -3,37 +3,6 @@ use Illuminate\Support\Facades\DB;
 // Helper para determinar si está en modo técnico
 $isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
 
-// Compartir contador de notificaciones no leídas globalmente
-if (auth()->check()) {
-    try {
-        $user = auth()->user();
-        // Usar el método unreadNotifications() de Laravel
-        $unreadCount = $user->unreadNotifications()->count();
-        // Obtener notificaciones recientes (incluyendo leídas para el dropdown)
-        $recentNotifications = $user->notifications()
-            ->orderBy('created_at', 'desc')
-            ->limit(10)
-            ->get();
-    } catch (\Exception $e) {
-        // Fallback: consultar directamente la tabla si hay error
-        \Log::error('Error obteniendo notificaciones: ' . $e->getMessage());
-        try {
-            $unreadCount = DB::table('notifications')
-                ->where('notifiable_type', 'App\Models\User')
-                ->where('notifiable_id', auth()->id())
-                ->whereNull('read_at')
-                ->count();
-            $recentNotifications = collect();
-        } catch (\Exception $e2) {
-            $unreadCount = 0;
-            $recentNotifications = collect();
-        }
-    }
-} else {
-    $unreadCount = 0;
-    $recentNotifications = collect();
-}
-
 // Helper function para obtener la ruta correcta según el modo
 function getTechnicianRoute($routeName, ...$params) {
     $isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
@@ -41,14 +10,14 @@ function getTechnicianRoute($routeName, ...$params) {
     if ($isViewingAsTechnician) {
         // Mapear rutas de technician a technician-view
         $routeMap = [
-            'technician.service.detail' => 'technician-view.service.detail',
-            'technician.service.checklist' => 'technician-view.service.checklist',
-            'technician.service.checklist.stage' => 'technician-view.service.checklist.stage',
-            'technician.service.checklist.location' => 'technician-view.service.checklist.location',
-            'technician.service.checklist.process-location' => 'technician-view.service.checklist.process-location',
+            'technician.service.detail' => 'admin.technician-view.service.detail',
+            'technician.service.checklist' => 'admin.technician-view.service.checklist',
+            'technician.service.checklist.stage' => 'admin.technician-view.service.checklist.stage',
+            'technician.service.checklist.location' => 'admin.technician-view.service.checklist.location',
+            'technician.service.checklist.process-location' => 'admin.technician-view.service.checklist.process-location',
             'technician.service.checklist.submit' => 'technician-view.service.checklist.submit',
-            'technician.service.pdf' => 'technician-view.service.pdf',
-            'technician.service.checklist-details' => 'technician-view.service.checklist-details',
+            'technician.service.pdf' => 'admin.technician-view.service.pdf',
+            'technician.service.checklist-details' => 'admin.technician-view.service.checklist-details',
         ];
         
         $mappedRoute = $routeMap[$routeName] ?? $routeName;
@@ -166,20 +135,6 @@ function getTechnicianRoute($routeName, ...$params) {
             pointer-events: auto !important;
         }
         
-        /* Prevenir desplazamiento durante carga */
-        #app {
-            display: flex !important;
-            flex-direction: row !important;
-            width: 100% !important;
-            overflow-x: hidden !important;
-        }
-        
-        #app > div.flex-1 {
-            width: 100% !important;
-            margin-left: 0 !important;
-            flex: 1 !important;
-        }
-        
         /* Optimizar carga en móvil */
         @media (max-width: 767px) {
             body {
@@ -189,7 +144,6 @@ function getTechnicianRoute($routeName, ...$params) {
             /* Asegurar que el sidebar esté oculto por defecto en móvil */
             #sidebar {
                 transform: translateX(-100%) !important;
-                position: fixed !important;
             }
             
             /* Asegurar que los menús no se muestren accidentalmente */
@@ -198,14 +152,6 @@ function getTechnicianRoute($routeName, ...$params) {
             #notification-menu-mobile:not(.show),
             #user-menu-mobile:not(.show) {
                 display: none !important;
-            }
-        }
-        
-        /* Desktop: sidebar visible desde el inicio */
-        @media (min-width: 768px) {
-            #sidebar {
-                transform: translateX(0) !important;
-                position: static !important;
             }
         }
     </style>
@@ -333,46 +279,24 @@ function getTechnicianRoute($routeName, ...$params) {
 </head>
 <body class="h-full" id="body-element" style="overflow-x: hidden; background: #f9fafb;">
     <div id="app" class="flex h-full flex-row">
+        <!-- Mobile Menu Button (oculto por defecto, se muestra solo si la página no tiene su propia hamburguesa) -->
+        <button id="mobile-menu-button" class="md:hidden fixed top-3 left-3 z-50 p-2.5 rounded-lg bg-white border border-gray-300 shadow-lg hover:bg-gray-50 transition-colors" style="z-index: 10001; display: none;">
+            <svg id="menu-icon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+            <svg id="close-icon" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        
         <!-- Mobile Overlay -->
         <div id="mobile-overlay" class="md:hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-40 hidden" style="z-index: 9998;"></div>
         
         <!-- Sidebar -->
-        <aside id="sidebar" class="fixed md:static flex-shrink-0 w-72 flex flex-col bg-white border-r border-gray-200 z-50 h-full" style="transform: translateX(-100%); transition: transform 0.3s ease-in-out;">
-            <style>
-                @media (min-width: 768px) {
-                    #sidebar {
-                        transform: translateX(0) !important;
-                        position: static !important;
-                    }
-                }
-                @media (max-width: 767px) {
-                    #sidebar {
-                        transform: translateX(-100%) !important;
-                        position: fixed !important;
-                    }
-                }
-            </style>
+        <aside id="sidebar" class="fixed md:static flex-shrink-0 w-72 flex flex-col bg-white border-r border-gray-200 transform -translate-x-full md:translate-x-0 md:transform-none transition-transform duration-300 ease-in-out z-50 h-full">
             <div class="flex grow flex-col gap-y-3 overflow-y-auto px-5 pb-4">
                 <div class="flex h-16 shrink-0 items-center justify-center pt-6 pb-4">
-                    @php
-                        // Determinar la ruta del dashboard según el rol
-                        $dashboardRoute = route('admin.dashboard');
-                        if (auth()->check()) {
-                            if (auth()->user()->hasRole('technician') && !auth()->user()->hasRole('super-admin')) {
-                                // Usuario es técnico (no admin)
-                                $dashboardRoute = route('technician.dashboard');
-                            } elseif (session('view_as_technician') && auth()->user()->hasRole('super-admin')) {
-                                // Admin viendo como técnico
-                                $dashboardRoute = route('admin.technician-view.dashboard');
-                            } else {
-                                // Admin normal
-                                $dashboardRoute = route('admin.dashboard');
-                            }
-                        }
-                    @endphp
-                    <a href="{{ $dashboardRoute }}" class="flex items-center justify-center">
-                        <img src="https://pestcontroller.cl/wp-content/uploads/2022/07/pestcontroller-logo.png" alt="PestController Logo" class="h-14 w-auto object-contain max-w-full">
-                    </a>
+                    <img src="https://pestcontroller.cl/wp-content/uploads/2022/07/pestcontroller-logo.png" alt="PestController Logo" class="h-14 w-auto object-contain max-w-full">
                 </div>
                 
                 <!-- Separator -->
@@ -605,17 +529,10 @@ function getTechnicianRoute($routeName, ...$params) {
         </aside>
 
         <!-- Main content -->
-        <div class="flex-1 flex flex-col min-w-0 overflow-x-hidden" style="margin-left: 0;">
-            <style>
-                @media (min-width: 768px) {
-                    #app > div.flex-1 {
-                        margin-left: 0 !important;
-                    }
-                }
-            </style>
+        <div class="flex-1 flex flex-col min-w-0 overflow-x-hidden">
 
             <!-- Page content -->
-            <main class="py-3 md:py-3 flex-1" style="background: #f9fafb; min-height: calc(100vh - 4rem); width: 100%;">
+            <main class="py-3 md:py-3 flex-1" style="background: #f9fafb; min-height: calc(100vh - 4rem);">
                 <!-- Banner de advertencia cuando está en modo técnico -->
                 @if(session('view_as_technician') && auth()->check() && auth()->user()->hasRole('super-admin'))
                     <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3 sm:p-4 mx-3 sm:mx-4 md:mx-6 lg:mx-8 mb-3 sm:mb-4" style="background: #fef3c7; border-left: 4px solid #f59e0b;">
@@ -697,6 +614,7 @@ function getTechnicianRoute($routeName, ...$params) {
     <script>
         // Mobile Menu Toggle
         (function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
             const sidebar = document.getElementById('sidebar');
             const mobileOverlay = document.getElementById('mobile-overlay');
             
@@ -818,6 +736,18 @@ function getTechnicianRoute($routeName, ...$params) {
                 if (pageCloseIcon) pageCloseIcon.classList.add('hidden');
             }
             
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (sidebar && sidebar.classList.contains('-translate-x-full')) {
+                        openMobileMenu();
+                    } else {
+                        closeMobileMenu();
+                    }
+                });
+            }
+            
             if (mobileOverlay) {
                 mobileOverlay.addEventListener('click', function() {
                     closeMobileMenu();
@@ -840,7 +770,10 @@ function getTechnicianRoute($routeName, ...$params) {
             function ensureDesktopSidebar() {
                 if (window.innerWidth >= 768) {
                     if (sidebar) {
-                        sidebar.style.transform = 'translateX(0)';
+                        sidebar.classList.remove('-translate-x-full');
+                        sidebar.classList.add('translate-x-0');
+                        // Forzar estilos de desktop
+                        sidebar.style.transform = 'none';
                         sidebar.style.position = 'static';
                         sidebar.style.zIndex = 'auto';
                         sidebar.style.left = 'auto';
@@ -849,26 +782,30 @@ function getTechnicianRoute($routeName, ...$params) {
                     if (mobileOverlay) {
                         mobileOverlay.classList.add('hidden');
                     }
+                    if (mobileMenuButton) {
+                        mobileMenuButton.style.display = 'none';
+                    }
                     document.body.style.overflow = '';
                 } else {
                     // En móvil, restaurar fixed y z-index alto
                     if (sidebar) {
-                        sidebar.style.transform = 'translateX(-100%)';
                         sidebar.style.position = 'fixed';
                         sidebar.style.zIndex = '9999';
                         sidebar.style.left = '0';
                         sidebar.style.top = '0';
                     }
+                    // Mostrar botón de hamburguesa si no hay otro botón en la página
+                    if (mobileMenuButton) {
+                        const dashboardButton = document.getElementById('dashboard-mobile-menu-button');
+                        const pageButton = document.getElementById('page-mobile-menu-button');
+                        if (!dashboardButton && !pageButton) {
+                            mobileMenuButton.style.display = 'block';
+                        }
+                    }
                 }
             }
             
-            // Ejecutar inmediatamente antes de que se renderice
-            if (document.readyState === 'loading') {
-                ensureDesktopSidebar();
-            }
-            
             // Ejecutar al cargar y al redimensionar
-            document.addEventListener('DOMContentLoaded', ensureDesktopSidebar);
             ensureDesktopSidebar();
             
             // Cerrar menú al redimensionar a desktop
@@ -878,10 +815,6 @@ function getTechnicianRoute($routeName, ...$params) {
                     ensureDesktopSidebar();
                 }
             });
-            
-            // Exponer funciones globalmente para uso en páginas
-            window.openMobileMenu = openMobileMenu;
-            window.closeMobileMenu = closeMobileMenu;
         })();
         
         // Dark Mode Toggle Switch
