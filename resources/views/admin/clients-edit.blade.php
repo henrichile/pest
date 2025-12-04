@@ -427,11 +427,11 @@
             }
         }
         
-        if (document.readyState === 'loading') {
+        //if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initPageMenu);
-        } else {
+        /*} else {
             setTimeout(initPageMenu, 50);
-        }
+        }*/
     })();
 </script>
 @endpush
