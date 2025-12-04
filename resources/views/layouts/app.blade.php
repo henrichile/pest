@@ -601,6 +601,19 @@ function getTechnicianRoute($routeName, ...$params) {
                         
                     </ul>
                 </nav>
+
+                <!-- Logout -->
+                <div class="mt-auto pt-4 border-t border-gray-200">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="group flex w-full items-center gap-x-6 rounded-md px-3 py-3 text-sm leading-5 font-medium text-gray-900 dark:text-gray-300 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400 transition-colors">
+                            <svg class="h-5 w-5 shrink-0 text-gray-900 dark:text-gray-400 group-hover:text-red-600 dark:group-hover:text-red-400" style="margin-right: 20px !important; color: #111827 !important;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                            </svg>
+                            <span class="text-gray-900 dark:text-gray-300 group-hover:text-red-600 dark:group-hover:text-red-400" style="font-size: 15px; font-weight: 500; color: #111827 !important;">Cerrar Sesión</span>
+                        </button>
+                    </form>
+                </div>
             </div>
         </aside>
 
