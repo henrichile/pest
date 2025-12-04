@@ -215,6 +215,7 @@
                 const isClosed = currentTransform.includes('-100%') || !sidebar.classList.contains('translate-x-0');
                 console.log('Botón de menú presionado 5');
                 if (isClosed) {
+                    sidebar.style.display = 'block';
                     console.log('Botón de menú presionado 6');
                     // Abrir
                     sidebar.classList.remove('-translate-x-full');
