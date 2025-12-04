@@ -9,7 +9,7 @@
         <!-- Primera fila: Hamburguesa + Título (móvil) -->
         <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
             <!-- Hamburguesa (solo móvil) -->
-            <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 1000; position: relative;">
+            <button id="page-mobile-menu-button" type="button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 1000; position: relative;">
                 <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
@@ -284,6 +284,7 @@
 
 @push('scripts')
 <script>
+<<<<<<< HEAD
 (function() {
     function initPageMenuButton() {
         const pageMenuButton = document.getElementById('page-mobile-menu-button');
@@ -317,6 +318,157 @@
         initPageMenuButton();
     }
 })();
+=======
+    // Page Mobile Menu Button
+    (function() {
+        function initPageMenu() {
+            const pageMenuButton = document.getElementById('page-mobile-menu-button');
+            const sidebar = document.getElementById('sidebar');
+            const mobileOverlay = document.getElementById('mobile-overlay');
+            
+            if (!pageMenuButton) {
+                setTimeout(initPageMenu, 100);
+                return;
+            }
+            
+            if (!sidebar) {
+                console.error('Sidebar no encontrado');
+                return;
+            }
+            
+            function toggleMobileMenu() {
+                // Verificar si el menú está abierto usando múltiples métodos
+                const computedStyle = window.getComputedStyle(sidebar);
+                const transform = computedStyle.transform;
+                const sidebarTransform = sidebar.style.transform || '';
+                const isOpen = sidebar.classList.contains('translate-x-0') || 
+                              transform === 'matrix(1, 0, 0, 1, 0, 0)' || 
+                              transform === 'none' ||
+                              sidebarTransform === 'translateX(0)' ||
+                              sidebarTransform.includes('translateX(0)') ||
+                              sidebarTransform === '';
+                
+                if (isOpen) {
+                    // Cerrar menú
+                    sidebar.classList.remove('translate-x-0');
+                    sidebar.classList.add('-translate-x-full');
+                    
+                    // Remover el style tag de override
+                    const styleTag = document.getElementById('mobile-menu-override-style');
+                    if (styleTag) {
+                        styleTag.remove();
+                    }
+                    
+                    // Asegurar que el sidebar esté oculto
+                    sidebar.style.transform = 'translateX(-100%)';
+                    
+                    // Ocultar overlay
+                    if (mobileOverlay) {
+                        mobileOverlay.classList.add('hidden');
+                        mobileOverlay.style.display = 'none';
+                    }
+                    
+                    // Cambiar iconos
+                    const menuIcon = document.getElementById('page-menu-icon');
+                    const closeIcon = document.getElementById('page-close-icon');
+                    if (menuIcon) menuIcon.classList.remove('hidden');
+                    if (closeIcon) closeIcon.classList.add('hidden');
+                    
+                    // Restaurar scroll del body
+                    document.body.style.overflow = '';
+                } else {
+                    // Abrir menú
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebar.classList.add('translate-x-0');
+                    
+                    // Crear un style tag para sobrescribir el CSS crítico
+                    let styleTag = document.getElementById('mobile-menu-override-style');
+                    if (!styleTag) {
+                        styleTag = document.createElement('style');
+                        styleTag.id = 'mobile-menu-override-style';
+                        document.head.appendChild(styleTag);
+                    }
+                    styleTag.textContent = `
+                        #sidebar {
+                            transform: translateX(0) !important;
+                            display: flex !important;
+                            visibility: visible !important;
+                            opacity: 1 !important;
+                            z-index: 9999 !important;
+                            position: fixed !important;
+                            left: 0 !important;
+                            top: 0 !important;
+                            width: 288px !important;
+                            height: 100vh !important;
+                        }
+                    `;
+                    
+                    // También aplicar estilos inline como respaldo
+                    sidebar.style.cssText = `
+                        display: flex !important;
+                        transform: translateX(0) !important;
+                        visibility: visible !important;
+                        opacity: 1 !important;
+                        z-index: 9999 !important;
+                        position: fixed !important;
+                        left: 0 !important;
+                        top: 0 !important;
+                        width: 288px !important;
+                        height: 100vh !important;
+                    `;
+                    
+                    // Mostrar overlay
+                    if (mobileOverlay) {
+                        mobileOverlay.classList.remove('hidden');
+                        mobileOverlay.style.cssText = `
+                            display: block !important;
+                            visibility: visible !important;
+                            z-index: 9998 !important;
+                        `;
+                    }
+                    
+                    // Cambiar iconos
+                    const menuIcon = document.getElementById('page-menu-icon');
+                    const closeIcon = document.getElementById('page-close-icon');
+                    if (menuIcon) menuIcon.classList.add('hidden');
+                    if (closeIcon) closeIcon.classList.remove('hidden');
+                    
+                    // Bloquear scroll del body
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+            
+            pageMenuButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleMobileMenu();
+            });
+            
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', function() {
+                    toggleMobileMenu();
+                });
+            }
+            
+            if (sidebar) {
+                const sidebarLinks = sidebar.querySelectorAll('a');
+                sidebarLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        if (window.innerWidth < 768) {
+                            toggleMobileMenu();
+                        }
+                    });
+                });
+            }
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPageMenu);
+        } else {
+            setTimeout(initPageMenu, 50);
+        }
+    })();
+>>>>>>> d3c05bb7b40219ef190521333eb8afa8008f3c45
 </script>
 @endpush
 
