@@ -404,6 +404,7 @@
             }
             
             pageMenuButton.addEventListener('click', function(e) {
+                console.log('Click en el botón de menú');
                 e.preventDefault();
                 e.stopPropagation();
                 toggleMobileMenu();
