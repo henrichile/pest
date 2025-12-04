@@ -285,14 +285,13 @@
 @push('scripts')
 <script>
     // Page Mobile Menu Button
-    (function() {
-        function initPageMenu() {
+
             const pageMenuButton = document.getElementById('page-mobile-menu-button');
             const sidebar = document.getElementById('sidebar');
             const mobileOverlay = document.getElementById('mobile-overlay');
             
             if (!pageMenuButton) {
-                setTimeout(initPageMenu, 100);
+                console.error('Botón de menú no encontrado');
                 return;
             }
             
@@ -426,14 +425,6 @@
                     });
                 });
             }
-        }
-        
-        //if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initPageMenu);
-        /*} else {
-            setTimeout(initPageMenu, 50);
-        }*/
-    })();
 </script>
 @endpush
 
