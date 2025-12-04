@@ -213,13 +213,14 @@
                 const currentTransform = sidebar.style.transform || '';
                 // Asumimos cerrado si tiene -100% o si no tiene la clase translate-x-0
                 const isClosed = currentTransform.includes('-100%') || !sidebar.classList.contains('translate-x-0');
-                
+                console.log('Botón de menú presionado 5');
                 if (isClosed) {
+                    console.log('Botón de menú presionado 6');
                     // Abrir
                     sidebar.classList.remove('-translate-x-full');
                     sidebar.classList.add('translate-x-0');
                     sidebar.style.transform = 'translateX(0)';
-                    
+                    console.log('Botón de menú presionado 7');
                     // Forzar estilos críticos
                     let styleTag = document.getElementById('mobile-menu-override-style');
                     if (!styleTag) {
@@ -228,38 +229,43 @@
                         document.head.appendChild(styleTag);
                     }
                     styleTag.textContent = `#sidebar { transform: translateX(0) !important; display: flex !important; z-index: 9999 !important; position: fixed !important; left: 0 !important; top: 0 !important; height: 100vh !important; }`;
-                    
+                    console.log('Botón de menú presionado 8');
                     if (mobileOverlay) {
                         mobileOverlay.classList.remove('hidden');
                         mobileOverlay.style.display = 'block';
                     }
-                    
+                    console.log('Botón de menú presionado 9');
                     const menuIcon = document.getElementById('page-menu-icon');
                     const closeIcon = document.getElementById('page-close-icon');
                     if (menuIcon) menuIcon.classList.add('hidden');
                     if (closeIcon) closeIcon.classList.remove('hidden');
-                    
+                    console.log('Botón de menú presionado 10');
                     document.body.style.overflow = 'hidden';
+                    console.log('Botón de menú presionado 11');
                 } else {
+                    console.log('Botón de menú presionado 12');
                     // Cerrar
                     sidebar.classList.remove('translate-x-0');
                     sidebar.classList.add('-translate-x-full');
                     sidebar.style.transform = 'translateX(-100%)';
-                    
+                    console.log('Botón de menú presionado 13');
                     const styleTag = document.getElementById('mobile-menu-override-style');
                     if (styleTag) styleTag.remove();
+                    console.log('Botón de menú presionado 14');
                     
                     if (mobileOverlay) {
                         mobileOverlay.classList.add('hidden');
                         mobileOverlay.style.display = 'none';
                     }
-                    
+                    console.log('Botón de menú presionado 15');
                     const menuIcon = document.getElementById('page-menu-icon');
                     const closeIcon = document.getElementById('page-close-icon');
                     if (menuIcon) menuIcon.classList.remove('hidden');
                     if (closeIcon) closeIcon.classList.add('hidden');
-                    
+                    console.log('Botón de menú presionado 16');
+
                     document.body.style.overflow = '';
+                    console.log('Botón de menú presionado 18');
                 }
             }
             
