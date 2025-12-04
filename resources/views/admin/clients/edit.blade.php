@@ -203,6 +203,7 @@
             const mobileOverlay = document.getElementById('mobile-overlay');
             
             if (!pageMenuButton) {
+                console.error('Botón de menú no encontrado');
                 setTimeout(initPageMenu, 100);
                 return;
             }
