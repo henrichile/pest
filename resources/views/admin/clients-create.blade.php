@@ -9,7 +9,7 @@
         <!-- Primera fila: Hamburguesa + Título (móvil) -->
         <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
             <!-- Hamburguesa (solo móvil) -->
-            <button id="dashboard-mobile-menu-button" type="button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors cursor-pointer" style="z-index: 1000; position: relative;">
+            <button id="page-mobile-menu-button" type="button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors cursor-pointer" style="z-index: 1000; position: relative;">
                 <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
@@ -286,12 +286,11 @@
     // Page Mobile Menu Button
     (function() {
         function initPageMenu() {
-            const pageMenuButton = document.getElementById('dashboard-mobile-menu-button');
+            const pageMenuButton = document.getElementById('page-mobile-menu-button');
             const sidebar = document.getElementById('sidebar');
             const mobileOverlay = document.getElementById('mobile-overlay');
             
             if (!pageMenuButton) {
-                console.warn('Botón de menú móvil no encontrado');
                 setTimeout(initPageMenu, 100);
                 return;
             }
@@ -403,21 +402,18 @@
                 }
             }
             
-            // Event listener para el botón
             pageMenuButton.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 toggleMobileMenu();
             });
             
-            // Event listener para el overlay (cerrar al hacer clic fuera)
             if (mobileOverlay) {
                 mobileOverlay.addEventListener('click', function() {
                     toggleMobileMenu();
                 });
             }
             
-            // Cerrar menú al hacer clic en un enlace del sidebar (solo en móvil)
             if (sidebar) {
                 const sidebarLinks = sidebar.querySelectorAll('a');
                 sidebarLinks.forEach(link => {
@@ -430,11 +426,9 @@
             }
         }
         
-        // Inicializar cuando el DOM esté listo
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initPageMenu);
         } else {
-            // Si el DOM ya está listo, esperar un poco para asegurar que el layout haya inicializado
             setTimeout(initPageMenu, 50);
         }
     })();
