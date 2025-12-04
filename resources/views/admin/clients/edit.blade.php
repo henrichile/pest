@@ -245,6 +245,7 @@
                     console.log('Botón de menú presionado 11');
                 } else {
                     console.log('Botón de menú presionado 12');
+                    sidebar.style.display = 'none';
                     // Cerrar
                     sidebar.classList.remove('translate-x-0');
                     sidebar.classList.add('-translate-x-full');
