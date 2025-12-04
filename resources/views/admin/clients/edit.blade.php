@@ -202,12 +202,10 @@
             
             if (!pageMenuButton) {
                 console.error('Botón de menú no encontrado');
-                return;
             }
             
             if (!sidebar) {
                 console.error('Sidebar no encontrado');
-                return;
             }
             
             function toggleMobileMenu() {
