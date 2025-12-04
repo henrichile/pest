@@ -284,41 +284,6 @@
 
 @push('scripts')
 <script>
-<<<<<<< HEAD
-(function() {
-    function initPageMenuButton() {
-        const pageMenuButton = document.getElementById('page-mobile-menu-button');
-        
-        if (!pageMenuButton) {
-            console.warn('[PAGE MENU] Botón page-mobile-menu-button no encontrado, reintentando...');
-            setTimeout(initPageMenuButton, 100);
-            return;
-        }
-        
-        console.log('[PAGE MENU] Botón encontrado, configurando listener...');
-        
-        pageMenuButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('[PAGE MENU] Click detectado, llamando a window.openMobileMenu()');
-            
-            if (typeof window.openMobileMenu === 'function') {
-                window.openMobileMenu();
-            } else {
-                console.error('[PAGE MENU] window.openMobileMenu no está definida!');
-            }
-        });
-        
-        console.log('[PAGE MENU] Listener configurado correctamente');
-    }
-    
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initPageMenuButton);
-    } else {
-        initPageMenuButton();
-    }
-})();
-=======
     // Page Mobile Menu Button
     (function() {
         function initPageMenu() {
@@ -468,7 +433,6 @@
             setTimeout(initPageMenu, 50);
         }
     })();
->>>>>>> d3c05bb7b40219ef190521333eb8afa8008f3c45
 </script>
 @endpush
 

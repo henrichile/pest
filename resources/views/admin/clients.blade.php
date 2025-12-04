@@ -9,15 +9,12 @@
         <!-- Primera fila: Hamburguesa + Título (móvil) -->
         <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
             <!-- Hamburguesa (solo móvil) -->
-<<<<<<< HEAD
-            <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 1000; position: relative;">
-=======
-            <button id="dashboard-mobile-menu-button" type="button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 1000; position: relative;">
->>>>>>> d3c05bb7b40219ef190521333eb8afa8008f3c45
-                <svg id="dashboard-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+            <!-- Hamburguesa (solo móvil) -->
+            <button id="page-mobile-menu-button" type="button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors cursor-pointer" style="z-index: 1000; position: relative;">
+                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
-                <svg id="dashboard-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
@@ -184,45 +181,11 @@
 
 @push('scripts')
 <script>
-<<<<<<< HEAD
-(function() {
-    function initPageMenuButton() {
-        const pageMenuButton = document.getElementById('page-mobile-menu-button');
-        
-        if (!pageMenuButton) {
-            console.warn('[PAGE MENU] Botón page-mobile-menu-button no encontrado, reintentando...');
-            setTimeout(initPageMenuButton, 100);
-            return;
-        }
-        
-        console.log('[PAGE MENU] Botón encontrado, configurando listener...');
-        
-        pageMenuButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('[PAGE MENU] Click detectado, llamando a window.openMobileMenu()');
-            
-            if (typeof window.openMobileMenu === 'function') {
-                window.openMobileMenu();
-            } else {
-                console.error('[PAGE MENU] window.openMobileMenu no está definida!');
-            }
-        });
-        
-        console.log('[PAGE MENU] Listener configurado correctamente');
-    }
-    
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initPageMenuButton);
-    } else {
-        initPageMenuButton();
-    }
-})();
-=======
+
     // Page Mobile Menu Button
     (function() {
         function initPageMenu() {
-            const pageMenuButton = document.getElementById('dashboard-mobile-menu-button');
+            const pageMenuButton = document.getElementById('page-mobile-menu-button');
             const sidebar = document.getElementById('sidebar');
             const mobileOverlay = document.getElementById('mobile-overlay');
             
@@ -270,8 +233,8 @@
                     }
                     
                     // Cambiar iconos
-                    const menuIcon = document.getElementById('dashboard-menu-icon');
-                    const closeIcon = document.getElementById('dashboard-close-icon');
+                    const menuIcon = document.getElementById('page-menu-icon');
+                    const closeIcon = document.getElementById('page-close-icon');
                     if (menuIcon) menuIcon.classList.remove('hidden');
                     if (closeIcon) closeIcon.classList.add('hidden');
                     
@@ -329,8 +292,8 @@
                     }
                     
                     // Cambiar iconos
-                    const menuIcon = document.getElementById('dashboard-menu-icon');
-                    const closeIcon = document.getElementById('dashboard-close-icon');
+                    const menuIcon = document.getElementById('page-menu-icon');
+                    const closeIcon = document.getElementById('page-close-icon');
                     if (menuIcon) menuIcon.classList.add('hidden');
                     if (closeIcon) closeIcon.classList.remove('hidden');
                     
@@ -374,7 +337,6 @@
             setTimeout(initPageMenu, 50);
         }
     })();
->>>>>>> d3c05bb7b40219ef190521333eb8afa8008f3c45
 </script>
 @endpush
 
