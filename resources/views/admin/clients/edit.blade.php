@@ -196,93 +196,133 @@
 @push('scripts')
 <script>
     // Page Mobile Menu Button
+    (function() {
+        function initPageMenu() {
             const pageMenuButton = document.getElementById('page-mobile-menu-button');
             const sidebar = document.getElementById('sidebar');
             const mobileOverlay = document.getElementById('mobile-overlay');
             
             if (!pageMenuButton) {
-                console.error('Botón de menú no encontrado');
+                setTimeout(initPageMenu, 100);
+                return;
             }
             
             if (!sidebar) {
                 console.error('Sidebar no encontrado');
+                return;
             }
             
             function toggleMobileMenu() {
-                console.log('Botón de menú presionado 4');
-                const currentTransform = sidebar.style.transform || '';
-                // Asumimos cerrado si tiene -100% o si no tiene la clase translate-x-0
-                const isClosed = currentTransform.includes('-100%') || !sidebar.classList.contains('translate-x-0');
-                console.log('Botón de menú presionado 5');
-                if (isClosed) {
-                    sidebar.style.display = 'block';
-                    console.log('Botón de menú presionado 6');
-                    // Abrir
+                // Verificar si el menú está abierto usando múltiples métodos
+                const computedStyle = window.getComputedStyle(sidebar);
+                const transform = computedStyle.transform;
+                const sidebarTransform = sidebar.style.transform || '';
+                const isOpen = sidebar.classList.contains('translate-x-0') || 
+                              transform === 'matrix(1, 0, 0, 1, 0, 0)' || 
+                              transform === 'none' ||
+                              sidebarTransform === 'translateX(0)' ||
+                              sidebarTransform.includes('translateX(0)') ||
+                              sidebarTransform === '';
+                
+                if (isOpen) {
+                    // Cerrar menú
+                    sidebar.classList.remove('translate-x-0');
+                    sidebar.classList.add('-translate-x-full');
+                    
+                    // Remover el style tag de override
+                    const styleTag = document.getElementById('mobile-menu-override-style');
+                    if (styleTag) {
+                        styleTag.remove();
+                    }
+                    
+                    // Asegurar que el sidebar esté oculto
+                    sidebar.style.transform = 'translateX(-100%)';
+                    
+                    // Ocultar overlay
+                    if (mobileOverlay) {
+                        mobileOverlay.classList.add('hidden');
+                        mobileOverlay.style.display = 'none';
+                    }
+                    
+                    // Cambiar iconos
+                    const menuIcon = document.getElementById('page-menu-icon');
+                    const closeIcon = document.getElementById('page-close-icon');
+                    if (menuIcon) menuIcon.classList.remove('hidden');
+                    if (closeIcon) closeIcon.classList.add('hidden');
+                    
+                    // Restaurar scroll del body
+                    document.body.style.overflow = '';
+                } else {
+                    // Abrir menú
                     sidebar.classList.remove('-translate-x-full');
                     sidebar.classList.add('translate-x-0');
-                    sidebar.style.transform = 'translateX(0)';
-                    console.log('Botón de menú presionado 7');
-                    // Forzar estilos críticos
+                    
+                    // Crear un style tag para sobrescribir el CSS crítico
                     let styleTag = document.getElementById('mobile-menu-override-style');
                     if (!styleTag) {
                         styleTag = document.createElement('style');
                         styleTag.id = 'mobile-menu-override-style';
                         document.head.appendChild(styleTag);
                     }
-                    styleTag.textContent = `#sidebar { transform: translateX(0) !important; display: flex !important; z-index: 9999 !important; position: fixed !important; left: 0 !important; top: 0 !important; height: 100vh !important; }`;
-                    console.log('Botón de menú presionado 8');
+                    // Asegurar que el sidebar tenga un z-index alto y posición fija
+                    styleTag.textContent = `
+                        #sidebar {
+                            transform: translateX(0) !important;
+                            display: flex !important;
+                            visibility: visible !important;
+                            opacity: 1 !important;
+                            z-index: 9999 !important;
+                            position: fixed !important;
+                            left: 0 !important;
+                            top: 0 !important;
+                            width: 288px !important;
+                            height: 100vh !important;
+                        }
+                    `;
+                    
+                    // También aplicar estilos inline como respaldo
+                    sidebar.style.cssText = `
+                        display: flex !important;
+                        transform: translateX(0) !important;
+                        visibility: visible !important;
+                        opacity: 1 !important;
+                        z-index: 9999 !important;
+                        position: fixed !important;
+                        left: 0 !important;
+                        top: 0 !important;
+                        width: 288px !important;
+                        height: 100vh !important;
+                    `;
+                    
+                    // Mostrar overlay
                     if (mobileOverlay) {
                         mobileOverlay.classList.remove('hidden');
-                        mobileOverlay.style.display = 'block';
+                        mobileOverlay.style.cssText = `
+                            display: block !important;
+                            visibility: visible !important;
+                            z-index: 9998 !important;
+                        `;
                     }
-                    console.log('Botón de menú presionado 9');
+                    
+                    // Cambiar iconos
                     const menuIcon = document.getElementById('page-menu-icon');
                     const closeIcon = document.getElementById('page-close-icon');
                     if (menuIcon) menuIcon.classList.add('hidden');
                     if (closeIcon) closeIcon.classList.remove('hidden');
-                    console.log('Botón de menú presionado 10');
-                    document.body.style.overflow = 'hidden';
-                    console.log('Botón de menú presionado 11');
-                } else {
-                    console.log('Botón de menú presionado 12');
-                    sidebar.style.display = 'none';
-                    // Cerrar
-                    sidebar.classList.remove('translate-x-0');
-                    sidebar.classList.add('-translate-x-full');
-                    sidebar.style.transform = 'translateX(-100%)';
-                    console.log('Botón de menú presionado 13');
-                    const styleTag = document.getElementById('mobile-menu-override-style');
-                    if (styleTag) styleTag.remove();
-                    console.log('Botón de menú presionado 14');
                     
-                    if (mobileOverlay) {
-                        mobileOverlay.classList.add('hidden');
-                        mobileOverlay.style.display = 'none';
-                    }
-                    console.log('Botón de menú presionado 15');
-                    const menuIcon = document.getElementById('page-menu-icon');
-                    const closeIcon = document.getElementById('page-close-icon');
-                    if (menuIcon) menuIcon.classList.remove('hidden');
-                    if (closeIcon) closeIcon.classList.add('hidden');
-                    console.log('Botón de menú presionado 16');
-
-                    document.body.style.overflow = '';
-                    console.log('Botón de menú presionado 18');
+                    // Bloquear scroll del body
+                    document.body.style.overflow = 'hidden';
                 }
             }
             
             pageMenuButton.addEventListener('click', function(e) {
-                console.log('Botón de menú presionado');
                 e.preventDefault();
-                console.log('Botón de menú presionado 2');
                 e.stopPropagation();
-                console.log('Botón de menú presionado 3');
                 toggleMobileMenu();
             });
             
             if (mobileOverlay) {
                 mobileOverlay.addEventListener('click', function() {
-                    console.log('Overlay presionado');
                     toggleMobileMenu();
                 });
             }
@@ -297,6 +337,14 @@
                     });
                 });
             }
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPageMenu);
+        } else {
+            setTimeout(initPageMenu, 50);
+        }
+    })();
 
         
 </script>
