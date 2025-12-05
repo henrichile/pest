@@ -837,6 +837,31 @@ function getTechnicianRoute($routeName, ...$params) {
                 });
             }
             
+            // Cerrar menú al hacer clic fuera del sidebar (solo en móvil)
+            document.addEventListener('click', function(event) {
+                // Solo en móvil
+                if (window.innerWidth >= 768) return;
+                
+                // Verificar si el menú está abierto
+                if (!sidebar || sidebar.classList.contains('-translate-x-full')) return;
+                
+                // Verificar si el clic fue fuera del sidebar
+                if (!sidebar.contains(event.target)) {
+                    // Verificar que no sea un botón de menú
+                    const menuButtons = document.querySelectorAll('[onclick*="openMobileMenu"]');
+                    let isMenuButton = false;
+                    menuButtons.forEach(button => {
+                        if (button.contains(event.target)) {
+                            isMenuButton = true;
+                        }
+                    });
+                    
+                    if (!isMenuButton) {
+                        closeMobileMenu();
+                    }
+                }
+            });
+            
             // Cerrar menú al hacer clic en un enlace (solo en móvil)
             if (sidebar) {
                 const sidebarLinks = sidebar.querySelectorAll('a');
