@@ -927,6 +927,44 @@ function getTechnicianRoute($routeName, ...$params) {
                 }
             });
             
+            // Funciones helper para obtener estilos correctos del sidebar
+            window.getSidebarOpenStyles = function() {
+                return {
+                    css: `
+                        #sidebar {
+                            transform: translateX(0) !important;
+                            display: flex !important;
+                            visibility: visible !important;
+                            opacity: 1 !important;
+                            z-index: 9999 !important;
+                            position: fixed !important;
+                            left: 0 !important;
+                            top: 0 !important;
+                            width: 288px !important;
+                            height: 100vh !important;
+                            max-height: 100vh !important;
+                            overflow-y: auto !important;
+                            -webkit-overflow-scrolling: touch !important;
+                        }
+                    `,
+                    inline: `
+                        display: flex !important;
+                        transform: translateX(0) !important;
+                        visibility: visible !important;
+                        opacity: 1 !important;
+                        z-index: 9999 !important;
+                        position: fixed !important;
+                        left: 0 !important;
+                        top: 0 !important;
+                        width: 288px !important;
+                        height: 100vh !important;
+                        max-height: 100vh !important;
+                        overflow-y: auto !important;
+                        -webkit-overflow-scrolling: touch !important;
+                    `
+                };
+            };
+            
             // Exponer funciones globalmente para uso en páginas
             window.openMobileMenu = openMobileMenu;
             window.closeMobileMenu = closeMobileMenu;

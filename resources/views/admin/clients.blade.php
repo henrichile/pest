@@ -264,6 +264,9 @@
                             top: 0 !important;
                             width: 288px !important;
                             height: 100vh !important;
+                            max-height: 100vh !important;
+                            overflow-y: auto !important;
+                            -webkit-overflow-scrolling: touch !important;
                         }
                     `;
                     
@@ -279,6 +282,9 @@
                         top: 0 !important;
                         width: 288px !important;
                         height: 100vh !important;
+                        max-height: 100vh !important;
+                        overflow-y: auto !important;
+                        -webkit-overflow-scrolling: touch !important;
                     `;
                     
                     // Mostrar overlay
