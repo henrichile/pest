@@ -337,7 +337,7 @@ function getTechnicianRoute($routeName, ...$params) {
         <div id="mobile-overlay" class="md:hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-40 hidden" style="z-index: 9998;"></div>
         
         <!-- Sidebar -->
-        <aside id="sidebar" class="fixed md:static flex-shrink-0 w-72 flex flex-col bg-white border-r border-gray-200 z-50 h-full" style="transform: translateX(-100%); transition: transform 0.3s ease-in-out;">
+        <aside id="sidebar" class="fixed md:static flex-shrink-0 w-72 flex flex-col bg-white border-r border-gray-200 z-50 h-full overflow-y-auto" style="transform: translateX(-100%); transition: transform 0.3s ease-in-out;">
             <style>
                 @media (min-width: 768px) {
                     #sidebar {
@@ -349,10 +349,14 @@ function getTechnicianRoute($routeName, ...$params) {
                     #sidebar {
                         transform: translateX(-100%) !important;
                         position: fixed !important;
+                        height: 100vh !important;
+                        max-height: 100vh !important;
+                        overflow-y: auto !important;
+                        -webkit-overflow-scrolling: touch !important;
                     }
                 }
             </style>
-            <div class="flex grow flex-col gap-y-3 overflow-y-auto px-5 pb-4">
+            <div class="flex grow flex-col gap-y-3 px-5 pb-4">
                 <div class="flex h-16 shrink-0 items-center justify-center pt-6 pb-4">
                     @php
                         // Determinar la ruta del dashboard según el rol
@@ -745,6 +749,9 @@ function getTechnicianRoute($routeName, ...$params) {
                         top: 0 !important;
                         width: 288px !important;
                         height: 100vh !important;
+                        max-height: 100vh !important;
+                        overflow-y: auto !important;
+                        -webkit-overflow-scrolling: touch !important;
                     }
                 `;
                 
@@ -760,6 +767,9 @@ function getTechnicianRoute($routeName, ...$params) {
                     top: 0 !important;
                     width: 288px !important;
                     height: 100vh !important;
+                    max-height: 100vh !important;
+                    overflow-y: auto !important;
+                    -webkit-overflow-scrolling: touch !important;
                 `;
                 
                 // Mostrar overlay
