@@ -18,7 +18,7 @@
             <!-- Título -->
             <div class="flex-1">
                 <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
-                    Gestión de Usuarios
+                    Usuarios
                 </h2>
             </div>
 
