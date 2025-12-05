@@ -318,5 +318,3 @@
 })();
 </script>
 @endpush
-
-@endsection
