@@ -7,10 +7,10 @@
     <!-- Header -->
     <div class="md:flex md:items-center md:justify-between mb-6">
         <div class="min-w-0 flex-1">
-            <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight" style="color: #111827; font-weight: 700;">
+            <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight" class="text-gray-900 dark:text-white" style="font-weight: 700;">
                 Editar Cliente
             </h2>
-            <p class="mt-1 text-sm" style="color: #6b7280;">
+            <p class="mt-1 text-sm" class="text-gray-600 dark:text-gray-300">
                 Actualice los datos del cliente
             </p>
         </div>
@@ -25,7 +25,7 @@
     </div>
 
     <!-- Form -->
-    <div class="bg-white border dark:border-gray-700 rounded-lg p-6" style="border: 1px solid #e5e7eb !important;">
+    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6" style="border: 1px solid #e5e7eb !important;">
         <form method="POST" action="{{ route('admin.clients.update', $client) }}">
             @csrf
             @method('PUT')
@@ -55,78 +55,78 @@
 
             <!-- Información Básica -->
             <div class="mb-6">
-                <h3 class="text-lg font-semibold mb-4" style="color: #111827;">Información Básica</h3>
+                <h3 class="text-lg font-semibold mb-4" class="text-gray-900 dark:text-white">Información Básica</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Nombre -->
                     <div>
-                        <label for="name" class="block text-sm font-medium mb-1" style="color: #374151;">
+                        <label for="name" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
                             Nombre <span class="text-red-500">*</span>
                         </label>
                         <input type="text" name="name" id="name" value="{{ old('name', $client->name) }}" required
-                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                               class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
 
                     <!-- RUT -->
                     <div>
-                        <label for="rut" class="block text-sm font-medium mb-1" style="color: #374151;">
+                        <label for="rut" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
                             RUT <span class="text-red-500">*</span>
                         </label>
                         <input type="text" name="rut" id="rut" value="{{ old('rut', $client->rut) }}" required
-                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                               class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
 
                     <!-- Email -->
                     <div>
-                        <label for="email" class="block text-sm font-medium mb-1" style="color: #374151;">
+                        <label for="email" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
                             Email
                         </label>
                         <input type="email" name="email" id="email" value="{{ old('email', $client->email) }}"
-                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                               class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
 
                     <!-- Teléfono -->
                     <div>
-                        <label for="phone" class="block text-sm font-medium mb-1" style="color: #374151;">
+                        <label for="phone" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
                             Teléfono <span class="text-red-500">*</span>
                         </label>
                         <input type="text" name="phone" id="phone" value="{{ old('phone', $client->phone) }}" required
-                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                               class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
 
                     <!-- Dirección -->
                     <div class="md:col-span-2">
-                        <label for="address" class="block text-sm font-medium mb-1" style="color: #374151;">
+                        <label for="address" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
                             Dirección <span class="text-red-500">*</span>
                         </label>
                         <input type="text" name="address" id="address" value="{{ old('address', $client->address) }}" required
                                placeholder="Calle, número, piso, depto."
-                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                               class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
 
                     <!-- Tipo de Negocio -->
                     <div>
-                        <label for="business_type" class="block text-sm font-medium mb-1" style="color: #374151;">
+                        <label for="business_type" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
                             Tipo de Negocio
                         </label>
                         <input type="text" name="business_type" id="business_type" value="{{ old('business_type', $client->business_type) }}"
                                placeholder="Ej: Restaurante, Retail, etc."
-                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                               class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
 
                     <!-- Persona de Contacto -->
                     <div>
-                        <label for="contact_person" class="block text-sm font-medium mb-1" style="color: #374151;">
+                        <label for="contact_person" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
                             Persona de Contacto
                         </label>
                         <input type="text" name="contact_person" id="contact_person" value="{{ old('contact_person', $client->contact_person) }}"
                                placeholder="Ej: Juan Pérez - Gerente"
-                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                               class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
                 </div>

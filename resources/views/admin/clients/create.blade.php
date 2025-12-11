@@ -10,17 +10,17 @@
         <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
             <!-- Hamburguesa (solo móvil) -->
             <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors cursor-pointer" style="z-index: 100;">
-                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="text-gray-900 dark:text-white">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
-                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="text-gray-900 dark:text-white">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
             
             <!-- Título -->
             <div class="flex-1">
-                <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
+                <h2 class="text-2xl font-bold" class="text-gray-900 dark:text-white" style="font-weight: 700;">
                     Crear Cliente
                 </h2>
             </div>
@@ -61,10 +61,10 @@
         <!-- Segunda fila: Título completo (desktop) -->
         <div class="hidden md:flex md:items-center md:justify-between">
             <div class="min-w-0 flex-1">
-                <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight" style="color: #111827; font-weight: 700;">
+                <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight" class="text-gray-900 dark:text-white" style="font-weight: 700;">
                     Crear Nuevo Cliente
                 </h2>
-                <p class="mt-1 text-sm" style="color: #6b7280;">
+                <p class="mt-1 text-sm" class="text-gray-600 dark:text-gray-300">
                     Complete los datos del nuevo cliente
                 </p>
             </div>
@@ -80,7 +80,7 @@
     </div>
 
     <!-- Form -->
-    <div class="bg-white border dark:border-gray-700 rounded-lg p-6" style="border: 1px solid #e5e7eb !important;">
+    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6" style="border: 1px solid #e5e7eb !important;">
         <form method="POST" action="{{ route('admin.clients.store') }}">
             @csrf
 
@@ -109,78 +109,78 @@
 
             <!-- Información Básica -->
             <div class="mb-6">
-                <h3 class="text-lg font-semibold mb-4" style="color: #111827;">Información Básica</h3>
+                <h3 class="text-lg font-semibold mb-4" class="text-gray-900 dark:text-white">Información Básica</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Nombre -->
                     <div>
-                        <label for="name" class="block text-sm font-medium mb-1" style="color: #374151;">
+                        <label for="name" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
                             Nombre <span class="text-red-500">*</span>
                         </label>
                         <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                               class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
 
                     <!-- RUT -->
                     <div>
-                        <label for="rut" class="block text-sm font-medium mb-1" style="color: #374151;">
+                        <label for="rut" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
                             RUT <span class="text-red-500">*</span>
                         </label>
                         <input type="text" name="rut" id="rut" value="{{ old('rut') }}" required
-                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                               class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
 
                     <!-- Email -->
                     <div>
-                        <label for="email" class="block text-sm font-medium mb-1" style="color: #374151;">
+                        <label for="email" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
                             Email
                         </label>
                         <input type="email" name="email" id="email" value="{{ old('email') }}"
-                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                               class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
 
                     <!-- Teléfono -->
                     <div>
-                        <label for="phone" class="block text-sm font-medium mb-1" style="color: #374151;">
+                        <label for="phone" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
                             Teléfono <span class="text-red-500">*</span>
                         </label>
                         <input type="text" name="phone" id="phone" value="{{ old('phone') }}" required
-                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                               class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
 
                     <!-- Dirección -->
                     <div class="md:col-span-2">
-                        <label for="address" class="block text-sm font-medium mb-1" style="color: #374151;">
+                        <label for="address" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
                             Dirección <span class="text-red-500">*</span>
                         </label>
                         <input type="text" name="address" id="address" value="{{ old('address') }}" required
                                placeholder="Calle, número, piso, depto."
-                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                               class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
 
                     <!-- Tipo de Negocio -->
                     <div>
-                        <label for="business_type" class="block text-sm font-medium mb-1" style="color: #374151;">
+                        <label for="business_type" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
                             Tipo de Negocio
                         </label>
                         <input type="text" name="business_type" id="business_type" value="{{ old('business_type') }}"
                                placeholder="Ej: Restaurante, Retail, etc."
-                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                               class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
 
                     <!-- Persona de Contacto -->
                     <div>
-                        <label for="contact_person" class="block text-sm font-medium mb-1" style="color: #374151;">
+                        <label for="contact_person" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
                             Persona de Contacto
                         </label>
                         <input type="text" name="contact_person" id="contact_person" value="{{ old('contact_person') }}"
                                placeholder="Ej: Juan Pérez - Gerente"
-                               class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                               class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                style="border: 1px solid #e5e7eb !important; color: #111827;">
                     </div>
                 </div>

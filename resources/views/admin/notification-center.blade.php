@@ -10,10 +10,10 @@
         <div class="flex items-center gap-3 mb-4 md:hidden">
             <!-- Hamburguesa (solo móvil) -->
             <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 1000; position: relative;">
-                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="text-gray-900 dark:text-white">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
-                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="text-gray-900 dark:text-white">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
@@ -59,10 +59,10 @@
         <!-- Desktop Header -->
         <div class="md:flex md:items-center md:justify-between">
             <div class="min-w-0 flex-1 hidden md:block">
-                <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight" style="color: #111827; font-weight: 700;">
+                <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight" class="text-gray-900 dark:text-white" style="font-weight: 700;">
                     Centro de Notificaciones
                 </h2>
-                <p class="mt-1 text-sm" style="color: #6b7280;">
+                <p class="mt-1 text-sm" class="text-gray-600 dark:text-gray-300">
                     Administra y envía notificaciones a los usuarios del sistema
                 </p>
             </div>
@@ -108,21 +108,21 @@
 
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-        <div class="bg-white border dark:border-gray-700 rounded-lg p-4" style="border: 1px solid #e5e7eb !important;">
+        <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4" style="border: 1px solid #e5e7eb !important;">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
-                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #6b7280;">
+                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-gray-600 dark:text-gray-300">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium" style="color: #6b7280;">Total</p>
-                    <p class="text-2xl font-bold" style="color: #111827;">{{ $totalNotifications }}</p>
+                    <p class="text-sm font-medium" class="text-gray-600 dark:text-gray-300">Total</p>
+                    <p class="text-2xl font-bold" class="text-gray-900 dark:text-white">{{ $totalNotifications }}</p>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white border dark:border-gray-700 rounded-lg p-4" style="border: 1px solid #e5e7eb !important;">
+        <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4" style="border: 1px solid #e5e7eb !important;">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
                     <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #ef4444;">
@@ -130,13 +130,13 @@
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium" style="color: #6b7280;">No Leídas</p>
-                    <p class="text-2xl font-bold" style="color: #111827;">{{ $unreadNotifications }}</p>
+                    <p class="text-sm font-medium" class="text-gray-600 dark:text-gray-300">No Leídas</p>
+                    <p class="text-2xl font-bold" class="text-gray-900 dark:text-white">{{ $unreadNotifications }}</p>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white border dark:border-gray-700 rounded-lg p-4" style="border: 1px solid #e5e7eb !important;">
+        <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4" style="border: 1px solid #e5e7eb !important;">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
                     <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #22c55e;">
@@ -144,13 +144,13 @@
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium" style="color: #6b7280;">Hoy</p>
-                    <p class="text-2xl font-bold" style="color: #111827;">{{ $todayNotifications }}</p>
+                    <p class="text-sm font-medium" class="text-gray-600 dark:text-gray-300">Hoy</p>
+                    <p class="text-2xl font-bold" class="text-gray-900 dark:text-white">{{ $todayNotifications }}</p>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white border dark:border-gray-700 rounded-lg p-4" style="border: 1px solid #e5e7eb !important;">
+        <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4" style="border: 1px solid #e5e7eb !important;">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
                     <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #3b82f6;">
@@ -158,26 +158,26 @@
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium" style="color: #6b7280;">Tipos</p>
-                    <p class="text-2xl font-bold" style="color: #111827;">{{ count($notificationsByType) }}</p>
+                    <p class="text-sm font-medium" class="text-gray-600 dark:text-gray-300">Tipos</p>
+                    <p class="text-2xl font-bold" class="text-gray-900 dark:text-white">{{ count($notificationsByType) }}</p>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Filters -->
-    <div class="bg-white border dark:border-gray-700 rounded-lg p-4 mb-6" style="border: 1px solid #e5e7eb !important;">
+    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4 mb-6" style="border: 1px solid #e5e7eb !important;">
         <form method="GET" action="{{ route('admin.notification-center') }}" class="grid grid-cols-1 md:grid-cols-5 gap-4">
             <div>
-                <label for="search" class="block text-sm font-medium mb-2" style="color: #374151;">Buscar</label>
+                <label for="search" class="block text-sm font-medium mb-2" class="text-gray-700 dark:text-gray-300">Buscar</label>
                 <input type="text" id="search" name="search" value="{{ request('search') }}" placeholder="Buscar en notificaciones..."
-                       class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                       class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                        style="border: 1px solid #e5e7eb !important; color: #111827;">
             </div>
 
             <div>
-                <label for="type" class="block text-sm font-medium mb-2" style="color: #374151;">Tipo</label>
-                <select id="type" name="type" class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
+                <label for="type" class="block text-sm font-medium mb-2" class="text-gray-700 dark:text-gray-300">Tipo</label>
+                <select id="type" name="type" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
                     <option value="">Todos</option>
                     @foreach($notificationsByType as $type => $count)
                         <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>{{ $type }}</option>
@@ -186,8 +186,8 @@
             </div>
 
             <div>
-                <label for="read_status" class="block text-sm font-medium mb-2" style="color: #374151;">Estado</label>
-                <select id="read_status" name="read_status" class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
+                <label for="read_status" class="block text-sm font-medium mb-2" class="text-gray-700 dark:text-gray-300">Estado</label>
+                <select id="read_status" name="read_status" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
                     <option value="">Todos</option>
                     <option value="unread" {{ request('read_status') == 'unread' ? 'selected' : '' }}>No Leídas</option>
                     <option value="read" {{ request('read_status') == 'read' ? 'selected' : '' }}>Leídas</option>
@@ -195,16 +195,16 @@
             </div>
 
             <div>
-                <label for="start_date" class="block text-sm font-medium mb-2" style="color: #374151;">Desde</label>
+                <label for="start_date" class="block text-sm font-medium mb-2" class="text-gray-700 dark:text-gray-300">Desde</label>
                 <input type="date" id="start_date" name="start_date" value="{{ request('start_date') }}"
-                       class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                       class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                        style="border: 1px solid #e5e7eb !important; color: #111827;">
             </div>
 
             <div>
-                <label for="end_date" class="block text-sm font-medium mb-2" style="color: #374151;">Hasta</label>
+                <label for="end_date" class="block text-sm font-medium mb-2" class="text-gray-700 dark:text-gray-300">Hasta</label>
                 <input type="date" id="end_date" name="end_date" value="{{ request('end_date') }}"
-                       class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                       class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                        style="border: 1px solid #e5e7eb !important; color: #111827;">
             </div>
 
@@ -220,7 +220,7 @@
     </div>
 
     <!-- Notifications List -->
-    <div class="bg-white border dark:border-gray-700 rounded-lg overflow-hidden" style="border: 1px solid #e5e7eb !important;">
+    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg overflow-hidden" style="border: 1px solid #e5e7eb !important;">
         <!-- Mobile View (Cards) -->
         <div class="md:hidden space-y-4 p-4">
             @forelse($notifications as $notification)
@@ -312,13 +312,13 @@
                 </colgroup>
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Usuario</th>
-                        <th class="px-2 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Tipo</th>
-                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Título</th>
-                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Mensaje</th>
-                        <th class="px-2 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Estado</th>
-                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Fecha</th>
-                        <th class="px-3 py-3 text-right text-xs font-medium uppercase tracking-wider" style="color: #6b7280;">Acciones</th>
+                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider" class="text-gray-600 dark:text-gray-300">Usuario</th>
+                        <th class="px-2 py-3 text-left text-xs font-medium uppercase tracking-wider" class="text-gray-600 dark:text-gray-300">Tipo</th>
+                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider" class="text-gray-600 dark:text-gray-300">Título</th>
+                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider" class="text-gray-600 dark:text-gray-300">Mensaje</th>
+                        <th class="px-2 py-3 text-left text-xs font-medium uppercase tracking-wider" class="text-gray-600 dark:text-gray-300">Estado</th>
+                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider" class="text-gray-600 dark:text-gray-300">Fecha</th>
+                        <th class="px-3 py-3 text-right text-xs font-medium uppercase tracking-wider" class="text-gray-600 dark:text-gray-300">Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -388,7 +388,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="px-6 py-4 text-center text-sm" style="color: #6b7280;">
+                            <td colspan="7" class="px-6 py-4 text-center text-sm" class="text-gray-600 dark:text-gray-300">
                                 No se encontraron notificaciones
                             </td>
                         </tr>
@@ -416,7 +416,7 @@
                 @csrf
                 <div class="bg-white px-6 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="flex items-start justify-between mb-4">
-                        <h3 class="text-2xl font-bold" style="color: #111827;">Enviar Notificación</h3>
+                        <h3 class="text-2xl font-bold" class="text-gray-900 dark:text-white">Enviar Notificación</h3>
                         <button type="button" onclick="closeSendModal()" class="text-gray-400 hover:text-gray-500 focus:outline-none">
                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -426,32 +426,32 @@
 
                     <div class="space-y-4">
                         <div>
-                            <label for="user_ids" class="block text-sm font-medium mb-2" style="color: #374151;">Usuarios *</label>
-                            <select id="user_ids" name="user_ids[]" multiple required class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827; min-height: 100px;">
+                            <label for="user_ids" class="block text-sm font-medium mb-2" class="text-gray-700 dark:text-gray-300">Usuarios *</label>
+                            <select id="user_ids" name="user_ids[]" multiple required class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827; min-height: 100px;">
                                 @foreach($users as $user)
                                     <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
                                 @endforeach
                             </select>
-                            <p class="mt-1 text-xs" style="color: #6b7280;">Mantén presionado Ctrl (Cmd en Mac) para seleccionar múltiples usuarios</p>
+                            <p class="mt-1 text-xs" class="text-gray-600 dark:text-gray-300">Mantén presionado Ctrl (Cmd en Mac) para seleccionar múltiples usuarios</p>
                         </div>
 
                         <div>
-                            <label for="title" class="block text-sm font-medium mb-2" style="color: #374151;">Título *</label>
+                            <label for="title" class="block text-sm font-medium mb-2" class="text-gray-700 dark:text-gray-300">Título *</label>
                             <input type="text" id="title" name="title" required
-                                   class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                                   class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                    style="border: 1px solid #e5e7eb !important; color: #111827;">
                         </div>
 
                         <div>
-                            <label for="message" class="block text-sm font-medium mb-2" style="color: #374151;">Mensaje *</label>
+                            <label for="message" class="block text-sm font-medium mb-2" class="text-gray-700 dark:text-gray-300">Mensaje *</label>
                             <textarea id="message" name="message" rows="4" required
-                                      class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                                      class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                       style="border: 1px solid #e5e7eb !important; color: #111827;"></textarea>
                         </div>
 
                         <div>
-                            <label for="type" class="block text-sm font-medium mb-2" style="color: #374151;">Tipo *</label>
-                            <select id="type" name="type" required class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
+                            <label for="type" class="block text-sm font-medium mb-2" class="text-gray-700 dark:text-gray-300">Tipo *</label>
+                            <select id="type" name="type" required class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
                                 <option value="info">Info</option>
                                 <option value="success">Éxito</option>
                                 <option value="warning">Advertencia</option>
@@ -460,9 +460,9 @@
                         </div>
 
                         <div>
-                            <label for="url" class="block text-sm font-medium mb-2" style="color: #374151;">URL (opcional)</label>
+                            <label for="url" class="block text-sm font-medium mb-2" class="text-gray-700 dark:text-gray-300">URL (opcional)</label>
                             <input type="url" id="url" name="url"
-                                   class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
+                                   class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                    style="border: 1px solid #e5e7eb !important; color: #111827;">
                         </div>
                     </div>

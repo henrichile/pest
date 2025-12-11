@@ -10,17 +10,17 @@
         <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
             <!-- Hamburguesa (solo móvil) -->
             <button id="page-mobile-menu-button" type="button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 1000; position: relative;">
-                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="text-gray-900 dark:text-white">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
-                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="text-gray-900 dark:text-white">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
             
             <!-- Título -->
             <div class="flex-1">
-                <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
+                <h2 class="text-2xl font-bold" class="text-gray-900 dark:text-white" style="font-weight: 700;">
                     Editar Cliente
                 </h2>
             </div>
@@ -63,10 +63,10 @@
         <div class="hidden md:block">
             <div class="md:flex md:items-center md:justify-between">
                 <div class="min-w-0 flex-1">
-                    <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" style="color: #111827; font-weight: 700;">
+                    <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" class="text-gray-900 dark:text-white" style="font-weight: 700;">
                         Editar Cliente
                     </h2>
-                    <p class="mt-1 text-xs sm:text-sm" style="color: #6b7280;">
+                    <p class="mt-1 text-xs sm:text-sm" class="text-gray-600 dark:text-gray-300">
                         Modifique los datos del cliente
                     </p>
                 </div>
@@ -119,7 +119,7 @@
                             Nombre <span class="text-red-500">*</span>
                         </label>
                         <input type="text" name="name" id="name" value="{{ old('name', $client->name) }}" required
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
                         @error('name')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -131,7 +131,7 @@
                             RUT <span class="text-red-500">*</span>
                         </label>
                         <input type="text" name="rut" id="rut" value="{{ old('rut', $client->rut) }}" required
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                             placeholder="12.345.678-9">
                         @error('rut')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -144,7 +144,7 @@
                             Email <span class="text-red-500">*</span>
                         </label>
                         <input type="email" name="email" id="email" value="{{ old('email', $client->email) }}" required
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                             placeholder="cliente@ejemplo.com">
                         @error('email')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -157,7 +157,7 @@
                             Teléfono
                         </label>
                         <input type="text" name="phone" id="phone" value="{{ old('phone', $client->phone) }}"
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                             placeholder="+56 9 1234 5678">
                         @error('phone')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -176,7 +176,7 @@
                             Dirección
                         </label>
                         <input type="text" name="address" id="address" value="{{ old('address', $client->address) }}"
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                             placeholder="Calle, número, piso, depto.">
                         @error('address')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -189,7 +189,7 @@
                             Ciudad
                         </label>
                         <input type="text" name="city" id="city" value="{{ old('city', $client->city) }}"
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
                         @error('city')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -201,7 +201,7 @@
                             Región
                         </label>
                         <input type="text" name="region" id="region" value="{{ old('region', $client->region) }}"
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
                         @error('region')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -213,7 +213,7 @@
                             País
                         </label>
                         <input type="text" name="country" id="country" value="{{ old('country', $client->country) }}"
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
                         @error('country')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -225,7 +225,7 @@
                             Código Postal
                         </label>
                         <input type="text" name="postal_code" id="postal_code" value="{{ old('postal_code', $client->postal_code) }}"
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
                         @error('postal_code')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -243,7 +243,7 @@
                             Tipo de Negocio
                         </label>
                         <input type="text" name="business_type" id="business_type" value="{{ old('business_type', $client->business_type) }}"
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                             placeholder="Ej: Restaurante, Hotel, Fábrica">
                         @error('business_type')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -256,7 +256,7 @@
                             Industria
                         </label>
                         <input type="text" name="industry" id="industry" value="{{ old('industry', $client->industry) }}"
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                             placeholder="Ej: Alimentación, Hotelería, Manufactura">
                         @error('industry')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -269,7 +269,7 @@
                             Notas
                         </label>
                         <textarea name="notes" id="notes" rows="3"
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                             placeholder="Información adicional sobre el cliente...">{{ old('notes', $client->notes) }}</textarea>
                         @error('notes')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

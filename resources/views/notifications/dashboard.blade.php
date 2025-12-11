@@ -6,8 +6,8 @@
 <div class="px-4 sm:px-6 lg:px-8 pt-12 md:pt-0">
     <div class="flex items-center justify-between mb-6">
         <div class="flex-1">
-            <h1 class="text-2xl font-semibold" style="color: #111827;">Notificaciones</h1>
-            <p class="mt-2 text-sm" style="color: #374151;">
+            <h1 class="text-2xl font-semibold" class="text-gray-900 dark:text-white">Notificaciones</h1>
+            <p class="mt-2 text-sm" class="text-gray-700 dark:text-gray-300">
                 Gestiona todas tus notificaciones del sistema.
             </p>
         </div>
@@ -31,13 +31,13 @@
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
                         <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: #f3f4f6;">
-                            <svg class="h-6 w-6" style="color: #6b7280;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <svg class="h-6 w-6" class="text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                             </svg>
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1" style="color: #374151;">Total de notificaciones</p>
+                        <p class="text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">Total de notificaciones</p>
                         <p class="text-2xl font-bold" style="color: #000000;">{{ $totalNotifications }}</p>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1" style="color: #374151;">No leídas</p>
+                        <p class="text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">No leídas</p>
                         <p class="text-2xl font-bold" style="color: #dc2626;">{{ $unreadNotifications }}</p>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1" style="color: #374151;">Hoy</p>
+                        <p class="text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">Hoy</p>
                         <p class="text-2xl font-bold" style="color: #2563eb;">{{ $todayNotifications }}</p>
                     </div>
                 </div>
@@ -173,13 +173,13 @@
                                                 @endif
                                             </div>
                                             <div class="ml-4 flex-1">
-                                                <div class="text-sm font-semibold" style="color: #111827;">
+                                                <div class="text-sm font-semibold" class="text-gray-900 dark:text-white">
                                                     {{ $title }}
                                                 </div>
-                                                <div class="text-sm mt-1" style="color: #374151;">
+                                                <div class="text-sm mt-1" class="text-gray-700 dark:text-gray-300">
                                                     {{ $message }}
                                                 </div>
-                                                <div class="text-xs mt-1" style="color: #6b7280;">
+                                                <div class="text-xs mt-1" class="text-gray-600 dark:text-gray-300">
                                                     {{ $notification->created_at->diffForHumans() }}
                                                 </div>
                                             </div>
@@ -209,8 +209,8 @@
                             <svg class="mx-auto h-12 w-12" style="color: #9ca3af;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                             </svg>
-                            <h3 class="mt-2 text-sm font-medium" style="color: #111827;">No hay notificaciones</h3>
-                            <p class="mt-1 text-sm" style="color: #6b7280;">No tienes notificaciones pendientes.</p>
+                            <h3 class="mt-2 text-sm font-medium" class="text-gray-900 dark:text-white">No hay notificaciones</h3>
+                            <p class="mt-1 text-sm" class="text-gray-600 dark:text-gray-300">No tienes notificaciones pendientes.</p>
                         </div>
                     @endif
                 </div>

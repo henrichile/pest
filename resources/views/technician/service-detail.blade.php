@@ -63,16 +63,16 @@
     <div class="mb-6">
         <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
             <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 1000; position: relative;">
-                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="text-gray-900 dark:text-white">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
             </button>
             <div class="flex-1">
-                <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">Detalle del Servicio</h2>
+                <h2 class="text-2xl font-bold" class="text-gray-900 dark:text-white" style="font-weight: 700;">Detalle del Servicio</h2>
             </div>
         </div>
         <div class="hidden md:block">
-            <h2 class="text-2xl sm:text-3xl font-bold" style="color: #111827; font-weight: 700;">Detalle del Servicio</h2>
+            <h2 class="text-2xl sm:text-3xl font-bold" class="text-gray-900 dark:text-white" style="font-weight: 700;">Detalle del Servicio</h2>
         </div>
     </div>
 

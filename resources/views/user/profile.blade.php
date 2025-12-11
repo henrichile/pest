@@ -10,17 +10,17 @@
         <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
             <!-- Hamburguesa (solo móvil) -->
             <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 1000; position: relative;">
-                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="text-gray-900 dark:text-white">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
-                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="text-gray-900 dark:text-white">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
             
             <!-- Título -->
             <div class="flex-1">
-                <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
+                <h2 class="text-2xl font-bold" class="text-gray-900 dark:text-white" style="font-weight: 700;">
                     Mi Perfil
                 </h2>
             </div>
@@ -61,10 +61,10 @@
         <!-- Segunda fila: Título completo (desktop) -->
         <div class="hidden md:flex md:items-center md:justify-between">
             <div class="min-w-0 flex-1">
-                <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight" style="color: #111827; font-weight: 700;">
+                <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight" class="text-gray-900 dark:text-white" style="font-weight: 700;">
                     Mi Perfil
                 </h2>
-                <p class="mt-1 text-sm" style="color: #6b7280;">
+                <p class="mt-1 text-sm" class="text-gray-600 dark:text-gray-300">
                     Gestiona tu información personal y configuración de cuenta
                 </p>
             </div>
@@ -111,14 +111,14 @@
             <!-- Información Personal -->
             <div class="bg-white rounded-lg border border-gray-200 shadow-sm" style="border: 1px solid #e5e7eb; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);">
                 <div class="px-6 py-4 border-b border-gray-200" style="border-bottom: 1px solid #e5e7eb;">
-                    <h3 class="text-lg font-semibold" style="color: #111827;">Información Personal</h3>
+                    <h3 class="text-lg font-semibold" class="text-gray-900 dark:text-white">Información Personal</h3>
                 </div>
                 <div class="p-6">
                     <form method="POST" action="{{ route('profile.update') }}">
                         @csrf
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <div>
-                                <label for="name" class="block text-sm font-medium mb-2" style="color: #111827;">Nombre</label>
+                                <label for="name" class="block text-sm font-medium mb-2" class="text-gray-900 dark:text-white">Nombre</label>
                                 <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" 
                                     style="border: 1px solid #d1d5db; border-radius: 8px;">
@@ -128,7 +128,7 @@
                             </div>
 
                             <div>
-                                <label for="email" class="block text-sm font-medium mb-2" style="color: #111827;">Correo Electrónico</label>
+                                <label for="email" class="block text-sm font-medium mb-2" class="text-gray-900 dark:text-white">Correo Electrónico</label>
                                 <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" required
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                                     style="border: 1px solid #d1d5db; border-radius: 8px;">
@@ -138,7 +138,7 @@
                             </div>
 
                             <div>
-                                <label for="phone" class="block text-sm font-medium mb-2" style="color: #111827;">Teléfono</label>
+                                <label for="phone" class="block text-sm font-medium mb-2" class="text-gray-900 dark:text-white">Teléfono</label>
                                 <input type="text" name="phone" id="phone" value="{{ old('phone', $user->phone) }}"
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                                     style="border: 1px solid #d1d5db; border-radius: 8px;">
@@ -148,7 +148,7 @@
                             </div>
 
                             <div>
-                                <label for="timezone" class="block text-sm font-medium mb-2" style="color: #111827;">Zona Horaria</label>
+                                <label for="timezone" class="block text-sm font-medium mb-2" class="text-gray-900 dark:text-white">Zona Horaria</label>
                                 <select name="timezone" id="timezone"
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                                     style="border: 1px solid #d1d5db; border-radius: 8px;">
@@ -178,14 +178,14 @@
             <!-- Cambiar Contraseña -->
             <div class="bg-white rounded-lg border border-gray-200 shadow-sm" style="border: 1px solid #e5e7eb; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);">
                 <div class="px-6 py-4 border-b border-gray-200" style="border-bottom: 1px solid #e5e7eb;">
-                    <h3 class="text-lg font-semibold" style="color: #111827;">Cambiar Contraseña</h3>
+                    <h3 class="text-lg font-semibold" class="text-gray-900 dark:text-white">Cambiar Contraseña</h3>
                 </div>
                 <div class="p-6">
                     <form method="POST" action="{{ route('profile.change-password') }}">
                         @csrf
                         <div class="space-y-4">
                             <div>
-                                <label for="current_password" class="block text-sm font-medium mb-2" style="color: #111827;">Contraseña Actual</label>
+                                <label for="current_password" class="block text-sm font-medium mb-2" class="text-gray-900 dark:text-white">Contraseña Actual</label>
                                 <input type="password" name="current_password" id="current_password" required
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                                     style="border: 1px solid #d1d5db; border-radius: 8px;">
@@ -195,7 +195,7 @@
                             </div>
 
                             <div>
-                                <label for="new_password" class="block text-sm font-medium mb-2" style="color: #111827;">Nueva Contraseña</label>
+                                <label for="new_password" class="block text-sm font-medium mb-2" class="text-gray-900 dark:text-white">Nueva Contraseña</label>
                                 <input type="password" name="new_password" id="new_password" required
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                                     style="border: 1px solid #d1d5db; border-radius: 8px;">
@@ -205,7 +205,7 @@
                             </div>
 
                             <div>
-                                <label for="new_password_confirmation" class="block text-sm font-medium mb-2" style="color: #111827;">Confirmar Nueva Contraseña</label>
+                                <label for="new_password_confirmation" class="block text-sm font-medium mb-2" class="text-gray-900 dark:text-white">Confirmar Nueva Contraseña</label>
                                 <input type="password" name="new_password_confirmation" id="new_password_confirmation" required
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                                     style="border: 1px solid #d1d5db; border-radius: 8px;">
@@ -232,8 +232,8 @@
                     <img class="h-24 w-24 rounded-full mx-auto mb-4 border-4 border-gray-200" 
                          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQ?:jEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" 
                          alt="{{ $user->name }}">
-                    <h3 class="text-xl font-semibold mb-1" style="color: #111827;">{{ $user->name }}</h3>
-                    <p class="text-sm mb-4" style="color: #6b7280;">{{ $user->email }}</p>
+                    <h3 class="text-xl font-semibold mb-1" class="text-gray-900 dark:text-white">{{ $user->name }}</h3>
+                    <p class="text-sm mb-4" class="text-gray-600 dark:text-gray-300">{{ $user->email }}</p>
                     
                     @if($roles->count() > 0)
                         <div class="flex flex-wrap justify-center gap-2 mb-4">
@@ -251,24 +251,24 @@
             <!-- Statistics -->
             <div class="bg-white rounded-lg border border-gray-200 shadow-sm" style="border: 1px solid #e5e7eb; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);">
                 <div class="px-6 py-4 border-b border-gray-200" style="border-bottom: 1px solid #e5e7eb;">
-                    <h3 class="text-lg font-semibold" style="color: #111827;">Estadísticas</h3>
+                    <h3 class="text-lg font-semibold" class="text-gray-900 dark:text-white">Estadísticas</h3>
                 </div>
                 <div class="p-6 space-y-4">
                     <div class="flex justify-between items-center">
-                        <span class="text-sm" style="color: #6b7280;">Órdenes de Trabajo</span>
-                        <span class="text-lg font-semibold" style="color: #111827;">{{ $stats['total_work_orders'] ?? 0 }}</span>
+                        <span class="text-sm" class="text-gray-600 dark:text-gray-300">Órdenes de Trabajo</span>
+                        <span class="text-lg font-semibold" class="text-gray-900 dark:text-white">{{ $stats['total_work_orders'] ?? 0 }}</span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-sm" style="color: #6b7280;">Completadas</span>
+                        <span class="text-sm" class="text-gray-600 dark:text-gray-300">Completadas</span>
                         <span class="text-lg font-semibold" style="color: #22c55e;">{{ $stats['completed_work_orders'] ?? 0 }}</span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-sm" style="color: #6b7280;">Sesiones</span>
-                        <span class="text-lg font-semibold" style="color: #111827;">{{ $stats['total_sessions'] ?? 0 }}</span>
+                        <span class="text-sm" class="text-gray-600 dark:text-gray-300">Sesiones</span>
+                        <span class="text-lg font-semibold" class="text-gray-900 dark:text-white">{{ $stats['total_sessions'] ?? 0 }}</span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-sm" style="color: #6b7280;">Tratamientos</span>
-                        <span class="text-lg font-semibold" style="color: #111827;">{{ $stats['total_treatments'] ?? 0 }}</span>
+                        <span class="text-sm" class="text-gray-600 dark:text-gray-300">Tratamientos</span>
+                        <span class="text-lg font-semibold" class="text-gray-900 dark:text-white">{{ $stats['total_treatments'] ?? 0 }}</span>
                     </div>
                 </div>
             </div>
@@ -277,7 +277,7 @@
             @if($recentActivities->count() > 0)
             <div class="bg-white rounded-lg border border-gray-200 shadow-sm" style="border: 1px solid #e5e7eb; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);">
                 <div class="px-6 py-4 border-b border-gray-200" style="border-bottom: 1px solid #e5e7eb;">
-                    <h3 class="text-lg font-semibold" style="color: #111827;">Actividad Reciente</h3>
+                    <h3 class="text-lg font-semibold" class="text-gray-900 dark:text-white">Actividad Reciente</h3>
                 </div>
                 <div class="p-6">
                     <div class="space-y-4">
@@ -285,7 +285,7 @@
                             <div class="flex items-start gap-3">
                                 <div class="flex-shrink-0 w-2 h-2 rounded-full mt-2" style="background: #22c55e;"></div>
                                 <div class="flex-1 min-w-0">
-                                    <p class="text-sm" style="color: #111827;">{{ $activity->description ?? 'Actividad' }}</p>
+                                    <p class="text-sm" class="text-gray-900 dark:text-white">{{ $activity->description ?? 'Actividad' }}</p>
                                     <p class="text-xs mt-1" style="color: #9ca3af;">{{ $activity->created_at->diffForHumans() }}</p>
                                 </div>
                             </div>

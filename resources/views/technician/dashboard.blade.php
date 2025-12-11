@@ -14,17 +14,17 @@
         <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
             <!-- Hamburguesa (solo móvil) -->
             <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 1000; position: relative;">
-                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="text-gray-900 dark:text-white">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
-                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="text-gray-900 dark:text-white">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
             
             <!-- Título -->
             <div class="flex-1">
-                <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700;">
+                <h2 class="text-2xl font-bold" class="text-gray-900 dark:text-white" style="font-weight: 700;">
                     Dashboard
                 </h2>
             </div>
@@ -87,7 +87,7 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1" style="color: #374151;">Clientes</p>
+                        <p class="text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">Clientes</p>
                         <p class="text-3xl font-bold" style="color: #000000;">{{ $clientsCount ?? 0 }}</p>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1" style="color: #374151;">Este Mes</p>
+                        <p class="text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">Este Mes</p>
                         <p class="text-3xl font-bold" style="color: #000000;">{{ $monthlyServices ?? 0 }}</p>
                     </div>
                 </div>
@@ -125,7 +125,7 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1" style="color: #374151;">Completados</p>
+                        <p class="text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">Completados</p>
                         <p class="text-3xl font-bold" style="color: #000000;">{{ $finalizedServices ?? 0 }}</p>
                     </div>
                 </div>
@@ -144,7 +144,7 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1" style="color: #374151;">Pendientes</p>
+                        <p class="text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">Pendientes</p>
                         <p class="text-3xl font-bold" style="color: #000000;">{{ $pendingServices ?? 0 }}</p>
                     </div>
                 </div>
@@ -157,8 +157,8 @@
         <div class="p-6">
             <div class="flex items-center justify-between mb-4">
                 <div>
-                    <h3 class="text-lg font-semibold" style="color: #111827;">Servicios Asignados</h3>
-                    <p class="text-sm mt-1" style="color: #374151;">Próximos servicios a realizar</p>
+                    <h3 class="text-lg font-semibold" class="text-gray-900 dark:text-white">Servicios Asignados</h3>
+                    <p class="text-sm mt-1" class="text-gray-700 dark:text-gray-300">Próximos servicios a realizar</p>
                 </div>
                 <a href="{{ route('technician.services') }}" class="text-sm font-medium" style="color: #22c55e;">Ver todos</a>
             </div>
@@ -196,8 +196,8 @@
                             </div>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium" style="color: #111827;">{{ optional($service->client)->name ?? 'N/A' }} - {{ ucfirst(str_replace('-', ' ', $service->service_type ?? 'N/A')) }}</p>
-                            <p class="text-xs" style="color: #374151;">{{ $service->scheduled_date ? $service->scheduled_date->format('d/m/Y H:i') : ($service->created_at->format('d/m/Y H:i')) }}</p>
+                            <p class="text-sm font-medium" class="text-gray-900 dark:text-white">{{ optional($service->client)->name ?? 'N/A' }} - {{ ucfirst(str_replace('-', ' ', $service->service_type ?? 'N/A')) }}</p>
+                            <p class="text-xs" class="text-gray-700 dark:text-gray-300">{{ $service->scheduled_date ? $service->scheduled_date->format('d/m/Y H:i') : ($service->created_at->format('d/m/Y H:i')) }}</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
@@ -209,7 +209,7 @@
                 </div>
                 @empty
                 <div class="text-center py-8">
-                    <p class="text-sm" style="color: #374151;">No hay servicios asignados</p>
+                    <p class="text-sm" class="text-gray-700 dark:text-gray-300">No hay servicios asignados</p>
                 </div>
                 @endforelse
             </div>
@@ -219,7 +219,7 @@
     <!-- Acciones Rápidas -->
     <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
         <div class="p-6">
-            <h3 class="text-lg font-semibold mb-4" style="color: #111827;">Acciones Rápidas</h3>
+            <h3 class="text-lg font-semibold mb-4" class="text-gray-900 dark:text-white">Acciones Rápidas</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <a href="{{ route('technician.services') }}" class="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
                     <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: #22c55e;">
@@ -228,19 +228,19 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-sm font-medium" style="color: #111827;">Ver Mis Servicios</p>
-                        <p class="text-xs" style="color: #374151;">Gestiona todos tus servicios</p>
+                        <p class="text-sm font-medium" class="text-gray-900 dark:text-white">Ver Mis Servicios</p>
+                        <p class="text-xs" class="text-gray-700 dark:text-gray-300">Gestiona todos tus servicios</p>
                     </div>
                 </a>
                 <a href="{{ route('technician.profile') }}" class="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
                     <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: #f3f4f6;">
-                        <svg class="w-6 h-6" style="color: #111827;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <svg class="w-6 h-6" class="text-gray-900 dark:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                         </svg>
                     </div>
                     <div>
-                        <p class="text-sm font-medium" style="color: #111827;">Mi Perfil</p>
-                        <p class="text-xs" style="color: #374151;">Actualiza tu información</p>
+                        <p class="text-sm font-medium" class="text-gray-900 dark:text-white">Mi Perfil</p>
+                        <p class="text-xs" class="text-gray-700 dark:text-gray-300">Actualiza tu información</p>
                     </div>
                 </a>
             </div>

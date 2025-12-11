@@ -10,10 +10,10 @@
         <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
             <!-- Hamburguesa (solo móvil) -->
             <button id="page-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 1000; position: relative;">
-                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="text-gray-900 dark:text-white">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
-                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="color: #111827;">
+                <svg id="page-close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="text-gray-900 dark:text-white">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
@@ -71,10 +71,10 @@
         <!-- Segunda fila: Título completo (desktop) -->
         <div class="hidden md:flex md:items-center md:justify-between">
             <div class="min-w-0 flex-1">
-                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" style="color: #111827; font-weight: 700;">
+                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" class="text-gray-900 dark:text-white" style="font-weight: 700;">
                     Servicios
                 </h2>
-                <p class="mt-1 text-xs sm:text-sm" style="color: #6b7280;">
+                <p class="mt-1 text-xs sm:text-sm" class="text-gray-600 dark:text-gray-300">
                     Gestiona todos los servicios de control de plagas
                 </p>
             </div>
@@ -137,18 +137,18 @@
     </div>
 
     <!-- Services List -->
-    <div class="bg-white border dark:border-gray-700 rounded-lg overflow-hidden" style="border: 1px solid #e5e7eb !important;">
+    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg overflow-hidden" style="border: 1px solid #e5e7eb !important;">
         <div class="overflow-x-auto">
             @forelse($services as $service)
                 <div class="p-4 sm:p-6 border-b border-gray-200 hover:bg-gray-50" style="border-bottom: 1px solid #e5e7eb;">
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div class="flex-1">
                             <div class="mb-2">
-                                <h3 class="text-lg font-semibold" style="color: #111827;">
+                                <h3 class="text-lg font-semibold" class="text-gray-900 dark:text-white">
                                     {{ $service->client->name ?? 'Cliente no encontrado' }}
                                 </h3>
                                 @if($service->address)
-                                    <p class="text-sm" style="color: #6b7280;">{{ $service->address }}</p>
+                                    <p class="text-sm" class="text-gray-600 dark:text-gray-300">{{ $service->address }}</p>
                                 @endif
                             </div>
                             <div class="flex flex-wrap gap-2">
@@ -181,7 +181,7 @@
                 </div>
             @empty
                 <div class="p-8 text-center">
-                    <p class="text-sm" style="color: #6b7280;">No se encontraron servicios</p>
+                    <p class="text-sm" class="text-gray-600 dark:text-gray-300">No se encontraron servicios</p>
                 </div>
             @endforelse
         </div>
