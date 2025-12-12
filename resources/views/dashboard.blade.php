@@ -123,6 +123,7 @@
             width: 224px !important;
             min-width: 224px !important;
             max-width: 224px !important;
+            padding-left: 8px !important;
         }
     }
 </style>

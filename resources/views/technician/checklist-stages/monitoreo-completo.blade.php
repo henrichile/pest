@@ -94,11 +94,11 @@ function addBaitStation() {
         <div class="form-grid">
             <div>
                 <label>Código del Punto</label>
-                <input type="text" name="bait_stations[${baitStationCounter}][code]" class="form-input" placeholder="CB-001" required>
+                <input type="text" name="bait_stations[${baitStationCounter}][code]" class="form-input placeholder:text-gray-400 dark:placeholder:text-gray-500" placeholder="CB-001" required>
             </div>
             <div>
                 <label>Ubicación</label>
-                <input type="text" name="bait_stations[${baitStationCounter}][location]" class="form-input" placeholder="Bodega sector norte" required>
+                <input type="text" name="bait_stations[${baitStationCounter}][location]" class="form-input placeholder:text-gray-400 dark:placeholder:text-gray-500" placeholder="Bodega sector norte" required>
             </div>
         </div>
         <div class="product-section">
@@ -194,11 +194,11 @@ function addTrap() {
         <div class="form-grid">
             <div>
                 <label>Código del Punto</label>
-                <input type="text" name="traps[${trapCounter}][code]" class="form-input" placeholder="TR-001" required>
+                <input type="text" name="traps[${trapCounter}][code]" class="form-input placeholder:text-gray-400 dark:placeholder:text-gray-500" placeholder="TR-001" required>
             </div>
             <div>
                 <label>Ubicación</label>
-                <input type="text" name="traps[${trapCounter}][location]" class="form-input" placeholder="Cocina pared este" required>
+                <input type="text" name="traps[${trapCounter}][location]" class="form-input placeholder:text-gray-400 dark:placeholder:text-gray-500" placeholder="Cocina pared este" required>
             </div>
         </div>
         <div class="form-grid">
