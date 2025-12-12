@@ -1479,7 +1479,7 @@
             // Update legend text colors
             const legendTexts = document.querySelectorAll('.mt-4.flex span');
             legendTexts.forEach(el => {
-                el.style.color = newIsDark ? '#9ca3af' : '#6b7280';
+                el.style.color = newIsDark ? '#fff' : '#6b7280';
             });
             
             if (window.chartInstance) {
@@ -2039,10 +2039,10 @@
             
             if (isDark) {
                 // Actualizar todos los elementos con estilos inline de color
-                const elementsToUpdate = document.querySelectorAll('[style*="color: #111827"], [style*="color: #6b7280"]');
+                const elementsToUpdate = document.querySelectorAll('[style*="color: #111827"], [style*="color: #fff "]');
                 elementsToUpdate.forEach(el => {
                     const style = el.getAttribute('style') || '';
-                    if (style.includes('color: #111827') || style.includes('color: #6b7280')) {
+                    if (style.includes('color: #111827') || style.includes('color: #fff')) {
                         // Ya tiene dark:text-white, solo necesitamos asegurar que funcione
                         if (!el.classList.contains('dark:text-white')) {
                             el.classList.add('dark:text-white');
