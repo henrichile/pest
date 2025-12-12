@@ -75,12 +75,12 @@
         <div class="rounded-md bg-green-50 p-4 mb-6" style="background: #f0fdf4; border: 1px solid #22c55e;">
             <div class="flex">
                 <div class="flex-shrink-0">
-                    <svg class="h-5 w-5 text-green-400" style="color: #22c55e;" viewBox="0 0 20 20" fill="currentColor">
+                    <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.236 4.53L7.53 10.53a.75.75 0 00-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
                     </svg>
                 </div>
                 <div class="ml-3">
-                    <p class="text-sm font-medium" style="color: #166534;">
+                    <p class="text-sm font-medium">
                         {{ session('success') }}
                     </p>
                 </div>
@@ -92,12 +92,12 @@
         <div class="rounded-md bg-red-50 p-4 mb-6" style="background: #fef2f2; border: 1px solid #ef4444;">
             <div class="flex">
                 <div class="flex-shrink-0">
-                    <svg class="h-5 w-5 text-red-400" style="color: #ef4444;" viewBox="0 0 20 20" fill="currentColor">
+                    <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
                     </svg>
                 </div>
                 <div class="ml-3">
-                    <p class="text-sm font-medium" style="color: #991b1b;">
+                    <p class="text-sm font-medium">
                         {{ session('error') }}
                     </p>
                 </div>
@@ -260,7 +260,7 @@
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-sm text-gray-600 dark:text-gray-300">Completadas</span>
-                        <span class="text-lg font-semibold" style="color: #22c55e;">{{ $stats['completed_work_orders'] ?? 0 }}</span>
+                        <span class="text-lg font-semibold">{{ $stats['completed_work_orders'] ?? 0 }}</span>
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-sm text-gray-600 dark:text-gray-300">Sesiones</span>
@@ -286,7 +286,7 @@
                                 <div class="flex-shrink-0 w-2 h-2 rounded-full mt-2 bg-green-500"></div>
                                 <div class="flex-1 min-w-0">
                                     <p class="text-sm text-gray-900 dark:text-white">{{ $activity->description ?? 'Actividad' }}</p>
-                                    <p class="text-xs mt-1" style="color: #9ca3af;">{{ $activity->created_at->diffForHumans() }}</p>
+                                    <p class="text-xs mt-1">{{ $activity->created_at->diffForHumans() }}</p>
                                 </div>
                             </div>
                         @endforeach

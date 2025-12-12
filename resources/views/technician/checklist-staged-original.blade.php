@@ -657,7 +657,7 @@ function getTechnicianRoute($routeName, ...$params) {
     <div class="container">
         <div style="text-align: center; margin-bottom: 32px;">
             <h1 style="font-size: 32px; margin-bottom: 8px; color: #111827;">Checklist de Servicio</h1>
-            <p style="color: #6b7280; font-size: 16px;">Complete todas las etapas para finalizar el servicio</p>
+            <p>Complete todas las etapas para finalizar el servicio</p>
         </div>
 
         <div class="service-info">

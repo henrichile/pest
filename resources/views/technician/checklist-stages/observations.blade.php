@@ -594,7 +594,7 @@ $submitRoute = $isViewingAsTechnician ? route('technician-view.service.checklist
                         $nextCode = sprintf('CE-%03d', $maxNumber + 1);
                     @endphp
                     <input type="text" id="cebadera_code" name="cebadera_code" value="{{ $nextCode }}" placeholder="Ej: CE-001">
-                    <small style="color: #666; font-size: 0.85em;">Se asignará automáticamente si se deja vacío</small>
+                    <small>Se asignará automáticamente si se deja vacío</small>
                 </div>
                 <div class="form-group">
                     <label for="observation_number">N° de Observación</label>
@@ -612,7 +612,7 @@ $submitRoute = $isViewingAsTechnician ? route('technician-view.service.checklist
                     <input type="checkbox" id="no_observation" name="no_observation" value="1" style="margin-right: 8px;">
                     <span>Sin observación</span>
                 </label>
-                <small style="color: #6b7280; display: block; margin-top: 4px;">
+                <small>
                     Marque esta opción si no hay observaciones que registrar
                 </small>
             </div>

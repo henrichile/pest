@@ -20,7 +20,7 @@
             
             <!-- Título -->
             <div class="flex-1" style="flex: 1 1 0% !important; min-width: 0 !important;">
-                <h2 class="text-2xl font-bold" style="color: #111827; font-weight: 700; margin: 0 !important;">
+                <h2 class="text-2xl font-bold">
                     Servicios
                 </h2>
             </div>
@@ -29,10 +29,10 @@
         <!-- Botón Nuevo Servicio (móvil) -->
         <div class="mb-4 md:hidden">
             <a href="{{ route('admin.services.create') ?? route('services.create') ?? '#' }}" class="inline-flex items-center justify-center w-full px-4 py-2.5 border border-transparent rounded-lg shadow-sm text-sm font-medium transition-colors" style="background: #22c55e; hover:background: #16a34a; color: #ffffff !important;">
-                <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #ffffff !important;">
+                <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
-                <span style="color: #ffffff !important;">Nuevo Servicio</span>
+                <span>Nuevo Servicio</span>
             </a>
         </div>
         
@@ -48,11 +48,11 @@
             </div>
             <div class="mt-3 sm:mt-4 md:mt-0 md:ml-4">
                 <a href="{{ route('admin.services.create') ?? route('services.create') ?? '#' }}" class="inline-flex items-center justify-center w-full sm:w-auto px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium transition-colors" style="background: #22c55e; hover:background: #16a34a; color: #ffffff !important;">
-                    <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #ffffff !important;">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
-                    <span class="hidden sm:inline" style="color: #ffffff !important;">Nuevo Servicio</span>
-                    <span class="sm:hidden" style="color: #ffffff !important;">Nuevo</span>
+                    <span class="hidden sm:inline">Nuevo Servicio</span>
+                    <span class="sm:hidden">Nuevo</span>
                 </a>
             </div>
         </div>
@@ -93,10 +93,10 @@
             <div class="flex flex-col space-y-2">
                 <label class="text-sm font-medium text-gray-700 opacity-0">Acciones</label>
                 <div class="flex items-center gap-3 h-full">
-                    <button type="submit" id="filter-submit-btn" class="flex-1 px-6 py-3.5 bg-gray-700 hover:bg-gray-800 text-white font-medium rounded-lg shadow-sm transition-colors" style="color: #ffffff !important; background-color: #374151 !important;">
+                    <button type="submit" id="filter-submit-btn" class="flex-1 px-6 py-3.5 bg-gray-700 hover:bg-gray-800 text-white font-medium rounded-lg shadow-sm transition-colors">
                         Filtrar
                     </button>
-                    <a href="{{ route('admin.services.index') }}" class="flex-1 px-6 py-3.5 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg shadow-sm transition-colors text-center no-underline" style="color: #374151 !important; background-color: #e5e7eb !important;">
+                    <a href="{{ route('admin.services.index') }}" class="flex-1 px-6 py-3.5 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg shadow-sm transition-colors text-center no-underline">
                         Limpiar
                     </a>
                 </div>

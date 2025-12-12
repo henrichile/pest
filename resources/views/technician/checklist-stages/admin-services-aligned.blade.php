@@ -56,10 +56,10 @@
             <div class="flex flex-col space-y-2">
                 <label class="text-sm font-medium text-gray-700 opacity-0">Acciones</label>
                 <div class="flex items-center gap-3 h-full">
-                    <button type="submit" id="filter-submit-btn" class="flex-1 px-6 py-3.5 bg-gray-700 hover:bg-gray-800 text-white font-medium rounded-lg shadow-sm transition-colors" style="color: #ffffff !important; background-color: #374151 !important;">
+                    <button type="submit" id="filter-submit-btn" class="flex-1 px-6 py-3.5 bg-gray-700 hover:bg-gray-800 text-white font-medium rounded-lg shadow-sm transition-colors">
                         Filtrar
                     </button>
-                    <a href="{{ route('admin.services.index') }}" class="flex-1 px-6 py-3.5 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg shadow-sm transition-colors text-center no-underline" style="color: #374151 !important; background-color: #e5e7eb !important;">
+                    <a href="{{ route('admin.services.index') }}" class="flex-1 px-6 py-3.5 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg shadow-sm transition-colors text-center no-underline">
                         Limpiar
                     </a>
                 </div>

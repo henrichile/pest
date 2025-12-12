@@ -125,7 +125,7 @@
         <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
-                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #ef4444;">
+                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                     </svg>
                 </div>
@@ -139,7 +139,7 @@
         <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
-                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #22c55e;">
+                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
                     </svg>
                 </div>
@@ -153,7 +153,7 @@
         <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
-                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #3b82f6;">
+                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
                     </svg>
                 </div>
@@ -341,7 +341,7 @@
                             $typeLabel = $typeLabels[$typeName] ?? (strlen($typeName) > 12 ? substr($typeName, 0, 12) : $typeName);
                         @endphp
                         <tr class="hover:bg-gray-50">
-                            <td class="px-3 py-4 whitespace-nowrap text-sm" style="color: #111827; overflow: hidden; text-overflow: ellipsis;">
+                            <td class="px-3 py-4 whitespace-nowrap text-sm">
                                 {{ $user->name ?? 'Usuario eliminado' }}
                             </td>
                             <td class="px-2 py-4" style="overflow: hidden; max-width: 0;">
@@ -349,10 +349,10 @@
                                     {{ $typeLabel }}
                                 </span>
                             </td>
-                            <td class="px-3 py-4 text-sm" style="color: #111827; overflow: hidden; text-overflow: ellipsis;">
+                            <td class="px-3 py-4 text-sm">
                                 {{ $data['title'] ?? 'Sin título' }}
                             </td>
-                            <td class="px-3 py-4 text-sm" style="color: #6b7280; overflow: hidden; text-overflow: ellipsis;">
+                            <td class="px-3 py-4 text-sm">
                                 {{ Str::limit($data['message'] ?? '', 100) }}
                             </td>
                             <td class="px-2 py-4 whitespace-nowrap" style="overflow: hidden;">
@@ -366,7 +366,7 @@
                                     </span>
                                 @endif
                             </td>
-                            <td class="px-3 py-4 whitespace-nowrap text-sm" style="color: #6b7280; overflow: hidden; text-overflow: ellipsis;">
+                            <td class="px-3 py-4 whitespace-nowrap text-sm">
                                 {{ \Carbon\Carbon::parse($notification->created_at)->format('d/m/Y H:i') }}
                             </td>
                             <td class="px-3 py-4 text-sm font-medium" style="overflow: visible;">

@@ -38,7 +38,7 @@
                     </div>
                     <div class="ml-4 flex-1">
                         <p class="text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Total de notificaciones</p>
-                        <p class="text-2xl font-bold" style="color: #000000;">{{ $totalNotifications }}</p>
+                        <p class="text-2xl font-bold">{{ $totalNotifications }}</p>
                     </div>
                 </div>
             </div>
@@ -49,14 +49,14 @@
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
                         <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: #fee2e2;">
-                            <svg class="h-6 w-6" style="color: #ef4444;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                             </svg>
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
                         <p class="text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">No leídas</p>
-                        <p class="text-2xl font-bold" style="color: #dc2626;">{{ $unreadNotifications }}</p>
+                        <p class="text-2xl font-bold">{{ $unreadNotifications }}</p>
                     </div>
                 </div>
             </div>
@@ -67,14 +67,14 @@
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
                         <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: #dbeafe;">
-                            <svg class="h-6 w-6" style="color: #3b82f6;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5a2.25 2.25 0 002.25-2.25m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5a2.25 2.25 0 012.25 2.25v7.5" />
                             </svg>
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
                         <p class="text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Hoy</p>
-                        <p class="text-2xl font-bold" style="color: #2563eb;">{{ $todayNotifications }}</p>
+                        <p class="text-2xl font-bold">{{ $todayNotifications }}</p>
                     </div>
                 </div>
             </div>
@@ -165,7 +165,7 @@
                                         <div class="flex items-center flex-1" @if($notificationUrl) style="cursor: pointer;" @endif>
                                             <div class="flex-shrink-0">
                                                 @if($notification->read_at)
-                                                    <svg class="h-5 w-5" style="color: #9ca3af;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                     </svg>
                                                 @else
@@ -206,7 +206,7 @@
                         </div>
                     @else
                         <div class="text-center py-12">
-                            <svg class="mx-auto h-12 w-12" style="color: #9ca3af;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <svg class="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                             </svg>
                             <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No hay notificaciones</h3>

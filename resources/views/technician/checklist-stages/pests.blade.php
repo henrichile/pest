@@ -136,8 +136,8 @@
                     <!-- Dropdown Menu -->
                     <div class="notification-menu" id="notification-menu">
                         <div class="notification-menu-header">
-                            <h3 style="color: #111827; font-weight: 600; font-size: 16px;">Notificaciones</h3>
-                            <a href="{{ route('admin.notification-center') ?? '#' }}" style="color: #22c55e; font-size: 14px; font-weight: 500; text-decoration: none;">Ver todas</a>
+                            <h3>Notificaciones</h3>
+                            <a href="{{ route('admin.notification-center') ?? '#' }}">Ver todas</a>
                         </div>
                         <div class="notification-menu-content">
                             @if(isset($recentNotifications) && $recentNotifications->count() > 0)
@@ -152,10 +152,10 @@
                                     <div class="notification-item {{ !$isRead ? 'unread' : '' }}" data-notification-id="{{ $notification->id }}">
                                         <div class="notification-item-content">
                                             <div class="notification-item-header">
-                                                <h4 style="color: #111827; font-weight: 600; font-size: 14px; margin: 0 0 4px 0;">{{ $title }}</h4>
+                                                <h4>{{ $title }}</h4>
                                                 <span class="notification-time">{{ $notification->created_at->diffForHumans() }}</span>
                                             </div>
-                                            <p style="color: #6b7280; font-size: 13px; margin: 0; line-height: 1.4;">{{ Str::limit($message, 80) }}</p>
+                                            <p>{{ Str::limit($message, 80) }}</p>
                                         </div>
                                         @if(!$isRead)
                                         <div class="notification-dot"></div>
@@ -164,7 +164,7 @@
                                 @endforeach
                             @else
                                 <div class="notification-empty">
-                                    <p style="color: #6b7280; font-size: 14px; text-align: center; padding: 20px;">No hay notificaciones</p>
+                                    <p>No hay notificaciones</p>
                                 </div>
                             @endif
                         </div>
@@ -263,7 +263,7 @@
 
                     <!-- Description / Technical Notes -->
                     @if($pest->technical_notes)
-                        <p class="text-sm mb-4" style="color: #6b7280; line-height: 1.5;">
+                        <p class="text-sm mb-4">
                             {{ Str::limit($pest->technical_notes, 120) }}
                         </p>
                     @endif
@@ -271,14 +271,14 @@
                     <!-- Control Methods / Treatment -->
                     @if($pest->control_methods)
                         <div>
-                            <p class="text-sm font-semibold mb-2" style="color: #22c55e;">Tratamiento:</p>
+                            <p class="text-sm font-semibold mb-2">Tratamiento:</p>
                             <ul class="list-disc list-inside text-sm space-y-1 text-gray-600 dark:text-gray-300">
                                 @if(is_array($pest->control_methods))
                                     @foreach(array_slice($pest->control_methods, 0, 3) as $method)
                                         <li>{{ $method }}</li>
                                     @endforeach
                                     @if(count($pest->control_methods) > 3)
-                                        <li class="text-xs italic" style="color: #9ca3af;">+{{ count($pest->control_methods) - 3 }} más...</li>
+                                        <li class="text-xs italic">+{{ count($pest->control_methods) - 3 }} más...</li>
                                     @endif
                                 @else
                                     <li>{{ $pest->control_methods }}</li>
@@ -291,7 +291,7 @@
         @empty
             <div class="col-span-full">
                 <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-8 text-center border border-gray-200 dark:border-gray-700">
-                    <svg class="mx-auto h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #9ca3af;">
+                    <svg class="mx-auto h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                     </svg>
                     <p class="text-sm text-gray-600 dark:text-gray-300">No se encontraron plagas</p>
@@ -336,14 +336,14 @@
                         Descripción
                     </h4>
                     <div class="bg-gray-50 rounded-lg p-4" style="background: #f9fafb;">
-                        <p class="text-sm leading-relaxed" style="color: #374151; line-height: 1.7;" id="modal-description-text"></p>
+                        <p class="text-sm leading-relaxed" id="modal-description-text"></p>
                     </div>
                 </div>
 
                 <!-- Treatment / Control Methods -->
                 <div id="modal-treatment" class="hidden">
                     <h4 class="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
-                        <svg class="inline-block w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #22c55e;">
+                        <svg class="inline-block w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
                         </svg>
                         Métodos de Control
@@ -356,7 +356,7 @@
                 <!-- Recommendations Section -->
                 <div id="modal-recommendations" class="hidden">
                     <h4 class="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
-                        <svg class="inline-block w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #3b82f6;">
+                        <svg class="inline-block w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
                         </svg>
                         Recomendaciones

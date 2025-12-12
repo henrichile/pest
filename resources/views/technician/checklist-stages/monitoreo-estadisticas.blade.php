@@ -111,17 +111,17 @@ if (empty($historicalData) && $totalMonitoreadas > 0) {
                 </div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon" style="color: #22c55e;">✅</div>
+                <div class="stat-icon">✅</div>
                 <div class="stat-info">
                     <div class="stat-label">CEBADERAS ACTIVAS</div>
-                    <div class="stat-value" style="color: #22c55e;">{{ $totalActivas }}</div>
+                    <div class="stat-value">{{ $totalActivas }}</div>
                 </div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon" style="color: #f59e0b;">⚠️</div>
+                <div class="stat-icon">⚠️</div>
                 <div class="stat-info">
                     <div class="stat-label">CON PROBLEMAS</div>
-                    <div class="stat-value" style="color: #f59e0b;">{{ $totalConProblemas }}</div>
+                    <div class="stat-value">{{ $totalConProblemas }}</div>
                 </div>
             </div>
         </div>

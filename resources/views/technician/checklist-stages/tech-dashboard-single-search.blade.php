@@ -158,7 +158,7 @@
                     </div>
                     <div class="ml-4 flex-1">
                         <p class="text-xs sm:text-sm font-medium mb-1 text-gray-600 dark:text-gray-300">Completados Hoy</p>
-                        <p class="text-2xl sm:text-3xl font-bold" style="color: #000000;">{{ $completedToday ?? 0 }}</p>
+                        <p class="text-2xl sm:text-3xl font-bold">{{ $completedToday ?? 0 }}</p>
                     </div>
                 </div>
             </div>
@@ -177,7 +177,7 @@
                     </div>
                     <div class="ml-4 flex-1">
                         <p class="text-xs sm:text-sm font-medium mb-1 text-gray-600 dark:text-gray-300">Pendientes</p>
-                        <p class="text-2xl sm:text-3xl font-bold" style="color: #000000;">{{ $pendingServices ?? 0 }}</p>
+                        <p class="text-2xl sm:text-3xl font-bold">{{ $pendingServices ?? 0 }}</p>
                     </div>
                 </div>
             </div>
@@ -196,7 +196,7 @@
                     </div>
                     <div class="ml-4 flex-1">
                         <p class="text-xs sm:text-sm font-medium mb-1 text-gray-600 dark:text-gray-300">En Progreso</p>
-                        <p class="text-2xl sm:text-3xl font-bold" style="color: #000000;">{{ $inProgressServices ?? 0 }}</p>
+                        <p class="text-2xl sm:text-3xl font-bold">{{ $inProgressServices ?? 0 }}</p>
                     </div>
                 </div>
             </div>
@@ -215,7 +215,7 @@
                     </div>
                     <div class="ml-4 flex-1">
                         <p class="text-xs sm:text-sm font-medium mb-1 text-gray-600 dark:text-gray-300">Vencidos</p>
-                        <p class="text-2xl sm:text-3xl font-bold" style="color: #000000;">{{ $overdueServices ?? 0 }}</p>
+                        <p class="text-2xl sm:text-3xl font-bold">{{ $overdueServices ?? 0 }}</p>
                     </div>
                 </div>
             </div>
@@ -230,7 +230,7 @@
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Servicios Asignados</h3>
                     <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">Próximos servicios a realizar</p>
                 </div>
-                <a href="{{ route('technician.services') }}" class="text-sm font-medium" style="color: #22c55e;">Ver todos</a>
+                <a href="{{ route('technician.services') }}" class="text-sm font-medium">Ver todos</a>
             </div>
             <div class="space-y-3">
                 @forelse($assignedServices ?? [] as $service)
@@ -238,7 +238,7 @@
                     <div class="flex items-center gap-4 flex-1">
                         <div class="flex-shrink-0">
                             <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: #fef3c7;">
-                                <svg class="w-5 h-5" style="color: #f59e0b;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>

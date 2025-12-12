@@ -323,10 +323,10 @@ function getTechnicianRoute($routeName, ...$params) {
                             <form action="{{ route('admin.stop-viewing-as-technician') }}" method="POST" class="mb-2.5">
                                 @csrf
                                 <button type="submit" class="w-full flex items-center gap-x-2 rounded-lg py-2 px-2.5 text-xs hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" style="background: #fef3c7; border: 1px solid #fcd34d;">
-                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #92400e;">
+                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
-                                    <span class="text-xs font-medium" style="color: #92400e; font-size: 11px;">Salir de Vista Técnico</span>
+                                    <span class="text-xs font-medium">Salir de Vista Técnico</span>
                                 </button>
                             </form>
                         @else
@@ -337,7 +337,7 @@ function getTechnicianRoute($routeName, ...$params) {
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     </svg>
-                                    <span class="text-xs font-medium" style="color: #111827; font-size: 11px;">Ver como Técnico</span>
+                                    <span class="text-xs font-medium">Ver como Técnico</span>
                                 </button>
                             </form>
                         @endif
@@ -352,7 +352,7 @@ function getTechnicianRoute($routeName, ...$params) {
                         @if($isViewingAsTechnician)
                             <!-- MENÚ DE TÉCNICO -->
                             <li>
-                                <div class="text-xs font-semibold uppercase mb-3" style="color: #6b7280; font-size: 10px; letter-spacing: 0.1em; line-height: 1.5;">Menú Principal</div>
+                                <div class="text-xs font-semibold uppercase mb-3">Menú Principal</div>
                                 <ul role="list" class="-mx-2 space-y-2">
                                 <li>
                                     <a href="{{ route('technician-view.dashboard') }}" class="group flex items-center gap-x-4 md:gap-x-6 rounded-lg px-4 py-3.5 md:py-3 text-sm leading-5 font-medium {{ request()->routeIs('technician-view.dashboard') ? 'bg-green-500 text-white' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800' }}" style="{{ !request()->routeIs('technician-view.dashboard') ? 'color: #111827 !important;' : '' }}">
@@ -383,7 +383,7 @@ function getTechnicianRoute($routeName, ...$params) {
                         @else
                             <!-- MENÚ DE ADMIN -->
                             <li>
-                                <div class="text-xs font-semibold uppercase mb-3" style="color: #6b7280; font-size: 10px; letter-spacing: 0.1em; line-height: 1.5;">Menú Principal</div>
+                                <div class="text-xs font-semibold uppercase mb-3">Menú Principal</div>
                                 <ul role="list" class="-mx-2 space-y-1.5">
                                     <li>
                                         <a href="{{ auth()->user()->hasRole('super-admin') ? route('admin.dashboard') : route('technician.dashboard') }}" class="group flex items-center gap-x-6 rounded-md px-3 py-3 text-sm leading-5 font-medium {{ request()->routeIs('dashboard') || request()->routeIs('admin.dashboard') || request()->routeIs('technician.dashboard') ? 'bg-green-500 text-white' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800' }}" style="{{ !(request()->routeIs('dashboard') || request()->routeIs('admin.dashboard') || request()->routeIs('technician.dashboard')) ? 'color: #111827 !important;' : '' }}">
@@ -503,7 +503,7 @@ function getTechnicianRoute($routeName, ...$params) {
 
                         @if(auth()->user()->hasRole('super-admin') && !$isViewingAsTechnician)
                         <li>
-                            <div class="text-xs font-semibold uppercase mb-3" style="color: #6b7280; font-size: 10px; letter-spacing: 0.1em; line-height: 1.5;">Administración</div>
+                            <div class="text-xs font-semibold uppercase mb-3">Administración</div>
                             <ul role="list" class="-mx-2 space-y-1.5">
                                 <li>
                                     <a href="{{ route('admin.users.index') }}" class="group flex items-center gap-x-6 rounded-md px-3 py-3 text-sm leading-5 font-medium {{ request()->routeIs('admin.users.*') ? 'bg-green-500 text-white' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800' }}">
@@ -569,18 +569,18 @@ function getTechnicianRoute($routeName, ...$params) {
                         @if(session('success'))
                             <div class="rounded-lg px-4 py-2.5 flex items-center gap-3" style="background: #f0fdf4; border: 1px solid #22c55e;">
                                 <div class="flex-shrink-0">
-                                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" style="color: #22c55e;">
+                                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                     </svg>
                                 </div>
-                                <p class="text-sm font-medium" style="color: #166534;">{{ session('success') }}</p>
+                                <p class="text-sm font-medium">{{ session('success') }}</p>
                             </div>
                         @elseif(session('view_as_technician') && auth()->check() && auth()->user()->hasRole('super-admin'))
                             <div class="rounded-lg px-4 py-2.5 flex items-center gap-3" style="background: #fef3c7; border: 1px solid #f59e0b;">
-                                <svg class="h-5 w-5 flex-shrink-0" style="color: #f59e0b;" fill="currentColor" viewBox="0 0 20 20">
+                                <svg class="h-5 w-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
                                 </svg>
-                                <p class="text-sm font-medium" style="color: #92400e;">
+                                <p class="text-sm font-medium">
                                     Viendo como <strong>Técnico</strong>
                                 </p>
                             </div>

@@ -637,7 +637,7 @@
             @elseif(isset($checklistData['monitoreo_croquis']['croquis_file']))
             <div class="checklist-item">
                 <strong>Croquis:</strong><br>
-                <p style="color: #999; font-style: italic;">Archivo de croquis disponible pero no se puede mostrar (formato PDF o archivo no encontrado)</p>
+                <p>Archivo de croquis disponible pero no se puede mostrar (formato PDF o archivo no encontrado)</p>
             </div>
             @endif
             @endif
@@ -1001,7 +1001,7 @@
             
             {{-- Resumen de Monitoreo --}}
             <div style="margin-bottom: 15px;">
-                <strong style="color: #1a472a; font-size: 14px;">Resumen de Monitoreo</strong>
+                <strong>Resumen de Monitoreo</strong>
             </div>
             
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
@@ -1051,7 +1051,7 @@
             {{-- Plagas Detectadas --}}
             @if(count($pestsDetected) > 0)
             <div style="margin-bottom: 15px;">
-                <strong style="color: #1a472a; font-size: 12px;">Plagas Detectadas:</strong>
+                <strong>Plagas Detectadas:</strong>
                 <div style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 5px;">
                     @foreach($pestsDetected as $pest)
                         <span style="background: #d4edda; color: #155724; padding: 3px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; border: 1px solid #28a745;">{{ $pest }}</span>

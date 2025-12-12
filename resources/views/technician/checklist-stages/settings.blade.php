@@ -113,7 +113,7 @@
                            style="border: 1px solid #e5e7eb !important; color: #111827;">
                     <p class="mt-1 text-xs text-gray-600 dark:text-gray-300">Formatos permitidos: JPEG, PNG, JPG, SVG (máx. 2MB)</p>
                     @if(file_exists(public_path('logo.png')) || file_exists(public_path('logo.jpg')) || file_exists(public_path('logo.svg')))
-                        <p class="mt-2 text-sm" style="color: #22c55e;">Logo actual: 
+                        <p class="mt-2 text-sm">Logo actual: 
                             @if(file_exists(public_path('logo.png')))
                                 <img src="{{ asset('logo.png') }}" alt="Logo" class="inline-block h-8 mt-1">
                             @elseif(file_exists(public_path('logo.jpg')))

@@ -25,12 +25,12 @@
         <div class="mb-4 rounded-md p-4" style="background: #f0fdf4; border: 1px solid #22c55e;">
             <div class="flex">
                 <div class="flex-shrink-0">
-                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" style="color: #22c55e;">
+                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                     </svg>
                 </div>
                 <div class="ml-3">
-                    <p class="text-sm font-medium" style="color: #166534;">{{ session('success') }}</p>
+                    <p class="text-sm font-medium">{{ session('success') }}</p>
                 </div>
             </div>
         </div>
@@ -75,13 +75,13 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead>
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; background: #f9fafb;">Nombre</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; background: #f9fafb;">Tipo</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; background: #f9fafb;">Frecuencia</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; background: #f9fafb;">Próxima Ejecución</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; background: #f9fafb;">Estado</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style="color: #6b7280; background: #f9fafb;">Destinatarios</th>
-                                <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider" style="color: #6b7280; background: #f9fafb;">Acciones</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nombre</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Tipo</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Frecuencia</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Próxima Ejecución</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Estado</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Destinatarios</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider">Acciones</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
