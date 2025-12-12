@@ -1369,11 +1369,11 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead>
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider dark:text-white" style="color: #6b7280; background: #f9fafb;">CLIENTE</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider dark:text-white" style="color: #6b7280; background: #f9fafb;">TIPO</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider dark:text-white" style="color: #6b7280; background: #f9fafb;">FECHA</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider dark:text-white" style="color: #6b7280; background: #f9fafb;">ESTADO</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider dark:text-white" style="color: #6b7280; background: #f9fafb;">PRIORIDAD</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider dark:text-white">CLIENTE</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider dark:text-white">TIPO</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider dark:text-white">FECHA</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider dark:text-white">ESTADO</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider dark:text-white">PRIORIDAD</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
