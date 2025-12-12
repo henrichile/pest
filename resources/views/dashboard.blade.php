@@ -290,9 +290,9 @@
     <!-- Header con hamburguesa y título -->
     <div class="mb-4 sm:mb-6">
         <!-- Primera fila: Hamburguesa + Título (móvil) -->
-        <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
+        <div class="flex items-center gap-3 mb-4 md:hidden">
             <!-- Hamburguesa (solo móvil) -->
-            <button id="dashboard-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors" style="z-index: 50;">
+            <button id="dashboard-mobile-menu-button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors">
                 <svg id="dashboard-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="text-gray-900 dark:text-white">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
@@ -340,9 +340,9 @@
             </div>
             
             <!-- Buscador al lado derecho del título -->
-            <div class="relative global-search-container flex-shrink-0" style="min-width: 0;">
+            <div class="relative global-search-container flex-shrink-0">
                 <div class="relative">
-                    <svg class="absolute" style="left: 10px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #9ca3af; pointer-events: none; z-index: 1;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg class="absolute" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                     <input 
@@ -350,13 +350,13 @@
                         id="global-search-input-desktop" 
                         placeholder="Buscar servicios, clientes..." 
                         class="w-56 pr-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all text-sm"
-                        style="background: white; color: #111827; padding-left: 36px; font-size: 14px;"
+                       
                         autocomplete="off"
                     />
                 </div>
                 
                 <!-- Search Results Dropdown -->
-                <div id="search-results-desktop" class="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto hidden" style="box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);">
+                <div id="search-results-desktop" class="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto hidden">
                     <div id="search-results-content-desktop" class="p-2">
                         <!-- Results will be inserted here -->
                     </div>
@@ -366,9 +366,9 @@
             <!-- Iconos de notificaciones y usuario (desktop) -->
             <div class="flex items-center gap-x-2 sm:gap-x-4 flex-shrink-0">
                 <!-- Notifications -->
-                <div class="relative notification-dropdown" id="notification-dropdown" style="overflow: visible;">
-                    <button type="button" class="flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 relative" title="Notificaciones" id="notification-button" style="width: 40px !important; height: 40px !important; padding: 8px !important; min-width: 40px !important; min-height: 40px !important; max-width: 40px !important; max-height: 40px !important; overflow: visible !important;">
-                        <svg style="width: 24px !important; height: 24px !important; min-width: 24px !important; min-height: 24px !important; max-width: 24px !important; max-height: 24px !important; display: block !important; flex-shrink: 0 !important;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <div class="relative notification-dropdown" id="notification-dropdown">
+                    <button type="button" class="flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 relative" title="Notificaciones" id="notification-button">
+                        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                         </svg>
                         @if(isset($unreadCount) && $unreadCount > 0)
@@ -418,9 +418,9 @@
 
                 <!-- Profile dropdown -->
                 <div class="relative user-menu-dropdown" id="user-menu-dropdown">
-                    <button type="button" class="flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors" id="user-menu-button" title="Menú de usuario" style="width: 40px !important; height: 40px !important; padding: 0 !important; min-width: 40px !important; min-height: 40px !important; max-width: 40px !important; max-height: 40px !important;">
-                        <div class="bg-green-600 rounded-full flex items-center justify-center" style="width: 40px !important; height: 40px !important; min-width: 40px !important; min-height: 40px !important; max-width: 40px !important; max-height: 40px !important;">
-                            <span class="text-white font-medium" style="font-size: 14px !important; line-height: 1 !important;">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
+                    <button type="button" class="flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors" id="user-menu-button" title="Menú de usuario">
+                        <div class="bg-green-600 rounded-full flex items-center justify-center">
+                            <span class="text-white font-medium">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
                         </div>
                     </button>
                     
@@ -468,9 +468,9 @@
         <!-- Fila móvil: Buscador (debajo del título) -->
         <div class="md:hidden flex flex-col gap-4 mb-4">
             <!-- Buscador móvil (debajo del título) -->
-            <div class="relative global-search-container w-full" style="min-width: 0;">
+            <div class="relative global-search-container w-full">
                 <div class="relative">
-                    <svg class="absolute" style="left: 10px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #9ca3af; pointer-events: none; z-index: 1;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg class="absolute" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                     <input 
@@ -478,13 +478,13 @@
                         id="global-search-input-mobile" 
                         placeholder="Buscar servicios, clientes..." 
                         class="w-full pr-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all text-sm sm:text-base"
-                        style="background: white; color: #111827; padding-left: 36px; font-size: 14px;"
+                       
                         autocomplete="off"
                     />
                 </div>
                 
                 <!-- Search Results Dropdown -->
-                <div id="search-results-mobile" class="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto hidden" style="box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);">
+                <div id="search-results-mobile" class="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto hidden">
                     <div id="search-results-content-mobile" class="p-2">
                         <!-- Results will be inserted here -->
                     </div>
@@ -1131,10 +1131,10 @@
     </div>
 
     <!-- Estadísticas y Paneles -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6" style="width: 100%; max-width: 100%; display: grid;">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <!-- Estadísticas -->
         <div class="lg:col-span-2 overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important; min-width: 0; grid-column: span 2 / span 2;">
-            <div class="p-6" style="width: 100%; box-sizing: border-box;">
+            <div class="p-6">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold flex items-center gap-2 dark:text-white" id="statistics-title" class="text-gray-900 dark:text-white">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #22c55e;">
@@ -1171,8 +1171,8 @@
                         <option value="all_time" {{ request('period') == 'all_time' ? 'selected' : '' }}>Todo el Tiempo</option>
                     </select>
                 </div>
-                <div id="chart-container" class="w-full border dark:border-gray-700 rounded-lg overflow-hidden" style="background: #f9fafb; border: 1px solid #e5e7eb !important; height: 350px; position: relative; padding: 15px; box-sizing: border-box; width: 100%;">
-                    <canvas id="statisticsChart" style="width: 100% !important; height: 100% !important; display: block; max-width: 100%;"></canvas>
+                <div id="chart-container" class="w-full border dark:border-gray-700 rounded-lg overflow-hidden">
+                    <canvas id="statisticsChart"></canvas>
         </div>
 
                 <!-- Legend -->
