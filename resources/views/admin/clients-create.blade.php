@@ -20,7 +20,7 @@
             
             <!-- Título -->
             <div class="flex-1">
-                <h2 class="text-2xl font-bold" class="text-gray-900 dark:text-white" style="font-weight: 700;">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white" class="font-bold">
                     Crear Nuevo Cliente
                 </h2>
             </div>
@@ -63,10 +63,10 @@
         <div class="hidden md:block">
             <div class="md:flex md:items-center md:justify-between">
                 <div class="min-w-0 flex-1">
-                    <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" class="text-gray-900 dark:text-white" style="font-weight: 700;">
+                    <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight text-gray-900 dark:text-white" class="font-bold">
                         Crear Nuevo Cliente
                     </h2>
-                    <p class="mt-1 text-xs sm:text-sm" class="text-gray-600 dark:text-gray-300">
+                    <p class="mt-1 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                         Complete los datos del nuevo cliente
                     </p>
                 </div>

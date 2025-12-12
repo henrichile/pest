@@ -17,7 +17,7 @@
             
             <!-- Título -->
             <div class="flex-1">
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white" style="font-weight: 700;">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white font-bold">
                     Usuarios
                 </h2>
             </div>
@@ -58,7 +58,7 @@
         <!-- Segunda fila: Título completo (desktop) -->
         <div class="hidden md:block md:flex md:items-center md:justify-between">
             <div class="min-w-0 flex-1">
-                <h2 class="text-3xl font-bold leading-7 text-gray-900 dark:text-white sm:truncate sm:tracking-tight" style="font-weight: 700;">
+                <h2 class="text-3xl font-bold leading-7 text-gray-900 dark:text-white sm:truncate sm:tracking-tight font-bold">
                     Gestión de Usuarios
                 </h2>
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
@@ -80,7 +80,7 @@
     </div>
 
     <!-- Filters -->
-    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4 mb-6" style="border: 1px solid #e5e7eb !important;">
+    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4 mb-6 border border-gray-200 dark:border-gray-700">
         <!-- Título del filtro y botón toggle (solo móvil) -->
         <div class="flex items-center justify-between mb-3 md:hidden">
             <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Filtros</h3>
@@ -106,7 +106,7 @@
             <!-- Role Filter -->
             <div class="w-full md:w-auto md:min-w-[150px]">
                 <label for="role" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Rol</label>
-                <select name="role" id="role" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important;">
+                <select name="role" id="role" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent border border-gray-200 dark:border-gray-700">
                     <option value="">Todos los roles</option>
                     @foreach($roles as $role)
                         <option value="{{ $role->name }}" {{ request('role') === $role->name ? 'selected' : '' }}>
@@ -119,7 +119,7 @@
             <!-- Status Filter -->
             <div class="w-full md:w-auto md:min-w-[150px]">
                 <label for="is_active" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Estado</label>
-                <select name="is_active" id="is_active" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important;">
+                <select name="is_active" id="is_active" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent border border-gray-200 dark:border-gray-700">
                     <option value="">Todos</option>
                     <option value="1" {{ request('is_active') === '1' ? 'selected' : '' }}>Activos</option>
                     <option value="0" {{ request('is_active') === '0' ? 'selected' : '' }}>Inactivos</option>
@@ -138,7 +138,7 @@
 
                 <!-- Clear Filters -->
                 @if(request()->hasAny(['search', 'role', 'is_active']))
-                <a href="{{ route('admin.users.index') }}" class="flex-1 md:flex-none inline-flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" style="border-color: #d1d5db;">
+                <a href="{{ route('admin.users.index') }}" class="flex-1 md:flex-none inline-flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-gray-300 dark:border-gray-600">
                     Limpiar
                 </a>
                 @endif
@@ -147,7 +147,7 @@
     </div>
 
     <!-- Users Table -->
-    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg overflow-hidden" style="border: 1px solid #e5e7eb !important;">
+    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead class="bg-gray-50 dark:bg-gray-900">
@@ -178,7 +178,7 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-10 w-10">
-                                        <div class="h-10 w-10 rounded-full flex items-center justify-center text-white font-semibold" style="background: #22c55e;">
+                                        <div class="h-10 w-10 rounded-full flex items-center justify-center text-white font-semibold bg-green-500">
                                             {{ strtoupper(substr($user->name, 0, 1)) }}
                                         </div>
                                     </div>

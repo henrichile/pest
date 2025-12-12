@@ -20,7 +20,7 @@
             
             <!-- Título -->
             <div class="flex-1">
-                <h2 class="text-2xl font-bold" class="text-gray-900 dark:text-white" style="font-weight: 700;">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white" class="font-bold">
                     Detalle del Cliente
                 </h2>
             </div>
@@ -62,15 +62,15 @@
         <div class="hidden md:block">
             <div class="md:flex md:items-center md:justify-between">
                 <div class="min-w-0 flex-1">
-                    <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" class="text-gray-900 dark:text-white" style="font-weight: 700;">
+                    <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight text-gray-900 dark:text-white" class="font-bold">
                         {{ $client->name }}
                     </h2>
-                    <p class="mt-1 text-xs sm:text-sm" class="text-gray-600 dark:text-gray-300">
+                    <p class="mt-1 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                         RUT: {{ $client->rut }}
                     </p>
                 </div>
                 <div class="mt-3 sm:mt-4 md:mt-0 md:ml-4 flex gap-2">
-                    <a href="{{ route('admin.clients.edit', $client) }}" class="inline-flex items-center justify-center px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium text-white transition-colors" style="background: #22c55e;">
+                    <a href="{{ route('admin.clients.edit', $client) }}" class="inline-flex items-center justify-center px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium text-white transition-colors bg-green-500">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21h-4.5A2.25 2.25 0 019 18.75V14a3 3 0 013-3h2.25z" />
                         </svg>

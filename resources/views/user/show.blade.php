@@ -20,7 +20,7 @@
             
             <!-- Título -->
             <div class="flex-1">
-                <h2 class="text-xl font-bold" class="text-gray-900 dark:text-white" style="font-weight: 700;">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white" class="font-bold">
                     Detalles Usuario
                 </h2>
             </div>

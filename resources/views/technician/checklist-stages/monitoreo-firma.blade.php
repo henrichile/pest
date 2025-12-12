@@ -20,7 +20,7 @@ $submitRoute = $isViewingAsTechnician ? route('admin.technician-view.service.che
                     </div>
                 @else
                     <div class="signature-placeholder">
-                        <canvas id="signature-canvas" width="600" height="200"></canvas>
+                        <canvas id="signature-canvas" width="100%" height="200"></canvas>
                         <div class="signature-actions">
                             <button type="button" class="btn-clear" onclick="clearSignature()">Limpiar</button>
                         </div>
@@ -53,7 +53,7 @@ $submitRoute = $isViewingAsTechnician ? route('admin.technician-view.service.che
                     </div>
                 @else
                     <div class="signature-placeholder">
-                        <canvas id="client-signature-canvas" width="600" height="200"></canvas>
+                        <canvas id="client-signature-canvas" width="100%" height="200"></canvas>
                         <div class="signature-actions">
                             <button type="button" class="btn-clear" onclick="clearClientSignature()">Limpiar</button>
                         </div>
@@ -281,7 +281,7 @@ document.getElementById('firmaForm')?.addEventListener('submit', function(e) {
 <style>
 .signature-section {
     background: #ffffff;
-    padding: 35px;
+    padding: 5px;
     border-radius: 12px;
     border: 1px solid #e5e7eb;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -335,7 +335,7 @@ document.getElementById('firmaForm')?.addEventListener('submit', function(e) {
 
 .signature-placeholder {
     background: #ffffff;
-    padding: 30px;
+    padding: 5px;
     border-radius: 12px;
     border: 1px solid #e5e7eb;
 }

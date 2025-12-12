@@ -24,7 +24,7 @@
             
             <!-- Título -->
             <div class="flex-1">
-                <h2 class="text-2xl font-bold" class="text-gray-900 dark:text-white" style="font-weight: 700;">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white" class="font-bold">
                     Dashboard
                 </h2>
             </div>
@@ -76,7 +76,7 @@
     <!-- Stats Cards -->
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-6">
         <!-- Clientes -->
-        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
+        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
@@ -87,7 +87,7 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">Clientes</p>
+                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Clientes</p>
                         <p class="text-3xl font-bold" style="color: #000000;">{{ $clientsCount ?? 0 }}</p>
                     </div>
                 </div>
@@ -95,7 +95,7 @@
         </div>
 
         <!-- Este Mes -->
-        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
+        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
@@ -106,7 +106,7 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">Este Mes</p>
+                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Este Mes</p>
                         <p class="text-3xl font-bold" style="color: #000000;">{{ $monthlyServices ?? 0 }}</p>
                     </div>
                 </div>
@@ -114,18 +114,18 @@
         </div>
 
         <!-- Completados -->
-        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
+        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <div class="w-14 h-14 rounded-lg flex items-center justify-center" style="background: #22c55e;">
+                        <div class="w-14 h-14 rounded-lg flex items-center justify-center bg-green-500">
                             <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">Completados</p>
+                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Completados</p>
                         <p class="text-3xl font-bold" style="color: #000000;">{{ $finalizedServices ?? 0 }}</p>
                     </div>
                 </div>
@@ -133,18 +133,18 @@
         </div>
 
         <!-- Pendientes -->
-        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
+        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <div class="w-14 h-14 rounded-lg flex items-center justify-center" style="background: #f59e0b;">
+                        <div class="w-14 h-14 rounded-lg flex items-center justify-center bg-amber-500">
                             <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">Pendientes</p>
+                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Pendientes</p>
                         <p class="text-3xl font-bold" style="color: #000000;">{{ $pendingServices ?? 0 }}</p>
                     </div>
                 </div>
@@ -153,12 +153,12 @@
     </div>
 
     <!-- Servicios Asignados -->
-    <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 mb-6" style="border: 1px solid #e5e7eb !important;">
+    <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 mb-6 border border-gray-200 dark:border-gray-700">
         <div class="p-6">
             <div class="flex items-center justify-between mb-4">
                 <div>
-                    <h3 class="text-lg font-semibold" class="text-gray-900 dark:text-white">Servicios Asignados</h3>
-                    <p class="text-sm mt-1" class="text-gray-700 dark:text-gray-300">Próximos servicios a realizar</p>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Servicios Asignados</h3>
+                    <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">Próximos servicios a realizar</p>
                 </div>
                 <a href="{{ route('technician.services') }}" class="text-sm font-medium" style="color: #22c55e;">Ver todos</a>
             </div>
@@ -196,20 +196,20 @@
                             </div>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium" class="text-gray-900 dark:text-white">{{ optional($service->client)->name ?? 'N/A' }} - {{ ucfirst(str_replace('-', ' ', $service->service_type ?? 'N/A')) }}</p>
-                            <p class="text-xs" class="text-gray-700 dark:text-gray-300">{{ $service->scheduled_date ? $service->scheduled_date->format('d/m/Y H:i') : ($service->created_at->format('d/m/Y H:i')) }}</p>
+                            <p class="text-sm font-medium text-gray-900 dark:text-white">{{ optional($service->client)->name ?? 'N/A' }} - {{ ucfirst(str_replace('-', ' ', $service->service_type ?? 'N/A')) }}</p>
+                            <p class="text-xs text-gray-700 dark:text-gray-300">{{ $service->scheduled_date ? $service->scheduled_date->format('d/m/Y H:i') : ($service->created_at->format('d/m/Y H:i')) }}</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="px-2 py-1 text-xs font-medium rounded-full" style="background: #fef3c7; color: #92400e;">
                             {{ ucfirst(str_replace('_', ' ', $service->status ?? 'Pendiente')) }}
                         </span>
-                        <a href="{{ route('technician.service.detail', $service) }}" class="px-3 py-1.5 text-xs font-medium rounded-md text-white" style="background: #22c55e;">Ver Detalle</a>
+                        <a href="{{ route('technician.service.detail', $service) }}" class="px-3 py-1.5 text-xs font-medium rounded-md text-white bg-green-500">Ver Detalle</a>
                     </div>
                 </div>
                 @empty
                 <div class="text-center py-8">
-                    <p class="text-sm" class="text-gray-700 dark:text-gray-300">No hay servicios asignados</p>
+                    <p class="text-sm text-gray-700 dark:text-gray-300">No hay servicios asignados</p>
                 </div>
                 @endforelse
             </div>
@@ -217,30 +217,30 @@
     </div>
 
     <!-- Acciones Rápidas -->
-    <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
+    <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
         <div class="p-6">
-            <h3 class="text-lg font-semibold mb-4" class="text-gray-900 dark:text-white">Acciones Rápidas</h3>
+            <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Acciones Rápidas</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <a href="{{ route('technician.services') }}" class="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
-                    <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: #22c55e;">
+                    <div class="w-12 h-12 rounded-lg flex items-center justify-center bg-green-500">
                         <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                         </svg>
                     </div>
                     <div>
-                        <p class="text-sm font-medium" class="text-gray-900 dark:text-white">Ver Mis Servicios</p>
-                        <p class="text-xs" class="text-gray-700 dark:text-gray-300">Gestiona todos tus servicios</p>
+                        <p class="text-sm font-medium text-gray-900 dark:text-white">Ver Mis Servicios</p>
+                        <p class="text-xs text-gray-700 dark:text-gray-300">Gestiona todos tus servicios</p>
                     </div>
                 </a>
                 <a href="{{ route('technician.profile') }}" class="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
                     <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: #f3f4f6;">
-                        <svg class="w-6 h-6" class="text-gray-900 dark:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <svg class="w-6 h-6 text-gray-900 dark:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                         </svg>
                     </div>
                     <div>
-                        <p class="text-sm font-medium" class="text-gray-900 dark:text-white">Mi Perfil</p>
-                        <p class="text-xs" class="text-gray-700 dark:text-gray-300">Actualiza tu información</p>
+                        <p class="text-sm font-medium text-gray-900 dark:text-white">Mi Perfil</p>
+                        <p class="text-xs text-gray-700 dark:text-gray-300">Actualiza tu información</p>
                     </div>
                 </a>
             </div>

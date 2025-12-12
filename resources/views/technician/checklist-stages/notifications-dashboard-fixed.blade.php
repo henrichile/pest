@@ -6,8 +6,8 @@
 <div class="px-4 sm:px-6 lg:px-8 pt-12 md:pt-0">
     <div class="flex items-center justify-between mb-6">
         <div class="flex-1">
-            <h1 class="text-2xl font-semibold" class="text-gray-900 dark:text-white">Notificaciones</h1>
-            <p class="mt-2 text-sm" class="text-gray-700 dark:text-gray-300">
+            <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">Notificaciones</h1>
+            <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
                 Gestiona todas tus notificaciones del sistema.
             </p>
         </div>
@@ -16,7 +16,7 @@
                 <form action="{{ auth()->check() && auth()->user()->hasRole('technician') && !auth()->user()->hasRole('super-admin') ? route('technician.notifications.mark-all-read') : route('notifications.mark-all-read') }}" method="POST" class="inline">
                     @csrf
                     @method('PATCH')
-                    <button type="submit" class="inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors" style="background: #22c55e;">
+                    <button type="submit" class="inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors bg-green-500">
                         Marcar todas como leídas
                     </button>
                 </form>
@@ -26,25 +26,25 @@
 
     <!-- Estadísticas -->
     <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-        <div class="bg-white overflow-hidden shadow rounded-lg border" style="border: 1px solid #e5e7eb !important;">
+        <div class="bg-white overflow-hidden shadow rounded-lg border border border-gray-200 dark:border-gray-700">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
                         <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: #f3f4f6;">
-                            <svg class="h-6 w-6" class="text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <svg class="h-6 w-6 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                             </svg>
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">Total de notificaciones</p>
+                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Total de notificaciones</p>
                         <p class="text-2xl font-bold" style="color: #000000;">{{ $totalNotifications }}</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white overflow-hidden shadow rounded-lg border" style="border: 1px solid #e5e7eb !important;">
+        <div class="bg-white overflow-hidden shadow rounded-lg border border border-gray-200 dark:border-gray-700">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
@@ -55,14 +55,14 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">No leídas</p>
+                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">No leídas</p>
                         <p class="text-2xl font-bold" style="color: #dc2626;">{{ $unreadNotifications }}</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white overflow-hidden shadow rounded-lg border" style="border: 1px solid #e5e7eb !important;">
+        <div class="bg-white overflow-hidden shadow rounded-lg border border border-gray-200 dark:border-gray-700">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">Hoy</p>
+                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Hoy</p>
                         <p class="text-2xl font-bold" style="color: #2563eb;">{{ $todayNotifications }}</p>
                     </div>
                 </div>
@@ -169,17 +169,17 @@
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                     </svg>
                                                 @else
-                                                    <div class="h-2 w-2 rounded-full" style="background: #ef4444;"></div>
+                                                    <div class="h-2 w-2 rounded-full bg-red-500"></div>
                                                 @endif
                                             </div>
                                             <div class="ml-4 flex-1">
-                                                <div class="text-sm font-semibold" class="text-gray-900 dark:text-white">
+                                                <div class="text-sm font-semibold text-gray-900 dark:text-white">
                                                     {{ $title }}
                                                 </div>
-                                                <div class="text-sm mt-1" class="text-gray-700 dark:text-gray-300">
+                                                <div class="text-sm mt-1 text-gray-700 dark:text-gray-300">
                                                     {{ $message }}
                                                 </div>
-                                                <div class="text-xs mt-1" class="text-gray-600 dark:text-gray-300">
+                                                <div class="text-xs mt-1 text-gray-600 dark:text-gray-300">
                                                     {{ $notification->created_at->diffForHumans() }}
                                                 </div>
                                             </div>
@@ -189,7 +189,7 @@
                                                 <form action="{{ auth()->check() && auth()->user()->hasRole('technician') && !auth()->user()->hasRole('super-admin') ? route('technician.notifications.mark-read', $notification->id) : route('notifications.mark-read', $notification->id) }}" method="POST" class="inline" onclick="event.stopPropagation();">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <button type="submit" class="text-sm font-medium px-3 py-1.5 rounded-md text-white transition-colors hover:opacity-90" style="background: #3b82f6;">
+                                                    <button type="submit" class="text-sm font-medium px-3 py-1.5 rounded-md text-white transition-colors hover:opacity-90 bg-blue-500">
                                                         Marcar como leída
                                                     </button>
                                                 </form>
@@ -209,8 +209,8 @@
                             <svg class="mx-auto h-12 w-12" style="color: #9ca3af;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                             </svg>
-                            <h3 class="mt-2 text-sm font-medium" class="text-gray-900 dark:text-white">No hay notificaciones</h3>
-                            <p class="mt-1 text-sm" class="text-gray-600 dark:text-gray-300">No tienes notificaciones pendientes.</p>
+                            <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No hay notificaciones</h3>
+                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">No tienes notificaciones pendientes.</p>
                         </div>
                     @endif
                 </div>

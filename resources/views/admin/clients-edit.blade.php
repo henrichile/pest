@@ -20,7 +20,7 @@
             
             <!-- Título -->
             <div class="flex-1">
-                <h2 class="text-2xl font-bold" class="text-gray-900 dark:text-white" style="font-weight: 700;">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white" class="font-bold">
                     Editar Cliente
                 </h2>
             </div>
@@ -63,10 +63,10 @@
         <div class="hidden md:block">
             <div class="md:flex md:items-center md:justify-between">
                 <div class="min-w-0 flex-1">
-                    <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" class="text-gray-900 dark:text-white" style="font-weight: 700;">
+                    <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight text-gray-900 dark:text-white" class="font-bold">
                         Editar Cliente
                     </h2>
-                    <p class="mt-1 text-xs sm:text-sm" class="text-gray-600 dark:text-gray-300">
+                    <p class="mt-1 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                         Modifique los datos del cliente
                     </p>
                 </div>
@@ -283,7 +283,7 @@
                 <a href="{{ route('admin.clients.index') }}" class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
                     Cancelar
                 </a>
-                <button type="submit" class="px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors" style="background: #22c55e;">
+                <button type="submit" class="px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors bg-green-500">
                     Guardar Cambios
                 </button>
             </div>

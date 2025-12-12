@@ -62,18 +62,18 @@
     </div>
 
     <!-- Services List -->
-    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg overflow-hidden" style="border: 1px solid #e5e7eb !important;">
+    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
         <div class="overflow-x-auto">
             @forelse($services as $service)
                 <div class="p-4 sm:p-6 border-b border-gray-200 hover:bg-gray-50" style="border-bottom: 1px solid #e5e7eb;">
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div class="flex-1">
                             <div class="mb-2">
-                                <h3 class="text-lg font-semibold" class="text-gray-900 dark:text-white">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                                     {{ $service->client->name ?? 'Cliente no encontrado' }}
                                 </h3>
                                 @if($service->address)
-                                    <p class="text-sm" class="text-gray-600 dark:text-gray-300">{{ $service->address }}</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">{{ $service->address }}</p>
                                 @endif
                             </div>
                             <div class="flex flex-wrap gap-2">
@@ -106,7 +106,7 @@
                 </div>
             @empty
                 <div class="p-8 text-center">
-                    <p class="text-sm" class="text-gray-600 dark:text-gray-300">No se encontraron servicios</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">No se encontraron servicios</p>
                 </div>
             @endforelse
         </div>

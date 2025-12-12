@@ -20,7 +20,7 @@
             
             <!-- Título -->
             <div class="flex-1">
-                <h2 class="text-xl font-bold" class="text-gray-900 dark:text-white" style="font-weight: 700;">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white" class="font-bold">
                     Editar Usuario
                 </h2>
             </div>
@@ -60,10 +60,10 @@
 
         <div class="hidden md:flex md:items-center md:justify-between">
             <div class="min-w-0 flex-1">
-                <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight" class="text-gray-900 dark:text-white" style="font-weight: 700;">
+                <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight text-gray-900 dark:text-white" class="font-bold">
                     Editar Usuario: {{ $user->name }}
                 </h2>
-                <p class="mt-1 text-sm" class="text-gray-600 dark:text-gray-300">
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
                     Modifica la información del usuario
                 </p>
             </div>
@@ -79,7 +79,7 @@
     </div>
 
     <!-- Form -->
-    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6" style="border: 1px solid #e5e7eb !important;">
+    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
         <form method="POST" action="{{ route('admin.users.update', $user) }}">
             @csrf
             @method('PUT')
@@ -110,7 +110,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Nombre -->
                 <div>
-                    <label for="name" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
+                    <label for="name" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
                         Nombre <span class="text-red-500">*</span>
                     </label>
                     <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required
@@ -120,7 +120,7 @@
 
                 <!-- Email -->
                 <div>
-                    <label for="email" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
+                    <label for="email" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
                         Email <span class="text-red-500">*</span>
                     </label>
                     <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" required
@@ -130,7 +130,7 @@
 
                 <!-- Teléfono -->
                 <div>
-                    <label for="phone" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
+                    <label for="phone" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
                         Teléfono
                     </label>
                     <input type="text" name="phone" id="phone" value="{{ old('phone', $user->phone) }}"
@@ -140,7 +140,7 @@
 
                 <!-- Estado -->
                 <div>
-                    <label for="is_active" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
+                    <label for="is_active" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
                         Estado <span class="text-red-500">*</span>
                     </label>
                     <select name="is_active" id="is_active" required
@@ -153,18 +153,18 @@
 
                 <!-- Contraseña (Opcional) -->
                 <div>
-                    <label for="password" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
+                    <label for="password" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
                         Nueva Contraseña (opcional)
                     </label>
                     <input type="password" name="password" id="password" minlength="8"
                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                            style="border: 1px solid #e5e7eb !important; color: #111827;">
-                    <p class="mt-1 text-xs" class="text-gray-600 dark:text-gray-300">Dejar en blanco para mantener la contraseña actual. Mínimo 8 caracteres si se cambia.</p>
+                    <p class="mt-1 text-xs text-gray-600 dark:text-gray-300">Dejar en blanco para mantener la contraseña actual. Mínimo 8 caracteres si se cambia.</p>
                 </div>
 
                 <!-- Confirmar Contraseña -->
                 <div>
-                    <label for="password_confirmation" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
+                    <label for="password_confirmation" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
                         Confirmar Nueva Contraseña
                     </label>
                     <input type="password" name="password_confirmation" id="password_confirmation" minlength="8"
@@ -174,7 +174,7 @@
 
                 <!-- Dirección -->
                 <div class="md:col-span-2">
-                    <label for="address" class="block text-sm font-medium mb-1" class="text-gray-700 dark:text-gray-300">
+                    <label for="address" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
                         Dirección
                     </label>
                     <textarea name="address" id="address" rows="3"
@@ -184,7 +184,7 @@
 
                 <!-- Roles -->
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium mb-2" class="text-gray-700 dark:text-gray-300">
+                    <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
                         Roles
                     </label>
                     <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -193,7 +193,7 @@
                                 <input type="checkbox" name="roles[]" value="{{ $role->name }}"
                                        {{ in_array($role->name, old('roles', $user->roles->pluck('name')->toArray())) ? 'checked' : '' }}
                                        class="rounded border-gray-300 text-green-600 focus:ring-green-500">
-                                <span class="ml-2 text-sm" class="text-gray-700 dark:text-gray-300">
+                                <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">
                                     @if($role->name === 'technician')
                                         Técnico
                                     @elseif($role->name === 'super-admin')
@@ -210,17 +210,17 @@
                 <!-- Permisos (Opcional) -->
                 @if($permissions->count() > 0)
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium mb-2" class="text-gray-700 dark:text-gray-300">
+                    <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
                         Permisos (Opcional)
                     </label>
-                    <div class="max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-3" style="border: 1px solid #e5e7eb !important;">
+                    <div class="max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-3 border border-gray-200 dark:border-gray-700">
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
                             @foreach($permissions as $permission)
                                 <label class="flex items-center">
                                     <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
                                            {{ in_array($permission->name, old('permissions', $user->permissions->pluck('name')->toArray())) ? 'checked' : '' }}
                                            class="rounded border-gray-300 text-green-600 focus:ring-green-500">
-                                    <span class="ml-2 text-xs" class="text-gray-700 dark:text-gray-300">{{ $permission->name }}</span>
+                                    <span class="ml-2 text-xs text-gray-700 dark:text-gray-300">{{ $permission->name }}</span>
                                 </label>
                             @endforeach
                         </div>

@@ -850,7 +850,7 @@
                     </a>
                 @endif
             @else
-                <button type="button" class="next-button" style="background: #22c55e;" disabled>
+                <button type="button" class="next-button bg-green-500" disabled>
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 18px; height: 18px; margin-right: 8px;">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                     </svg>

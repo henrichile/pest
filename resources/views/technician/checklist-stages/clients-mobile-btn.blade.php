@@ -20,7 +20,7 @@
             
             <!-- Título -->
             <div class="flex-1">
-                <h2 class="text-2xl font-bold" class="text-gray-900 dark:text-white" style="font-weight: 700;">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white" class="font-bold">
                     Clientes
                 </h2>
             </div>
@@ -39,10 +39,10 @@
         <!-- Segunda fila: Título completo (desktop) -->
         <div class="hidden md:flex md:items-center md:justify-between">
             <div class="min-w-0 flex-1">
-                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" class="text-gray-900 dark:text-white" style="font-weight: 700;">
+                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight text-gray-900 dark:text-white" class="font-bold">
                     Clientes
                 </h2>
-                <p class="mt-1 text-xs sm:text-sm" class="text-gray-600 dark:text-gray-300">
+                <p class="mt-1 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                     Gestiona la información de todos los clientes
                 </p>
             </div>
@@ -76,15 +76,15 @@
     </div>
 
     <!-- Clients Table -->
-    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg overflow-hidden" style="border: 1px solid #e5e7eb !important;">
+    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50" style="background: #f9fafb;">
                     <tr>
-                        <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" class="text-gray-600 dark:text-gray-300">CLIENTE</th>
-                        <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" class="text-gray-600 dark:text-gray-300">RUT</th>
-                        <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" class="text-gray-600 dark:text-gray-300">CONTAC</th>
-                        <th class="px-4 sm:px-6 py-3 text-right text-xs font-medium uppercase tracking-wider" class="text-gray-600 dark:text-gray-300">ACCIONES</th>
+                        <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">CLIENTE</th>
+                        <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">RUT</th>
+                        <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">CONTAC</th>
+                        <th class="px-4 sm:px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
@@ -92,22 +92,22 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
                                 <div>
-                                    <div class="text-sm font-medium" class="text-gray-900 dark:text-white">{{ $client->name ?? 'Sin nombre' }}</div>
+                                    <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $client->name ?? 'Sin nombre' }}</div>
                                     @if($client->address)
-                                        <div class="text-xs" class="text-gray-600 dark:text-gray-300">{{ Str::limit($client->address, 30) }}</div>
+                                        <div class="text-xs text-gray-600 dark:text-gray-300">{{ Str::limit($client->address, 30) }}</div>
                                     @endif
                                 </div>
                             </td>
                             <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm" class="text-gray-700 dark:text-gray-300">{{ $client->rut ?? 'N/A' }}</div>
+                                <div class="text-sm text-gray-700 dark:text-gray-300">{{ $client->rut ?? 'N/A' }}</div>
                             </td>
                             <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
                                 <div>
                                     @if($client->email)
-                                        <div class="text-sm" class="text-gray-700 dark:text-gray-300">{{ Str::limit($client->email, 20) }}</div>
+                                        <div class="text-sm text-gray-700 dark:text-gray-300">{{ Str::limit($client->email, 20) }}</div>
                                     @endif
                                     @if($client->phone)
-                                        <div class="text-xs" class="text-gray-600 dark:text-gray-300">{{ Str::limit($client->phone, 15) }}</div>
+                                        <div class="text-xs text-gray-600 dark:text-gray-300">{{ Str::limit($client->phone, 15) }}</div>
                                     @endif
                                 </div>
                             </td>
@@ -129,7 +129,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-4 sm:px-6 py-8 text-center text-sm" class="text-gray-600 dark:text-gray-300">
+                            <td colspan="4" class="px-4 sm:px-6 py-8 text-center text-sm text-gray-600 dark:text-gray-300">
                                 No se encontraron clientes
                             </td>
                         </tr>

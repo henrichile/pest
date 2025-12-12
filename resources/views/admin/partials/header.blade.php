@@ -3,15 +3,15 @@
     <!-- Título + Buscador -->
     <div class="flex items-center gap-4">
         <div class="flex-shrink-0">
-            <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 dark:text-white sm:truncate sm:tracking-tight" class="text-gray-900 dark:text-white" style="font-weight: 700;">
+            <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 dark:text-white sm:truncate sm:tracking-tight text-gray-900 dark:text-white" class="font-bold">
                 {{ $title ?? 'Dashboard' }}
             </h2>
             @if(isset($subtitle))
-            <p class="mt-1 text-xs sm:text-sm dark:text-white" class="text-gray-600 dark:text-gray-300">
+            <p class="mt-1 text-xs sm:text-sm dark:text-white text-gray-600 dark:text-gray-300">
                 {{ $subtitle }}
             </p>
             @elseif(isset($showDate) && $showDate)
-            <p class="mt-1 text-xs sm:text-sm dark:text-white" class="text-gray-600 dark:text-gray-300">
+            <p class="mt-1 text-xs sm:text-sm dark:text-white text-gray-600 dark:text-gray-300">
                 {{ now()->locale('es')->isoFormat('dddd, D [de] MMMM') }}
             </p>
             @endif
@@ -151,15 +151,15 @@
 
 <!-- Mobile Header (solo título) -->
 <div class="md:hidden mb-2">
-    <h2 class="text-2xl font-bold leading-7 text-gray-900" class="text-gray-900 dark:text-white" style="font-weight: 700;">
+    <h2 class="text-2xl font-bold leading-7 text-gray-900 text-gray-900 dark:text-white" class="font-bold">
         {{ $title ?? 'Dashboard' }}
     </h2>
     @if(isset($subtitle))
-    <p class="mt-1 text-sm" class="text-gray-600 dark:text-gray-300">
+    <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
         {{ $subtitle }}
     </p>
     @elseif(isset($showDate) && $showDate)
-    <p class="mt-1 text-sm" class="text-gray-600 dark:text-gray-300">
+    <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
         {{ now()->locale('es')->isoFormat('dddd, D [de] MMMM') }}
     </p>
     @endif

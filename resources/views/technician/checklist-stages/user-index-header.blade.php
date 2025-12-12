@@ -21,11 +21,11 @@
     </div>
 
     <!-- Filters -->
-    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4 sm:p-6 mb-6" style="border: 1px solid #e5e7eb !important;">
+    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4 sm:p-6 mb-6 border border-gray-200 dark:border-gray-700">
         <form method="GET" action="{{ route('admin.users.index') }}" class="space-y-4">
             <!-- Search -->
             <div class="w-full">
-                <label for="search" class="block text-sm font-medium mb-2" class="text-gray-700 dark:text-gray-300">Buscar</label>
+                <label for="search" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Buscar</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-gray-600 dark:text-gray-300">
@@ -40,7 +40,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <!-- Role Filter -->
                 <div class="w-full">
-                    <label for="role" class="block text-sm font-medium mb-2" class="text-gray-700 dark:text-gray-300">Rol</label>
+                    <label for="role" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Rol</label>
                     <select name="role" id="role" class="block w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
                         <option value="">Todos los roles</option>
                         @foreach($roles as $role)
@@ -53,7 +53,7 @@
 
                 <!-- Status Filter -->
                 <div class="w-full">
-                    <label for="is_active" class="block text-sm font-medium mb-2" class="text-gray-700 dark:text-gray-300">Estado</label>
+                    <label for="is_active" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Estado</label>
                     <select name="is_active" id="is_active" class="block w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
                         <option value="">Todos</option>
                         <option value="1" {{ request('is_active') === '1' ? 'selected' : '' }}>Activos</option>
@@ -84,27 +84,27 @@
     </div>
 
     <!-- Users Table -->
-    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg overflow-hidden" style="border: 1px solid #e5e7eb !important;">
+    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead style="background: #f9fafb;">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" class="text-gray-600 dark:text-gray-300">
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">
                             Usuario
                         </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" class="text-gray-600 dark:text-gray-300">
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">
                             Email
                         </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" class="text-gray-600 dark:text-gray-300">
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">
                             Rol
                         </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" class="text-gray-600 dark:text-gray-300">
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">
                             Estado
                         </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" class="text-gray-600 dark:text-gray-300">
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">
                             Fecha de Registro
                         </th>
-                        <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider" class="text-gray-600 dark:text-gray-300">
+                        <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">
                             Acciones
                         </th>
                     </tr>
@@ -115,19 +115,19 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-10 w-10">
-                                        <div class="h-10 w-10 rounded-full flex items-center justify-center text-white font-semibold" style="background: #22c55e;">
+                                        <div class="h-10 w-10 rounded-full flex items-center justify-center text-white font-semibold bg-green-500">
                                             {{ strtoupper(substr($user->name, 0, 1)) }}
                                         </div>
                                     </div>
                                     <div class="ml-4">
-                                        <div class="text-sm font-medium" class="text-gray-900 dark:text-white">
+                                        <div class="text-sm font-medium text-gray-900 dark:text-white">
                                             {{ $user->name }}
                                         </div>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm" class="text-gray-600 dark:text-gray-300">
+                                <div class="text-sm text-gray-600 dark:text-gray-300">
                                     {{ $user->email }}
                                 </div>
                             </td>
@@ -154,7 +154,7 @@
                                     </span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm" class="text-gray-600 dark:text-gray-300">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
                                 {{ $user->created_at->format('d/m/Y') }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -179,7 +179,7 @@
                                 <svg class="mx-auto h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #9ca3af;">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
                                 </svg>
-                                <p class="text-sm" class="text-gray-600 dark:text-gray-300">
+                                <p class="text-sm text-gray-600 dark:text-gray-300">
                                     No se encontraron usuarios con los filtros seleccionados.
                                 </p>
                             </td>

@@ -8,8 +8,8 @@
     <div class="mb-6">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-2xl font-bold" class="text-gray-900 dark:text-white">Reportes Programados</h1>
-                <p class="text-sm mt-1" class="text-gray-600 dark:text-gray-300">Gestiona y visualiza los reportes programados automáticamente</p>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Reportes Programados</h1>
+                <p class="text-sm mt-1 text-gray-600 dark:text-gray-300">Gestiona y visualiza los reportes programados automáticamente</p>
             </div>
             <a href="{{ route('admin.reports.scheduled.create') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 bg-green-500 text-white hover:bg-green-600">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -59,8 +59,8 @@
                     <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5a2.25 2.25 0 002.25-2.25m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5a2.25 2.25 0 012.25 2.25v7.5" />
                     </svg>
-                    <h3 class="mt-2 text-sm font-semibold" class="text-gray-900 dark:text-white">No hay reportes programados</h3>
-                    <p class="mt-1 text-sm" class="text-gray-600 dark:text-gray-300">Comienza programando tu primer reporte automático.</p>
+                    <h3 class="mt-2 text-sm font-semibold text-gray-900 dark:text-white">No hay reportes programados</h3>
+                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">Comienza programando tu primer reporte automático.</p>
                     <div class="mt-6">
                         <a href="{{ route('admin.reports.scheduled.create') }}" class="inline-flex items-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-600">
                             <svg class="-ml-0.5 mr-1.5 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -87,8 +87,8 @@
                         <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
                             @foreach($scheduledReports as $report)
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium" class="text-gray-900 dark:text-white">{{ $report->name }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm" class="text-gray-900 dark:text-white">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{{ $report->name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                     @if($report->type === 'services')
                                         Servicios
                                     @elseif($report->type === 'clients')
@@ -101,7 +101,7 @@
                                         {{ ucfirst($report->type) }}
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm" class="text-gray-900 dark:text-white">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                     @if($report->frequency === 'daily')
                                         Diario
                                     @elseif($report->frequency === 'weekly')
@@ -116,7 +116,7 @@
                                         {{ ucfirst($report->frequency) }}
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm" class="text-gray-900 dark:text-white">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                     @if($report->next_run_at)
                                         {{ $report->next_run_at->format('d/m/Y H:i') }}
                                     @else
@@ -130,7 +130,7 @@
                                         <span class="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Inactivo</span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm" class="text-gray-900 dark:text-white">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                     @if($report->recipients && count($report->recipients) > 0)
                                         {{ count($report->recipients) }} destinatario(s)
                                     @else

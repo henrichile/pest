@@ -21,7 +21,7 @@
             
             <!-- Título -->
             <div class="flex-1">
-                <h2 class="text-2xl font-bold" class="text-gray-900 dark:text-white" style="font-weight: 700;">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white" class="font-bold">
                     Nuevo Producto
                 </h2>
             </div>
@@ -61,10 +61,10 @@
         
         <!-- Segunda fila: Título completo (desktop) -->
         <div class="hidden md:block">
-            <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" class="text-gray-900 dark:text-white" style="font-weight: 700;">
+            <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight text-gray-900 dark:text-white" class="font-bold">
                 Crear Nuevo Producto
             </h2>
-            <p class="mt-1 text-xs sm:text-sm" class="text-gray-600 dark:text-gray-300">
+            <p class="mt-1 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                 Complete los datos para crear un nuevo producto
             </p>
         </div>

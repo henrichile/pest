@@ -36,11 +36,11 @@
     <!-- Pests Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         @forelse($pests as $pest)
-            <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg overflow-hidden transition-shadow hover:shadow-md cursor-pointer pest-card" style="border: 1px solid #e5e7eb !important;" data-pest-id="{{ $pest->id }}">
+            <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg overflow-hidden transition-shadow hover:shadow-md cursor-pointer pest-card border border-gray-200 dark:border-gray-700" data-pest-id="{{ $pest->id }}">
                 <div class="p-5">
                     <!-- Pest Name -->
                     <div class="mb-3">
-                        <h3 class="text-lg font-bold mb-1" class="text-gray-900 dark:text-white">{{ $pest->name ?? 'Sin nombre' }}</h3>
+                        <h3 class="text-lg font-bold mb-1 text-gray-900 dark:text-white">{{ $pest->name ?? 'Sin nombre' }}</h3>
                     </div>
 
                     <!-- Category Tag -->
@@ -74,7 +74,7 @@
                     @if($pest->control_methods)
                         <div>
                             <p class="text-sm font-semibold mb-2" style="color: #22c55e;">Tratamiento:</p>
-                            <ul class="list-disc list-inside text-sm space-y-1" class="text-gray-600 dark:text-gray-300">
+                            <ul class="list-disc list-inside text-sm space-y-1 text-gray-600 dark:text-gray-300">
                                 @if(is_array($pest->control_methods))
                                     @foreach(array_slice($pest->control_methods, 0, 3) as $method)
                                         <li>{{ $method }}</li>
@@ -92,11 +92,11 @@
             </div>
         @empty
             <div class="col-span-full">
-                <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-8 text-center" style="border: 1px solid #e5e7eb !important;">
+                <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-8 text-center border border-gray-200 dark:border-gray-700">
                     <svg class="mx-auto h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #9ca3af;">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                     </svg>
-                    <p class="text-sm" class="text-gray-600 dark:text-gray-300">No se encontraron plagas</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">No se encontraron plagas</p>
                 </div>
             </div>
         @endforelse
@@ -115,7 +115,7 @@
             <!-- Header -->
             <div class="sticky top-0 bg-white border-b border-gray-200 px-4 sm:px-6 py-3 sm:py-4 flex items-start justify-between z-10" style="border-bottom: 1px solid #e5e7eb !important;">
                 <div class="flex-1 pr-4">
-                    <h3 class="text-xl sm:text-2xl font-bold mb-2" class="text-gray-900 dark:text-white" id="modal-pest-name">Cargando...</h3>
+                    <h3 class="text-xl sm:text-2xl font-bold mb-2 text-gray-900 dark:text-white" id="modal-pest-name">Cargando...</h3>
                     <div class="mt-2">
                         <span class="inline-block px-3 py-1 rounded-full text-xs font-medium" id="modal-category"></span>
                     </div>
@@ -131,7 +131,7 @@
             <div class="px-4 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6">
                 <!-- Description -->
                 <div id="modal-description" class="hidden">
-                    <h4 class="text-lg font-semibold mb-3" class="text-gray-900 dark:text-white">
+                    <h4 class="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
                         <svg class="inline-block w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-gray-600 dark:text-gray-300">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
                         </svg>
@@ -144,27 +144,27 @@
 
                 <!-- Treatment / Control Methods -->
                 <div id="modal-treatment" class="hidden">
-                    <h4 class="text-lg font-semibold mb-3" class="text-gray-900 dark:text-white">
+                    <h4 class="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
                         <svg class="inline-block w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #22c55e;">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
                         </svg>
                         Métodos de Control
                     </h4>
                     <div class="bg-green-50 rounded-lg p-4" style="background: #f0fdf4;">
-                        <ul class="list-disc list-inside text-sm space-y-2" class="text-gray-700 dark:text-gray-300" id="modal-treatment-list"></ul>
+                        <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-300" id="modal-treatment-list"></ul>
                     </div>
                 </div>
 
                 <!-- Recommendations Section -->
                 <div id="modal-recommendations" class="hidden">
-                    <h4 class="text-lg font-semibold mb-3" class="text-gray-900 dark:text-white">
+                    <h4 class="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
                         <svg class="inline-block w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #3b82f6;">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
                         </svg>
                         Recomendaciones
                     </h4>
                     <div class="bg-blue-50 rounded-lg p-4" style="background: #eff6ff;">
-                        <ul class="list-disc list-inside text-sm space-y-2" class="text-gray-700 dark:text-gray-300" id="modal-recommendations-list"></ul>
+                        <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-300" id="modal-recommendations-list"></ul>
                     </div>
                 </div>
             </div>

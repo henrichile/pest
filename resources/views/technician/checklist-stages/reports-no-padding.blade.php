@@ -24,7 +24,7 @@
             <form method="GET" action="{{ route('admin.reports.index') }}" id="reportFiltersForm">
                 <!-- Rangos Rápidos -->
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-2" class="text-gray-600 dark:text-gray-300">Rangos Rápidos</label>
+                    <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Rangos Rápidos</label>
                     <div class="flex flex-wrap gap-2">
                         <button type="button" class="quick-range-btn px-4 py-2 rounded-full text-sm font-medium transition-colors" data-range="this-month" style="background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb;">
                             <svg class="w-4 h-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -57,7 +57,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
                     <!-- Fecha Inicio -->
                     <div>
-                        <label for="start_date" class="block text-sm font-medium mb-2" class="text-gray-600 dark:text-gray-300">Fecha Inicio</label>
+                        <label for="start_date" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Fecha Inicio</label>
                         <div class="relative">
                             <input type="date" name="start_date" id="start_date" value="{{ $startDate }}" class="w-full border border-gray-300 rounded-lg px-3 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-green-500">
                             <svg class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -68,7 +68,7 @@
 
                     <!-- Fecha Fin -->
                     <div>
-                        <label for="end_date" class="block text-sm font-medium mb-2" class="text-gray-600 dark:text-gray-300">Fecha Fin</label>
+                        <label for="end_date" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Fecha Fin</label>
                         <div class="relative">
                             <input type="date" name="end_date" id="end_date" value="{{ $endDate }}" class="w-full border border-gray-300 rounded-lg px-3 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-green-500">
                             <svg class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -79,7 +79,7 @@
 
                     <!-- Tipo de Servicio -->
                     <div>
-                        <label for="service_type" class="block text-sm font-medium mb-2" class="text-gray-600 dark:text-gray-300">Tipo de Servicio</label>
+                        <label for="service_type" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Tipo de Servicio</label>
                         <select name="service_type" id="service_type" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
                             <option value="all" {{ $serviceType === 'all' ? 'selected' : '' }}>Todos</option>
                             @foreach($serviceTypes as $type)
@@ -90,7 +90,7 @@
 
                     <!-- Cliente -->
                     <div>
-                        <label for="client_id" class="block text-sm font-medium mb-2" class="text-gray-600 dark:text-gray-300">Cliente</label>
+                        <label for="client_id" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Cliente</label>
                         <select name="client_id" id="client_id" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
                             <option value="all" {{ $clientId === 'all' ? 'selected' : '' }}>Todos</option>
                             @foreach($allClients as $client)
@@ -103,7 +103,7 @@
 
                     <!-- Técnico -->
                     <div>
-                        <label for="technician_id" class="block text-sm font-medium mb-2" class="text-gray-600 dark:text-gray-300">Técnico</label>
+                        <label for="technician_id" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Técnico</label>
                         <select name="technician_id" id="technician_id" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
                             <option value="all" {{ $technicianId === 'all' ? 'selected' : '' }}>Todos</option>
                             @foreach($allTechnicians as $technician)
@@ -114,7 +114,7 @@
 
                     <!-- Estado -->
                     <div>
-                        <label for="status" class="block text-sm font-medium mb-2" class="text-gray-600 dark:text-gray-300">Estado</label>
+                        <label for="status" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Estado</label>
                         <select name="status" id="status" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
                             <option value="all" {{ $status === 'all' ? 'selected' : '' }}>Todos</option>
                             <option value="pendiente" {{ $status === 'pendiente' ? 'selected' : '' }}>Pendiente</option>
@@ -155,7 +155,7 @@
             </button>
             <!-- Dropdown de exportación -->
             <div id="exportDropdown" class="hidden absolute top-full left-0 mt-2 bg-white rounded-lg shadow-lg border z-50" style="border: 1px solid #e5e7eb; min-width: 200px;">
-                <a href="{{ route('admin.reports.export', array_merge(request()->all(), ['format' => 'csv'])) }}" class="block px-4 py-2 text-sm hover:bg-gray-50 transition-colors" class="text-gray-900 dark:text-white">
+                <a href="{{ route('admin.reports.export', array_merge(request()->all(), ['format' => 'csv'])) }}" class="block px-4 py-2 text-sm hover:bg-gray-50 transition-colors text-gray-900 dark:text-white">
                     <div class="flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -163,7 +163,7 @@
                         Exportar CSV
                     </div>
                 </a>
-                <a href="{{ route('admin.reports.export', array_merge(request()->all(), ['format' => 'pdf'])) }}" class="block px-4 py-2 text-sm hover:bg-gray-50 transition-colors" class="text-gray-900 dark:text-white">
+                <a href="{{ route('admin.reports.export', array_merge(request()->all(), ['format' => 'pdf'])) }}" class="block px-4 py-2 text-sm hover:bg-gray-50 transition-colors text-gray-900 dark:text-white">
                     <div class="flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
@@ -193,70 +193,70 @@
         <!-- Total Servicios -->
         <div class="bg-white rounded-lg shadow-md border p-5" style="border: 1px solid #e5e7eb;">
             <div class="flex items-center justify-between mb-2">
-                <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: #3b82f6;">
+                <div class="w-12 h-12 rounded-lg flex items-center justify-center bg-blue-500">
                     <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
                     </svg>
                 </div>
             </div>
-            <p class="text-2xl font-bold mb-1" class="text-gray-900 dark:text-white">TOTAL</p>
-            <p class="text-lg font-semibold mb-1" class="text-gray-900 dark:text-white">{{ $totalServices }}</p>
-            <p class="text-sm" class="text-gray-600 dark:text-gray-300">Servicios registrados</p>
+            <p class="text-2xl font-bold mb-1 text-gray-900 dark:text-white">TOTAL</p>
+            <p class="text-lg font-semibold mb-1 text-gray-900 dark:text-white">{{ $totalServices }}</p>
+            <p class="text-sm text-gray-600 dark:text-gray-300">Servicios registrados</p>
         </div>
 
         <!-- Completados -->
         <div class="bg-white rounded-lg shadow-md border p-5" style="border: 1px solid #e5e7eb; background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);">
             <div class="flex items-center justify-between mb-2">
-                <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: #22c55e;">
+                <div class="w-12 h-12 rounded-lg flex items-center justify-center bg-green-500">
                     <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
             </div>
-            <p class="text-2xl font-bold mb-1" class="text-gray-900 dark:text-white">COMPLETADOS</p>
-            <p class="text-lg font-semibold mb-1" class="text-gray-900 dark:text-white">{{ $completedServices }}</p>
-            <p class="text-sm" class="text-gray-600 dark:text-gray-300">{{ $completedPercentage }}% del total</p>
+            <p class="text-2xl font-bold mb-1 text-gray-900 dark:text-white">COMPLETADOS</p>
+            <p class="text-lg font-semibold mb-1 text-gray-900 dark:text-white">{{ $completedServices }}</p>
+            <p class="text-sm text-gray-600 dark:text-gray-300">{{ $completedPercentage }}% del total</p>
         </div>
 
         <!-- Ingresos -->
         <div class="bg-white rounded-lg shadow-md border p-5" style="border: 1px solid #e5e7eb; background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);">
             <div class="flex items-center justify-between mb-2">
-                <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: #3b82f6;">
+                <div class="w-12 h-12 rounded-lg flex items-center justify-center bg-blue-500">
                     <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659a1.5 1.5 0 001.06.39h1.5m-1.5-4.5h-3m-3 0l-.879.659A1.5 1.5 0 003 8.818v1.5m0 0v1.5m0-1.5h3m-3 0h-3M9 6.75h3m-3 0h-3m3 0v1.5m0-1.5V6.75m0 0H9m3 0h3M15 6.75h3m-3 0h-3m3 0v1.5m0-1.5V6.75m0 0H15m3 0h3" />
                     </svg>
                 </div>
             </div>
-            <p class="text-2xl font-bold mb-1" class="text-gray-900 dark:text-white">${{ number_format($periodIncome, 0, ',', '.') }}</p>
-            <p class="text-sm" class="text-gray-600 dark:text-gray-300">Período seleccionado</p>
+            <p class="text-2xl font-bold mb-1 text-gray-900 dark:text-white">${{ number_format($periodIncome, 0, ',', '.') }}</p>
+            <p class="text-sm text-gray-600 dark:text-gray-300">Período seleccionado</p>
         </div>
 
         <!-- Clientes -->
         <div class="bg-white rounded-lg shadow-md border p-5" style="border: 1px solid #e5e7eb; background: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%);">
             <div class="flex items-center justify-between mb-2">
-                <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: #8b5cf6;">
+                <div class="w-12 h-12 rounded-lg flex items-center justify-center bg-purple-500">
                     <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
                     </svg>
                 </div>
             </div>
-            <p class="text-2xl font-bold mb-1" class="text-gray-900 dark:text-white">CLIENTES</p>
-            <p class="text-lg font-semibold mb-1" class="text-gray-900 dark:text-white">{{ $uniqueClients }}</p>
-            <p class="text-sm" class="text-gray-600 dark:text-gray-300">Únicos activos</p>
+            <p class="text-2xl font-bold mb-1 text-gray-900 dark:text-white">CLIENTES</p>
+            <p class="text-lg font-semibold mb-1 text-gray-900 dark:text-white">{{ $uniqueClients }}</p>
+            <p class="text-sm text-gray-600 dark:text-gray-300">Únicos activos</p>
         </div>
 
         <!-- Técnicos -->
         <div class="bg-white rounded-lg shadow-md border p-5" style="border: 1px solid #e5e7eb; background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);">
             <div class="flex items-center justify-between mb-2">
-                <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: #f59e0b;">
+                <div class="w-12 h-12 rounded-lg flex items-center justify-center bg-amber-500">
                     <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
             </div>
-            <p class="text-2xl font-bold mb-1" class="text-gray-900 dark:text-white">TÉCNICOS</p>
-            <p class="text-lg font-semibold mb-1" class="text-gray-900 dark:text-white">{{ $activeTechnicians }}</p>
-            <p class="text-sm" class="text-gray-600 dark:text-gray-300">Activos en período</p>
+            <p class="text-2xl font-bold mb-1 text-gray-900 dark:text-white">TÉCNICOS</p>
+            <p class="text-lg font-semibold mb-1 text-gray-900 dark:text-white">{{ $activeTechnicians }}</p>
+            <p class="text-sm text-gray-600 dark:text-gray-300">Activos en período</p>
         </div>
     </div>
 
@@ -264,7 +264,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <!-- Servicios por Estado -->
         <div class="bg-white rounded-lg shadow-md border p-6" style="border: 1px solid #e5e7eb;">
-            <h3 class="text-lg font-semibold mb-4" class="text-gray-900 dark:text-white">Servicios por Estado</h3>
+            <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Servicios por Estado</h3>
             <div style="height: 300px; position: relative;">
                 <canvas id="statusChart"></canvas>
             </div>
@@ -272,7 +272,7 @@
 
         <!-- Distribución por Tipo -->
         <div class="bg-white rounded-lg shadow-md border p-6" style="border: 1px solid #e5e7eb;">
-            <h3 class="text-lg font-semibold mb-4" class="text-gray-900 dark:text-white">Distribución por Tipo</h3>
+            <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Distribución por Tipo</h3>
             <div style="height: 300px; position: relative;">
                 <canvas id="typeChart"></canvas>
             </div>
@@ -282,7 +282,7 @@
     <!-- Evolución Temporal -->
     <div class="bg-white rounded-lg shadow-md border p-6 mb-6" style="border: 1px solid #e5e7eb;">
         <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold" class="text-gray-900 dark:text-white">Evolución Temporal</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Evolución Temporal</h3>
             <div class="flex gap-2">
                 <button class="px-3 py-1 rounded text-sm font-medium transition-colors" style="background: #f3f4f6; color: #6b7280;">PROGRAMADO</button>
                 <button class="px-3 py-1 rounded text-sm font-medium transition-colors bg-green-500 text-white">COMPLETADO</button>
@@ -294,15 +294,15 @@
         <div class="flex justify-center gap-6 mt-4">
             <div class="flex items-center gap-2">
                 <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                <span class="text-sm" class="text-gray-600 dark:text-gray-300">Completados</span>
+                <span class="text-sm text-gray-600 dark:text-gray-300">Completados</span>
             </div>
             <div class="flex items-center gap-2">
-                <div class="w-3 h-3 rounded-full" style="background: #f59e0b;"></div>
-                <span class="text-sm" class="text-gray-600 dark:text-gray-300">Pendientes</span>
+                <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                <span class="text-sm text-gray-600 dark:text-gray-300">Pendientes</span>
             </div>
             <div class="flex items-center gap-2">
                 <div class="w-3 h-3 rounded-full bg-black"></div>
-                <span class="text-sm" class="text-gray-600 dark:text-gray-300">Total</span>
+                <span class="text-sm text-gray-600 dark:text-gray-300">Total</span>
             </div>
         </div>
     </div>
@@ -311,7 +311,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Top 5 Clientes -->
         <div class="bg-white rounded-lg shadow-md border p-6" style="border: 1px solid #e5e7eb;">
-            <h3 class="text-lg font-semibold mb-4" class="text-gray-900 dark:text-white">Top 5 Clientes</h3>
+            <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Top 5 Clientes</h3>
             <div class="space-y-3">
                 @forelse($topClients as $index => $item)
                     <div class="flex items-center justify-between p-3 rounded-lg" style="background: #f9fafb;">
@@ -320,20 +320,20 @@
                                 {{ $index + 1 }}
                             </div>
                             <div>
-                                <p class="text-sm font-medium" class="text-gray-900 dark:text-white">{{ $item['client']->business_name ?? $item['client']->name ?? 'Cliente #' . $item['client']->id }}</p>
+                                <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $item['client']->business_name ?? $item['client']->name ?? 'Cliente #' . $item['client']->id }}</p>
                             </div>
                         </div>
-                        <p class="text-sm font-semibold" class="text-gray-900 dark:text-white">{{ $item['count'] }} servicios</p>
+                        <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ $item['count'] }} servicios</p>
                     </div>
                 @empty
-                    <p class="text-sm text-center py-4" class="text-gray-600 dark:text-gray-300">No hay datos disponibles</p>
+                    <p class="text-sm text-center py-4 text-gray-600 dark:text-gray-300">No hay datos disponibles</p>
                 @endforelse
             </div>
         </div>
 
         <!-- Top 5 Técnicos -->
         <div class="bg-white rounded-lg shadow-md border p-6" style="border: 1px solid #e5e7eb;">
-            <h3 class="text-lg font-semibold mb-4" class="text-gray-900 dark:text-white">Top 5 Técnicos</h3>
+            <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Top 5 Técnicos</h3>
             <div class="space-y-3">
                 @forelse($topTechnicians as $index => $item)
                     <div class="flex items-center justify-between p-3 rounded-lg" style="background: #f9fafb;">
@@ -342,13 +342,13 @@
                                 {{ $index + 1 }}
                             </div>
                             <div>
-                                <p class="text-sm font-medium" class="text-gray-900 dark:text-white">{{ $item['technician']->name }}</p>
+                                <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $item['technician']->name }}</p>
                             </div>
                         </div>
-                        <p class="text-sm font-semibold" class="text-gray-900 dark:text-white">{{ $item['count'] }} servicios</p>
+                        <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ $item['count'] }} servicios</p>
                     </div>
                 @empty
-                    <p class="text-sm text-center py-4" class="text-gray-600 dark:text-gray-300">No hay datos disponibles</p>
+                    <p class="text-sm text-center py-4 text-gray-600 dark:text-gray-300">No hay datos disponibles</p>
                 @endforelse
             </div>
         </div>

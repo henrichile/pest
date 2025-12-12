@@ -303,7 +303,7 @@
             
             <!-- Título -->
             <div class="flex-1">
-                <h2 class="text-2xl font-bold" class="text-gray-900 dark:text-white" style="font-weight: 700;">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white" class="font-bold">
                     Dashboard
                 </h2>
             </div>
@@ -312,10 +312,10 @@
         <!-- Segunda fila: Título completo (desktop) -->
         <div class="hidden md:flex md:items-center md:justify-between gap-4">
             <div class="min-w-0 flex-1">
-                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight" class="text-gray-900 dark:text-white" style="font-weight: 700;">
+                <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight text-gray-900 dark:text-white" class="font-bold">
                     Dashboard
                 </h2>
-                <p class="mt-1 text-xs sm:text-sm" class="text-gray-600 dark:text-gray-300">
+                <p class="mt-1 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                     {{ now()->locale('es')->isoFormat('dddd, D [de] MMMM') }}
                 </p>
             </div>
@@ -1035,76 +1035,76 @@
     <!-- Stats -->
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-6">
         <!-- Clientes -->
-        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
+        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <div class="w-14 h-14 rounded-lg flex items-center justify-center" style="background: #3b82f6;">
+                        <div class="w-14 h-14 rounded-lg flex items-center justify-center bg-blue-500">
                             <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
                         </svg>
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1 dark:text-white" class="text-gray-600 dark:text-gray-300">Clientes</p>
-                        <p class="text-3xl font-bold dark:text-white" class="text-gray-900 dark:text-white">{{ $stats['clients'] ?? 0 }}</p>
+                        <p class="text-sm font-medium mb-1 dark:text-white text-gray-600 dark:text-gray-300">Clientes</p>
+                        <p class="text-3xl font-bold dark:text-white text-gray-900 dark:text-white">{{ $stats['clients'] ?? 0 }}</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Este Mes -->
-        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
+        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <div class="w-14 h-14 rounded-lg flex items-center justify-center" style="background: #22c55e;">
+                        <div class="w-14 h-14 rounded-lg flex items-center justify-center bg-green-500">
                             <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5a2.25 2.25 0 002.25-2.25m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5a2.25 2.25 0 012.25 2.25v7.5" />
                         </svg>
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1 dark:text-white" class="text-gray-600 dark:text-gray-300">Este Mes</p>
-                        <p class="text-3xl font-bold dark:text-white" class="text-gray-900 dark:text-white">{{ $stats['this_month'] ?? 0 }}</p>
+                        <p class="text-sm font-medium mb-1 dark:text-white text-gray-600 dark:text-gray-300">Este Mes</p>
+                        <p class="text-3xl font-bold dark:text-white text-gray-900 dark:text-white">{{ $stats['this_month'] ?? 0 }}</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Completados -->
-        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
+        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <div class="w-14 h-14 rounded-lg flex items-center justify-center" style="background: #8b5cf6;">
+                        <div class="w-14 h-14 rounded-lg flex items-center justify-center bg-purple-500">
                             <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1 dark:text-white" class="text-gray-600 dark:text-gray-300">Completados</p>
-                        <p class="text-3xl font-bold dark:text-white" class="text-gray-900 dark:text-white">{{ $stats['completed'] ?? 0 }}</p>
+                        <p class="text-sm font-medium mb-1 dark:text-white text-gray-600 dark:text-gray-300">Completados</p>
+                        <p class="text-3xl font-bold dark:text-white text-gray-900 dark:text-white">{{ $stats['completed'] ?? 0 }}</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Pendientes -->
-        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
+        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <div class="w-14 h-14 rounded-lg flex items-center justify-center" style="background: #f59e0b;">
+                        <div class="w-14 h-14 rounded-lg flex items-center justify-center bg-amber-500">
                             <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1 dark:text-white" class="text-gray-600 dark:text-gray-300">Pendientes</p>
-                        <p class="text-3xl font-bold dark:text-white" class="text-gray-900 dark:text-white">{{ $stats['pending'] ?? 0 }}</p>
+                        <p class="text-sm font-medium mb-1 dark:text-white text-gray-600 dark:text-gray-300">Pendientes</p>
+                        <p class="text-3xl font-bold dark:text-white text-gray-900 dark:text-white">{{ $stats['pending'] ?? 0 }}</p>
                     </div>
                 </div>
             </div>
@@ -1127,19 +1127,19 @@
                 <div class="mb-4 flex items-center justify-between flex-wrap gap-3">
                     <div class="flex items-center gap-4 flex-wrap">
                         <div class="flex items-center gap-2">
-                            <div class="w-3 h-3 rounded-full" style="background: #3b82f6;"></div>
-                            <span class="text-sm statistics-text dark:text-white" class="text-gray-600 dark:text-gray-300">Total Servicios</span>
-                            <span class="text-sm font-semibold statistics-number dark:text-white" class="text-gray-900 dark:text-white">{{ $stats['total_services'] ?? 0 }}</span>
+                            <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+                            <span class="text-sm statistics-text dark:text-white text-gray-600 dark:text-gray-300">Total Servicios</span>
+                            <span class="text-sm font-semibold statistics-number dark:text-white text-gray-900 dark:text-white">{{ $stats['total_services'] ?? 0 }}</span>
                         </div>
                         <div class="flex items-center gap-2">
-                            <div class="w-3 h-3 rounded-full" style="background: #22c55e;"></div>
-                            <span class="text-sm statistics-text dark:text-white" class="text-gray-600 dark:text-gray-300">Completados</span>
-                            <span class="text-sm font-semibold statistics-number dark:text-white" class="text-gray-900 dark:text-white">{{ $stats['completed'] ?? 0 }}</span>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            <span class="text-sm statistics-text dark:text-white text-gray-600 dark:text-gray-300">Completados</span>
+                            <span class="text-sm font-semibold statistics-number dark:text-white text-gray-900 dark:text-white">{{ $stats['completed'] ?? 0 }}</span>
                         </div>
                         <div class="flex items-center gap-2">
-                            <div class="w-3 h-3 rounded-full" style="background: #ef4444;"></div>
-                            <span class="text-sm statistics-text dark:text-white" class="text-gray-600 dark:text-gray-300">Pendientes</span>
-                            <span class="text-sm font-semibold statistics-number dark:text-white" class="text-gray-900 dark:text-white">{{ $stats['pending'] ?? 0 }}</span>
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <span class="text-sm statistics-text dark:text-white text-gray-600 dark:text-gray-300">Pendientes</span>
+                            <span class="text-sm font-semibold statistics-number dark:text-white text-gray-900 dark:text-white">{{ $stats['pending'] ?? 0 }}</span>
             </div>
                     </div>
                     <select id="periodFilter" class="text-sm border dark:border-gray-700 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-800" style="color: #6b7280; border: 1px solid #e5e7eb !important; cursor: pointer;">
@@ -1159,30 +1159,30 @@
                 <!-- Legend -->
                 <div class="mt-4 flex flex-wrap items-center gap-4 justify-center">
                     <div class="flex items-center gap-2">
-                        <div class="w-3 h-3 rounded-full" style="background: #ef4444;"></div>
-                        <span class="text-xs dark:text-white" class="text-gray-600 dark:text-gray-300">Fumigación</span>
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <span class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Fumigación</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <div class="w-3 h-3 rounded-full" style="background: #f59e0b;"></div>
-                        <span class="text-xs dark:text-white" class="text-gray-600 dark:text-gray-300">Desratización</span>
+                        <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                        <span class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Desratización</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <div class="w-3 h-3 rounded-full" style="background: #8b5cf6;"></div>
-                        <span class="text-xs dark:text-white" class="text-gray-600 dark:text-gray-300">Sanitización</span>
+                        <div class="w-3 h-3 rounded-full bg-purple-500"></div>
+                        <span class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Sanitización</span>
                                     </div>
                     <div class="flex items-center gap-2">
-                        <div class="w-3 h-3 rounded-full" style="background: #ec4899;"></div>
-                        <span class="text-xs dark:text-white" class="text-gray-600 dark:text-gray-300">Monitoreo Cebaderas</span>
+                        <div class="w-3 h-3 rounded-full bg-pink-500"></div>
+                        <span class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Monitoreo Cebaderas</span>
                                         </div>
                     <div class="flex items-center gap-2">
-                        <div class="w-3 h-3 rounded-full" style="background: #22c55e;"></div>
-                        <span class="text-xs dark:text-white" class="text-gray-600 dark:text-gray-300">Otros Servicios</span>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        <span class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Otros Servicios</span>
                                         </div>
                                     </div>
                 
                 <!-- Resumen por Tipo de Servicio -->
                 <div class="mt-6">
-                    <h4 class="text-base font-semibold mb-4 dark:text-white" class="text-gray-900 dark:text-white">RESUMEN POR TIPO DE SERVICIO</h4>
+                    <h4 class="text-base font-semibold mb-4 dark:text-white text-gray-900 dark:text-white">RESUMEN POR TIPO DE SERVICIO</h4>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                         @php
                             $serviceTypesCards = [
@@ -1199,19 +1199,19 @@
                                 $totalForPercentage = $stats['total_services_percentage'] ?? 0;
                                 $percentage = $totalForPercentage > 0 ? round(($count / $totalForPercentage) * 100) : 0;
                             @endphp
-                            <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4" style="border: 1px solid #e5e7eb !important;">
+                            <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
                                 <div class="flex items-center gap-2 mb-2">
                                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: {{ $typeInfo['color'] }};">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="{{ $typeInfo['icon'] }}" />
                                     </svg>
                                     <div class="w-2 h-2 rounded-full" style="background: {{ $typeInfo['color'] }};"></div>
                                 </div>
-                                <p class="text-xs font-semibold mb-1 dark:text-white" class="text-gray-900 dark:text-white">{{ $typeInfo['name'] }}</p>
-                                <p class="text-2xl font-bold mb-1 dark:text-white" class="text-gray-900 dark:text-white">{{ $count }}</p>
+                                <p class="text-xs font-semibold mb-1 dark:text-white text-gray-900 dark:text-white">{{ $typeInfo['name'] }}</p>
+                                <p class="text-2xl font-bold mb-1 dark:text-white text-gray-900 dark:text-white">{{ $count }}</p>
                                 @if($count > 0 && $percentage > 0)
-                                    <p class="text-xs dark:text-white" class="text-gray-600 dark:text-gray-300">{{ $percentage }}%</p>
+                                    <p class="text-xs dark:text-white text-gray-600 dark:text-gray-300">{{ $percentage }}%</p>
                                 @else
-                                    <p class="text-xs dark:text-white" class="text-gray-600 dark:text-gray-300">Sin actividad</p>
+                                    <p class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Sin actividad</p>
                                 @endif
                             </div>
                         @endforeach
@@ -1224,19 +1224,19 @@
                                 $otherPercentage = $totalForPercentage > 0 ? round(($otherCount / $totalForPercentage) * 100) : 0;
                             }
                         @endphp
-                        <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4" style="border: 1px solid #e5e7eb !important;">
+                        <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
                             <div class="flex items-center gap-2 mb-2">
                                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #22c55e;">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
                                 </svg>
-                                <div class="w-2 h-2 rounded-full" style="background: #22c55e;"></div>
+                                <div class="w-2 h-2 rounded-full bg-green-500"></div>
                             </div>
-                            <p class="text-xs font-semibold mb-1 dark:text-white" class="text-gray-900 dark:text-white">OTROS SERVICIOS</p>
-                            <p class="text-2xl font-bold mb-1 dark:text-white" class="text-gray-900 dark:text-white">{{ $otherCount }}</p>
+                            <p class="text-xs font-semibold mb-1 dark:text-white text-gray-900 dark:text-white">OTROS SERVICIOS</p>
+                            <p class="text-2xl font-bold mb-1 dark:text-white text-gray-900 dark:text-white">{{ $otherCount }}</p>
                             @if($otherCount > 0 && $otherPercentage > 0)
-                                <p class="text-xs dark:text-white" class="text-gray-600 dark:text-gray-300">{{ $otherPercentage }}%</p>
+                                <p class="text-xs dark:text-white text-gray-600 dark:text-gray-300">{{ $otherPercentage }}%</p>
                             @else
-                                <p class="text-xs dark:text-white" class="text-gray-600 dark:text-gray-300">Sin actividad</p>
+                                <p class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Sin actividad</p>
                             @endif
                         </div>
                     </div>
@@ -1247,29 +1247,29 @@
         <!-- Paneles Laterales -->
         <div class="space-y-6" style="grid-column: span 1 / span 1;">
             <!-- Ingresos del Mes -->
-            <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
+            <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
                 <div class="p-5">
-                    <h3 class="text-base font-semibold mb-3 dark:text-white" class="text-gray-900 dark:text-white">Ingresos del Mes</h3>
+                    <h3 class="text-base font-semibold mb-3 dark:text-white text-gray-900 dark:text-white">Ingresos del Mes</h3>
                     <p class="text-3xl font-bold mb-2" style="color: #22c55e;">${{ number_format($stats['monthly_income'] ?? 0, 0, ',', '.') }}</p>
-                    <p class="text-sm mb-3 dark:text-white" class="text-gray-600 dark:text-gray-300">{{ $stats['this_month_completed'] ?? $stats['completed'] ?? 0 }} servicios completados</p>
-                    <div class="flex items-center justify-between pt-2 border-t" style="border-color: #e5e7eb;">
-                        <span class="text-sm dark:text-white" class="text-gray-600 dark:text-gray-300">Promedio:</span>
-                        <span class="text-sm font-semibold dark:text-white" class="text-gray-900 dark:text-white">${{ number_format(($stats['monthly_income'] ?? 0) / max($stats['this_month_completed'] ?? $stats['completed'] ?? 1, 1), 0, ',', '.') }}</span>
+                    <p class="text-sm mb-3 dark:text-white text-gray-600 dark:text-gray-300">{{ $stats['this_month_completed'] ?? $stats['completed'] ?? 0 }} servicios completados</p>
+                    <div class="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
+                        <span class="text-sm dark:text-white text-gray-600 dark:text-gray-300">Promedio:</span>
+                        <span class="text-sm font-semibold dark:text-white text-gray-900 dark:text-white">${{ number_format(($stats['monthly_income'] ?? 0) / max($stats['this_month_completed'] ?? $stats['completed'] ?? 1, 1), 0, ',', '.') }}</span>
             </div>
         </div>
     </div>
 
             <!-- Alertas de Stock -->
-            <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
+            <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
                 <div class="p-5">
-                    <h3 class="text-base font-semibold mb-3 flex items-center gap-2 dark:text-white" class="text-gray-900 dark:text-white">
+                    <h3 class="text-base font-semibold mb-3 flex items-center gap-2 dark:text-white text-gray-900 dark:text-white">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #ef4444;">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                         </svg>
                         Alertas de Stock
                     </h3>
                     <p class="text-4xl font-bold mb-2" style="color: #ef4444;">{{ $stats['low_stock_alerts'] ?? 0 }}</p>
-                    <p class="text-sm mb-2 dark:text-white" class="text-gray-600 dark:text-gray-300">Productos con stock bajo</p>
+                    <p class="text-sm mb-2 dark:text-white text-gray-600 dark:text-gray-300">Productos con stock bajo</p>
                     @if(($stats['low_stock_alerts'] ?? 0) > 0)
                         <p class="text-xs flex items-center gap-1" style="color: #f59e0b;">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -1283,13 +1283,13 @@
 
             <!-- Acciones Rápidas -->
             @if(auth()->user()->hasAnyRole(['super-admin', 'supervisor']))
-            <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
+            <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
                 <div class="p-5">
-                    <h3 class="text-base font-semibold mb-4 dark:text-white" class="text-gray-900 dark:text-white">Acciones Rápidas</h3>
+                    <h3 class="text-base font-semibold mb-4 dark:text-white text-gray-900 dark:text-white">Acciones Rápidas</h3>
                     <div class="space-y-3">
-                        <a href="{{ route('admin.services.create') ?? '#' }}" class="relative rounded-lg bg-white border dark:border-gray-700 px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" style="border: 1px solid #e5e7eb !important;">
+                        <a href="{{ route('admin.services.create') ?? '#' }}" class="relative rounded-lg bg-white border dark:border-gray-700 px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors border border-gray-200 dark:border-gray-700">
                     <div class="flex-shrink-0">
-                                <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: #ef4444;">
+                                <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-red-500">
                                     <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
@@ -1297,14 +1297,14 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <span class="absolute inset-0" aria-hidden="true"></span>
-                                <p class="text-sm font-semibold dark:text-white" class="text-gray-900 dark:text-white">Nuevo Servicio</p>
-                                <p class="text-xs dark:text-white" class="text-gray-600 dark:text-gray-300">Crear orden de trabajo</p>
+                                <p class="text-sm font-semibold dark:text-white text-gray-900 dark:text-white">Nuevo Servicio</p>
+                                <p class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Crear orden de trabajo</p>
                     </div>
                 </a>
 
-                        <a href="{{ route('admin.clients.create') ?? route('clients.create') }}" class="relative rounded-lg bg-white border dark:border-gray-700 px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" style="border: 1px solid #e5e7eb !important;">
+                        <a href="{{ route('admin.clients.create') ?? route('clients.create') }}" class="relative rounded-lg bg-white border dark:border-gray-700 px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors border border-gray-200 dark:border-gray-700">
                     <div class="flex-shrink-0">
-                                <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: #22c55e;">
+                                <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-green-500">
                                     <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM3 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 019.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
                         </svg>
@@ -1312,14 +1312,14 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <span class="absolute inset-0" aria-hidden="true"></span>
-                                <p class="text-sm font-semibold dark:text-white" class="text-gray-900 dark:text-white">Nuevo Cliente</p>
-                                <p class="text-xs dark:text-white" class="text-gray-600 dark:text-gray-300">Registrar cliente</p>
+                                <p class="text-sm font-semibold dark:text-white text-gray-900 dark:text-white">Nuevo Cliente</p>
+                                <p class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Registrar cliente</p>
                     </div>
                 </a>
 
-                        <a href="{{ route('admin.statistics') ?? '#' }}" class="relative rounded-lg bg-white border dark:border-gray-700 px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" style="border: 1px solid #e5e7eb !important;">
+                        <a href="{{ route('admin.statistics') ?? '#' }}" class="relative rounded-lg bg-white border dark:border-gray-700 px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors border border-gray-200 dark:border-gray-700">
                     <div class="flex-shrink-0">
-                                <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: #3b82f6;">
+                                <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-blue-500">
                                     <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
                         </svg>
@@ -1327,8 +1327,8 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <span class="absolute inset-0" aria-hidden="true"></span>
-                                <p class="text-sm font-semibold dark:text-white" class="text-gray-900 dark:text-white">Ver Estadísticas</p>
-                                <p class="text-xs dark:text-white" class="text-gray-600 dark:text-gray-300">Reportes y gráficos</p>
+                                <p class="text-sm font-semibold dark:text-white text-gray-900 dark:text-white">Ver Estadísticas</p>
+                                <p class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Reportes y gráficos</p>
                     </div>
                 </a>
             </div>
@@ -1344,7 +1344,7 @@
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Servicios Recientes</h3>
             <a href="{{ route('admin.services.index') ?? '#' }}" class="text-sm font-medium" style="color: #22c55e;">Ver todos</a>
         </div>
-        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
+        <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
             <div class="p-6">
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
@@ -1360,9 +1360,9 @@
                         <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
                             @forelse($recentServices ?? [] as $service)
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-white" class="text-gray-900 dark:text-white">{{ $service->client->name ?? 'N/A' }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-white" class="text-gray-900 dark:text-white">{{ ucfirst(str_replace('-', ' ', $service->service_type ?? 'N/A')) }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-white" class="text-gray-900 dark:text-white">{{ $service->created_at->format('d/m/Y') }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-white text-gray-900 dark:text-white">{{ $service->client->name ?? 'N/A' }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-white text-gray-900 dark:text-white">{{ ucfirst(str_replace('-', ' ', $service->service_type ?? 'N/A')) }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-white text-gray-900 dark:text-white">{{ $service->created_at->format('d/m/Y') }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-2 py-1 text-xs font-medium rounded-full
                                         @if($service->status === 'completed') bg-green-100 text-green-800
@@ -1384,7 +1384,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="5" class="px-6 py-8 text-center text-sm dark:text-white" class="text-gray-600 dark:text-gray-300">
+                                <td colspan="5" class="px-6 py-8 text-center text-sm dark:text-white text-gray-600 dark:text-gray-300">
                                     No hay servicios registrados aún
                                 </td>
                             </tr>

@@ -20,7 +20,7 @@
             
             <!-- Título -->
             <div class="flex-1">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white" style="font-weight: 700;">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white font-bold">
                     Crear Usuario
                 </h2>
             </div>
@@ -60,7 +60,7 @@
 
         <div class="hidden md:flex md:items-center md:justify-between">
             <div class="min-w-0 flex-1">
-                <h2 class="text-3xl font-bold leading-7 text-gray-900 dark:text-white sm:truncate sm:text-3xl sm:tracking-tight" style="font-weight: 700;">
+                <h2 class="text-3xl font-bold leading-7 text-gray-900 dark:text-white sm:truncate sm:text-3xl sm:tracking-tight font-bold">
                     Crear Nuevo Usuario
                 </h2>
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
@@ -68,7 +68,7 @@
                 </p>
             </div>
             <div class="mt-4 md:mt-0 md:ml-4">
-                <a href="{{ route('admin.users.index') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" style="border-color: #d1d5db;">
+                <a href="{{ route('admin.users.index') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-gray-300 dark:border-gray-600">
                     <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
                     </svg>
@@ -79,7 +79,7 @@
     </div>
 
     <!-- Form -->
-    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6" style="border: 1px solid #e5e7eb !important;">
+    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
         <form method="POST" action="{{ route('admin.users.store') }}">
             @csrf
 
@@ -114,7 +114,7 @@
                     </label>
                     <input type="text" name="name" id="name" value="{{ old('name') }}" required
                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                           style="border: 1px solid #e5e7eb !important;">
+                           class="border border-gray-200 dark:border-gray-700">
                 </div>
 
                 <!-- Email -->
@@ -124,7 +124,7 @@
                     </label>
                     <input type="email" name="email" id="email" value="{{ old('email') }}" required
                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                           style="border: 1px solid #e5e7eb !important;">
+                           class="border border-gray-200 dark:border-gray-700">
                 </div>
 
                 <!-- Teléfono -->
@@ -134,7 +134,7 @@
                     </label>
                     <input type="text" name="phone" id="phone" value="{{ old('phone') }}"
                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                           style="border: 1px solid #e5e7eb !important;">
+                           class="border border-gray-200 dark:border-gray-700">
                 </div>
 
                 <!-- Estado -->
@@ -144,7 +144,7 @@
                     </label>
                     <select name="is_active" id="is_active" required
                             class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                            style="border: 1px solid #e5e7eb !important;">
+                            class="border border-gray-200 dark:border-gray-700">
                         <option value="1" {{ old('is_active', '1') == '1' ? 'selected' : '' }}>Activo</option>
                         <option value="0" {{ old('is_active') == '0' ? 'selected' : '' }}>Inactivo</option>
                     </select>
@@ -157,7 +157,7 @@
                     </label>
                     <input type="password" name="password" id="password" required minlength="8"
                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                           style="border: 1px solid #e5e7eb !important;">
+                           class="border border-gray-200 dark:border-gray-700">
                     <p class="mt-1 text-xs text-gray-600 dark:text-gray-400">Mínimo 8 caracteres</p>
                 </div>
 
@@ -168,7 +168,7 @@
                     </label>
                     <input type="password" name="password_confirmation" id="password_confirmation" required minlength="8"
                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                           style="border: 1px solid #e5e7eb !important;">
+                           class="border border-gray-200 dark:border-gray-700">
                 </div>
 
                 <!-- Dirección -->
@@ -178,7 +178,7 @@
                     </label>
                     <textarea name="address" id="address" rows="3"
                               class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                              style="border: 1px solid #e5e7eb !important;">{{ old('address') }}</textarea>
+                              class="border border-gray-200 dark:border-gray-700">{{ old('address') }}</textarea>
                 </div>
 
                 <!-- Roles -->
@@ -212,7 +212,7 @@
                     <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
                         Permisos (Opcional)
                     </label>
-                    <div class="max-h-48 overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-lg p-3" style="border: 1px solid #e5e7eb !important;">
+                    <div class="max-h-48 overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-700">
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
                             @foreach($permissions as $permission)
                                 <label class="flex items-center">
@@ -230,7 +230,7 @@
 
             <!-- Submit Buttons -->
             <div class="mt-6 flex justify-end gap-3">
-                <a href="{{ route('admin.users.index') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" style="border-color: #d1d5db;">
+                <a href="{{ route('admin.users.index') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-gray-300 dark:border-gray-600">
                     Cancelar
                 </a>
                 <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors" style="background: #22c55e; hover:background: #16a34a;">
