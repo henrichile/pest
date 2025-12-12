@@ -305,7 +305,7 @@
                     @csrf
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Usuario</label>
-                        <select name="user_id" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-green-500 focus:border-green-500">
+                        <select name="user_id" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-green-500 focus:border-green-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                             <option value="">Seleccionar usuario</option>
                             @foreach($users as $user)
                             <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
@@ -314,7 +314,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Rol</label>
-                        <select name="role" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-green-500 focus:border-green-500">
+                        <select name="role" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-green-500 focus:border-green-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                             <option value="">Seleccionar rol</option>
                             @foreach($roles as $role)
                             <option value="{{ $role->name }}">{{ $role->name }}</option>

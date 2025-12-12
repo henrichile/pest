@@ -103,7 +103,7 @@
                                class="w-full border border-gray-300 rounded px-3 py-2 bg-white opacity-75">
                     
                     @elseif($item->type === 'select')
-                        <select disabled class="w-full border border-gray-300 rounded px-3 py-2 bg-white opacity-75">
+                        <select disabled class="w-full border border-gray-300 rounded px-3 py-2 bg-white opacity-75 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                             <option>Seleccionar opción...</option>
                             @if($item->options)
                                 @foreach(json_decode($item->options, true) as $option)

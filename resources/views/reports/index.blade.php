@@ -119,7 +119,7 @@
                     <div>
                         <label for="start_date" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Fecha Inicio</label>
                         <div class="relative">
-                            <input type="date" name="start_date" id="start_date" value="{{ $startDate }}" class="w-full border border-gray-300 rounded-lg px-3 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-green-500">
+                            <input type="date" name="start_date" id="start_date" value="{{ $startDate }}" class="w-full border border-gray-300 rounded-lg px-3 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                         </div>
                     </div>
 
@@ -127,14 +127,14 @@
                     <div>
                         <label for="end_date" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Fecha Fin</label>
                         <div class="relative">
-                            <input type="date" name="end_date" id="end_date" value="{{ $endDate }}" class="w-full border border-gray-300 rounded-lg px-3 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-green-500">
+                            <input type="date" name="end_date" id="end_date" value="{{ $endDate }}" class="w-full border border-gray-300 rounded-lg px-3 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                         </div>
                     </div>
 
                     <!-- Tipo de Servicio -->
                     <div>
                         <label for="service_type" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Tipo de Servicio</label>
-                        <select name="service_type" id="service_type" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <select name="service_type" id="service_type" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                             <option value="all" {{ $serviceType === 'all' ? 'selected' : '' }}>Todos</option>
                             @foreach($serviceTypes as $type)
                                 <option value="{{ $type['value'] }}" {{ $serviceType === $type['value'] ? 'selected' : '' }}>{{ $type['label'] }}</option>
@@ -145,7 +145,7 @@
                     <!-- Cliente -->
                     <div>
                         <label for="client_id" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Cliente</label>
-                        <select name="client_id" id="client_id" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <select name="client_id" id="client_id" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                             <option value="all" {{ $clientId === 'all' ? 'selected' : '' }}>Todos</option>
                             @foreach($allClients as $client)
                                 <option value="{{ $client->id }}" {{ $clientId == $client->id ? 'selected' : '' }}>
@@ -158,7 +158,7 @@
                     <!-- Técnico -->
                     <div>
                         <label for="technician_id" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Técnico</label>
-                        <select name="technician_id" id="technician_id" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <select name="technician_id" id="technician_id" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                             <option value="all" {{ $technicianId === 'all' ? 'selected' : '' }}>Todos</option>
                             @foreach($allTechnicians as $technician)
                                 <option value="{{ $technician->id }}" {{ $technicianId == $technician->id ? 'selected' : '' }}>{{ $technician->name }}</option>
@@ -169,7 +169,7 @@
                     <!-- Estado -->
                     <div>
                         <label for="status" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Estado</label>
-                        <select name="status" id="status" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <select name="status" id="status" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                             <option value="all" {{ $status === 'all' ? 'selected' : '' }}>Todos</option>
                             <option value="pendiente" {{ $status === 'pendiente' ? 'selected' : '' }}>Pendiente</option>
                             <option value="pending" {{ $status === 'pending' ? 'selected' : '' }}>Pending</option>

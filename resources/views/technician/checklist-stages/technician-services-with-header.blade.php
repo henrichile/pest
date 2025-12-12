@@ -16,7 +16,7 @@
         <form method="GET" action="{{ request()->url() }}" id="filter-form" class="flex items-center space-x-4">
             <div class="flex items-center space-x-2">
                 <label class="text-sm font-medium text-gray-700">Estado:</label>
-                <select name="estado" id="filter-estado" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select name="estado" id="filter-estado" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todos</option>
                     <option value="pendiente" {{ request('estado') === 'pendiente' ? 'selected' : '' }}>Pendientes</option>
                     <option value="en_progreso" {{ request('estado') === 'en_progreso' ? 'selected' : '' }}>En Progreso</option>
@@ -26,7 +26,7 @@
             </div>
             <div class="flex items-center space-x-2">
                 <label class="text-sm font-medium text-gray-700">Tipo:</label>
-                <select name="tipo" id="filter-tipo" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select name="tipo" id="filter-tipo" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todos</option>
                     <option value="desratizacion" {{ request('tipo') === 'desratizacion' ? 'selected' : '' }}>Desratización</option>
                     <option value="desinsectacion" {{ request('tipo') === 'desinsectacion' ? 'selected' : '' }}>Desinsectación</option>

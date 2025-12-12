@@ -177,7 +177,7 @@
 
             <div>
                 <label for="type" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Tipo</label>
-                <select id="type" name="type" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
+                <select id="type" name="type" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:text-white dark:bg-gray-700 dark:border-gray-600" style="border: 1px solid #e5e7eb !important; color: #111827;">
                     <option value="">Todos</option>
                     @foreach($notificationsByType as $type => $count)
                         <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>{{ $type }}</option>
@@ -187,7 +187,7 @@
 
             <div>
                 <label for="read_status" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Estado</label>
-                <select id="read_status" name="read_status" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
+                <select id="read_status" name="read_status" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:text-white dark:bg-gray-700 dark:border-gray-600" style="border: 1px solid #e5e7eb !important; color: #111827;">
                     <option value="">Todos</option>
                     <option value="unread" {{ request('read_status') == 'unread' ? 'selected' : '' }}>No Leídas</option>
                     <option value="read" {{ request('read_status') == 'read' ? 'selected' : '' }}>Leídas</option>
@@ -427,7 +427,7 @@
                     <div class="space-y-4">
                         <div>
                             <label for="user_ids" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Usuarios *</label>
-                            <select id="user_ids" name="user_ids[]" multiple required class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827; min-height: 100px;">
+                            <select id="user_ids" name="user_ids[]" multiple required class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:text-white dark:bg-gray-700 dark:border-gray-600" style="border: 1px solid #e5e7eb !important; color: #111827; min-height: 100px;">
                                 @foreach($users as $user)
                                     <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
                                 @endforeach
@@ -451,7 +451,7 @@
 
                         <div>
                             <label for="type" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Tipo *</label>
-                            <select id="type" name="type" required class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" style="border: 1px solid #e5e7eb !important; color: #111827;">
+                            <select id="type" name="type" required class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:text-white dark:bg-gray-700 dark:border-gray-600" style="border: 1px solid #e5e7eb !important; color: #111827;">
                                 <option value="info">Info</option>
                                 <option value="success">Éxito</option>
                                 <option value="warning">Advertencia</option>

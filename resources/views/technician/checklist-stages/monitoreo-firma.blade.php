@@ -78,7 +78,7 @@ $submitRoute = $isViewingAsTechnician ? route('admin.technician-view.service.che
             </div>
             <div>
                 <label>Cargo / Relación</label>
-                <select name="signer_position" id="signer_position" class="form-select">
+                <select name="signer_position" id="signer_position" class="form-select dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Seleccionar</option>
                     <option value="encargado" {{ old('signer_position', $monitoreoFirma['signer_position'] ?? $service->checklist_data['signer_position'] ?? '') === 'encargado' ? 'selected' : '' }}>Encargado</option>
                     <option value="gerente" {{ old('signer_position', $monitoreoFirma['signer_position'] ?? $service->checklist_data['signer_position'] ?? '') === 'gerente' ? 'selected' : '' }}>Gerente</option>

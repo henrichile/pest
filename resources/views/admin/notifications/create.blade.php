@@ -17,7 +17,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Título</label>
-                <input type="text" name="title" value="{{ old('title') }}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <input type="text" name="title" value="{{ old('title') }}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white dark:bg-gray-700 dark:border-gray-600" required>
                 @error('title')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -25,7 +25,7 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Tipo</label>
-                <select name="type" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <select name="type" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white dark:bg-gray-700 dark:border-gray-600" required>
                     <option value="">Seleccionar tipo</option>
                     <option value="info" {{ old('type') == 'info' ? 'selected' : '' }}>Información</option>
                     <option value="success" {{ old('type') == 'success' ? 'selected' : '' }}>Éxito</option>
@@ -39,7 +39,7 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Prioridad</label>
-                <select name="priority" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <select name="priority" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white dark:bg-gray-700 dark:border-gray-600" required>
                     <option value="">Seleccionar prioridad</option>
                     <option value="low" {{ old('priority') == 'low' ? 'selected' : '' }}>Baja</option>
                     <option value="medium" {{ old('priority') == 'medium' ? 'selected' : '' }}>Media</option>
@@ -53,7 +53,7 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Usuario (Opcional)</label>
-                <select name="user_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select name="user_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todos los usuarios</option>
                     @foreach($users as $user)
                     <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
@@ -66,7 +66,7 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Servicio (Opcional)</label>
-                <select name="service_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select name="service_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Sin servicio específico</option>
                     @foreach($services as $service)
                     <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>Servicio #{{ $service->id }} - {{ $service->client->name ?? 'Sin cliente' }}</option>
@@ -79,7 +79,7 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Fecha de Expiración (Opcional)</label>
-                <input type="datetime-local" name="expires_at" value="{{ old('expires_at') }}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="datetime-local" name="expires_at" value="{{ old('expires_at') }}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                 @error('expires_at')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -88,7 +88,7 @@
 
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Mensaje</label>
-            <textarea name="message" rows="6" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>{{ old('message') }}</textarea>
+            <textarea name="message" rows="6" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white dark:bg-gray-700 dark:border-gray-600" required>{{ old('message') }}</textarea>
             @error('message')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
             @enderror

@@ -84,7 +84,7 @@
                 <!-- Filtro Estado -->
                 <div class="flex flex-col md:flex-row md:items-center md:space-x-2 w-full md:w-auto">
                     <label class="text-sm font-medium text-gray-700 mb-1.5 md:mb-0">Estado:</label>
-                    <select name="estado" id="filter-estado" class="w-full md:w-auto border border-gray-300 rounded-lg px-4 py-2.5 md:px-3 md:py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                    <select name="estado" id="filter-estado" class="w-full md:w-auto border border-gray-300 rounded-lg px-4 py-2.5 md:px-3 md:py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:text-white dark:bg-gray-700 dark:border-gray-600">
                         <option value="">Todos</option>
                         <option value="pendiente" {{ request('estado') === 'pendiente' ? 'selected' : '' }}>Pendientes</option>
                         <option value="en_progreso" {{ request('estado') === 'en_progreso' ? 'selected' : '' }}>En Progreso</option>
@@ -96,7 +96,7 @@
                 <!-- Filtro Tipo -->
                 <div class="flex flex-col md:flex-row md:items-center md:space-x-2 w-full md:w-auto">
                     <label class="text-sm font-medium text-gray-700 mb-1.5 md:mb-0">Tipo:</label>
-                    <select name="tipo" id="filter-tipo" class="w-full md:w-auto border border-gray-300 rounded-lg px-4 py-2.5 md:px-3 md:py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                    <select name="tipo" id="filter-tipo" class="w-full md:w-auto border border-gray-300 rounded-lg px-4 py-2.5 md:px-3 md:py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:text-white dark:bg-gray-700 dark:border-gray-600">
                         <option value="">Todos</option>
                         <option value="desratizacion" {{ request('tipo') === 'desratizacion' ? 'selected' : '' }}>Desratización</option>
                         <option value="desinsectacion" {{ request('tipo') === 'desinsectacion' ? 'selected' : '' }}>Desinsectación</option>

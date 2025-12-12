@@ -27,7 +27,7 @@
         <form method="GET" action="{{ route('admin.services.index') ?? route('services.index') ?? '#' }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div class="flex flex-col space-y-2">
                 <label for="status" class="text-sm font-medium text-gray-700">Estado</label>
-                <select name="status" id="status" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full">
+                <select name="status" id="status" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todos los estados</option>
                     <option value="pendiente" {{ request('status') === 'pendiente' ? 'selected' : '' }}>Pendiente</option>
                     <option value="en_progreso" {{ request('status') === 'en_progreso' ? 'selected' : '' }}>En Progreso</option>
@@ -37,7 +37,7 @@
             </div>
             <div class="flex flex-col space-y-2">
                 <label for="type" class="text-sm font-medium text-gray-700">Tipo</label>
-                <select name="type" id="type" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full">
+                <select name="type" id="type" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todos los tipos</option>
                     <option value="desratizacion" {{ request('type') === 'desratizacion' ? 'selected' : '' }}>Desratización</option>
                     <option value="desinsectacion" {{ request('type') === 'desinsectacion' ? 'selected' : '' }}>Desinsectación</option>
@@ -46,7 +46,7 @@
             </div>
             <div class="flex flex-col space-y-2">
                 <label for="priority" class="text-sm font-medium text-gray-700">Prioridad</label>
-                <select name="priority" id="priority" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full">
+                <select name="priority" id="priority" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todas las prioridades</option>
                     <option value="baja" {{ request('priority') === 'baja' ? 'selected' : '' }}>Baja</option>
                     <option value="media" {{ request('priority') === 'media' ? 'selected' : '' }}>Media</option>

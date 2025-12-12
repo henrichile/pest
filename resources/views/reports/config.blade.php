@@ -19,7 +19,7 @@
                 <div class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Formato de Exportación</label>
-                        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                             <option value="csv">CSV</option>
                             <option value="pdf">PDF</option>
                             <option value="excel">Excel</option>
@@ -41,7 +41,7 @@
                 <div class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Rango de Fechas Predeterminado</label>
-                        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                             <option value="this-month">Este Mes</option>
                             <option value="last-month">Último Mes</option>
                             <option value="last-3-months">Últimos 3 Meses</option>
@@ -79,7 +79,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Email para Notificaciones</label>
-                        <input type="email" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 placeholder:text-gray-400 dark:placeholder:text-gray-500" placeholder="email@ejemplo.com">
+                        <input type="email" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 placeholder:text-gray-400 dark:placeholder:text-gray-500 dark:text-white dark:bg-gray-700 dark:border-gray-600" placeholder="email@ejemplo.com">
                     </div>
                 </div>
             </div>

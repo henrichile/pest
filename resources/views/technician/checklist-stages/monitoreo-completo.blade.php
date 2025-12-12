@@ -94,11 +94,11 @@ function addBaitStation() {
         <div class="form-grid">
             <div>
                 <label>Código del Punto</label>
-                <input type="text" name="bait_stations[${baitStationCounter}][code]" class="form-input placeholder:text-gray-400 dark:placeholder:text-gray-500" placeholder="CB-001" required>
+                <input type="text" name="bait_stations[${baitStationCounter}][code]" class="form-input placeholder:text-gray-400 dark:placeholder:text-gray-500 dark:text-white dark:bg-gray-700 dark:border-gray-600" placeholder="CB-001" required>
             </div>
             <div>
                 <label>Ubicación</label>
-                <input type="text" name="bait_stations[${baitStationCounter}][location]" class="form-input placeholder:text-gray-400 dark:placeholder:text-gray-500" placeholder="Bodega sector norte" required>
+                <input type="text" name="bait_stations[${baitStationCounter}][location]" class="form-input placeholder:text-gray-400 dark:placeholder:text-gray-500 dark:text-white dark:bg-gray-700 dark:border-gray-600" placeholder="Bodega sector norte" required>
             </div>
         </div>
         <div class="product-section">
@@ -106,7 +106,7 @@ function addBaitStation() {
             <div class="form-grid">
                 <div>
                     <label>Tipo de Producto</label>
-                    <select name="bait_stations[${baitStationCounter}][product_type]" class="form-select" required>
+                    <select name="bait_stations[${baitStationCounter}][product_type]" class="form-select dark:text-white dark:bg-gray-700 dark:border-gray-600" required>
                         <option value="">Seleccionar producto</option>
                         <option value="bloque">Bloque</option>
                         <option value="pasta">Pasta</option>
@@ -117,8 +117,8 @@ function addBaitStation() {
                 <div>
                     <label>Cantidad</label>
                     <div class="quantity-group">
-                        <input type="number" name="bait_stations[${baitStationCounter}][quantity]" class="form-input" min="0" step="0.01" placeholder="50" required>
-                        <select name="bait_stations[${baitStationCounter}][unit]" class="form-select" style="width: 80px;">
+                        <input type="number" name="bait_stations[${baitStationCounter}][quantity]" class="form-input dark:text-white dark:bg-gray-700 dark:border-gray-600" min="0" step="0.01" placeholder="50" required>
+                        <select name="bait_stations[${baitStationCounter}][unit]" class="form-select dark:text-white dark:bg-gray-700 dark:border-gray-600" style="width: 80px;">
                             <option value="g">g</option>
                             <option value="ml">ml</option>
                             <option value="unidad">unidad</option>
@@ -194,17 +194,17 @@ function addTrap() {
         <div class="form-grid">
             <div>
                 <label>Código del Punto</label>
-                <input type="text" name="traps[${trapCounter}][code]" class="form-input placeholder:text-gray-400 dark:placeholder:text-gray-500" placeholder="TR-001" required>
+                <input type="text" name="traps[${trapCounter}][code]" class="form-input placeholder:text-gray-400 dark:placeholder:text-gray-500 dark:text-white dark:bg-gray-700 dark:border-gray-600" placeholder="TR-001" required>
             </div>
             <div>
                 <label>Ubicación</label>
-                <input type="text" name="traps[${trapCounter}][location]" class="form-input placeholder:text-gray-400 dark:placeholder:text-gray-500" placeholder="Cocina pared este" required>
+                <input type="text" name="traps[${trapCounter}][location]" class="form-input placeholder:text-gray-400 dark:placeholder:text-gray-500 dark:text-white dark:bg-gray-700 dark:border-gray-600" placeholder="Cocina pared este" required>
             </div>
         </div>
         <div class="form-grid">
             <div>
                 <label>Producto/Material Utilizado</label>
-                <select name="traps[${trapCounter}][product_type]" class="form-select">
+                <select name="traps[${trapCounter}][product_type]" class="form-select dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Seleccionar</option>
                     <option value="pegajosa">Trampa Pegajosa</option>
                     <option value="mecanica">Trampa Mecánica</option>
@@ -213,12 +213,12 @@ function addTrap() {
             </div>
             <div>
                 <label>Cantidad</label>
-                <input type="number" name="traps[${trapCounter}][quantity]" class="form-input" min="1" value="1">
+                <input type="number" name="traps[${trapCounter}][quantity]" class="form-input dark:text-white dark:bg-gray-700 dark:border-gray-600" min="1" value="1">
             </div>
         </div>
         <div>
             <label>Estado de la Trampa</label>
-            <select name="traps[${trapCounter}][status]" class="form-select">
+            <select name="traps[${trapCounter}][status]" class="form-select dark:text-white dark:bg-gray-700 dark:border-gray-600">
                 <option value="">Seleccionar estado</option>
                 <option value="activa">Activa</option>
                 <option value="captura">Con Captura</option>
@@ -239,7 +239,7 @@ function addTrap() {
         </div>
         <div>
             <label>Notas</label>
-            <textarea name="traps[${trapCounter}][notes]" class="form-textarea" rows="2" placeholder="Observaciones..."></textarea>
+            <textarea name="traps[${trapCounter}][notes]" class="form-textarea dark:text-white dark:bg-gray-700 dark:border-gray-600" rows="2" placeholder="Observaciones..."></textarea>
         </div>
     `;
     container.appendChild(trapDiv);

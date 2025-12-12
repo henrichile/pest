@@ -80,7 +80,7 @@
                                 <input type="hidden" name="stages[0][items][0][type]" value="select">
                                 <input type="hidden" name="stages[0][items][0][options]" value="Excelente,Bueno,Regular,Malo">
                                 <input type="hidden" name="stages[0][items][0][is_required]" value="1">
-                                <select class="w-full border border-gray-300 rounded-lg px-3 py-2" disabled>
+                                <select class="w-full border border-gray-300 rounded-lg px-3 py-2 dark:text-white dark:bg-gray-700 dark:border-gray-600" disabled>
                                     <option>Excelente</option>
                                     <option>Bueno</option>
                                     <option>Regular</option>
@@ -95,7 +95,7 @@
                                 <input type="hidden" name="stages[0][items][1][title]" value="Temperatura ambiente">
                                 <input type="hidden" name="stages[0][items][1][type]" value="number">
                                 <input type="hidden" name="stages[0][items][1][is_required]" value="1">
-                                <input type="number" class="w-full border border-gray-300 rounded-lg px-3 py-2" disabled placeholder="°C">
+                                <input type="number" class="w-full border border-gray-300 rounded-lg px-3 py-2 dark:text-white dark:bg-gray-700 dark:border-gray-600" disabled placeholder="°C">
                             </div>
                         </div>
                     </div>
@@ -121,7 +121,7 @@
                                 <input type="hidden" name="stages[1][items][0][title]" value="Producto aplicado">
                                 <input type="hidden" name="stages[1][items][0][type]" value="text">
                                 <input type="hidden" name="stages[1][items][0][is_required]" value="1">
-                                <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2" disabled placeholder="Nombre del producto">
+                                <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 dark:text-white dark:bg-gray-700 dark:border-gray-600" disabled placeholder="Nombre del producto">
                             </div>
                             
                             <div>

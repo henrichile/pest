@@ -30,7 +30,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="flex flex-col space-y-2">
                 <label class="text-sm font-medium text-gray-700">Tipo de Servicio</label>
-                <select id="filter-tipo-servicio" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full">
+                <select id="filter-tipo-servicio" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todos los tipos</option>
                     <option value="desratizacion">Desratización</option>
                     <option value="desinsectacion">Desinsectación</option>
@@ -40,7 +40,7 @@
             </div>
             <div class="flex flex-col space-y-2">
                 <label class="text-sm font-medium text-gray-700">Stock</label>
-                <select id="filter-stock" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full">
+                <select id="filter-stock" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todos los niveles</option>
                     <option value="low">Stock Bajo (< 10)</option>
                     <option value="medium">Stock Medio (10-50)</option>

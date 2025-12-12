@@ -22,7 +22,7 @@ $submitRoute = $isViewingAsTechnician ? route('admin.technician-view.service.che
 
     <div class="form-section">
         <h5>📊 Nivel de Infestación</h5>
-        <select name="infestation_level" id="infestation_level" class="form-select" required>
+        <select name="infestation_level" id="infestation_level" class="form-select dark:text-white dark:bg-gray-700 dark:border-gray-600" required>
             <option value="">Seleccionar nivel</option>
             <option value="bajo" {{ old('infestation_level', $service->checklist_data['monitoreo_datos']['infestation_level'] ?? $service->checklist_data['infestation_level'] ?? '') === 'bajo' ? 'selected' : '' }}>Bajo</option>
             <option value="medio" {{ old('infestation_level', $service->checklist_data['monitoreo_datos']['infestation_level'] ?? $service->checklist_data['infestation_level'] ?? '') === 'medio' ? 'selected' : '' }}>Medio</option>

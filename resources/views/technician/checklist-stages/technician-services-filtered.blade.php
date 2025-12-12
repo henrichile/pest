@@ -11,7 +11,7 @@
         <div class="flex items-center space-x-4">
             <div class="flex items-center space-x-2">
                 <label class="text-sm font-medium text-gray-700">Estado:</label>
-                <select id="filter-estado" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select id="filter-estado" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todos</option>
                     <option value="pendiente">Pendientes</option>
                     <option value="en_progreso">En Progreso</option>
@@ -21,7 +21,7 @@
             </div>
             <div class="flex items-center space-x-2">
                 <label class="text-sm font-medium text-gray-700">Tipo:</label>
-                <select id="filter-tipo" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select id="filter-tipo" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todos</option>
                     <option value="desratizacion">Desratización</option>
                     <option value="desinsectacion">Desinsectación</option>

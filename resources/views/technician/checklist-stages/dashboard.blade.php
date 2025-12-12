@@ -1142,7 +1142,7 @@
                             <span class="text-sm font-semibold statistics-number text-gray-900 dark:text-white">{{ $stats['pending'] ?? 0 }}</span>
             </div>
                     </div>
-                    <select id="periodFilter" class="text-sm border dark:border-gray-700 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-800">
+                    <select id="periodFilter" class="text-sm border dark:border-gray-700 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-800 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                         <option value="this_month" {{ request('period', 'this_month') == 'this_month' ? 'selected' : '' }}>Este Mes</option>
                         <option value="last_month" {{ request('period') == 'last_month' ? 'selected' : '' }}>Último Mes</option>
                         <option value="last_3_months" {{ request('period') == 'last_3_months' ? 'selected' : '' }}>Últimos 3 Meses</option>

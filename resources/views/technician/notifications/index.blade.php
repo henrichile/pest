@@ -88,7 +88,7 @@
         <form method="GET" action="{{ route('technician.notifications.index') }}" class="flex flex-wrap gap-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Estado</label>
-                <select name="status" class="border border-gray-300 rounded-lg px-3 py-2">
+                <select name="status" class="border border-gray-300 rounded-lg px-3 py-2 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todos</option>
                     <option value="unread" {{ request('status') == 'unread' ? 'selected' : '' }}>No leídas</option>
                     <option value="read" {{ request('status') == 'read' ? 'selected' : '' }}>Leídas</option>
@@ -97,7 +97,7 @@
             
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
-                <select name="type" class="border border-gray-300 rounded-lg px-3 py-2">
+                <select name="type" class="border border-gray-300 rounded-lg px-3 py-2 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todos</option>
                     <option value="info" {{ request('type') == 'info' ? 'selected' : '' }}>Información</option>
                     <option value="success" {{ request('type') == 'success' ? 'selected' : '' }}>Éxito</option>
@@ -108,7 +108,7 @@
             
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Prioridad</label>
-                <select name="priority" class="border border-gray-300 rounded-lg px-3 py-2">
+                <select name="priority" class="border border-gray-300 rounded-lg px-3 py-2 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todas</option>
                     <option value="urgent" {{ request('priority') == 'urgent' ? 'selected' : '' }}>Urgente</option>
                     <option value="high" {{ request('priority') == 'high' ? 'selected' : '' }}>Alta</option>

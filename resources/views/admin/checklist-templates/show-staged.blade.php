@@ -155,13 +155,13 @@
                                 <h5 class="text-xs font-medium text-gray-700 mb-2">Vista previa:</h5>
                                 @switch($item->type)
                                     @case('text')
-                                        <input type="text" disabled placeholder="Campo de texto..." class="placeholder:text-gray-400 dark:placeholder:text-gray-500 w-full px-2 py-1 text-sm border border-gray-300 rounded bg-white">
+                                        <input type="text" disabled placeholder="Campo de texto..." class="placeholder:text-gray-400 dark:placeholder:text-gray-500 w-full px-2 py-1 text-sm border border-gray-300 rounded bg-white dark:text-white dark:bg-gray-700 dark:border-gray-600">
                                         @break
                                     @case('number')
-                                        <input type="number" disabled placeholder="0" class="placeholder:text-gray-400 dark:placeholder:text-gray-500 w-full px-2 py-1 text-sm border border-gray-300 rounded bg-white">
+                                        <input type="number" disabled placeholder="0" class="placeholder:text-gray-400 dark:placeholder:text-gray-500 w-full px-2 py-1 text-sm border border-gray-300 rounded bg-white dark:text-white dark:bg-gray-700 dark:border-gray-600">
                                         @break
                                     @case('select')
-                                        <select disabled class="w-full px-2 py-1 text-sm border border-gray-300 rounded bg-white">
+                                        <select disabled class="w-full px-2 py-1 text-sm border border-gray-300 rounded bg-white dark:text-white dark:bg-gray-700 dark:border-gray-600">
                                             <option>Seleccionar opción...</option>
                                             @if($item->options)
                                                 @foreach($item->options as $option)

@@ -18,7 +18,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="flex flex-col space-y-2">
                 <label class="text-sm font-medium text-gray-700">Estado:</label>
-                <select id="filter-estado" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full">
+                <select id="filter-estado" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todos los estados</option>
                     <option value="pendiente">Pendientes</option>
                     <option value="en_progreso">En Progreso</option>
@@ -28,7 +28,7 @@
             </div>
             <div class="flex flex-col space-y-2">
                 <label class="text-sm font-medium text-gray-700">Tipo:</label>
-                <select id="filter-tipo" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full">
+                <select id="filter-tipo" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todos los tipos</option>
                     <option value="monitoreo-cebaderas">Monitoreo-cebaderas</option>
                     <option value="desratizacion">Desratización</option>
