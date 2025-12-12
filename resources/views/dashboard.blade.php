@@ -381,8 +381,8 @@
                     <!-- Dropdown Menu -->
                     <div class="notification-menu" id="notification-menu">
                         <div class="notification-menu-header">
-                            <h3 style="color: #111827; font-weight: 600; font-size: 16px;">Notificaciones</h3>
-                            <a href="{{ route('admin.notification-center') ?? '#' }}" style="color: #22c55e; font-size: 14px; font-weight: 500; text-decoration: none;">Ver todas</a>
+                            <h3 class="text-gray-900 dark:text-white font-semibold text-base">Notificaciones</h3>
+                            <a href="{{ route('admin.notification-center') ?? '#' }}" class="text-green-500 text-sm font-medium no-underline">Ver todas</a>
                         </div>
                         <div class="notification-menu-content">
                             @if(isset($recentNotifications) && $recentNotifications->count() > 0)
@@ -397,10 +397,10 @@
                                     <div class="notification-item {{ !$isRead ? 'unread' : '' }}" data-notification-id="{{ $notification->id }}">
                                         <div class="notification-item-content">
                                             <div class="notification-item-header">
-                                                <h4 style="color: #111827; font-weight: 600; font-size: 14px; margin: 0 0 4px 0;">{{ $title }}</h4>
+                                                <h4 class="text-gray-900 dark:text-white font-semibold text-sm mb-1">{{ $title }}</h4>
                                                 <span class="notification-time">{{ $notification->created_at->diffForHumans() }}</span>
                                             </div>
-                                            <p style="color: #6b7280; font-size: 13px; margin: 0; line-height: 1.4;">{{ Str::limit($message, 80) }}</p>
+                                            <p class="text-gray-600 dark:text-gray-300 text-sm">{{ Str::limit($message, 80) }}</p>
                                         </div>
                                         @if(!$isRead)
                                         <div class="notification-dot"></div>
@@ -409,7 +409,7 @@
                                 @endforeach
                             @else
                                 <div class="notification-empty">
-                                    <p style="color: #6b7280; font-size: 14px; text-align: center; padding: 20px;">No hay notificaciones</p>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm text-center p-5">No hay notificaciones</p>
                                 </div>
                             @endif
                         </div>
@@ -1137,7 +1137,7 @@
             <div class="p-6">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold flex items-center gap-2 dark:text-white" id="statistics-title" class="text-gray-900 dark:text-white">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #22c55e;">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
                         </svg>
                         Estadísticas
@@ -1161,7 +1161,7 @@
                             <span class="text-sm font-semibold statistics-number dark:text-white text-gray-900 dark:text-white">{{ $stats['pending'] ?? 0 }}</span>
             </div>
                     </div>
-                    <select id="periodFilter" class="text-sm border dark:border-gray-700 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-800" style="color: #6b7280; border: 1px solid #e5e7eb !important; cursor: pointer;">
+                    <select id="periodFilter" class="text-sm border dark:border-gray-700 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-800" class="text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 cursor-pointer">
                         <option value="this_month" {{ request('period', 'this_month') == 'this_month' ? 'selected' : '' }}>Este Mes</option>
                         <option value="last_month" {{ request('period') == 'last_month' ? 'selected' : '' }}>Último Mes</option>
                         <option value="last_3_months" {{ request('period') == 'last_3_months' ? 'selected' : '' }}>Últimos 3 Meses</option>
@@ -1220,7 +1220,7 @@
                             @endphp
                             <div class="bg-white border dark:border-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
                                 <div class="flex items-center gap-2 mb-2">
-                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: {{ $typeInfo['color'] }};">
+                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
                                         <path stroke-linecap="round" stroke-linejoin="round" d="{{ $typeInfo['icon'] }}" />
                                     </svg>
                                     <div class="w-2 h-2 rounded-full" style="background: {{ $typeInfo['color'] }};"></div>
@@ -1245,7 +1245,7 @@
                         @endphp
                         <div class="bg-white border dark:border-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
                             <div class="flex items-center gap-2 mb-2">
-                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #22c55e;">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
                                 </svg>
                                 <div class="w-2 h-2 rounded-full bg-green-500"></div>
@@ -1269,7 +1269,7 @@
             <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
                 <div class="p-5">
                     <h3 class="text-base font-semibold mb-3 dark:text-white text-gray-900 dark:text-white">Ingresos del Mes</h3>
-                    <p class="text-3xl font-bold mb-2" style="color: #22c55e;">${{ number_format($stats['monthly_income'] ?? 0, 0, ',', '.') }}</p>
+                    <p class="text-3xl font-bold mb-2">${{ number_format($stats['monthly_income'] ?? 0, 0, ',', '.') }}</p>
                     <p class="text-sm mb-3 dark:text-white">{{ $stats['this_month_completed'] ?? $stats['completed'] ?? 0 }} servicios completados</p>
                     <div class="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
                         <span class="text-sm dark:text-white">Promedio:</span>
@@ -1282,15 +1282,15 @@
             <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
                 <div class="p-5">
                     <h3 class="text-base font-semibold mb-3 flex items-center gap-2 dark:text-white text-gray-900 dark:text-white">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #ef4444;">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                         </svg>
                         Alertas de Stock
                     </h3>
-                    <p class="text-4xl font-bold mb-2" style="color: #ef4444;">{{ $stats['low_stock_alerts'] ?? 0 }}</p>
+                    <p class="text-4xl font-bold mb-2">{{ $stats['low_stock_alerts'] ?? 0 }}</p>
                     <p class="text-sm mb-2 dark:text-white">Productos con stock bajo</p>
                     @if(($stats['low_stock_alerts'] ?? 0) > 0)
-                        <p class="text-xs flex items-center gap-1" style="color: #f59e0b;">
+                        <p class="text-xs flex items-center gap-1">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                             </svg>
@@ -1361,7 +1361,7 @@
     <div class="mb-6">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Servicios Recientes</h3>
-            <a href="{{ route('admin.services.index') ?? '#' }}" class="text-sm font-medium" style="color: #22c55e;">Ver todos</a>
+            <a href="{{ route('admin.services.index') ?? '#' }}" class="text-sm font-medium">Ver todos</a>
         </div>
         <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
             <div class="p-6">
