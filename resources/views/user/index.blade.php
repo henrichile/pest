@@ -69,7 +69,7 @@
         
         <!-- Botón de acción -->
         <div class="mt-3 sm:mt-4 md:mt-0 md:ml-4 md:flex md:items-center">
-            <a href="{{ route('admin.users.create') }}" class="inline-flex items-center justify-center w-full sm:w-auto px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium text-white transition-colors" style="background: #22c55e; hover:background: #16a34a;">
+            <a href="{{ route('admin.users.create') }}" class="inline-flex items-center justify-center w-full sm:w-auto px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium text-white transition-colors">
                 <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
@@ -129,7 +129,7 @@
             <!-- Buttons Container -->
             <div class="w-full md:w-auto flex gap-2">
                 <!-- Submit Button -->
-                <button type="submit" class="flex-1 md:flex-none inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors" style="background: #22c55e; hover:background: #16a34a;">
+                <button type="submit" class="flex-1 md:flex-none inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors">
                     <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>
@@ -197,7 +197,7 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex flex-wrap gap-1">
                                     @foreach($user->roles as $role)
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" style="background: #dbeafe; color: #1e40af;">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
                                             {{ ucfirst($role->name) }}
                                         </span>
                                     @endforeach
@@ -208,11 +208,11 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($user->is_active ?? true)
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" style="background: #d1fae5; color: #065f46;">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
                                         Activo
                                     </span>
                                 @else
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" style="background: #fee2e2; color: #991b1b;">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
                                         Inactivo
                                     </span>
                                 @endif

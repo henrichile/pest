@@ -86,19 +86,19 @@
 
             <!-- Success/Error Messages -->
             @if(session('success'))
-                <div class="mb-4 p-4 rounded-lg" style="background: #d1fae5; color: #065f46;">
+                <div class="mb-4 p-4 rounded-lg">
                     {{ session('success') }}
                 </div>
             @endif
 
             @if(session('error'))
-                <div class="mb-4 p-4 rounded-lg" style="background: #fee2e2; color: #991b1b;">
+                <div class="mb-4 p-4 rounded-lg">
                     {{ session('error') }}
                 </div>
             @endif
 
             @if($errors->any())
-                <div class="mb-4 p-4 rounded-lg" style="background: #fee2e2; color: #991b1b;">
+                <div class="mb-4 p-4 rounded-lg">
                     <ul class="list-disc list-inside">
                         @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -234,7 +234,7 @@
                 <a href="{{ route('admin.users.show', $user) }}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium transition-colors">
                     Cancelar
                 </a>
-                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors" style="background: #22c55e; hover:background: #16a34a;">
+                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors">
                     <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                     </svg>

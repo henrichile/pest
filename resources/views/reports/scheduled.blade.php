@@ -22,7 +22,7 @@
 
     <!-- Mensajes -->
     @if(session('success'))
-        <div class="mb-4 rounded-md p-4" style="background: #f0fdf4; border: 1px solid #22c55e;">
+        <div class="mb-4 rounded-md p-4">
             <div class="flex">
                 <div class="flex-shrink-0">
                     <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

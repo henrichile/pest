@@ -171,7 +171,7 @@ if (empty($historicalData) && $totalMonitoreadas > 0) {
                 <span>% Consumo</span>
             </div>
             <div class="legend-item">
-                <span class="legend-line" style="background: #6b7280;"></span>
+                <span class="legend-line"></span>
                 <span>Capturas</span>
             </div>
         </div>

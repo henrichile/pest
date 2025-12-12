@@ -28,7 +28,7 @@ function getTechnicianRoute($routeName, ...$params) {
 }
 @endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full" id="html-root" style="background: #f9fafb;">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full" id="html-root">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -303,7 +303,7 @@ function getTechnicianRoute($routeName, ...$params) {
 
                 <!-- Quick Actions - Modo Oscuro/Claro Switch -->
                 <div class="mb-3">
-                    <div id="dark-mode-container" class="w-full flex items-center justify-between gap-x-3 rounded-lg py-2.5 px-3 text-xs transition-colors duration-200" style="background: #f3f4f6; border: 1px solid #e5e7eb;">
+                    <div id="dark-mode-container" class="w-full flex items-center justify-between gap-x-3 rounded-lg py-2.5 px-3 text-xs transition-colors duration-200">
                         <div class="flex items-center gap-x-2">
                             <svg id="dark-mode-icon" class="h-4 w-4 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-gray-600 dark:text-gray-300">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
@@ -322,7 +322,7 @@ function getTechnicianRoute($routeName, ...$params) {
                         @if(session('view_as_technician'))
                             <form action="{{ route('admin.stop-viewing-as-technician') }}" method="POST" class="mb-2.5">
                                 @csrf
-                                <button type="submit" class="w-full flex items-center gap-x-2 rounded-lg py-2 px-2.5 text-xs hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" style="background: #fef3c7; border: 1px solid #fcd34d;">
+                                <button type="submit" class="w-full flex items-center gap-x-2 rounded-lg py-2 px-2.5 text-xs hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
@@ -567,7 +567,7 @@ function getTechnicianRoute($routeName, ...$params) {
                     <!-- Center: Success/Status Message -->
                     <div class="flex-1 max-w-3xl">
                         @if(session('success'))
-                            <div class="rounded-lg px-4 py-2.5 flex items-center gap-3" style="background: #f0fdf4; border: 1px solid #22c55e;">
+                            <div class="rounded-lg px-4 py-2.5 flex items-center gap-3">
                                 <div class="flex-shrink-0">
                                     <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
@@ -576,7 +576,7 @@ function getTechnicianRoute($routeName, ...$params) {
                                 <p class="text-sm font-medium">{{ session('success') }}</p>
                             </div>
                         @elseif(session('view_as_technician') && auth()->check() && auth()->user()->hasRole('super-admin'))
-                            <div class="rounded-lg px-4 py-2.5 flex items-center gap-3" style="background: #fef3c7; border: 1px solid #f59e0b;">
+                            <div class="rounded-lg px-4 py-2.5 flex items-center gap-3">
                                 <svg class="h-5 w-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
                                 </svg>
@@ -599,7 +599,7 @@ function getTechnicianRoute($routeName, ...$params) {
                                     $unreadCount = auth()->check() ? auth()->user()->unreadNotifications()->count() : 0;
                                 @endphp
                                 @if($unreadCount > 0)
-                                    <span class="absolute text-white text-xs rounded-full flex items-center justify-center font-semibold" style="background: #22c55e; min-width: 20px; height: 20px; padding: 0 6px; top: -2px; right: -2px; z-index: 20; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                                    <span class="absolute text-white text-xs rounded-full flex items-center justify-center font-semibold">
                                         {{ $unreadCount > 99 ? '99+' : $unreadCount }}
                                     </span>
                                 @endif
@@ -704,7 +704,7 @@ function getTechnicianRoute($routeName, ...$params) {
             <!-- El header desktop con buscador está ahora dentro de cada dashboard (admin/technician) -->
 
             <!-- Page content -->
-            <main class="flex-1" style="background: #f9fafb; min-height: calc(100vh - 4rem); padding-top: 80px;">
+            <main class="flex-1">
                 <style>
                     @media (min-width: 768px) {
                         main {

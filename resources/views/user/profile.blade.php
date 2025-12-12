@@ -72,7 +72,7 @@
     </div>
 
     @if(session('success'))
-        <div class="rounded-md bg-green-50 p-4 mb-6" style="background: #f0fdf4; border: 1px solid #22c55e;">
+        <div class="rounded-md bg-green-50 p-4 mb-6">
             <div class="flex">
                 <div class="flex-shrink-0">
                     <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
@@ -89,7 +89,7 @@
     @endif
 
     @if(session('error'))
-        <div class="rounded-md bg-red-50 p-4 mb-6" style="background: #fef2f2; border: 1px solid #ef4444;">
+        <div class="rounded-md bg-red-50 p-4 mb-6">
             <div class="flex">
                 <div class="flex-shrink-0">
                     <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
@@ -167,7 +167,7 @@
                         <div class="mt-6 flex justify-end">
                             <button type="submit" 
                                 class="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
-                                style="background: #22c55e; color: white; border-radius: 8px;">
+                               >
                                 Guardar Cambios
                             </button>
                         </div>
@@ -215,7 +215,7 @@
                         <div class="mt-6 flex justify-end">
                             <button type="submit" 
                                 class="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
-                                style="background: #22c55e; color: white; border-radius: 8px;">
+                               >
                                 Cambiar Contraseña
                             </button>
                         </div>
@@ -239,7 +239,7 @@
                         <div class="flex flex-wrap justify-center gap-2 mb-4">
                             @foreach($roles as $role)
                                 <span class="px-3 py-1 text-xs font-semibold rounded-full" 
-                                      style="background: #dcfce7; color: #166534;">
+                                     >
                                     {{ ucfirst($role->name) }}
                                 </span>
                             @endforeach

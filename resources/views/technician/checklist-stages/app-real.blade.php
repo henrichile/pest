@@ -28,7 +28,7 @@ function getTechnicianRoute($routeName, ...$params) {
 }
 @endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full" id="html-root" style="background: #f9fafb;">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full" id="html-root">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -304,7 +304,7 @@ function getTechnicianRoute($routeName, ...$params) {
                 
                 <!-- Quick Actions - Modo Oscuro/Claro Switch -->
                 <div class="mb-3">
-                    <div id="dark-mode-container" class="w-full flex items-center justify-between gap-x-3 rounded-lg py-2.5 px-3 text-xs transition-colors duration-200" style="background: #f3f4f6; border: 1px solid #e5e7eb;">
+                    <div id="dark-mode-container" class="w-full flex items-center justify-between gap-x-3 rounded-lg py-2.5 px-3 text-xs transition-colors duration-200">
                         <div class="flex items-center gap-x-2">
                             <svg id="dark-mode-icon" class="h-4 w-4 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-gray-600 dark:text-gray-300">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
@@ -323,7 +323,7 @@ function getTechnicianRoute($routeName, ...$params) {
                         @if(session('view_as_technician'))
                             <form action="{{ route('admin.stop-viewing-as-technician') }}" method="POST" class="mb-2.5">
                                 @csrf
-                                <button type="submit" class="w-full flex items-center gap-x-2 rounded-lg py-2 px-2.5 text-xs hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" style="background: #fef3c7; border: 1px solid #fcd34d;">
+                                <button type="submit" class="w-full flex items-center gap-x-2 rounded-lg py-2 px-2.5 text-xs hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
@@ -532,10 +532,10 @@ function getTechnicianRoute($routeName, ...$params) {
         <div class="flex-1 flex flex-col min-w-0 overflow-x-hidden">
 
             <!-- Page content -->
-            <main class="py-3 md:py-3 flex-1" style="background: #f9fafb; min-height: calc(100vh - 4rem);">
+            <main class="py-3 md:py-3 flex-1">
                 <!-- Banner de advertencia cuando está en modo técnico -->
                 @if(session('view_as_technician') && auth()->check() && auth()->user()->hasRole('super-admin'))
-                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3 sm:p-4 mx-3 sm:mx-4 md:mx-6 lg:mx-8 mb-3 sm:mb-4" style="background: #fef3c7; border-left: 4px solid #f59e0b;">
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3 sm:p-4 mx-3 sm:mx-4 md:mx-6 lg:mx-8 mb-3 sm:mb-4">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
                                 <svg class="h-5 w-5 text-yellow-400 mr-3" fill="currentColor" viewBox="0 0 20 20">
@@ -559,7 +559,7 @@ function getTechnicianRoute($routeName, ...$params) {
                 
                 <div class="px-3 sm:px-4 md:px-6 lg:px-8 max-w-full">
                     @if(session('success'))
-                        <div class="mb-4 rounded-md p-4" style="background: #f0fdf4; border: 1px solid #22c55e;">
+                        <div class="mb-4 rounded-md p-4">
                             <div class="flex">
                                 <div class="flex-shrink-0">
                                     <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

@@ -1054,7 +1054,7 @@
                 <strong>Plagas Detectadas:</strong>
                 <div style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 5px;">
                     @foreach($pestsDetected as $pest)
-                        <span style="background: #d4edda; color: #155724; padding: 3px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; border: 1px solid #28a745;">{{ $pest }}</span>
+                        <span>{{ $pest }}</span>
                     @endforeach
                 </div>
             </div>
@@ -1062,7 +1062,7 @@
             
             {{-- Resumen Ejecutivo (si existe) --}}
             @if(isset($checklistData['monitoreo_estadisticas']['executive_summary']) && !empty($checklistData['monitoreo_estadisticas']['executive_summary']))
-            <div class="checklist-item" style="background: #e8f5e8; padding: 10px; border-radius: 5px; margin-top: 10px;">
+            <div class="checklist-item">
                 <strong>Resumen Ejecutivo:</strong><br>
                 {{ $checklistData['monitoreo_estadisticas']['executive_summary'] }}
             </div>
@@ -1142,7 +1142,7 @@
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Producto Aplicado y Dosis
             </div>
-            <div class="checklist-item" style="background: #f8f9fa; padding: 12px; border-radius: 5px;">
+            <div class="checklist-item">
                 <strong>Producto:</strong> {{ $checklistData['products']['applied_product'] ?? 'No especificado' }}<br>
                 <strong>Dosis:</strong> {{ $checklistData['products']['dosis'] ?? 'No especificado' }} cc<br>
                 <strong>Agua:</strong> {{ $checklistData['products']['agua'] ?? 'No especificado' }} Lts
@@ -1157,7 +1157,7 @@
                 Resultados Observados
             </div>
             @if(isset($checklistData['results']['observed_results']) && is_array($checklistData['results']['observed_results']))
-            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; margin-bottom: 10px;">
+            <div>
                 <ul style="margin: 0; padding-left: 20px;">
                     @foreach($checklistData['results']['observed_results'] as $result)
                     <li style="margin-bottom: 5px;">{{ $result }}</li>
@@ -1168,13 +1168,13 @@
             @if(isset($checklistData['results']['total_installed_points']) || isset($checklistData['results']['total_consumption_activity']))
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 @if(isset($checklistData['results']['total_installed_points']))
-                <div style="background: #e8f5e8; padding: 10px; border-radius: 5px;">
+                <div>
                     <div style="font-size: 11px; color: #666; margin-bottom: 3px;">Puntos Instalados</div>
                     <div style="font-size: 16px; font-weight: bold; color: #1a472a;">{{ $checklistData['results']['total_installed_points'] }}</div>
                 </div>
                 @endif
                 @if(isset($checklistData['results']['total_consumption_activity']))
-                <div style="background: #e8f5e8; padding: 10px; border-radius: 5px;">
+                <div>
                     <div style="font-size: 11px; color: #666; margin-bottom: 3px;">Actividad de Consumo Total</div>
                     <div style="font-size: 16px; font-weight: bold; color: #1a472a;">{{ $checklistData['results']['total_consumption_activity'] }}</div>
                 </div>
@@ -1192,7 +1192,7 @@
             </div>
             @foreach($checklistData['observations'] as $observation)
                 @if(isset($observation['detail']) || isset($observation['photo']))
-                <div style="background: #f8f9fa; padding: 12px; margin-bottom: 10px; border-radius: 5px; border-left: 4px solid #1a472a;">
+                <div>
                     @if(isset($observation['cebadera_code']))
                     <div style="font-weight: bold; color: #1a472a; margin-bottom: 5px;">
                         {{ $observation['cebadera_code'] }}
@@ -1243,7 +1243,7 @@
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Sitios Tratados
             </div>
-            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+            <div>
                 {{ $checklistData['sites']['treated_sites'] }}
             </div>
         </div>
@@ -1274,7 +1274,7 @@
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Descripción del Servicio
             </div>
-            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+            <div>
                 {{ $checklistData['description']['service_description'] }}
             </div>
         </div>
@@ -1283,7 +1283,7 @@
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Descripción del Servicio
             </div>
-            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+            <div>
                 {{ $checklistData['description']['content'] }}
             </div>
         </div>
@@ -1295,7 +1295,7 @@
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Sugerencias
             </div>
-            <div style="background: #fff3cd; padding: 12px; border-radius: 5px; border-left: 4px solid #856404; line-height: 1.6;">
+            <div>
                 {{ $checklistData['description']['service_sugerencia'] }}
             </div>
                 <div style="page-break-after: always;"></div>
@@ -1317,7 +1317,7 @@
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Productos Aplicados
             </div>
-            <div class="checklist-item" style="background: #f8f9fa; padding: 12px; border-radius: 5px;">
+            <div class="checklist-item">
                 <strong>Producto aplicado:</strong> {{ $checklistData['products']['applied_product'] ?? 'No especificado' }}<br>
                 <strong>Dosis aplicada:</strong> {{ $checklistData['products']['dosis_aplicada'] ?? ($checklistData['products']['dosis'] ?? 'No especificado') }} cc<br>
                 <strong>Agua aplicada:</strong> {{ $checklistData['products']['agua_aplicada'] ?? ($checklistData['products']['agua'] ?? 'No especificado') }} Lts
@@ -1333,7 +1333,7 @@
             </div>
             @foreach($checklistData['observations'] as $observation)
                 @if(isset($observation['detail']) || isset($observation['photo']))
-                <div style="background: #f8f9fa; padding: 12px; margin-bottom: 10px; border-radius: 5px; border-left: 4px solid #1a472a;">
+                <div>
                     @if(isset($observation['cebadera_code']))
                     <div style="font-weight: bold; color: #1a472a; margin-bottom: 5px;">
                         {{ $observation['cebadera_code'] }}
@@ -1384,7 +1384,7 @@
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Sitios Tratados
             </div>
-            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+            <div>
                 {{ $checklistData['sites']['treated_sites'] }}
             </div>
         </div>
@@ -1396,7 +1396,7 @@
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Descripción del Servicio
             </div>
-            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+            <div>
                 {{ $checklistData['description']['service_description'] }}
             </div>
         </div>
@@ -1405,7 +1405,7 @@
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Descripción del Servicio
             </div>
-            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+            <div>
                 {{ $checklistData['description']['content'] }}
             </div>
         </div>
@@ -1417,7 +1417,7 @@
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Sugerencias
             </div>
-            <div style="background: #fff3cd; padding: 12px; border-radius: 5px; border-left: 4px solid #856404; line-height: 1.6;">
+            <div>
                 {{ $checklistData['description']['service_sugerencia'] }}
             </div>
                 <div style="page-break-after: always;"></div>
@@ -1439,7 +1439,7 @@
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Productos Aplicados
             </div>
-            <div class="checklist-item" style="background: #f8f9fa; padding: 12px; border-radius: 5px;">
+            <div class="checklist-item">
                     <strong>Producto aplicado:</strong> {{ $checklistData['products']['applied_product'] ?? 'No especificado' }}<br>
                     <strong>Dosis aplicada:</strong> {{ $checklistData['products']['dosis_aplicada'] ?? ($checklistData['products']['dosis'] ?? 'No especificado') }} cc<br>
                     <strong>Agua aplicada:</strong> {{ $checklistData['products']['agua_aplicada'] ?? ($checklistData['products']['agua'] ?? 'No especificado') }} Lts
@@ -1456,19 +1456,19 @@
             @if(isset($checklistData['results']['uv_lamps']) || isset($checklistData['results']['tuv']) || isset($checklistData['results']['installed_devices']))
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px;">
                 @if(isset($checklistData['results']['uv_lamps']))
-                <div style="background: #e8f5e8; padding: 10px; border-radius: 5px;">
+                <div>
                     <div style="font-size: 11px; color: #666; margin-bottom: 3px;">Lámparas UV</div>
                     <div style="font-size: 16px; font-weight: bold; color: #1a472a;">{{ $checklistData['results']['uv_lamps'] }}</div>
                 </div>
                 @endif
                 @if(isset($checklistData['results']['tuv']))
-                <div style="background: #e8f5e8; padding: 10px; border-radius: 5px;">
+                <div>
                     <div style="font-size: 11px; color: #666; margin-bottom: 3px;">TUV</div>
                     <div style="font-size: 16px; font-weight: bold; color: #1a472a;">{{ $checklistData['results']['tuv'] }}</div>
                 </div>
                 @endif
                 @if(isset($checklistData['results']['installed_devices']))
-                <div style="background: #e8f5e8; padding: 10px; border-radius: 5px;">
+                <div>
                     <div style="font-size: 11px; color: #666; margin-bottom: 3px;">Dispositivos Instalados</div>
                     <div style="font-size: 16px; font-weight: bold; color: #1a472a;">{{ $checklistData['results']['installed_devices'] }}</div>
                 </div>
@@ -1486,7 +1486,7 @@
             </div>
             @foreach($checklistData['observations'] as $observation)
                 @if(isset($observation['detail']) || isset($observation['photo']))
-                <div style="background: #f8f9fa; padding: 12px; margin-bottom: 10px; border-radius: 5px; border-left: 4px solid #1a472a;">
+                <div>
                     @if(isset($observation['cebadera_code']))
                     <div style="font-weight: bold; color: #1a472a; margin-bottom: 5px;">
                         {{ $observation['cebadera_code'] }}
@@ -1537,7 +1537,7 @@
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Sitios Tratados
             </div>
-            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+            <div>
                 {{ $checklistData['sites']['treated_sites'] }}
             </div>
         </div>
@@ -1549,7 +1549,7 @@
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Descripción del Servicio
             </div>
-            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+            <div>
                 {{ $checklistData['description']['service_description'] }}
             </div>
         </div>
@@ -1558,7 +1558,7 @@
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Descripción del Servicio
             </div>
-            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+            <div>
                 {{ $checklistData['description']['content'] }}
             </div>
         </div>
@@ -1570,7 +1570,7 @@
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Sugerencias
             </div>
-            <div style="background: #fff3cd; padding: 12px; border-radius: 5px; border-left: 4px solid #856404; line-height: 1.6;">
+            <div>
                 {{ $checklistData['description']['service_sugerencia'] }}
             </div>
                 <div style="page-break-after: always;"></div>
@@ -1594,7 +1594,7 @@
             </div>
             @foreach($checklistData['observations'] as $observation)
                 @if(isset($observation['detail']) || isset($observation['photo']))
-                <div style="background: #f8f9fa; padding: 12px; margin-bottom: 10px; border-radius: 5px; border-left: 4px solid #1a472a;">
+                <div>
                     @if(isset($observation['cebadera_code']))
                     <div style="font-weight: bold; color: #1a472a; margin-bottom: 5px;">
                         {{ $observation['cebadera_code'] }}
@@ -1645,7 +1645,7 @@
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Sitios Tratados
             </div>
-            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+            <div>
                 {{ $checklistData['sites']['treated_sites'] }}
             </div>
         </div>
@@ -1657,7 +1657,7 @@
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Descripción del Servicio
             </div>
-            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+            <div>
                 {{ $checklistData['description']['service_description'] }}
             </div>
         </div>
@@ -1666,7 +1666,7 @@
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Descripción del Servicio
             </div>
-            <div style="background: #f8f9fa; padding: 12px; border-radius: 5px; line-height: 1.6;">
+            <div>
                 {{ $checklistData['description']['content'] }}
             </div>
         </div>
@@ -1678,7 +1678,7 @@
             <div class="section-title" style="font-size: 14px; color: #1a472a; margin-bottom: 10px;">
                 Sugerencias
             </div>
-            <div style="background: #fff3cd; padding: 12px; border-radius: 5px; border-left: 4px solid #856404; line-height: 1.6;">
+            <div>
                 {{ $checklistData['description']['service_sugerencia'] }}
             </div>
             <div style="page-break-after: always;"></div>

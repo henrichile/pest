@@ -488,7 +488,7 @@ function getTechnicianRoute($routeName, ...$params) {
                     <span>Capturar Ubicación</span>
                 </a>
                 @else
-                <a href="{{ getTechnicianRoute('technician.service.checklist.location', $service) }}" class="geolocation-btn" style="background: #6c757d;">
+                <a href="{{ getTechnicianRoute('technician.service.checklist.location', $service) }}" class="geolocation-btn">
                     <span>🔄</span>
                     <span>Reconectar Ubicación</span>
                 </a>

@@ -633,7 +633,7 @@
 <body>
     <div class="container">
         <!-- Indicador de versión actualizada -->
-        <div style="background: #22c55e !important; color: white !important; padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-size: 14px; font-weight: 700; box-shadow: 0 2px 4px rgba(34,197,94,0.3);">
+        <div>
             ✅ DISEÑO ACTUALIZADO - Versión 2024-11-12-09:30 - Si NO ves este banner verde, tu navegador tiene caché
         </div>
         

@@ -103,7 +103,7 @@
                     <button type="button" class="w-full px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-green-500 text-white hover:bg-green-600">
                         Guardar Configuración
                     </button>
-                    <button type="button" class="w-full px-4 py-2 rounded-lg text-sm font-medium transition-colors" style="background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb;">
+                    <button type="button" class="w-full px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                         Restaurar Valores por Defecto
                     </button>
                 </div>

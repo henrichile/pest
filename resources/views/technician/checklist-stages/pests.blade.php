@@ -127,7 +127,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                         </svg>
                         @if(isset($unreadCount) && $unreadCount > 0)
-                        <span class="absolute text-white text-xs rounded-full flex items-center justify-center font-semibold" style="background: #22c55e; min-width: 20px; height: 20px; padding: 0 6px; top: -2px; right: -2px; z-index: 20; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                        <span class="absolute text-white text-xs rounded-full flex items-center justify-center font-semibold">
                             {{ $unreadCount > 99 ? '99+' : $unreadCount }}
                         </span>
                         @endif
@@ -223,7 +223,7 @@
 
     <!-- Botón Crear Nueva Plaga (móvil) -->
     <div class="mb-4 md:hidden">
-        <a href="{{ route('admin.pests.create') }}" class="inline-flex items-center justify-center w-full px-4 py-2.5 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors" style="background: #22c55e; hover:background: #16a34a;">
+        <a href="{{ route('admin.pests.create') }}" class="inline-flex items-center justify-center w-full px-4 py-2.5 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors">
             <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
@@ -335,7 +335,7 @@
                         </svg>
                         Descripción
                     </h4>
-                    <div class="bg-gray-50 rounded-lg p-4" style="background: #f9fafb;">
+                    <div class="bg-gray-50 rounded-lg p-4">
                         <p class="text-sm leading-relaxed" id="modal-description-text"></p>
                     </div>
                 </div>
@@ -348,7 +348,7 @@
                         </svg>
                         Métodos de Control
                     </h4>
-                    <div class="bg-green-50 rounded-lg p-4" style="background: #f0fdf4;">
+                    <div class="bg-green-50 rounded-lg p-4">
                         <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-300" id="modal-treatment-list"></ul>
                     </div>
                 </div>
@@ -361,7 +361,7 @@
                         </svg>
                         Recomendaciones
                     </h4>
-                    <div class="bg-blue-50 rounded-lg p-4" style="background: #eff6ff;">
+                    <div class="bg-blue-50 rounded-lg p-4">
                         <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-300" id="modal-recommendations-list"></ul>
                     </div>
                 </div>

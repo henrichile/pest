@@ -76,7 +76,7 @@
                 </p>
             </div>
             <div class="mt-3 sm:mt-4 md:mt-0 md:ml-4">
-                <a href="{{ route('admin.pests.create') }}" class="inline-flex items-center justify-center w-full sm:w-auto px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium text-white transition-colors" style="background: #22c55e; hover:background: #16a34a;">
+                <a href="{{ route('admin.pests.create') }}" class="inline-flex items-center justify-center w-full sm:w-auto px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium text-white transition-colors">
                     <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
@@ -203,7 +203,7 @@
                         </svg>
                         Descripción
                     </h4>
-                    <div class="bg-gray-50 rounded-lg p-4" style="background: #f9fafb;">
+                    <div class="bg-gray-50 rounded-lg p-4">
                         <p class="text-sm leading-relaxed" id="modal-description-text"></p>
                     </div>
                 </div>
@@ -216,7 +216,7 @@
                         </svg>
                         Métodos de Control
                     </h4>
-                    <div class="bg-green-50 rounded-lg p-4" style="background: #f0fdf4;">
+                    <div class="bg-green-50 rounded-lg p-4">
                         <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-300" id="modal-treatment-list"></ul>
                     </div>
                 </div>
@@ -229,7 +229,7 @@
                         </svg>
                         Recomendaciones
                     </h4>
-                    <div class="bg-blue-50 rounded-lg p-4" style="background: #eff6ff;">
+                    <div class="bg-blue-50 rounded-lg p-4">
                         <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-300" id="modal-recommendations-list"></ul>
                     </div>
                 </div>

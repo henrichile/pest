@@ -353,7 +353,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                         </svg>
                         @if(isset($unreadCount) && $unreadCount > 0)
-                        <span class="absolute text-white text-xs rounded-full flex items-center justify-center font-semibold" style="background: #22c55e; min-width: 20px; height: 20px; padding: 0 6px; top: -2px; right: -2px; z-index: 20; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                        <span class="absolute text-white text-xs rounded-full flex items-center justify-center font-semibold">
                             {{ $unreadCount > 99 ? '99+' : $unreadCount }}
                         </span>
                         @endif
@@ -1152,7 +1152,7 @@
                         <option value="all_time" {{ request('period') == 'all_time' ? 'selected' : '' }}>Todo el Tiempo</option>
                     </select>
                 </div>
-                <div id="chart-container" class="w-full border dark:border-gray-700 rounded-lg overflow-hidden" style="background: #f9fafb; border: 1px solid #e5e7eb !important; height: 350px; position: relative; padding: 15px; box-sizing: border-box; width: 100%;">
+                <div id="chart-container" class="w-full border dark:border-gray-700 rounded-lg overflow-hidden">
                     <canvas id="statisticsChart" style="width: 100% !important; height: 100% !important; display: block; max-width: 100%;"></canvas>
         </div>
 

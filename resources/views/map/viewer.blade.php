@@ -158,7 +158,7 @@
                                     Imagen estática para PDFs y reportes
                                 </p>
                             @else
-                                <div style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 4px;">
+                                <div>
                                     ❌ No se pudo generar el mapa estático
                                 </div>
                             @endif

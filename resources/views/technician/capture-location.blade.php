@@ -279,7 +279,7 @@ $processLocationRoute = $isViewingAsTechnician ? route('technician-view.service.
 
             // Configuración más agresiva para obtener permisos
           // Mostrar mensaje de solicitud de permisos
-            coordinatesDiv.innerHTML = "<div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 4px solid #2196f3;"><strong>📍 Solicitando permisos de ubicación...</strong><br>Por favor, permite el acceso a tu ubicación cuando el navegador lo solicite.</div>";
+            coordinatesDiv.innerHTML = "<div><strong>📍 Solicitando permisos de ubicación...</strong><br>Por favor, permite el acceso a tu ubicación cuando el navegador lo solicite.</div>";
             coordinatesDiv.classList.remove("hidden");
             const options = {
                 enableHighAccuracy: false,
@@ -327,7 +327,7 @@ $processLocationRoute = $isViewingAsTechnician ? route('technician-view.service.
                         case 1:
                             message += "Permiso denegado por el usuario.";
                             instructions = `
-                                <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 10px; border-left: 4px solid #ffc107;">
+                                <div>
                                     <strong>🔧 Soluciones paso a paso:</strong><br><br>
                                     <strong>Opción 1 - Barra de direcciones:</strong><br>
                                     1. Busca el ícono de ubicación (📍) en la barra de direcciones<br>
@@ -346,7 +346,7 @@ $processLocationRoute = $isViewingAsTechnician ? route('technician-view.service.
                         case 2:
                             message += "Ubicación no disponible.";
                             instructions = `
-                                <div style="background: #f8d7da; padding: 15px; border-radius: 8px; margin-top: 10px; border-left: 4px solid #dc3545;">
+                                <div>
                                     <strong>🔧 Soluciones:</strong><br><br>
                                     1. Verifica que el GPS esté activado en tu dispositivo<br>
                                     2. Asegúrate de tener señal de GPS<br>
@@ -358,7 +358,7 @@ $processLocationRoute = $isViewingAsTechnician ? route('technician-view.service.
                         case 3:
                             message += "Tiempo de espera agotado.";
                             instructions = `
-                                <div style="background: #d1ecf1; padding: 15px; border-radius: 8px; margin-top: 10px; border-left: 4px solid #17a2b8;">
+                                <div>
                                     <strong>🔧 Soluciones:</strong><br><br>
                                     1. Verifica tu conexión a internet<br>
                                     2. Intenta nuevamente<br>
@@ -370,7 +370,7 @@ $processLocationRoute = $isViewingAsTechnician ? route('technician-view.service.
                         default:
                             message += "Error desconocido.";
                             instructions = `
-                                <div style="background: #e2e3e5; padding: 15px; border-radius: 8px; margin-top: 10px; border-left: 4px solid #6c757d;">
+                                <div>
                                     <strong>🔧 Soluciones:</strong><br><br>
                                     1. Recarga la página completamente<br>
                                     2. Prueba con otro navegador<br>

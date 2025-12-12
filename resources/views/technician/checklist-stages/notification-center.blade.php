@@ -217,7 +217,7 @@
                                 {{ $user->name ?? 'Usuario eliminado' }}
                             </td>
                             <td class="px-2 py-4" style="overflow: hidden; max-width: 0;">
-                                <span class="px-1.5 py-0.5 text-xs font-medium rounded whitespace-nowrap inline-block" style="background: #e0e7ff; color: #3730a3; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">
+                                <span class="px-1.5 py-0.5 text-xs font-medium rounded whitespace-nowrap inline-block">
                                     {{ $typeLabel }}
                                 </span>
                             </td>
@@ -229,11 +229,11 @@
                             </td>
                             <td class="px-2 py-4 whitespace-nowrap" style="overflow: hidden;">
                                 @if($notification->read_at)
-                                    <span class="px-1.5 py-0.5 text-xs font-medium rounded" style="background: #d1fae5; color: #065f46;">
+                                    <span class="px-1.5 py-0.5 text-xs font-medium rounded">
                                         Leída
                                     </span>
                                 @else
-                                    <span class="px-1.5 py-0.5 text-xs font-medium rounded" style="background: #fee2e2; color: #991b1b;">
+                                    <span class="px-1.5 py-0.5 text-xs font-medium rounded">
                                         No Leída
                                     </span>
                                 @endif

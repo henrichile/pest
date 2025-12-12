@@ -50,7 +50,7 @@
                     $unreadCount = auth()->check() ? auth()->user()->unreadNotifications()->count() : 0;
                 @endphp
                 @if($unreadCount > 0)
-                <span class="absolute text-white text-xs rounded-full flex items-center justify-center font-semibold" style="background: #22c55e; min-width: 20px; height: 20px; padding: 0 6px; top: -2px; right: -2px; z-index: 20; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                <span class="absolute text-white text-xs rounded-full flex items-center justify-center font-semibold">
                     {{ $unreadCount > 99 ? '99+' : $unreadCount }}
                 </span>
                 @endif

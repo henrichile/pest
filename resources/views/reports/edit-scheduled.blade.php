@@ -11,7 +11,7 @@
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Editar Reporte Programado</h1>
                 <p class="text-sm mt-1 text-gray-600 dark:text-gray-300">Modifica la configuración del reporte programado</p>
             </div>
-            <a href="{{ route('admin.reports.scheduled') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors" style="background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb;">
+            <a href="{{ route('admin.reports.scheduled') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                 Cancelar
             </a>
         </div>
@@ -162,7 +162,7 @@
 
         <!-- Botones -->
         <div class="flex justify-end gap-3">
-            <a href="{{ route('admin.reports.scheduled') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors" style="background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb;">
+            <a href="{{ route('admin.reports.scheduled') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                 Cancelar
             </a>
             <button type="submit" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-green-500 text-white hover:bg-green-600">

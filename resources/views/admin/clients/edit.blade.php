@@ -87,19 +87,19 @@
 
             <!-- Success/Error Messages -->
             @if(session('success'))
-                <div class="mb-4 p-4 rounded-lg" style="background: #d1fae5; color: #065f46;">
+                <div class="mb-4 p-4 rounded-lg">
                     {{ session('success') }}
                 </div>
             @endif
 
             @if(session('error'))
-                <div class="mb-4 p-4 rounded-lg" style="background: #fee2e2; color: #991b1b;">
+                <div class="mb-4 p-4 rounded-lg">
                     {{ session('error') }}
                 </div>
             @endif
 
             @if($errors->any())
-                <div class="mb-4 p-4 rounded-lg" style="background: #fee2e2; color: #991b1b;">
+                <div class="mb-4 p-4 rounded-lg">
                     <ul class="list-disc list-inside">
                         @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>

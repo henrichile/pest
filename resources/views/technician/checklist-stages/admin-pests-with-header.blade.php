@@ -137,7 +137,7 @@
                         </svg>
                         Descripción
                     </h4>
-                    <div class="bg-gray-50 rounded-lg p-4" style="background: #f9fafb;">
+                    <div class="bg-gray-50 rounded-lg p-4">
                         <p class="text-sm leading-relaxed" id="modal-description-text"></p>
                     </div>
                 </div>
@@ -150,7 +150,7 @@
                         </svg>
                         Métodos de Control
                     </h4>
-                    <div class="bg-green-50 rounded-lg p-4" style="background: #f0fdf4;">
+                    <div class="bg-green-50 rounded-lg p-4">
                         <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-300" id="modal-treatment-list"></ul>
                     </div>
                 </div>
@@ -163,7 +163,7 @@
                         </svg>
                         Recomendaciones
                     </h4>
-                    <div class="bg-blue-50 rounded-lg p-4" style="background: #eff6ff;">
+                    <div class="bg-blue-50 rounded-lg p-4">
                         <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-300" id="modal-recommendations-list"></ul>
                     </div>
                 </div>

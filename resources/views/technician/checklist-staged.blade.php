@@ -689,7 +689,7 @@ function getTechnicianRoute($routeName, ...$params) {
         }
     </style>
 </head>
-<body style="background: #f9fafb !important;">
+<body>
     <div class="container">
         <div style="text-align: center; margin-bottom: 32px;">
             <h1 style="font-size: 32px; margin-bottom: 8px; color: #111827;">Checklist de Servicio</h1>

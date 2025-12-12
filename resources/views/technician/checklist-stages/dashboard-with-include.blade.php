@@ -105,7 +105,7 @@
                 <div class="flex items-center justify-between p-4 border-b border-gray-200 last:border-b-0">
                     <div class="flex items-center gap-4 flex-1">
                         <div class="flex-shrink-0">
-                            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: #fef3c7;">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center">
                                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
@@ -117,7 +117,7 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
-                        <span class="px-2 py-1 text-xs font-medium rounded-full" style="background: #fef3c7; color: #92400e;">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full">
                             {{ ucfirst(str_replace('_',' ',$service->status) ?? 'Pendiente') }}
                         </span>
                         <a href="{{ route('technician.service.detail', $service) }}" class="px-3 py-1.5 text-xs font-medium rounded-md text-white bg-green-500">Ver Detalle</a>
@@ -149,7 +149,7 @@
                     </div>
                 </a>
                 <a href="{{ route('technician.profile') }}" class="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
-                    <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: #f3f4f6;">
+                    <div class="w-12 h-12 rounded-lg flex items-center justify-center">
                         <svg class="w-6 h-6 text-gray-900 dark:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                         </svg>
