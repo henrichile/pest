@@ -1151,7 +1151,7 @@
                     </div>
                     <div class="ml-4 flex-1">
                         <p class="text-sm font-medium mb-1 dark:text-white text-gray-600 dark:text-gray-300">Clientes</p>
-                        <p class="text-3xl font-bold dark:text-white text-gray-900 dark:text-white">{{ $stats['clients'] ?? 0 }}</p>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $stats['clients'] ?? 0 }}</p>
                     </div>
                 </div>
             </div>
@@ -1170,7 +1170,7 @@
                     </div>
                     <div class="ml-4 flex-1">
                         <p class="text-sm font-medium mb-1 dark:text-white text-gray-600 dark:text-gray-300">Este Mes</p>
-                        <p class="text-3xl font-bold dark:text-white text-gray-900 dark:text-white">{{ $stats['this_month'] ?? 0 }}</p>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $stats['this_month'] ?? 0 }}</p>
                     </div>
                 </div>
             </div>
@@ -1189,7 +1189,7 @@
                     </div>
                     <div class="ml-4 flex-1">
                         <p class="text-sm font-medium mb-1 dark:text-white text-gray-600 dark:text-gray-300">Completados</p>
-                        <p class="text-3xl font-bold dark:text-white text-gray-900 dark:text-white">{{ $stats['completed'] ?? 0 }}</p>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $stats['completed'] ?? 0 }}</p>
                     </div>
                 </div>
             </div>
@@ -1208,7 +1208,7 @@
                     </div>
                     <div class="ml-4 flex-1">
                         <p class="text-sm font-medium mb-1 dark:text-white text-gray-600 dark:text-gray-300">Pendientes</p>
-                        <p class="text-3xl font-bold dark:text-white text-gray-900 dark:text-white">{{ $stats['pending'] ?? 0 }}</p>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $stats['pending'] ?? 0 }}</p>
                     </div>
                 </div>
             </div>
@@ -1233,17 +1233,17 @@
                         <div class="flex items-center gap-2">
                             <div class="w-3 h-3 rounded-full bg-blue-500"></div>
                             <span class="text-sm statistics-text dark:text-white text-gray-600 dark:text-gray-300">Total Servicios</span>
-                            <span class="text-sm font-semibold statistics-number dark:text-white text-gray-900 dark:text-white">{{ $stats['total_services'] ?? 0 }}</span>
+                            <span class="text-sm font-semibold statistics-number text-gray-900 dark:text-white">{{ $stats['total_services'] ?? 0 }}</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <div class="w-3 h-3 rounded-full bg-green-500"></div>
                             <span class="text-sm statistics-text dark:text-white text-gray-600 dark:text-gray-300">Completados</span>
-                            <span class="text-sm font-semibold statistics-number dark:text-white text-gray-900 dark:text-white">{{ $stats['completed'] ?? 0 }}</span>
+                            <span class="text-sm font-semibold statistics-number text-gray-900 dark:text-white">{{ $stats['completed'] ?? 0 }}</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <div class="w-3 h-3 rounded-full bg-red-500"></div>
                             <span class="text-sm statistics-text dark:text-white text-gray-600 dark:text-gray-300">Pendientes</span>
-                            <span class="text-sm font-semibold statistics-number dark:text-white text-gray-900 dark:text-white">{{ $stats['pending'] ?? 0 }}</span>
+                            <span class="text-sm font-semibold statistics-number text-gray-900 dark:text-white">{{ $stats['pending'] ?? 0 }}</span>
             </div>
                     </div>
                     <select id="periodFilter" class="text-sm border dark:border-gray-700 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-800">
@@ -1286,7 +1286,7 @@
 
                 <!-- Resumen por Tipo de Servicio -->
                 <div class="mt-6">
-                    <h4 class="text-base font-semibold mb-4 dark:text-white text-gray-900 dark:text-white">RESUMEN POR TIPO DE SERVICIO</h4>
+                    <h4 class="text-base font-semibold mb-4 text-gray-900 dark:text-white">RESUMEN POR TIPO DE SERVICIO</h4>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                         @php
                             $serviceTypesCards = [
@@ -1310,8 +1310,8 @@
                                     </svg>
                                     <div class="w-2 h-2 rounded-full" style="background: {{ $typeInfo['color'] }};"></div>
                                 </div>
-                                <p class="text-xs font-semibold mb-1 dark:text-white text-gray-900 dark:text-white">{{ $typeInfo['name'] }}</p>
-                                <p class="text-2xl font-bold mb-1 dark:text-white text-gray-900 dark:text-white">{{ $count }}</p>
+                                <p class="text-xs font-semibold mb-1 text-gray-900 dark:text-white">{{ $typeInfo['name'] }}</p>
+                                <p class="text-2xl font-bold mb-1 text-gray-900 dark:text-white">{{ $count }}</p>
                                 @if($count > 0 && $percentage > 0)
                                     <p class="text-xs dark:text-white text-gray-600 dark:text-gray-300">{{ $percentage }}%</p>
                                 @else
@@ -1335,8 +1335,8 @@
                                 </svg>
                                 <div class="w-2 h-2 rounded-full bg-green-500"></div>
                             </div>
-                            <p class="text-xs font-semibold mb-1 dark:text-white text-gray-900 dark:text-white">OTROS SERVICIOS</p>
-                            <p class="text-2xl font-bold mb-1 dark:text-white text-gray-900 dark:text-white">{{ $otherCount }}</p>
+                            <p class="text-xs font-semibold mb-1 text-gray-900 dark:text-white">OTROS SERVICIOS</p>
+                            <p class="text-2xl font-bold mb-1 text-gray-900 dark:text-white">{{ $otherCount }}</p>
                             @if($otherCount > 0 && $otherPercentage > 0)
                                 <p class="text-xs dark:text-white text-gray-600 dark:text-gray-300">{{ $otherPercentage }}%</p>
                             @else
@@ -1353,12 +1353,12 @@
             <!-- Ingresos del Mes -->
             <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
                 <div class="p-5">
-                    <h3 class="text-base font-semibold mb-3 dark:text-white text-gray-900 dark:text-white">Ingresos del Mes</h3>
+                    <h3 class="text-base font-semibold mb-3 text-gray-900 dark:text-white">Ingresos del Mes</h3>
                     <p class="text-3xl font-bold mb-2">${{ number_format($stats['monthly_income'] ?? 0, 0, ',', '.') }}</p>
                     <p class="text-sm mb-3 dark:text-white text-gray-600 dark:text-gray-300">{{ $stats['this_month_completed'] ?? $stats['completed'] ?? 0 }} servicios completados</p>
                     <div class="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
                         <span class="text-sm dark:text-white text-gray-600 dark:text-gray-300">Promedio:</span>
-                        <span class="text-sm font-semibold dark:text-white text-gray-900 dark:text-white">${{ number_format(($stats['monthly_income'] ?? 0) / max($stats['this_month_completed'] ?? $stats['completed'] ?? 1, 1), 0, ',', '.') }}</span>
+                        <span class="text-sm font-semibold text-gray-900 dark:text-white">${{ number_format(($stats['monthly_income'] ?? 0) / max($stats['this_month_completed'] ?? $stats['completed'] ?? 1, 1), 0, ',', '.') }}</span>
             </div>
         </div>
     </div>
@@ -1366,7 +1366,7 @@
             <!-- Alertas de Stock -->
             <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
                 <div class="p-5">
-                    <h3 class="text-base font-semibold mb-3 flex items-center gap-2 dark:text-white text-gray-900 dark:text-white">
+                    <h3 class="text-base font-semibold mb-3 flex items-center gap-2 text-gray-900 dark:text-white">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                         </svg>
@@ -1411,7 +1411,7 @@
             @if(auth()->user()->hasAnyRole(['super-admin', 'supervisor']))
             <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
                 <div class="p-5">
-                    <h3 class="text-base font-semibold mb-4 dark:text-white text-gray-900 dark:text-white">Acciones Rápidas</h3>
+                    <h3 class="text-base font-semibold mb-4 text-gray-900 dark:text-white">Acciones Rápidas</h3>
                     <div class="space-y-3">
                         <a href="{{ Route::has('admin.services.create') ? route('admin.services.create') : '#' }}" class="relative rounded-lg bg-white border dark:border-gray-700 px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors border border-gray-200 dark:border-gray-700">
                     <div class="flex-shrink-0">
@@ -1423,7 +1423,7 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <span class="absolute inset-0" aria-hidden="true"></span>
-                                <p class="text-sm font-semibold dark:text-white text-gray-900 dark:text-white">Nuevo Servicio</p>
+                                <p class="text-sm font-semibold text-gray-900 dark:text-white">Nuevo Servicio</p>
                                 <p class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Crear orden de trabajo</p>
                     </div>
                 </a>
@@ -1438,7 +1438,7 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <span class="absolute inset-0" aria-hidden="true"></span>
-                                <p class="text-sm font-semibold dark:text-white text-gray-900 dark:text-white">Nuevo Cliente</p>
+                                <p class="text-sm font-semibold text-gray-900 dark:text-white">Nuevo Cliente</p>
                                 <p class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Registrar cliente</p>
                     </div>
                 </a>
@@ -1453,7 +1453,7 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <span class="absolute inset-0" aria-hidden="true"></span>
-                                <p class="text-sm font-semibold dark:text-white text-gray-900 dark:text-white">Ver Estadísticas</p>
+                                <p class="text-sm font-semibold text-gray-900 dark:text-white">Ver Estadísticas</p>
                                 <p class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Reportes y gráficos</p>
                     </div>
                 </a>
@@ -1486,9 +1486,9 @@
                         <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
                             @forelse($recentServices ?? [] as $service)
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-white text-gray-900 dark:text-white">{{ $service->client->name ?? 'N/A' }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-white text-gray-900 dark:text-white">{{ ucfirst(str_replace('-', ' ', $service->service_type ?? 'N/A')) }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-white text-gray-900 dark:text-white">{{ $service->created_at->format('d/m/Y') }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ $service->client->name ?? 'N/A' }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ ucfirst(str_replace('-', ' ', $service->service_type ?? 'N/A')) }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ $service->created_at->format('d/m/Y') }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-2 py-1 text-xs font-medium rounded-full
                                         @if($service->status === 'completed') bg-green-100 text-green-800
