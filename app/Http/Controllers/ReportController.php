@@ -139,18 +139,21 @@ class ReportController extends Controller
             '#3b82f6', '#ef4444', '#f59e0b', '#8b5cf6', '#ec4899', '#22c55e', '#06b6d4', '#f97316'
         ];
         
-        // 3. Evolución Temporal (Gráfico de líneas)
+        // 3. Evolución Temporal (Gráfico de líneas) - Últimos 12 meses
         $temporalData = [];
         $months = [];
-        $start = Carbon::parse($startDate);
-        $end = Carbon::parse($endDate);
         
-        // Generar meses entre las fechas
-        $current = $start->copy()->startOfMonth();
-        while ($current <= $end) {
+        // Siempre mostrar los últimos 12 meses
+        $endMonth = Carbon::now();
+        $startMonth = Carbon::now()->subMonths(11)->startOfMonth();
+        
+        // Generar los últimos 12 meses
+        $current = $startMonth->copy();
+        while ($current <= $endMonth) {
             $monthKey = $current->format('Y-m');
             $months[] = $current->locale('es')->isoFormat('MMM YYYY');
             
+            // Filtrar servicios de este mes específico
             $monthServices = $services->filter(function($service) use ($current) {
                 try {
                     $serviceDate = $service->created_at ?? $service->scheduled_date;
