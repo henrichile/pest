@@ -433,7 +433,7 @@ function getTechnicianRoute($routeName, ...$params) {
                         @if($isViewingAsTechnician)
                             <!-- MENÚ DE TÉCNICO -->
                             <li>
-                                <div class="text-xs font-semibold uppercase mb-3">Menú Principal</div>
+                                <div class="text-xs font-semibold uppercase mb-3 dark:text-white">Menú Principal</div>
                                 <ul role="list" class="-mx-2 space-y-1.5">
                                 <li>
                                     <a href="{{ route('admin.technician-view.dashboard') }}" class="group flex items-center gap-x-6 rounded-md px-3 py-3 text-sm leading-5 font-medium {{ request()->routeIs('admin.technician-view.dashboard') ? 'bg-green-500 text-white' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800' }}" >
@@ -466,7 +466,7 @@ function getTechnicianRoute($routeName, ...$params) {
                             @if(auth()->user()->hasRole('super-admin'))
                                 <!-- MENÚ COMPLETO DE ADMIN -->
                                 <li>
-                                    <div class="text-xs font-semibold uppercase mb-3">Menú Principal</div>
+                                    <div class="text-xs font-semibold uppercase mb-3 dark:text-white">Menú Principal</div>
                                     <ul role="list" class="-mx-2 space-y-1.5">
                                         <li>
                                             <a href="{{ route('admin.dashboard') }}" class="group flex items-center gap-x-6 rounded-md px-3 py-3 text-sm leading-5 font-medium {{ request()->routeIs('dashboard') || request()->routeIs('admin.dashboard') ? 'bg-green-500 text-white' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800' }}" >
@@ -530,7 +530,7 @@ function getTechnicianRoute($routeName, ...$params) {
                             @else
                                 <!-- MENÚ LIMITADO PARA TÉCNICOS -->
                                 <li>
-                                    <div class="text-xs font-semibold uppercase mb-3">Menú Principal</div>
+                                    <div class="text-xs font-semibold uppercase mb-3 dark:text-white">Menú Principal</div>
                                     <ul role="list" class="-mx-2 space-y-1.5">
                                         <li>
                                             <a href="{{ route('technician.dashboard') }}" class="group flex items-center gap-x-6 rounded-md px-3 py-3 text-sm leading-5 font-medium {{ request()->routeIs('technician.dashboard') ? 'bg-green-500 text-white' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800' }}" >
@@ -563,7 +563,7 @@ function getTechnicianRoute($routeName, ...$params) {
                         
                         @if(auth()->user()->hasRole('super-admin') && !$isViewingAsTechnician)
                         <li>
-                            <div class="text-xs font-semibold uppercase mb-3">Administración</div>
+                            <div class="text-xs font-semibold uppercase mb-3 dark:text-white">Administración</div>
                             <ul role="list" class="-mx-2 space-y-1.5">
                                 <li>
                                     <a href="{{ route('admin.users.index') }}" class="group flex items-center gap-x-6 rounded-md px-3 py-3 text-sm leading-5 font-medium {{ request()->routeIs('admin.users.*') ? 'bg-green-500 text-white' : 'text-gray-900 dark:text-gray-300 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800' }}">
@@ -642,14 +642,14 @@ function getTechnicianRoute($routeName, ...$params) {
                                     <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
                                 </svg>
                                 <div>
-                                    <p class="text-sm font-medium">
+                                    <p class="text-sm font-medium dark:text-white">
                                         Estás viendo el sistema como <strong>Técnico</strong>. Los cambios que realices se aplicarán como si fueras un técnico.
                                     </p>
                                 </div>
                             </div>
                             <form action="{{ route('admin.stop-viewing-as-technician') }}" method="POST" class="ml-4">
                                 @csrf
-                                <button type="submit" class="text-sm font-medium underline">
+                                <button type="submit" class="text-sm font-medium underline dark:text-white">
                                     Salir de Vista Técnico
                                 </button>
                             </form>
