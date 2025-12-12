@@ -384,12 +384,12 @@ function getTechnicianRoute($routeName, ...$params) {
                 
                 <!-- Quick Actions - Modo Oscuro/Claro Switch -->
                 <div class="mb-3">
-                    <div id="dark-mode-container" class="w-full flex items-center justify-between gap-x-3 rounded-lg py-2.5 px-3 text-xs transition-colors duration-200">
+                    <div id="dark-mode-container" class="w-full flex items-center justify-between gap-x-3 rounded-lg py-2.5 px-3 text-xs transition-colors duration-200 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                         <div class="flex items-center gap-x-2">
                             <svg id="dark-mode-icon" class="h-4 w-4 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
                             </svg>
-                            <span id="dark-mode-text" class="text-xs font-medium transition-colors duration-200" style="font-size: 11px; color: #111827;">Modo Claro</span>
+                            <span id="dark-mode-text" class="text-xs font-medium transition-colors duration-200 text-gray-900 dark:text-gray-300" style="font-size: 11px;">Modo Claro</span>
                         </div>
                         <button id="dark-mode-toggle" type="button" class="relative inline-flex h-7 w-12 items-center rounded-full transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2" style="background-color: #d1d5db;" role="switch" aria-checked="false">
                             <span id="dark-mode-switch-thumb" class="inline-block h-6 w-6 transform rounded-full bg-white shadow-md transition-all duration-300 ease-in-out" style="translate: 0.125rem 0;"></span>
@@ -403,22 +403,22 @@ function getTechnicianRoute($routeName, ...$params) {
                         @if(session('view_as_technician'))
                             <form action="{{ route('admin.stop-viewing-as-technician') }}" method="POST" class="mb-2.5">
                                 @csrf
-                                <button type="submit" class="w-full flex items-center gap-x-2 rounded-lg py-2 px-2.5 text-xs hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <button type="submit" class="w-full flex items-center gap-x-2 rounded-lg py-2 px-2.5 text-xs hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-gray-900 dark:text-gray-300">
+                                    <svg class="h-5 w-5 text-gray-900 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
-                                    <span class="text-xs font-medium">Salir de Vista Técnico</span>
+                                    <span class="text-xs font-medium text-gray-900 dark:text-gray-300">Salir de Vista Técnico</span>
                                 </button>
                             </form>
                         @else
                             <form action="{{ route('admin.view-as-technician') }}" method="POST" class="mb-2.5">
                                 @csrf
-                                <button type="submit" class="w-full flex items-center gap-x-2 rounded-lg py-2 px-2.5 text-xs hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <button type="submit" class="w-full flex items-center gap-x-2 rounded-lg py-2 px-2.5 text-xs hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-gray-900 dark:text-gray-300">
+                                    <svg class="h-5 w-5 text-gray-900 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     </svg>
-                                    <span class="text-xs font-medium">Ver como Técnico</span>
+                                    <span class="text-xs font-medium text-gray-900 dark:text-gray-300">Ver como Técnico</span>
                                 </button>
                             </form>
                         @endif
