@@ -391,7 +391,7 @@ document.getElementById('firmaForm')?.addEventListener('submit', function(e) {
     }
     
     #signature-canvas {
-        max-width: 300px;
+        max-width: 250px;
     }
 }
 
