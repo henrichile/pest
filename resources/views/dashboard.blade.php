@@ -123,7 +123,8 @@
             width: 224px !important;
             min-width: 224px !important;
             max-width: 224px !important;
-            padding-left: 8px !important;
+            padding-left: 35
+            px !important;
         }
     }
 </style>
@@ -350,7 +351,7 @@
                         type="text" 
                         id="global-search-input-desktop" 
                         placeholder="Buscar servicios, clientes..." 
-                        class="w-56 pr-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all text-sm"
+                        class="w-56 pr-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all text-sm dark:text-white"
                        
                         autocomplete="off"
                     />
