@@ -335,7 +335,7 @@
                 <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight text-gray-900 dark:text-white" class="font-bold">
                     Dashboard
                 </h2>
-                <p class="mt-1 text-xs sm:text-sm">
+                <p class="mt-1 text-xs sm:text-sm dark:text-white" >
                     {{ now()->locale('es')->isoFormat('dddd, D [de] MMMM') }}
                 </p>
             </div>
