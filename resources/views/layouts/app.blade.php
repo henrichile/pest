@@ -386,7 +386,7 @@ function getTechnicianRoute($routeName, ...$params) {
                 <div class="mb-3">
                     <div id="dark-mode-container" class="w-full flex items-center justify-between gap-x-3 rounded-lg py-2.5 px-3 text-xs transition-colors duration-200 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                         <div class="flex items-center gap-x-2">
-                            <svg id="dark-mode-icon" class="h-4 w-4 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <svg id="dark-mode-icon" class="h-4 w-4 transition-colors duration-200 text-gray-900 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
                             </svg>
                             <span id="dark-mode-text" class="text-xs font-medium transition-colors duration-200 text-gray-900 dark:text-gray-300" style="font-size: 11px;">Modo Claro</span>
