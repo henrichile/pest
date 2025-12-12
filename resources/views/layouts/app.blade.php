@@ -1002,8 +1002,6 @@ function getTechnicianRoute($routeName, ...$params) {
                     switchThumb.style.transform = 'translateX(1.375rem)';
                     switchThumb.style.transition = 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)';
                     modeText.textContent = 'Modo Oscuro';
-                    modeText.style.color = '#e5e7eb';
-                    modeIcon.style.color = '#e5e7eb';
                     modeContainer.style.background = '#1f2937';
                     modeContainer.style.borderColor = '#374151';
                     
@@ -1036,7 +1034,6 @@ function getTechnicianRoute($routeName, ...$params) {
                     whiteElements.forEach(el => {
                         if (!el.closest('.bg-green-500') && !el.classList.contains('bg-green-500')) {
                             el.style.backgroundColor = '#1f2937';
-                            el.style.color = '#e5e7eb';
                         }
                     });
                     
@@ -1044,7 +1041,6 @@ function getTechnicianRoute($routeName, ...$params) {
                     const tableBodies = document.querySelectorAll('tbody');
                     tableBodies.forEach(tbody => {
                         tbody.style.backgroundColor = '#1f2937';
-                        tbody.style.color = '#e5e7eb';
                     });
                     
                     const tableHeaders = document.querySelectorAll('thead');
@@ -1057,54 +1053,9 @@ function getTechnicianRoute($routeName, ...$params) {
                     inputs.forEach(input => {
                         if (input.type !== 'checkbox' && input.type !== 'radio') {
                             input.style.backgroundColor = '#1f2937';
-                            input.style.color = '#e5e7eb';
                             input.style.borderColor = '#374151';
                         }
                     });
-                    
-                    // Actualizar textos en modo oscuro - solo cambiar a blanco
-                    const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, td, th, label, .statistics-text, .statistics-number');
-                    textElements.forEach(el => {
-                        if (!el.closest('.bg-green-500') && !el.classList.contains('bg-green-500')) {
-                            const style = el.getAttribute('style') || '';
-                            
-                            // Solo cambiar si tiene color #111827 o #6b7280 en el estilo inline
-                            if (style.includes('color: #111827')) {
-                                el.style.color = '#ffffff';
-                            } else if (style.includes('color: #6b7280')) {
-                                el.style.color = '#e5e7eb';
-                            }
-                        }
-                    });
-                    
-                    // Actualizar todos los textos e iconos del menú
-                    const menuTexts = document.querySelectorAll('nav span, nav a:not(.bg-green-500)');
-                    const menuIcons = document.querySelectorAll('nav svg:not(.bg-green-500 svg)');
-                    const menuLabels = document.querySelectorAll('.text-xs.font-semibold.uppercase');
-                    const verComoTecnico = document.querySelector('button:has(svg[viewBox="0 0 24 24"])');
-                    
-                    menuTexts.forEach(el => {
-                        if (!el.closest('.bg-green-500')) {
-                            el.style.color = '#d1d5db';
-                        }
-                    });
-                    
-                    menuIcons.forEach(el => {
-                        if (!el.closest('.bg-green-500')) {
-                            el.style.color = '#9ca3af';
-                        }
-                    });
-                    
-                    menuLabels.forEach(el => {
-                        el.style.color = '#9ca3af';
-                    });
-                    
-                    if (verComoTecnico) {
-                        const verComoTecnicoText = verComoTecnico.querySelector('span');
-                        const verComoTecnicoIcon = verComoTecnico.querySelector('svg');
-                        if (verComoTecnicoText) verComoTecnicoText.style.color = '#d1d5db';
-                        if (verComoTecnicoIcon) verComoTecnicoIcon.style.color = '#9ca3af';
-                    }
                 } else {
                     // Aplicar modo claro
                     htmlRoot.classList.remove('dark');
@@ -1114,8 +1065,6 @@ function getTechnicianRoute($routeName, ...$params) {
                     switchThumb.style.transform = 'translateX(0.125rem)';
                     switchThumb.style.transition = 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)';
                     modeText.textContent = 'Modo Claro';
-                    modeText.style.color = '#111827';
-                    modeIcon.style.color = '#6b7280';
                     modeContainer.style.background = '#f3f4f6';
                     modeContainer.style.borderColor = '#e5e7eb';
                     
@@ -1155,7 +1104,6 @@ function getTechnicianRoute($routeName, ...$params) {
                     const tableBodies = document.querySelectorAll('tbody');
                     tableBodies.forEach(tbody => {
                         tbody.style.backgroundColor = '#ffffff';
-                        tbody.style.color = '#111827';
                     });
                     
                     const tableHeaders = document.querySelectorAll('thead');
@@ -1168,78 +1116,9 @@ function getTechnicianRoute($routeName, ...$params) {
                     inputs.forEach(input => {
                         if (input.type !== 'checkbox' && input.type !== 'radio') {
                             input.style.backgroundColor = '#ffffff';
-                            input.style.color = '#111827';
                             input.style.borderColor = '#e5e7eb';
                         }
                     });
-                    
-                    // Restaurar textos en modo claro - forzar colores correctos
-                    const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, td, th, label, .statistics-text, .statistics-number, div[style*="color"]');
-                    textElements.forEach(el => {
-                        if (!el.closest('.bg-green-500') && !el.classList.contains('bg-green-500')) {
-                            // Si tiene clase dark:text-white, en modo claro debe ser negro
-                            if (el.classList.contains('dark:text-white')) {
-                                el.style.color = '#111827';
-                            } else {
-                                // Verificar el color actual
-                                const currentColor = el.style.color || '';
-                                const computedColor = window.getComputedStyle(el).color;
-                                
-                                // Si el color es blanco o gris claro (de modo oscuro), restaurar
-                                if (currentColor.includes('#ffffff') || currentColor.includes('#e5e7eb') || 
-                                    currentColor.includes('rgb(255, 255, 255)') || currentColor.includes('rgb(229, 231, 235)') ||
-                                    computedColor === 'rgb(255, 255, 255)' || computedColor === 'rgb(229, 231, 235)') {
-                                    
-                                    // Determinar color correcto según el tipo de elemento
-                                    const tagName = el.tagName.toLowerCase();
-                                    const computedStyle = window.getComputedStyle(el);
-                                    const fontWeight = parseInt(computedStyle.fontWeight) || 400;
-                                    const fontSize = parseInt(computedStyle.fontSize) || 14;
-                                    
-                                    // Títulos y textos importantes: negro
-                                    if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tagName) || 
-                                        fontWeight >= 600 || fontSize >= 16 || 
-                                        el.classList.contains('statistics-number') || 
-                                        el.classList.contains('font-bold') ||
-                                        el.classList.contains('font-semibold')) {
-                                        el.style.color = '#111827';
-                                    } else {
-                                        // Textos secundarios: gris
-                                        el.style.color = '#6b7280';
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    
-                    // Actualizar todos los textos e iconos del menú
-                    const menuTexts = document.querySelectorAll('nav span, nav a:not(.bg-green-500)');
-                    const menuIcons = document.querySelectorAll('nav svg:not(.bg-green-500 svg)');
-                    const menuLabels = document.querySelectorAll('.text-xs.font-semibold.uppercase');
-                    const verComoTecnico = document.querySelector('button:has(svg[viewBox="0 0 24 24"])');
-                    
-                    menuTexts.forEach(el => {
-                        if (!el.closest('.bg-green-500')) {
-                            el.style.color = '#111827';
-                        }
-                    });
-                    
-                    menuIcons.forEach(el => {
-                        if (!el.closest('.bg-green-500')) {
-                            el.style.color = '#111827';
-                        }
-                    });
-                    
-                    menuLabels.forEach(el => {
-                        el.style.color = '#6b7280';
-                    });
-                    
-                    if (verComoTecnico) {
-                        const verComoTecnicoText = verComoTecnico.querySelector('span');
-                        const verComoTecnicoIcon = verComoTecnico.querySelector('svg');
-                        if (verComoTecnicoText) verComoTecnicoText.style.color = '#111827';
-                        if (verComoTecnicoIcon) verComoTecnicoIcon.style.color = '#6b7280';
-                    }
                 }
                 
                 localStorage.setItem('darkMode', isDark);
@@ -1273,7 +1152,6 @@ function getTechnicianRoute($routeName, ...$params) {
                         const tableBodies = document.querySelectorAll('tbody');
                         tableBodies.forEach(tbody => {
                             tbody.style.backgroundColor = '#1f2937';
-                            tbody.style.color = '#e5e7eb';
                         });
                         
                         const tableHeaders = document.querySelectorAll('thead');
@@ -1285,7 +1163,6 @@ function getTechnicianRoute($routeName, ...$params) {
                         const inputs = document.querySelectorAll('input:not([type="checkbox"]):not([type="radio"]), select, textarea');
                         inputs.forEach(input => {
                             input.style.backgroundColor = '#1f2937';
-                            input.style.color = '#e5e7eb';
                             input.style.borderColor = '#374151';
                         });
                     } else {
