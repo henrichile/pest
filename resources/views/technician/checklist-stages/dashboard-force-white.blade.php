@@ -1477,7 +1477,7 @@
     <!-- Servicios Recientes -->
     <div class="mb-6">
         <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold dark:text-white" class="text-gray-900 dark:text-white">Servicios Recientes</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Servicios Recientes</h3>
             <a href="{{ Route::has('admin.services.index') ? route('admin.services.index') : '#' }}" class="text-sm font-medium" style="color: #22c55e;">Ver todos</a>
         </div>
         <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700" style="border: 1px solid #e5e7eb !important;">
