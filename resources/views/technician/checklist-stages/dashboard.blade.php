@@ -1357,7 +1357,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider dark:text-white" style="color: #6b7280; background: #f9fafb;">PRIORIDAD</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
                             @forelse($recentServices ?? [] as $service)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-white" class="text-gray-900 dark:text-white">{{ $service->client->name ?? 'N/A' }}</td>

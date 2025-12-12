@@ -84,7 +84,7 @@
                                 <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider" style="color: #6b7280; background: #f9fafb;">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
                             @foreach($scheduledReports as $report)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium" class="text-gray-900 dark:text-white">{{ $report->name }}</td>

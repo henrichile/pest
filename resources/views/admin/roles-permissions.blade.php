@@ -150,7 +150,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
                             @foreach($roles as $role)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -342,7 +342,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
                             @foreach($users as $user)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">

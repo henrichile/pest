@@ -50,7 +50,7 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200" id="services-table-body">
+                <tbody class="bg-white dark:bg-white divide-y divide-gray-200" id="services-table-body">
                     @foreach($services as $service)
                     <tr class="hover:bg-gray-50 service-row" 
                         data-status="{{ $service->status }}" 

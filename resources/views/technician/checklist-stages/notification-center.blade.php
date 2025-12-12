@@ -190,7 +190,7 @@
                         <th class="px-3 py-3 text-right text-xs font-medium uppercase tracking-wider" class="text-gray-600 dark:text-gray-300">Acciones</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
                     @forelse($notifications as $notification)
                         @php
                             $data = json_decode($notification->data, true);
