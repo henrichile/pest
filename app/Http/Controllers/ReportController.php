@@ -230,6 +230,20 @@ class ReportController extends Controller
             ];
         })->values();
         
+        // Variables adicionales para los gráficos
+        $inProgressServices = $services->where('status', 'in_progress')->count();
+        $pendingServices = $services->whereIn('status', ['pendiente', 'pending'])->count();
+        
+        // Renombrar variables para que coincidan con la vista
+        $serviceTypeLabels = $typeLabels;
+        $serviceTypeCounts = $typeData;
+        
+        // Preparar datos temporales para el gráfico de líneas
+        $temporalLabels = $months;
+        $temporalCompleted = collect($temporalData)->pluck('completed')->toArray();
+        $temporalPending = collect($temporalData)->pluck('pending')->toArray();
+        $temporalTotal = collect($temporalData)->pluck('total')->toArray();
+        
         return view('reports.index', compact(
             'startDate',
             'endDate',
@@ -239,6 +253,8 @@ class ReportController extends Controller
             'status',
             'totalServices',
             'completedServices',
+            'inProgressServices',
+            'pendingServices',
             'completedPercentage',
             'periodIncome',
             'uniqueClients',
@@ -247,9 +263,15 @@ class ReportController extends Controller
             'statusData',
             'typeLabels',
             'typeData',
+            'serviceTypeLabels',
+            'serviceTypeCounts',
             'typeColors',
             'months',
             'temporalData',
+            'temporalLabels',
+            'temporalCompleted',
+            'temporalPending',
+            'temporalTotal',
             'topClients',
             'topTechnicians',
             'allClients',
