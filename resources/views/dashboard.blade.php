@@ -1470,18 +1470,6 @@
                 chartContainer.style.background = newChartBgColor;
             }
             
-            // Update statistics text colors
-            const statisticsTexts = document.querySelectorAll('.statistics-text, .statistics-number, #statistics-title');
-            statisticsTexts.forEach(el => {
-                el.style.color = newTextColor;
-            });
-            
-            // Update legend text colors
-            const legendTexts = document.querySelectorAll('.mt-4.flex span');
-            legendTexts.forEach(el => {
-                el.style.color = newIsDark ? '#fff' : '#6b7280';
-            });
-            
             if (window.chartInstance) {
                 window.chartInstance.options.scales.x.grid.color = newGridColor;
                 window.chartInstance.options.scales.x.ticks.color = newTickColor;
@@ -2030,66 +2018,7 @@
         }
     })();
     
-    // Actualizar colores en modo oscuro
-    (function() {
-        function updateDarkModeColors() {
-            const isDark = document.documentElement.classList.contains('dark') || 
-                          localStorage.getItem('darkMode') === 'true' ||
-                          (localStorage.getItem('darkMode') === null && window.matchMedia('(prefers-color-scheme: dark)').matches);
-            
-            if (isDark) {
-                // Actualizar todos los elementos con estilos inline de color
-                const elementsToUpdate = document.querySelectorAll('[style*="color: #111827"], [style*="color: #fff "]');
-                elementsToUpdate.forEach(el => {
-                    const style = el.getAttribute('style') || '';
-                    if (style.includes('color: #111827') || style.includes('color: #fff')) {
-                        // Ya tiene dark:text-white, solo necesitamos asegurar que funcione
-                        if (!el.classList.contains('dark:text-white')) {
-                            el.classList.add('dark:text-white');
-                        }
-                    }
-                });
-                
-                // Actualizar elementos con clases específicas
-                const statisticsTexts = document.querySelectorAll('.statistics-text');
-                const statisticsNumbers = document.querySelectorAll('.statistics-number');
-                statisticsTexts.forEach(el => {
-                    if (!el.classList.contains('dark:text-white')) {
-                        el.classList.add('dark:text-white');
-                    }
-                });
-                statisticsNumbers.forEach(el => {
-                    if (!el.classList.contains('dark:text-white')) {
-                        el.classList.add('dark:text-white');
-                    }
-                });
-            }
-        }
-        
-        // Ejecutar al cargar
-        updateDarkModeColors();
-        
-        // Observar cambios en el modo oscuro
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                    updateDarkModeColors();
-                }
-            });
-        });
-        
-        observer.observe(document.documentElement, {
-            attributes: true,
-            attributeFilter: ['class']
-        });
-        
-        // También escuchar cambios en localStorage
-        window.addEventListener('storage', function(e) {
-            if (e.key === 'darkMode') {
-                updateDarkModeColors();
-            }
-        });
-    })();
+
 </script>
 @endpush
 @endsection
