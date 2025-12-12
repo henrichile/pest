@@ -632,7 +632,7 @@ function getTechnicianRoute($routeName, ...$params) {
             </style>
 
             <!-- Page content -->
-            <main class="py-3 md:py-3 flex-1">
+            <main class="p-3 md:p-3 flex-1">
                 <!-- Banner de advertencia cuando está en modo técnico -->
                 @if(session('view_as_technician') && auth()->check() && auth()->user()->hasRole('super-admin'))
                     <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3 sm:p-4 mx-3 sm:mx-4 md:mx-6 lg:mx-8 mb-3 sm:mb-4">
