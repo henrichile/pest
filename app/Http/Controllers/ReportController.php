@@ -162,7 +162,7 @@ class ReportController extends Controller
             
             $temporalData[] = [
                 'total' => $monthServices->count(),
-                'completed' => $monthServices->where('status', 'completed')->count(),
+                'completed' => $monthServices->whereIn('status', ['completed', 'finalizado'])->count(),
                 'pending' => $monthServices->whereIn('status', ['pendiente', 'pending', 'in_progress'])->count(),
             ];
             

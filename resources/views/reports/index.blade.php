@@ -120,9 +120,6 @@
                         <label for="start_date" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Fecha Inicio</label>
                         <div class="relative">
                             <input type="date" name="start_date" id="start_date" value="{{ $startDate }}" class="w-full border border-gray-300 rounded-lg px-3 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-green-500">
-                            <svg class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                            </svg>
                         </div>
                     </div>
 
@@ -131,9 +128,6 @@
                         <label for="end_date" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Fecha Fin</label>
                         <div class="relative">
                             <input type="date" name="end_date" id="end_date" value="{{ $endDate }}" class="w-full border border-gray-300 rounded-lg px-3 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-green-500">
-                            <svg class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                            </svg>
                         </div>
                     </div>
 
@@ -323,7 +317,7 @@
         <!-- Servicios por Estado -->
         <div class="bg-white rounded-lg shadow-md border p-6" class="border border-gray-200 dark:border-gray-700">
             <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Servicios por Estado</h3>
-            <div>
+            <div class="h-72">
                 <canvas id="statusChart"></canvas>
             </div>
         </div>
@@ -331,7 +325,7 @@
         <!-- Distribución por Tipo -->
         <div class="bg-white rounded-lg shadow-md border p-6" class="border border-gray-200 dark:border-gray-700">
             <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Distribución por Tipo</h3>
-            <div>
+            <div class="h-72">
                 <canvas id="typeChart"></canvas>
             </div>
         </div>
@@ -346,7 +340,7 @@
                 <button class="px-3 py-1 rounded text-sm font-medium transition-colors bg-green-500 text-white">COMPLETADO</button>
             </div>
         </div>
-        <div>
+        <div class="h-80">
             <canvas id="temporalChart"></canvas>
         </div>
         <div class="flex justify-center gap-6 mt-4">
