@@ -20,7 +20,7 @@ $submitRoute = $isViewingAsTechnician ? route('admin.technician-view.service.che
                     </div>
                 @else
                     <div class="signature-placeholder">
-                        <canvas id="signature-canvas" width="100%" height="200"></canvas>
+                        <canvas id="signature-canvas" width="300" height="200"></canvas>
                         <div class="signature-actions">
                             <button type="button" class="btn-clear" onclick="clearSignature()">Limpiar</button>
                         </div>
@@ -53,7 +53,7 @@ $submitRoute = $isViewingAsTechnician ? route('admin.technician-view.service.che
                     </div>
                 @else
                     <div class="signature-placeholder">
-                        <canvas id="client-signature-canvas" width="100%" height="200"></canvas>
+                        <canvas id="client-signature-canvas" width="300" height="200"></canvas>
                         <div class="signature-actions">
                             <button type="button" class="btn-clear" onclick="clearClientSignature()">Limpiar</button>
                         </div>
@@ -345,7 +345,7 @@ document.getElementById('firmaForm')?.addEventListener('submit', function(e) {
     border-radius: 12px;
     cursor: crosshair;
     display: block;
-    width: 100%;
+    width: 300px;
     max-width: 600px;
     margin: 0 auto;
     background: white;
@@ -376,7 +376,7 @@ document.getElementById('firmaForm')?.addEventListener('submit', function(e) {
     }
     
     #signature-canvas, #client-signature-canvas {
-        max-width: 100%;
+        max-width: 300px;
     }
     
     .signature-preview img {
@@ -391,7 +391,7 @@ document.getElementById('firmaForm')?.addEventListener('submit', function(e) {
     }
     
     #signature-canvas {
-        max-width: 100%;
+        max-width: 300px;
     }
 }
 
