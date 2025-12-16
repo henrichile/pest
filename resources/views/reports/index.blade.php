@@ -149,6 +149,11 @@
                     </div>
                 </div>
 
+                <!-- generar boton filtrar -->
+                <button type="submit" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-green-500 dark:bg-green-600 text-white dark:text-gray-900 hover:bg-green-600 dark:hover:bg-green-700">
+                    Filtrar
+                </button>
+
                 <!-- Botón Resetear -->
                 <div class="flex justify-end">
                     <button type="button" id="resetFilters" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors">
