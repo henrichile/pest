@@ -9,7 +9,6 @@
         <!-- Primera fila: Hamburguesa + Título (móvil) -->
         <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
             <!-- Hamburguesa (solo móvil) -->
-            <!-- Hamburguesa (solo móvil) -->
             <button id="page-mobile-menu-button" type="button" class="flex-shrink-0 p-2 rounded-lg bg-white border border-gray-300 shadow-md hover:bg-gray-50 transition-colors cursor-pointer" style="z-index: 1000; position: relative;">
                 <svg id="page-menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="text-gray-900 dark:text-white">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -62,7 +61,7 @@
         
         <!-- Botón Nuevo Cliente (móvil) -->
         <div class="mb-4 md:hidden">
-            <a href="{{ route('admin.clients.create') ?? '#' }}" class="inline-flex items-center justify-center w-full px-4 py-2.5 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors">
+            <a href="{{ route('admin.clients.create') ?? '#' }}" class="inline-flex items-center justify-center w-full px-4 py-2.5 border border-transparent rounded-lg shadow-sm text-sm font-medium dark:text-white transition-colors">
                 <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
