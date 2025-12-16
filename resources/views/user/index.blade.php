@@ -80,7 +80,7 @@
     </div>
 
     <!-- Filters -->
-    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4 mb-6 border border-gray-200 dark:border-gray-700" style="margin-top: 50px">
+    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4 mb-6 border border-gray-200 dark:border-gray-700" style="margin-top: 70px">
         <!-- Título del filtro y botón toggle (solo móvil) -->
         <div class="flex items-center justify-between mb-3 md:hidden">
             <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Filtros</h3>
