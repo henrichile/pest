@@ -128,45 +128,6 @@
         </div>
     </div>
 
-    <!-- Products Used -->
-    <div class="bg-white rounded-lg shadow-lg p-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">Productos Utilizados</h3>
-        @if($service->products->count() > 0)
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producto</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ingrediente Activo</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de Uso</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
-                    @foreach($service->products as $product)
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">{{ $product->name }}</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {{ $product->active_ingredient }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {{ $product->pivot->quantity }} {{ $product->unit }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {{ $product->pivot->used_at ? \Carbon\Carbon::parse($product->pivot->used_at)->format("d/m/Y H:i") : "No registrado" }}
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        @else
-        <p class="text-gray-500 text-center py-4">No se han registrado productos para este servicio</p>
-        @endif
-    </div>
-
     <!-- Checklist Data for non-monitoring services -->
     @if($service->checklist_data && ($service->status === 'finalizado' || $service->status === 'completado'))
     @php
