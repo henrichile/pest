@@ -516,6 +516,284 @@
                 @endif
                 
             @endif
+
+            {{-- SECCIÓN PARA SERVICIOS NO-MONITOREO (desratización, desinsectación, etc.) --}}
+            @if(!($isMonitoreoCebaderas || $hasMonitoreoData))
+                {{-- 1. PRODUCTOS APLICADOS --}}
+                @if(isset($checklistData['products']))
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                        <svg class="w-6 h-6 text-blue-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clip-rule="evenodd"></path>
+                        </svg>
+                        1. Productos Aplicados
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        @if(isset($checklistData['products']['applied_product']))
+                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                            <span class="text-sm font-medium text-gray-500">Producto Aplicado:</span>
+                            <p class="text-lg font-semibold text-gray-900 mt-1">{{ $checklistData['products']['applied_product'] }}</p>
+                        </div>
+                        @endif
+
+                        @if(isset($checklistData['products']['quantity']))
+                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                            <span class="text-sm font-medium text-gray-500">Cantidad:</span>
+                            <p class="text-lg font-semibold text-gray-900 mt-1">{{ $checklistData['products']['quantity'] }}</p>
+                        </div>
+                        @endif
+
+                        @if(isset($checklistData['products']['dosis']))
+                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                            <span class="text-sm font-medium text-gray-500">Dosis:</span>
+                            <p class="text-lg font-semibold text-gray-900 mt-1">{{ $checklistData['products']['dosis'] }}</p>
+                        </div>
+                        @endif
+
+                        @if(isset($checklistData['products']['agua']))
+                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                            <span class="text-sm font-medium text-gray-500">Agua:</span>
+                            <p class="text-lg font-semibold text-gray-900 mt-1">{{ $checklistData['products']['agua'] }}</p>
+                        </div>
+                        @endif
+                    </div>
+
+                    @if(isset($checklistData['products']['applied_at']))
+                    <p class="text-sm text-gray-500 mt-4">Aplicado: {{ \Carbon\Carbon::parse($checklistData['products']['applied_at'])->format('d/m/Y H:i') }}</p>
+                    @endif
+                </div>
+                @endif
+
+                {{-- 2. PUNTOS DE APLICACIÓN --}}
+                @if(isset($checklistData['points']) && count($checklistData['points']) > 0)
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                        <svg class="w-6 h-6 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                        </svg>
+                        2. Puntos de Aplicación
+                    </h2>
+
+                    <div class="space-y-3">
+                        @foreach($checklistData['points'] as $index => $point)
+                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                            <div class="flex items-start">
+                                <span class="flex-shrink-0 bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3">{{ $index + 1 }}</span>
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-900">{{ $point['address'] ?? 'Sin dirección' }}</p>
+                                    @if(isset($point['notes']) && !empty($point['notes']))
+                                    <p class="text-sm text-gray-600 mt-1">{{ $point['notes'] }}</p>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
+                {{-- 3. RESULTADOS --}}
+                @if(isset($checklistData['results']))
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                        <svg class="w-6 h-6 text-purple-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        3. Resultados
+                    </h2>
+
+                    @if(isset($checklistData['results']['observed_results']) && count($checklistData['results']['observed_results']) > 0)
+                    <div class="mb-4">
+                        <strong class="text-gray-900">Resultados Observados:</strong>
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            @foreach($checklistData['results']['observed_results'] as $result)
+                            <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">{{ ucfirst(str_replace('_', ' ', $result)) }}</span>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        @if(isset($checklistData['results']['efficacy']))
+                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200 text-center">
+                            <span class="text-sm font-medium text-gray-500">Eficacia</span>
+                            <p class="text-2xl font-bold text-purple-600 mt-1">{{ $checklistData['results']['efficacy'] }}%</p>
+                        </div>
+                        @endif
+
+                        @if(isset($checklistData['results']['total_installed_points']))
+                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200 text-center">
+                            <span class="text-sm font-medium text-gray-500">Puntos Instalados</span>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">{{ $checklistData['results']['total_installed_points'] }}</p>
+                        </div>
+                        @endif
+
+                        @if(isset($checklistData['results']['total_consumption_activity']))
+                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200 text-center">
+                            <span class="text-sm font-medium text-gray-500">Actividad/Consumo</span>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">{{ $checklistData['results']['total_consumption_activity'] }}</p>
+                        </div>
+                        @endif
+                    </div>
+
+                    {{-- Campos específicos de desinsectación --}}
+                    @if(isset($checklistData['results']['uv_lamps']) || isset($checklistData['results']['devices_installed']))
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                        @if(isset($checklistData['results']['uv_lamps']))
+                        <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-200 text-center">
+                            <span class="text-sm font-medium text-yellow-700">Lámparas UV</span>
+                            <p class="text-2xl font-bold text-yellow-600 mt-1">{{ $checklistData['results']['uv_lamps'] }}</p>
+                        </div>
+                        @endif
+
+                        @if(isset($checklistData['results']['devices_installed']))
+                        <div class="bg-blue-50 rounded-lg p-4 border border-blue-200 text-center">
+                            <span class="text-sm font-medium text-blue-700">Dispositivos Instalados</span>
+                            <p class="text-2xl font-bold text-blue-600 mt-1">{{ $checklistData['results']['devices_installed'] }}</p>
+                        </div>
+                        @endif
+
+                        @if(isset($checklistData['results']['devices_replaced']))
+                        <div class="bg-orange-50 rounded-lg p-4 border border-orange-200 text-center">
+                            <span class="text-sm font-medium text-orange-700">Dispositivos Reemplazados</span>
+                            <p class="text-2xl font-bold text-orange-600 mt-1">{{ $checklistData['results']['devices_replaced'] }}</p>
+                        </div>
+                        @endif
+                    </div>
+                    @endif
+                </div>
+                @endif
+
+                {{-- 4. OBSERVACIONES --}}
+                @if(isset($checklistData['observations']) && count($checklistData['observations']) > 0)
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                        <svg class="w-6 h-6 text-yellow-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                        </svg>
+                        4. Observaciones
+                    </h2>
+
+                    <div class="space-y-4">
+                        @foreach($checklistData['observations'] as $index => $observation)
+                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                            <div class="flex items-start justify-between mb-2">
+                                <span class="font-semibold text-gray-900">
+                                    @if(isset($observation['cebadera_code']))
+                                        Cebadera {{ $observation['cebadera_code'] }}
+                                    @else
+                                        Observación #{{ $index + 1 }}
+                                    @endif
+                                </span>
+                                @if(isset($observation['created_at']))
+                                <span class="text-xs text-gray-500">{{ \Carbon\Carbon::parse($observation['created_at'])->format('d/m/Y H:i') }}</span>
+                                @endif
+                            </div>
+                            @if(isset($observation['detail']) && !empty($observation['detail']))
+                            <p class="text-gray-700">{{ $observation['detail'] }}</p>
+                            @endif
+                            @if(isset($observation['complementary']) && !empty($observation['complementary']))
+                            <p class="text-sm text-gray-600 mt-2 italic">{{ $observation['complementary'] }}</p>
+                            @endif
+                            @if(isset($observation['photo']))
+                            @php
+                                $photoPath = $observation['photo'];
+                                if (strpos($photoPath, 'storage/') === 0) {
+                                    $photoPath = '/' . $photoPath;
+                                }
+                            @endphp
+                            <div class="mt-3">
+                                <img src="{{ $photoPath }}" alt="Foto de observación" class="rounded-lg border border-gray-200 max-w-xs h-auto">
+                            </div>
+                            @endif
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
+                {{-- 5. SITIOS TRATADOS --}}
+                @if(isset($checklistData['sites']))
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                        <svg class="w-6 h-6 text-teal-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd"></path>
+                        </svg>
+                        5. Sitios Tratados
+                    </h2>
+
+                    @if(isset($checklistData['sites']['treated_sites']))
+                    <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                        <p class="text-gray-700 whitespace-pre-wrap">{{ $checklistData['sites']['treated_sites'] }}</p>
+                    </div>
+                    @endif
+                </div>
+                @endif
+
+                {{-- 6. DESCRIPCIÓN Y FIRMAS --}}
+                @if(isset($checklistData['description']))
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                        <svg class="w-6 h-6 text-indigo-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
+                        </svg>
+                        6. Descripción del Servicio
+                    </h2>
+
+                    @if(isset($checklistData['description']['service_description']))
+                    <div class="mb-4">
+                        <strong class="text-gray-900">Descripción del Servicio:</strong>
+                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200 mt-2">
+                            <p class="text-gray-700 whitespace-pre-wrap">{{ $checklistData['description']['service_description'] }}</p>
+                        </div>
+                    </div>
+                    @endif
+
+                    @if(isset($checklistData['description']['service_sugerencia']))
+                    <div class="mb-4">
+                        <strong class="text-gray-900">Sugerencias:</strong>
+                        <div class="bg-blue-50 rounded-lg p-4 border border-blue-200 mt-2">
+                            <p class="text-gray-700 whitespace-pre-wrap">{{ $checklistData['description']['service_sugerencia'] }}</p>
+                        </div>
+                    </div>
+                    @endif
+
+                    @if(isset($checklistData['description']['completion_date']))
+                    <div class="mb-4">
+                        <strong class="text-gray-900">Fecha de Finalización:</strong>
+                        <span class="text-gray-700 ml-2">{{ \Carbon\Carbon::parse($checklistData['description']['completion_date'])->format('d/m/Y') }}</span>
+                    </div>
+                    @endif
+
+                    {{-- Firmas --}}
+                    @if(isset($checklistData['description']['technician_signature']) || isset($checklistData['description']['client_signature']))
+                    <div class="mt-6">
+                        <strong class="text-gray-900">Firmas:</strong>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                            @if(isset($checklistData['description']['technician_signature']))
+                            <div class="text-center">
+                                <p class="text-sm font-medium text-gray-600 mb-2">Firma del Técnico</p>
+                                <div class="bg-white rounded-lg border-2 border-gray-200 p-3 inline-block">
+                                    <img src="{{ $checklistData['description']['technician_signature'] }}" alt="Firma del Técnico" class="max-w-[200px] h-auto">
+                                </div>
+                            </div>
+                            @endif
+
+                            @if(isset($checklistData['description']['client_signature']))
+                            <div class="text-center">
+                                <p class="text-sm font-medium text-gray-600 mb-2">Firma del Cliente</p>
+                                <div class="bg-white rounded-lg border-2 border-gray-200 p-3 inline-block">
+                                    <img src="{{ $checklistData['description']['client_signature'] }}" alt="Firma del Cliente" class="max-w-[200px] h-auto">
+                                </div>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
+                </div>
+                @endif
+            @endif
         @endif
     </div>
 </div>
