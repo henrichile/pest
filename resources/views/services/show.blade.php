@@ -168,7 +168,7 @@
     </div>
 
     <!-- Checklist Data for non-monitoring services -->
-    @if($service->checklist_data && $service->estatus === 'finalizado')
+    @if($service->checklist_data && ($service->status === 'finalizado' || $service->status === 'completado'))
     @php
         $checklistData = $service->checklist_data;
         $isMonitoreoCebaderas = $service->service_type === 'monitoreo-cebaderas';
@@ -353,7 +353,7 @@
     </div>
 
     <!-- PDF Download Button for completed services -->
-    @if($service->estatus === 'finalizado' || $service->estatus === 'completado')
+    @if($service->status === 'finalizado' || $service->status === 'completado')
     <div class="bg-green-50 border border-green-200 rounded-lg p-6">
         <div class="flex items-center justify-between flex-wrap gap-4">
             <div class="flex items-center gap-3">
