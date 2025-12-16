@@ -102,7 +102,7 @@
                 </div>
                 <input type="text" name="search" id="search-input" class="block w-full pr-3 py-3.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all dark:text-white dark:bg-gray-700 dark:border-gray-600" style="border: 1px solid #e5e7eb !important; color: #111827; background: white; padding-left: 40px !important;" placeholder="Buscar por nombre, RUT..." value="{{ request('search') }}">
             </div>
-            <button type="submit" class="px-4 py-3.5 bg-gray-700 dark:text-white rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors text-sm font-medium whitespace-nowrap">
+            <button type="submit" class="px-4 py-3.5 bg-gray-700 text-white rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors text-sm font-medium whitespace-nowrap">
                 Buscar
             </button>
         </form>
