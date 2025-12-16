@@ -43,7 +43,7 @@
                 <!-- Perfil -->
                 <a href="{{ Route::has('admin.profile') ? route('admin.profile') : (Route::has('profile') ? route('profile') : '#') }}" class="flex-shrink-0">
                     <div class="h-10 w-10 rounded-full bg-green-600 flex items-center justify-center shadow-sm flex-shrink-0">
-                        <span class="text-white font-medium text-base">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
+                        <span class="dark:text-white font-medium text-base">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
                     </div>
                 </a>
 
@@ -280,10 +280,10 @@
 
             <!-- Botones -->
             <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
-                <a href="{{ route('admin.clients.index') }}" class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                <a href="{{ route('admin.clients.index') }}" class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium dark:text-white transition-colors bg-white hover:bg-gray-50">
                     Cancelar
                 </a>
-                <button type="submit" class="px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors bg-green-500">
+                <button type="submit" class="px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium dark:text-white transition-colors bg-green-500">
                     Guardar Cambios
                 </button>
             </div>

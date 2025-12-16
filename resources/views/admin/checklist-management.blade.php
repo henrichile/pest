@@ -43,7 +43,7 @@
                 <!-- Perfil -->
                 <a href="{{ Route::has('admin.profile') ? route('admin.profile') : (Route::has('profile') ? route('profile') : '#') }}" class="flex-shrink-0">
                     <div class="h-10 w-10 rounded-full bg-green-600 flex items-center justify-center shadow-sm flex-shrink-0">
-                        <span class="text-white font-medium text-base">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
+                        <span class="dark:text-white font-medium text-base">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
                     </div>
                 </a>
                 <!-- Logout -->
@@ -62,7 +62,7 @@
     <div class="bg-white rounded-lg shadow p-6">
         <div class="hidden md:flex items-center justify-between mb-6">
             <h1 class="text-2xl font-bold text-gray-900">Gestión de Checklist</h1>
-            <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+            <button class="bg-green-600 hover:bg-green-700 dark:text-white px-4 py-2 rounded-lg">
                 <svg class="w-5 h-5 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"/>
                 </svg>
