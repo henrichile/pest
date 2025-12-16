@@ -620,6 +620,18 @@ document.addEventListener('DOMContentLoaded', function() {
     background: #f0fdf4;
 }
 
+/* Hide native file input text */
+.photo-upload-area-small .photo-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10;
+}
+
 .upload-placeholder-small {
     pointer-events: none;
 }

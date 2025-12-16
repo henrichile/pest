@@ -83,6 +83,43 @@ function handleCroquisUpload(event) {
 </script>
 
 <style>
+/* Hide native file input text */
+.photo-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.photo-upload-area {
+    position: relative;
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    background: #f9fafb;
+    transition: all 0.3s ease;
+}
+
+.photo-upload-area:hover {
+    border-color: #10b981;
+    background: #ecfdf5;
+}
+
+.upload-placeholder {
+    pointer-events: none;
+}
+
+.upload-icon {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 10px;
+}
+
 .alert {
     padding: 20px;
     border-radius: 12px;
