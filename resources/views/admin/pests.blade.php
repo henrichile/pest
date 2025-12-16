@@ -28,7 +28,7 @@
             <!-- Iconos Header Móvil -->
             <div class="flex items-center gap-3">
                 <!-- Botón Nueva Plaga (Móvil) -->
-                <a href="{{ route('admin.pests.create') }}" class="flex items-center justify-center h-9 w-9 rounded-full bg-green-600 text-white shadow-sm hover:bg-green-700 transition-colors" aria-label="Crear Nueva Plaga">
+                <a href="{{ route('admin.pests.create') }}" class="flex items-center justify-center h-9 w-9 rounded-full bg-green-600 dark:text-white shadow-sm hover:bg-green-700 transition-colors" aria-label="Crear Nueva Plaga">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
@@ -76,7 +76,7 @@
                 </p>
             </div>
             <div class="mt-3 sm:mt-4 md:mt-0 md:ml-4">
-                <a href="{{ route('admin.pests.create') }}" class="inline-flex items-center justify-center w-full sm:w-auto px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium text-white transition-colors">
+                <a href="{{ route('admin.pests.create') }}" class="inline-flex items-center justify-center w-full sm:w-auto px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium dark:text-white transition-colors">
                     <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>

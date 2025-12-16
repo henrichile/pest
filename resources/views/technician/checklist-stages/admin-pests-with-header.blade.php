@@ -13,7 +13,7 @@
 
     <!-- Botón Crear Nueva Plaga -->
     <div class="flex justify-end mb-4">
-        <a href="{{ route('admin.pests.create') }}" class="inline-flex items-center justify-center px-5 py-3 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700 transition-colors">
+        <a href="{{ route('admin.pests.create') }}" class="inline-flex items-center justify-center px-5 py-3 border border-transparent rounded-lg shadow-sm text-base font-medium dark:text-white bg-green-600 hover:bg-green-700 transition-colors">
             <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
