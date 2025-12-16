@@ -202,6 +202,21 @@ class ClientController extends Controller
     }
 
     /**
+     * Display the specified client.
+     */
+    public function show(Client $client): View
+    {
+        // Solo super-admin puede ver clientes
+        if (!Auth::user()->hasRole('super-admin')) {
+            abort(403, 'No tienes permisos para acceder a esta página');
+        }
+        
+        $client->load(['sites', 'workOrders.service']);
+        
+        return view('admin.clients-show', compact('client'));
+    }
+
+    /**
      * Remove the specified client from storage.
      */
     public function destroy(Client $client): RedirectResponse
