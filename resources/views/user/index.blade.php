@@ -129,7 +129,7 @@
             <!-- Buttons Container -->
             <div class="w-full md:w-auto flex gap-2">
                 <!-- Submit Button -->
-                <button type="submit" class="flex-1 md:flex-none inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors">
+                <button type="submit" class="flex-1 md:flex-none inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium dark:text-white transition-colors">
                     <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>
