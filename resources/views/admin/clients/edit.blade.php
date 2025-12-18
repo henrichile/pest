@@ -119,7 +119,7 @@
                         </label>
                         <input type="text" name="name" id="name" value="{{ old('name', $client->name) }}" required
                                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                               style="border: 1px solid #e5e7eb !important; color: #111827;">
+                               style="border: 1px solid #e5e7eb !important;">
                     </div>
 
                     <!-- RUT -->
@@ -129,7 +129,7 @@
                         </label>
                         <input type="text" name="rut" id="rut" value="{{ old('rut', $client->rut) }}" required
                                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                               style="border: 1px solid #e5e7eb !important; color: #111827;">
+                               style="border: 1px solid #e5e7eb !important;">
                     </div>
 
                     <!-- Email -->
@@ -139,7 +139,7 @@
                         </label>
                         <input type="email" name="email" id="email" value="{{ old('email', $client->email) }}"
                                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                               style="border: 1px solid #e5e7eb !important; color: #111827;">
+                               style="border: 1px solid #e5e7eb !important;">
                     </div>
 
                     <!-- Teléfono -->
@@ -149,7 +149,7 @@
                         </label>
                         <input type="text" name="phone" id="phone" value="{{ old('phone', $client->phone) }}" required
                                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                               style="border: 1px solid #e5e7eb !important; color: #111827;">
+                               style="border: 1px solid #e5e7eb !important;">
                     </div>
 
                     <!-- Dirección -->
@@ -160,7 +160,7 @@
                         <input type="text" name="address" id="address" value="{{ old('address', $client->address) }}" required
                                placeholder="Calle, número, piso, depto."
                                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                               style="border: 1px solid #e5e7eb !important; color: #111827;">
+                               style="border: 1px solid #e5e7eb !important;">
                     </div>
 
                     <!-- Tipo de Negocio -->
@@ -171,7 +171,7 @@
                         <input type="text" name="business_type" id="business_type" value="{{ old('business_type', $client->business_type) }}"
                                placeholder="Ej: Restaurante, Retail, etc."
                                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                               style="border: 1px solid #e5e7eb !important; color: #111827;">
+                               style="border: 1px solid #e5e7eb !important;">
                     </div>
 
                     <!-- Persona de Contacto -->
