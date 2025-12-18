@@ -36,7 +36,7 @@
                 </thead>
                 <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
                     @forelse($users as $user)
-                    <tr class="hover:bg-gray-50">
+                    <tr class="hover:bg-gray-50 dark:hover:bg-transparent">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center">
                                 <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center mr-3">

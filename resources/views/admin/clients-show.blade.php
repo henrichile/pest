@@ -169,7 +169,7 @@
                 </thead>
                 <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
                     @forelse($client->sites as $site)
-                        <tr class="hover:bg-gray-50">
+                        <tr class="hover:bg-gray-50 dark:hover:bg-transparent">
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $site->name }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $site->address ?? 'N/A' }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $site->city ?? 'N/A' }}</td>
@@ -210,7 +210,7 @@
                 </thead>
                 <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
                     @forelse($client->workOrders->take(10) as $workOrder)
-                        <tr class="hover:bg-gray-50">
+                        <tr class="hover:bg-gray-50 dark:hover:bg-transparent">
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $workOrder->folio ?? 'N/A' }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $workOrder->service->name ?? 'N/A' }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

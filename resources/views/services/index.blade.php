@@ -77,7 +77,7 @@
                 </thead>
                 <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
                     @forelse($services as $service)
-                    <tr class="hover:bg-gray-50">
+                    <tr class="hover:bg-gray-50 dark:hover:bg-transparent">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm font-medium text-gray-900">{{ $service->client->name ?? "N/A" }}</div>
                             <div class="text-sm text-gray-500">{{ $service->address }}</div>
