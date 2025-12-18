@@ -73,7 +73,7 @@
                                     {{ $service->client->name ?? 'Cliente no encontrado' }}
                                 </h3>
                                 @if($service->address)
-                                    <p class="text-sm text-gray-600 dark:text-gray-300">{{ $service->address }}</p>
+                                    <p class="text-sm text-gray-600 dark:text-white">{{ $service->address }}</p>
                                 @endif
                             </div>
                             <div class="flex flex-wrap gap-2">
@@ -106,7 +106,7 @@
                 </div>
             @empty
                 <div class="p-8 text-center">
-                    <p class="text-sm text-gray-600 dark:text-gray-300">No se encontraron servicios</p>
+                    <p class="text-sm text-gray-600 dark:text-white">No se encontraron servicios</p>
                 </div>
             @endforelse
         </div>

@@ -32,7 +32,7 @@
                 <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight text-gray-900 dark:text-white" class="font-bold">
                     Gestión de Usuarios
                 </h2>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                <p class="mt-1 text-sm text-gray-600 dark:text-white">
                     Administra los usuarios del sistema
                 </p>
             </div>
@@ -55,10 +55,10 @@
         <form method="GET" action="{{ route('admin.users.index') }}" class="flex flex-wrap gap-4 items-end">
             <!-- Search -->
             <div class="flex-1 min-w-[200px]">
-                <label for="search" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Buscar</label>
+                <label for="search" class="block text-sm font-medium mb-1 text-gray-700 dark:text-white">Buscar</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-gray-600 dark:text-gray-300">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-gray-600 dark:text-white">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
                     </div>
@@ -68,7 +68,7 @@
 
             <!-- Role Filter -->
             <div class="min-w-[150px]">
-                <label for="role" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Rol</label>
+                <label for="role" class="block text-sm font-medium mb-1 text-gray-700 dark:text-white">Rol</label>
                 <select name="role" id="role" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:text-white dark:bg-gray-700 dark:border-gray-600" style="border: 1px solid #e5e7eb !important; color: #111827;">
                     <option value="">Todos los roles</option>
                     @foreach($roles as $role)
@@ -81,7 +81,7 @@
 
             <!-- Status Filter -->
             <div class="min-w-[150px]">
-                <label for="is_active" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Estado</label>
+                <label for="is_active" class="block text-sm font-medium mb-1 text-gray-700 dark:text-white">Estado</label>
                 <select name="is_active" id="is_active" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:text-white dark:bg-gray-700 dark:border-gray-600" style="border: 1px solid #e5e7eb !important; color: #111827;">
                     <option value="">Todos</option>
                     <option value="1" {{ request('is_active') === '1' ? 'selected' : '' }}>Activos</option>
@@ -116,22 +116,22 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead>
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-white">
                             Usuario
                         </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-white">
                             Email
                         </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-white">
                             Rol
                         </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-white">
                             Estado
                         </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-white">
                             Fecha de Registro
                         </th>
-                        <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">
+                        <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-white">
                             Acciones
                         </th>
                     </tr>
@@ -154,7 +154,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-600 dark:text-gray-300">
+                                <div class="text-sm text-gray-600 dark:text-white">
                                     {{ $user->email }}
                                 </div>
                             </td>
@@ -181,7 +181,7 @@
                                     </span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-white">
                                 {{ $user->created_at->format('d/m/Y') }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -206,7 +206,7 @@
                                 <svg class="mx-auto h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
                                 </svg>
-                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                <p class="text-sm text-gray-600 dark:text-white">
                                     No se encontraron usuarios con los filtros seleccionados.
                                 </p>
                             </td>

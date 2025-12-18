@@ -74,7 +74,7 @@
                 <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight text-gray-900 dark:text-white" class="font-bold">
                     Servicios
                 </h2>
-                <p class="mt-1 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                <p class="mt-1 text-xs sm:text-sm text-gray-600 dark:text-white">
                     Gestiona todos los servicios de control de plagas
                 </p>
             </div>
@@ -148,7 +148,7 @@
                                     {{ $service->client->name ?? 'Cliente no encontrado' }}
                                 </h3>
                                 @if($service->address)
-                                    <p class="text-sm text-gray-600 dark:text-gray-300">{{ $service->address }}</p>
+                                    <p class="text-sm text-gray-600 dark:text-white">{{ $service->address }}</p>
                                 @endif
                             </div>
                             <div class="flex flex-wrap gap-2">
@@ -181,7 +181,7 @@
                 </div>
             @empty
                 <div class="p-8 text-center">
-                    <p class="text-sm text-gray-600 dark:text-gray-300">No se encontraron servicios</p>
+                    <p class="text-sm text-gray-600 dark:text-white">No se encontraron servicios</p>
                 </div>
             @endforelse
         </div>

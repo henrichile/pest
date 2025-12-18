@@ -87,7 +87,7 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Clientes</p>
+                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-white">Clientes</p>
                         <p class="text-3xl font-bold">{{ $clientsCount ?? 0 }}</p>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Este Mes</p>
+                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-white">Este Mes</p>
                         <p class="text-3xl font-bold">{{ $monthlyServices ?? 0 }}</p>
                     </div>
                 </div>
@@ -125,7 +125,7 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Completados</p>
+                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-white">Completados</p>
                         <p class="text-3xl font-bold">{{ $finalizedServices ?? 0 }}</p>
                     </div>
                 </div>
@@ -144,7 +144,7 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Pendientes</p>
+                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-white">Pendientes</p>
                         <p class="text-3xl font-bold">{{ $pendingServices ?? 0 }}</p>
                     </div>
                 </div>
@@ -158,7 +158,7 @@
             <div class="flex items-center justify-between mb-4">
                 <div>
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Servicios Asignados</h3>
-                    <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">Próximos servicios a realizar</p>
+                    <p class="text-sm mt-1 text-gray-700 dark:text-white">Próximos servicios a realizar</p>
                 </div>
                 <a href="{{ route('technician.services') }}" class="text-sm font-medium">Ver todos</a>
             </div>
@@ -197,7 +197,7 @@
                         </div>
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-medium text-gray-900 dark:text-white">{{ optional($service->client)->name ?? 'N/A' }} - {{ ucfirst(str_replace('-', ' ', $service->service_type ?? 'N/A')) }}</p>
-                            <p class="text-xs text-gray-700 dark:text-gray-300">{{ $service->scheduled_date ? $service->scheduled_date->format('d/m/Y H:i') : ($service->created_at->format('d/m/Y H:i')) }}</p>
+                            <p class="text-xs text-gray-700 dark:text-white">{{ $service->scheduled_date ? $service->scheduled_date->format('d/m/Y H:i') : ($service->created_at->format('d/m/Y H:i')) }}</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
@@ -209,7 +209,7 @@
                 </div>
                 @empty
                 <div class="text-center py-8">
-                    <p class="text-sm text-gray-700 dark:text-gray-300">No hay servicios asignados</p>
+                    <p class="text-sm text-gray-700 dark:text-white">No hay servicios asignados</p>
                 </div>
                 @endforelse
             </div>
@@ -229,7 +229,7 @@
                     </div>
                     <div>
                         <p class="text-sm font-medium text-gray-900 dark:text-white">Ver Mis Servicios</p>
-                        <p class="text-xs text-gray-700 dark:text-gray-300">Gestiona todos tus servicios</p>
+                        <p class="text-xs text-gray-700 dark:text-white">Gestiona todos tus servicios</p>
                     </div>
                 </a>
                 <a href="{{ route('technician.profile') }}" class="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
@@ -240,7 +240,7 @@
                     </div>
                     <div>
                         <p class="text-sm font-medium text-gray-900 dark:text-white">Mi Perfil</p>
-                        <p class="text-xs text-gray-700 dark:text-gray-300">Actualiza tu información</p>
+                        <p class="text-xs text-gray-700 dark:text-white">Actualiza tu información</p>
                     </div>
                 </a>
             </div>

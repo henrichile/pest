@@ -24,7 +24,7 @@
             <form method="GET" action="{{ route('admin.reports.index') }}" id="reportFiltersForm">
                 <!-- Rangos Rápidos -->
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Rangos Rápidos</label>
+                    <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Rangos Rápidos</label>
                     <div class="flex flex-wrap gap-2">
                         <button type="button" class="quick-range-btn px-4 py-2 rounded-full text-sm font-medium transition-colors" data-range="this-month">
                             <svg class="w-4 h-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -57,7 +57,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
                     <!-- Fecha Inicio -->
                     <div>
-                        <label for="start_date" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Fecha Inicio</label>
+                        <label for="start_date" class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Fecha Inicio</label>
                         <div class="relative">
                             <input type="date" name="start_date" id="start_date" value="{{ $startDate }}" class="w-full border border-gray-300 rounded-lg px-3 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                             <svg class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -68,7 +68,7 @@
 
                     <!-- Fecha Fin -->
                     <div>
-                        <label for="end_date" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Fecha Fin</label>
+                        <label for="end_date" class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Fecha Fin</label>
                         <div class="relative">
                             <input type="date" name="end_date" id="end_date" value="{{ $endDate }}" class="w-full border border-gray-300 rounded-lg px-3 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                             <svg class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -79,7 +79,7 @@
 
                     <!-- Tipo de Servicio -->
                     <div>
-                        <label for="service_type" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Tipo de Servicio</label>
+                        <label for="service_type" class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Tipo de Servicio</label>
                         <select name="service_type" id="service_type" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                             <option value="all" {{ $serviceType === 'all' ? 'selected' : '' }}>Todos</option>
                             @foreach($serviceTypes as $type)
@@ -90,7 +90,7 @@
 
                     <!-- Cliente -->
                     <div>
-                        <label for="client_id" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Cliente</label>
+                        <label for="client_id" class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Cliente</label>
                         <select name="client_id" id="client_id" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                             <option value="all" {{ $clientId === 'all' ? 'selected' : '' }}>Todos</option>
                             @foreach($allClients as $client)
@@ -103,7 +103,7 @@
 
                     <!-- Técnico -->
                     <div>
-                        <label for="technician_id" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Técnico</label>
+                        <label for="technician_id" class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Técnico</label>
                         <select name="technician_id" id="technician_id" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                             <option value="all" {{ $technicianId === 'all' ? 'selected' : '' }}>Todos</option>
                             @foreach($allTechnicians as $technician)
@@ -114,7 +114,7 @@
 
                     <!-- Estado -->
                     <div>
-                        <label for="status" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Estado</label>
+                        <label for="status" class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Estado</label>
                         <select name="status" id="status" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                             <option value="all" {{ $status === 'all' ? 'selected' : '' }}>Todos</option>
                             <option value="pendiente" {{ $status === 'pendiente' ? 'selected' : '' }}>Pendiente</option>
@@ -201,7 +201,7 @@
             </div>
             <p class="text-2xl font-bold mb-1 text-gray-900 dark:text-white">TOTAL</p>
             <p class="text-lg font-semibold mb-1 text-gray-900 dark:text-white">{{ $totalServices }}</p>
-            <p class="text-sm text-gray-600 dark:text-gray-300">Servicios registrados</p>
+            <p class="text-sm text-gray-600 dark:text-white">Servicios registrados</p>
         </div>
 
         <!-- Completados -->
@@ -215,7 +215,7 @@
             </div>
             <p class="text-2xl font-bold mb-1 text-gray-900 dark:text-white">COMPLETADOS</p>
             <p class="text-lg font-semibold mb-1 text-gray-900 dark:text-white">{{ $completedServices }}</p>
-            <p class="text-sm text-gray-600 dark:text-gray-300">{{ $completedPercentage }}% del total</p>
+            <p class="text-sm text-gray-600 dark:text-white">{{ $completedPercentage }}% del total</p>
         </div>
 
         <!-- Ingresos -->
@@ -228,7 +228,7 @@
                 </div>
             </div>
             <p class="text-2xl font-bold mb-1 text-gray-900 dark:text-white">${{ number_format($periodIncome, 0, ',', '.') }}</p>
-            <p class="text-sm text-gray-600 dark:text-gray-300">Período seleccionado</p>
+            <p class="text-sm text-gray-600 dark:text-white">Período seleccionado</p>
         </div>
 
         <!-- Clientes -->
@@ -242,7 +242,7 @@
             </div>
             <p class="text-2xl font-bold mb-1 text-gray-900 dark:text-white">CLIENTES</p>
             <p class="text-lg font-semibold mb-1 text-gray-900 dark:text-white">{{ $uniqueClients }}</p>
-            <p class="text-sm text-gray-600 dark:text-gray-300">Únicos activos</p>
+            <p class="text-sm text-gray-600 dark:text-white">Únicos activos</p>
         </div>
 
         <!-- Técnicos -->
@@ -256,7 +256,7 @@
             </div>
             <p class="text-2xl font-bold mb-1 text-gray-900 dark:text-white">TÉCNICOS</p>
             <p class="text-lg font-semibold mb-1 text-gray-900 dark:text-white">{{ $activeTechnicians }}</p>
-            <p class="text-sm text-gray-600 dark:text-gray-300">Activos en período</p>
+            <p class="text-sm text-gray-600 dark:text-white">Activos en período</p>
         </div>
     </div>
 
@@ -294,15 +294,15 @@
         <div class="flex justify-center gap-6 mt-4">
             <div class="flex items-center gap-2">
                 <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                <span class="text-sm text-gray-600 dark:text-gray-300">Completados</span>
+                <span class="text-sm text-gray-600 dark:text-white">Completados</span>
             </div>
             <div class="flex items-center gap-2">
                 <div class="w-3 h-3 rounded-full bg-amber-500"></div>
-                <span class="text-sm text-gray-600 dark:text-gray-300">Pendientes</span>
+                <span class="text-sm text-gray-600 dark:text-white">Pendientes</span>
             </div>
             <div class="flex items-center gap-2">
                 <div class="w-3 h-3 rounded-full bg-black"></div>
-                <span class="text-sm text-gray-600 dark:text-gray-300">Total</span>
+                <span class="text-sm text-gray-600 dark:text-white">Total</span>
             </div>
         </div>
     </div>
@@ -326,7 +326,7 @@
                         <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ $item['count'] }} servicios</p>
                     </div>
                 @empty
-                    <p class="text-sm text-center py-4 text-gray-600 dark:text-gray-300">No hay datos disponibles</p>
+                    <p class="text-sm text-center py-4 text-gray-600 dark:text-white">No hay datos disponibles</p>
                 @endforelse
             </div>
         </div>
@@ -348,7 +348,7 @@
                         <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ $item['count'] }} servicios</p>
                     </div>
                 @empty
-                    <p class="text-sm text-center py-4 text-gray-600 dark:text-gray-300">No hay datos disponibles</p>
+                    <p class="text-sm text-center py-4 text-gray-600 dark:text-white">No hay datos disponibles</p>
                 @endforelse
             </div>
         </div>

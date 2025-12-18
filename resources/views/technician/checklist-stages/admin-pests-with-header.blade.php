@@ -25,7 +25,7 @@
     <div class="mb-4 sm:mb-6">
         <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                <svg class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-gray-600 dark:text-gray-300">
+                <svg class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-gray-600 dark:text-white">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                 </svg>
             </div>
@@ -74,7 +74,7 @@
                     @if($pest->control_methods)
                         <div>
                             <p class="text-sm font-semibold mb-2">Tratamiento:</p>
-                            <ul class="list-disc list-inside text-sm space-y-1 text-gray-600 dark:text-gray-300">
+                            <ul class="list-disc list-inside text-sm space-y-1 text-gray-600 dark:text-white">
                                 @if(is_array($pest->control_methods))
                                     @foreach(array_slice($pest->control_methods, 0, 3) as $method)
                                         <li>{{ $method }}</li>
@@ -96,7 +96,7 @@
                     <svg class="mx-auto h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                     </svg>
-                    <p class="text-sm text-gray-600 dark:text-gray-300">No se encontraron plagas</p>
+                    <p class="text-sm text-gray-600 dark:text-white">No se encontraron plagas</p>
                 </div>
             </div>
         @endforelse
@@ -132,7 +132,7 @@
                 <!-- Description -->
                 <div id="modal-description" class="hidden">
                     <h4 class="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
-                        <svg class="inline-block w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-gray-600 dark:text-gray-300">
+                        <svg class="inline-block w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-gray-600 dark:text-white">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
                         </svg>
                         Descripción
@@ -151,7 +151,7 @@
                         Métodos de Control
                     </h4>
                     <div class="bg-green-50 rounded-lg p-4">
-                        <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-300" id="modal-treatment-list"></ul>
+                        <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-white" id="modal-treatment-list"></ul>
                     </div>
                 </div>
 
@@ -164,7 +164,7 @@
                         Recomendaciones
                     </h4>
                     <div class="bg-blue-50 rounded-lg p-4">
-                        <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-gray-300" id="modal-recommendations-list"></ul>
+                        <ul class="list-disc list-inside text-sm space-y-2 text-gray-700 dark:text-white" id="modal-recommendations-list"></ul>
                     </div>
                 </div>
             </div>

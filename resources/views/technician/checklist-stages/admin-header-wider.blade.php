@@ -7,11 +7,11 @@
                 {{ $title ?? 'Dashboard' }}
             </h2>
             @if(isset($subtitle))
-            <p class="mt-1 text-xs sm:text-sm dark:text-white text-gray-600 dark:text-gray-300">
+            <p class="mt-1 text-xs sm:text-sm dark:text-white text-gray-600 dark:text-white">
                 {{ $subtitle }}
             </p>
             @elseif(isset($showDate) && $showDate)
-            <p class="mt-1 text-xs sm:text-sm dark:text-white text-gray-600 dark:text-gray-300">
+            <p class="mt-1 text-xs sm:text-sm dark:text-white text-gray-600 dark:text-white">
                 {{ now()->locale('es')->isoFormat('dddd, D [de] MMMM') }}
             </p>
             @endif
@@ -155,11 +155,11 @@
         {{ $title ?? 'Dashboard' }}
     </h2>
     @if(isset($subtitle))
-    <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+    <p class="mt-1 text-sm text-gray-600 dark:text-white">
         {{ $subtitle }}
     </p>
     @elseif(isset($showDate) && $showDate)
-    <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+    <p class="mt-1 text-sm text-gray-600 dark:text-white">
         {{ now()->locale('es')->isoFormat('dddd, D [de] MMMM') }}
     </p>
     @endif

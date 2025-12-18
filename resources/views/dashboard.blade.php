@@ -401,7 +401,7 @@
                                                 <h4 class="text-gray-900 dark:text-white font-semibold text-sm mb-1">{{ $title }}</h4>
                                                 <span class="notification-time">{{ $notification->created_at->diffForHumans() }}</span>
                                             </div>
-                                            <p class="text-gray-600 dark:text-gray-300 text-sm">{{ Str::limit($message, 80) }}</p>
+                                            <p class="text-gray-600 dark:text-white text-sm">{{ Str::limit($message, 80) }}</p>
                                         </div>
                                         @if(!$isRead)
                                         <div class="notification-dot"></div>
@@ -410,7 +410,7 @@
                                 @endforeach
                             @else
                                 <div class="notification-empty">
-                                    <p class="text-gray-600 dark:text-gray-300 text-sm text-center p-5">No hay notificaciones</p>
+                                    <p class="text-gray-600 dark:text-white text-sm text-center p-5">No hay notificaciones</p>
                                 </div>
                             @endif
                         </div>
@@ -1162,7 +1162,7 @@
                             <span class="text-sm font-semibold statistics-number text-gray-900 dark:text-white">{{ $stats['pending'] ?? 0 }}</span>
             </div>
                     </div>
-                    <select id="periodFilter" class="text-sm border dark:border-gray-700 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-800" class="text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 cursor-pointer dark:text-white dark:bg-gray-700 dark:border-gray-600">
+                    <select id="periodFilter" class="text-sm border dark:border-gray-700 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-800" class="text-gray-600 dark:text-white border border-gray-200 dark:border-gray-700 cursor-pointer dark:text-white dark:bg-gray-700 dark:border-gray-600">
                         <option value="this_month" {{ request('period', 'this_month') == 'this_month' ? 'selected' : '' }}>Este Mes</option>
                         <option value="last_month" {{ request('period') == 'last_month' ? 'selected' : '' }}>Último Mes</option>
                         <option value="last_3_months" {{ request('period') == 'last_3_months' ? 'selected' : '' }}>Últimos 3 Meses</option>

@@ -9,7 +9,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Editar Reporte Programado</h1>
-                <p class="text-sm mt-1 text-gray-600 dark:text-gray-300">Modifica la configuración del reporte programado</p>
+                <p class="text-sm mt-1 text-gray-600 dark:text-white">Modifica la configuración del reporte programado</p>
             </div>
             <a href="{{ route('admin.reports.scheduled') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                 Cancelar
@@ -27,7 +27,7 @@
             <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Información Básica</h3>
             <div class="space-y-4">
                 <div>
-                    <label for="name" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Nombre del Reporte *</label>
+                    <label for="name" class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Nombre del Reporte *</label>
                     <input type="text" name="name" id="name" required value="{{ old('name', $scheduledReport->name) }}"
                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
                     @error('name')
@@ -37,7 +37,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label for="type" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Tipo de Reporte *</label>
+                        <label for="type" class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Tipo de Reporte *</label>
                         <select name="type" id="type" required
                                 class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
                             <option value="services" {{ old('type', $scheduledReport->type) === 'services' ? 'selected' : '' }}>Servicios</option>
@@ -48,7 +48,7 @@
                     </div>
 
                     <div>
-                        <label for="format" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Formato *</label>
+                        <label for="format" class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Formato *</label>
                         <select name="format" id="format" required
                                 class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
                             <option value="pdf" {{ old('format', $scheduledReport->format) === 'pdf' ? 'selected' : '' }}>PDF</option>
@@ -59,7 +59,7 @@
                 </div>
 
                 <div>
-                    <label for="frequency" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Frecuencia *</label>
+                    <label for="frequency" class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Frecuencia *</label>
                     <select name="frequency" id="frequency" required
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
                         <option value="daily" {{ old('frequency', $scheduledReport->frequency) === 'daily' ? 'selected' : '' }}>Diario</option>
@@ -74,7 +74,7 @@
                     <label class="flex items-center gap-2">
                         <input type="checkbox" name="is_active" value="1" {{ old('is_active', $scheduledReport->is_active) ? 'checked' : '' }}
                                class="rounded border-gray-300 text-green-600 focus:ring-green-500">
-                        <span class="text-sm font-medium text-gray-600 dark:text-gray-300">Reporte activo</span>
+                        <span class="text-sm font-medium text-gray-600 dark:text-white">Reporte activo</span>
                     </label>
                 </div>
             </div>
@@ -86,19 +86,19 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label for="start_date" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Fecha Inicio</label>
+                    <label for="start_date" class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Fecha Inicio</label>
                     <input type="date" name="start_date" id="start_date" value="{{ old('start_date', $scheduledReport->filters['start_date'] ?? '') }}"
                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
                 </div>
 
                 <div>
-                    <label for="end_date" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Fecha Fin</label>
+                    <label for="end_date" class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Fecha Fin</label>
                     <input type="date" name="end_date" id="end_date" value="{{ old('end_date', $scheduledReport->filters['end_date'] ?? '') }}"
                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
                 </div>
 
                 <div>
-                    <label for="service_type" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Tipo de Servicio</label>
+                    <label for="service_type" class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Tipo de Servicio</label>
                     <select name="service_type" id="service_type"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
                         <option value="all">Todos</option>
@@ -110,7 +110,7 @@
                 </div>
 
                 <div>
-                    <label for="client_id" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Cliente</label>
+                    <label for="client_id" class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Cliente</label>
                     <select name="client_id" id="client_id"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
                         <option value="all">Todos</option>
@@ -123,7 +123,7 @@
                 </div>
 
                 <div>
-                    <label for="technician_id" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Técnico</label>
+                    <label for="technician_id" class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Técnico</label>
                     <select name="technician_id" id="technician_id"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
                         <option value="all">Todos</option>
@@ -136,7 +136,7 @@
                 </div>
 
                 <div>
-                    <label for="status" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Estado</label>
+                    <label for="status" class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Estado</label>
                     <select name="status" id="status"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
                         <option value="all">Todos</option>
@@ -153,7 +153,7 @@
         <div class="bg-white rounded-lg shadow-md border p-6" style="border: 1px solid #e5e7eb;">
             <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Destinatarios (Opcional)</h3>
             <div>
-                <label for="recipients" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Emails (separados por comas)</label>
+                <label for="recipients" class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Emails (separados por comas)</label>
                 <input type="text" name="recipients" id="recipients" value="{{ old('recipients', $scheduledReport->recipients ? implode(', ', $scheduledReport->recipients) : '') }}"
                        placeholder="email1@ejemplo.com, email2@ejemplo.com"
                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">

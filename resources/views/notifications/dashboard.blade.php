@@ -7,7 +7,7 @@
     <div class="flex items-center justify-between mb-6">
         <div class="flex-1">
             <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">Notificaciones</h1>
-            <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
+            <p class="mt-2 text-sm text-gray-700 dark:text-white">
                 Gestiona todas tus notificaciones del sistema.
             </p>
         </div>
@@ -31,13 +31,13 @@
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
                         <div class="w-12 h-12 rounded-lg flex items-center justify-center">
-                            <svg class="h-6 w-6 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <svg class="h-6 w-6 text-gray-600 dark:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                             </svg>
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Total de notificaciones</p>
+                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-white">Total de notificaciones</p>
                         <p class="text-2xl font-bold">{{ $totalNotifications }}</p>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">No leídas</p>
+                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-white">No leídas</p>
                         <p class="text-2xl font-bold">{{ $unreadNotifications }}</p>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Hoy</p>
+                        <p class="text-sm font-medium mb-1 text-gray-700 dark:text-white">Hoy</p>
                         <p class="text-2xl font-bold">{{ $todayNotifications }}</p>
                     </div>
                 </div>
@@ -176,10 +176,10 @@
                                                 <div class="text-sm font-semibold text-gray-900 dark:text-white">
                                                     {{ $title }}
                                                 </div>
-                                                <div class="text-sm mt-1 text-gray-700 dark:text-gray-300">
+                                                <div class="text-sm mt-1 text-gray-700 dark:text-white">
                                                     {{ $message }}
                                                 </div>
-                                                <div class="text-xs mt-1 text-gray-600 dark:text-gray-300">
+                                                <div class="text-xs mt-1 text-gray-600 dark:text-white">
                                                     {{ $notification->created_at->diffForHumans() }}
                                                 </div>
                                             </div>
@@ -210,7 +210,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                             </svg>
                             <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No hay notificaciones</h3>
-                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">No tienes notificaciones pendientes.</p>
+                            <p class="mt-1 text-sm text-gray-600 dark:text-white">No tienes notificaciones pendientes.</p>
                         </div>
                     @endif
                 </div>

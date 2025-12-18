@@ -42,7 +42,7 @@
                 <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight text-gray-900 dark:text-white" class="font-bold">
                     Clientes
                 </h2>
-                <p class="mt-1 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                <p class="mt-1 text-xs sm:text-sm text-gray-600 dark:text-white">
                     Gestiona la información de todos los clientes
                 </p>
             </div>
@@ -81,10 +81,10 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">CLIENTE</th>
-                        <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">RUT</th>
-                        <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">CONTACTO</th>
-                        <th class="px-4 sm:px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">ACCIONES</th>
+                        <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-white">CLIENTE</th>
+                        <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-white">RUT</th>
+                        <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-white">CONTACTO</th>
+                        <th class="px-4 sm:px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-white">ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200">
@@ -94,20 +94,20 @@
                                 <div>
                                     <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $client->name ?? 'Sin nombre' }}</div>
                                     @if($client->address)
-                                        <div class="text-xs text-gray-600 dark:text-gray-300">{{ Str::limit($client->address, 30) }}</div>
+                                        <div class="text-xs text-gray-600 dark:text-white">{{ Str::limit($client->address, 30) }}</div>
                                     @endif
                                 </div>
                             </td>
                             <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-700 dark:text-gray-300">{{ $client->rut ?? 'N/A' }}</div>
+                                <div class="text-sm text-gray-700 dark:text-white">{{ $client->rut ?? 'N/A' }}</div>
                             </td>
                             <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
                                 <div>
                                     @if($client->email)
-                                        <div class="text-sm text-gray-700 dark:text-gray-300">{{ Str::limit($client->email, 20) }}</div>
+                                        <div class="text-sm text-gray-700 dark:text-white">{{ Str::limit($client->email, 20) }}</div>
                                     @endif
                                     @if($client->phone)
-                                        <div class="text-xs text-gray-600 dark:text-gray-300">{{ Str::limit($client->phone, 15) }}</div>
+                                        <div class="text-xs text-gray-600 dark:text-white">{{ Str::limit($client->phone, 15) }}</div>
                                     @endif
                                 </div>
                             </td>
@@ -138,7 +138,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-4 sm:px-6 py-8 text-center text-sm text-gray-600 dark:text-gray-300">
+                            <td colspan="4" class="px-4 sm:px-6 py-8 text-center text-sm text-gray-600 dark:text-white">
                                 No se encontraron clientes
                             </td>
                         </tr>

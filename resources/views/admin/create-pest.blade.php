@@ -63,7 +63,7 @@
             <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight text-gray-900 dark:text-white" class="font-bold">
                 Crear Nueva Plaga
             </h2>
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+            <p class="mt-1 text-sm text-gray-600 dark:text-white">
                 Complete la información de la nueva plaga
             </p>
         </div>

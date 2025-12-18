@@ -65,7 +65,7 @@
                     <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight text-gray-900 dark:text-white" class="font-bold">
                         {{ $client->name }}
                     </h2>
-                    <p class="mt-1 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                    <p class="mt-1 text-xs sm:text-sm text-gray-600 dark:text-white">
                         RUT: {{ $client->rut }}
                     </p>
                 </div>

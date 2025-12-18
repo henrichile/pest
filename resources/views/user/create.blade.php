@@ -63,12 +63,12 @@
                 <h2 class="text-3xl font-bold leading-7 text-gray-900 dark:text-white sm:truncate sm:text-3xl sm:tracking-tight font-bold">
                     Crear Nuevo Usuario
                 </h2>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                <p class="mt-1 text-sm text-gray-600 dark:text-white">
                     Completa el formulario para crear un nuevo usuario en el sistema
                 </p>
             </div>
             <div class="mt-4 md:mt-0 md:ml-4">
-                <a href="{{ route('admin.users.index') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-gray-300 dark:border-gray-600">
+                <a href="{{ route('admin.users.index') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-gray-300 dark:border-gray-600">
                     <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
                     </svg>
@@ -109,7 +109,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Nombre -->
                 <div>
-                    <label for="name" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
+                    <label for="name" class="block text-sm font-medium mb-1 text-gray-700 dark:text-white">
                         Nombre <span class="text-red-500">*</span>
                     </label>
                     <input type="text" name="name" id="name" value="{{ old('name') }}" required
@@ -119,7 +119,7 @@
 
                 <!-- Email -->
                 <div>
-                    <label for="email" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
+                    <label for="email" class="block text-sm font-medium mb-1 text-gray-700 dark:text-white">
                         Email <span class="text-red-500">*</span>
                     </label>
                     <input type="email" name="email" id="email" value="{{ old('email') }}" required
@@ -129,7 +129,7 @@
 
                 <!-- Teléfono -->
                 <div>
-                    <label for="phone" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
+                    <label for="phone" class="block text-sm font-medium mb-1 text-gray-700 dark:text-white">
                         Teléfono
                     </label>
                     <input type="text" name="phone" id="phone" value="{{ old('phone') }}"
@@ -139,7 +139,7 @@
 
                 <!-- Estado -->
                 <div>
-                    <label for="is_active" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
+                    <label for="is_active" class="block text-sm font-medium mb-1 text-gray-700 dark:text-white">
                         Estado <span class="text-red-500">*</span>
                     </label>
                     <select name="is_active" id="is_active" required
@@ -152,7 +152,7 @@
 
                 <!-- Contraseña -->
                 <div>
-                    <label for="password" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
+                    <label for="password" class="block text-sm font-medium mb-1 text-gray-700 dark:text-white">
                         Contraseña <span class="text-red-500">*</span>
                     </label>
                     <input type="password" name="password" id="password" required minlength="8"
@@ -163,7 +163,7 @@
 
                 <!-- Confirmar Contraseña -->
                 <div>
-                    <label for="password_confirmation" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
+                    <label for="password_confirmation" class="block text-sm font-medium mb-1 text-gray-700 dark:text-white">
                         Confirmar Contraseña <span class="text-red-500">*</span>
                     </label>
                     <input type="password" name="password_confirmation" id="password_confirmation" required minlength="8"
@@ -173,7 +173,7 @@
 
                 <!-- Dirección -->
                 <div class="md:col-span-2">
-                    <label for="address" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
+                    <label for="address" class="block text-sm font-medium mb-1 text-gray-700 dark:text-white">
                         Dirección
                     </label>
                     <textarea name="address" id="address" rows="3"
@@ -183,7 +183,7 @@
 
                 <!-- Roles -->
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                    <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">
                         Roles
                     </label>
                     <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -192,7 +192,7 @@
                                 <input type="checkbox" name="roles[]" value="{{ $role->name }}" 
                                        {{ in_array($role->name, old('roles', [])) ? 'checked' : '' }}
                                        class="rounded border-gray-300 text-green-600 focus:ring-green-500">
-                                <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                                <span class="ml-2 text-sm text-gray-700 dark:text-white">
                                     @if($role->name === 'technician')
                                         Técnico
                                     @elseif($role->name === 'super-admin')
@@ -209,7 +209,7 @@
                 <!-- Permisos (Opcional) -->
                 @if($permissions->count() > 0)
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                    <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">
                         Permisos (Opcional)
                     </label>
                     <div class="max-h-48 overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-700">
@@ -219,7 +219,7 @@
                                     <input type="checkbox" name="permissions[]" value="{{ $permission->name }}" 
                                            {{ in_array($permission->name, old('permissions', [])) ? 'checked' : '' }}
                                            class="rounded border-gray-300 text-green-600 focus:ring-green-500">
-                                    <span class="ml-2 text-xs text-gray-700 dark:text-gray-300">{{ $permission->name }}</span>
+                                    <span class="ml-2 text-xs text-gray-700 dark:text-white">{{ $permission->name }}</span>
                                 </label>
                             @endforeach
                         </div>
@@ -230,7 +230,7 @@
 
             <!-- Submit Buttons -->
             <div class="mt-6 flex justify-end gap-3">
-                <a href="{{ route('admin.users.index') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-gray-300 dark:border-gray-600">
+                <a href="{{ route('admin.users.index') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-gray-300 dark:border-gray-600">
                     Cancelar
                 </a>
                 <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium dark:text-white transition-colors">

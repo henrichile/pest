@@ -64,7 +64,7 @@
                 <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight text-gray-900 dark:text-white" class="font-bold">
                     Mi Perfil
                 </h2>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                <p class="mt-1 text-sm text-gray-600 dark:text-white">
                     Gestiona tu información personal y configuración de cuenta
                 </p>
             </div>
@@ -233,7 +233,7 @@
                          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQ?:jEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" 
                          alt="{{ $user->name }}">
                     <h3 class="text-xl font-semibold mb-1 text-gray-900 dark:text-white">{{ $user->name }}</h3>
-                    <p class="text-sm mb-4 text-gray-600 dark:text-gray-300">{{ $user->email }}</p>
+                    <p class="text-sm mb-4 text-gray-600 dark:text-white">{{ $user->email }}</p>
                     
                     @if($roles->count() > 0)
                         <div class="flex flex-wrap justify-center gap-2 mb-4">
@@ -255,19 +255,19 @@
                 </div>
                 <div class="p-6 space-y-4">
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-600 dark:text-gray-300">Órdenes de Trabajo</span>
+                        <span class="text-sm text-gray-600 dark:text-white">Órdenes de Trabajo</span>
                         <span class="text-lg font-semibold text-gray-900 dark:text-white">{{ $stats['total_work_orders'] ?? 0 }}</span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-600 dark:text-gray-300">Completadas</span>
+                        <span class="text-sm text-gray-600 dark:text-white">Completadas</span>
                         <span class="text-lg font-semibold">{{ $stats['completed_work_orders'] ?? 0 }}</span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-600 dark:text-gray-300">Sesiones</span>
+                        <span class="text-sm text-gray-600 dark:text-white">Sesiones</span>
                         <span class="text-lg font-semibold text-gray-900 dark:text-white">{{ $stats['total_sessions'] ?? 0 }}</span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-600 dark:text-gray-300">Tratamientos</span>
+                        <span class="text-sm text-gray-600 dark:text-white">Tratamientos</span>
                         <span class="text-lg font-semibold text-gray-900 dark:text-white">{{ $stats['total_treatments'] ?? 0 }}</span>
                     </div>
                 </div>

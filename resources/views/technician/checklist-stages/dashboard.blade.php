@@ -315,7 +315,7 @@
                 <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight text-gray-900 dark:text-white" class="font-bold">
                     Dashboard
                 </h2>
-                <p class="mt-1 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                <p class="mt-1 text-xs sm:text-sm text-gray-600 dark:text-white">
                     {{ now()->locale('es')->isoFormat('dddd, D [de] MMMM') }}
                 </p>
             </div>
@@ -1046,7 +1046,7 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1 dark:text-white text-gray-600 dark:text-gray-300">Clientes</p>
+                        <p class="text-sm font-medium mb-1 dark:text-white text-gray-600 dark:text-white">Clientes</p>
                         <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $stats['clients'] ?? 0 }}</p>
                     </div>
                 </div>
@@ -1065,7 +1065,7 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1 dark:text-white text-gray-600 dark:text-gray-300">Este Mes</p>
+                        <p class="text-sm font-medium mb-1 dark:text-white text-gray-600 dark:text-white">Este Mes</p>
                         <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $stats['this_month'] ?? 0 }}</p>
                     </div>
                 </div>
@@ -1084,7 +1084,7 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1 dark:text-white text-gray-600 dark:text-gray-300">Completados</p>
+                        <p class="text-sm font-medium mb-1 dark:text-white text-gray-600 dark:text-white">Completados</p>
                         <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $stats['completed'] ?? 0 }}</p>
                     </div>
                 </div>
@@ -1103,7 +1103,7 @@
                         </div>
                     </div>
                     <div class="ml-4 flex-1">
-                        <p class="text-sm font-medium mb-1 dark:text-white text-gray-600 dark:text-gray-300">Pendientes</p>
+                        <p class="text-sm font-medium mb-1 dark:text-white text-gray-600 dark:text-white">Pendientes</p>
                         <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $stats['pending'] ?? 0 }}</p>
                     </div>
                 </div>
@@ -1128,17 +1128,17 @@
                     <div class="flex items-center gap-4 flex-wrap">
                         <div class="flex items-center gap-2">
                             <div class="w-3 h-3 rounded-full bg-blue-500"></div>
-                            <span class="text-sm statistics-text dark:text-white text-gray-600 dark:text-gray-300">Total Servicios</span>
+                            <span class="text-sm statistics-text dark:text-white text-gray-600 dark:text-white">Total Servicios</span>
                             <span class="text-sm font-semibold statistics-number text-gray-900 dark:text-white">{{ $stats['total_services'] ?? 0 }}</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                            <span class="text-sm statistics-text dark:text-white text-gray-600 dark:text-gray-300">Completados</span>
+                            <span class="text-sm statistics-text dark:text-white text-gray-600 dark:text-white">Completados</span>
                             <span class="text-sm font-semibold statistics-number text-gray-900 dark:text-white">{{ $stats['completed'] ?? 0 }}</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                            <span class="text-sm statistics-text dark:text-white text-gray-600 dark:text-gray-300">Pendientes</span>
+                            <span class="text-sm statistics-text dark:text-white text-gray-600 dark:text-white">Pendientes</span>
                             <span class="text-sm font-semibold statistics-number text-gray-900 dark:text-white">{{ $stats['pending'] ?? 0 }}</span>
             </div>
                     </div>
@@ -1160,23 +1160,23 @@
                 <div class="mt-4 flex flex-wrap items-center gap-4 justify-center">
                     <div class="flex items-center gap-2">
                         <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                        <span class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Fumigación</span>
+                        <span class="text-xs dark:text-white text-gray-600 dark:text-white">Fumigación</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <div class="w-3 h-3 rounded-full bg-amber-500"></div>
-                        <span class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Desratización</span>
+                        <span class="text-xs dark:text-white text-gray-600 dark:text-white">Desratización</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <div class="w-3 h-3 rounded-full bg-purple-500"></div>
-                        <span class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Sanitización</span>
+                        <span class="text-xs dark:text-white text-gray-600 dark:text-white">Sanitización</span>
                                     </div>
                     <div class="flex items-center gap-2">
                         <div class="w-3 h-3 rounded-full bg-pink-500"></div>
-                        <span class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Monitoreo Cebaderas</span>
+                        <span class="text-xs dark:text-white text-gray-600 dark:text-white">Monitoreo Cebaderas</span>
                                         </div>
                     <div class="flex items-center gap-2">
                         <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                        <span class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Otros Servicios</span>
+                        <span class="text-xs dark:text-white text-gray-600 dark:text-white">Otros Servicios</span>
                                         </div>
                                     </div>
                 
@@ -1209,9 +1209,9 @@
                                 <p class="text-xs font-semibold mb-1 text-gray-900 dark:text-white">{{ $typeInfo['name'] }}</p>
                                 <p class="text-2xl font-bold mb-1 text-gray-900 dark:text-white">{{ $count }}</p>
                                 @if($count > 0 && $percentage > 0)
-                                    <p class="text-xs dark:text-white text-gray-600 dark:text-gray-300">{{ $percentage }}%</p>
+                                    <p class="text-xs dark:text-white text-gray-600 dark:text-white">{{ $percentage }}%</p>
                                 @else
-                                    <p class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Sin actividad</p>
+                                    <p class="text-xs dark:text-white text-gray-600 dark:text-white">Sin actividad</p>
                                 @endif
                             </div>
                         @endforeach
@@ -1234,9 +1234,9 @@
                             <p class="text-xs font-semibold mb-1 text-gray-900 dark:text-white">OTROS SERVICIOS</p>
                             <p class="text-2xl font-bold mb-1 text-gray-900 dark:text-white">{{ $otherCount }}</p>
                             @if($otherCount > 0 && $otherPercentage > 0)
-                                <p class="text-xs dark:text-white text-gray-600 dark:text-gray-300">{{ $otherPercentage }}%</p>
+                                <p class="text-xs dark:text-white text-gray-600 dark:text-white">{{ $otherPercentage }}%</p>
                             @else
-                                <p class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Sin actividad</p>
+                                <p class="text-xs dark:text-white text-gray-600 dark:text-white">Sin actividad</p>
                             @endif
                         </div>
                     </div>
@@ -1251,9 +1251,9 @@
                 <div class="p-5">
                     <h3 class="text-base font-semibold mb-3 text-gray-900 dark:text-white">Ingresos del Mes</h3>
                     <p class="text-3xl font-bold mb-2">${{ number_format($stats['monthly_income'] ?? 0, 0, ',', '.') }}</p>
-                    <p class="text-sm mb-3 dark:text-white text-gray-600 dark:text-gray-300">{{ $stats['this_month_completed'] ?? $stats['completed'] ?? 0 }} servicios completados</p>
+                    <p class="text-sm mb-3 dark:text-white text-gray-600 dark:text-white">{{ $stats['this_month_completed'] ?? $stats['completed'] ?? 0 }} servicios completados</p>
                     <div class="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
-                        <span class="text-sm dark:text-white text-gray-600 dark:text-gray-300">Promedio:</span>
+                        <span class="text-sm dark:text-white text-gray-600 dark:text-white">Promedio:</span>
                         <span class="text-sm font-semibold text-gray-900 dark:text-white">${{ number_format(($stats['monthly_income'] ?? 0) / max($stats['this_month_completed'] ?? $stats['completed'] ?? 1, 1), 0, ',', '.') }}</span>
             </div>
         </div>
@@ -1269,7 +1269,7 @@
                         Alertas de Stock
                     </h3>
                     <p class="text-4xl font-bold mb-2">{{ $stats['low_stock_alerts'] ?? 0 }}</p>
-                    <p class="text-sm mb-2 dark:text-white text-gray-600 dark:text-gray-300">Productos con stock bajo</p>
+                    <p class="text-sm mb-2 dark:text-white text-gray-600 dark:text-white">Productos con stock bajo</p>
                     @if(($stats['low_stock_alerts'] ?? 0) > 0)
                         <p class="text-xs flex items-center gap-1">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -1298,7 +1298,7 @@
                     <div class="flex-1 min-w-0">
                         <span class="absolute inset-0" aria-hidden="true"></span>
                                 <p class="text-sm font-semibold text-gray-900 dark:text-white">Nuevo Servicio</p>
-                                <p class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Crear orden de trabajo</p>
+                                <p class="text-xs dark:text-white text-gray-600 dark:text-white">Crear orden de trabajo</p>
                     </div>
                 </a>
 
@@ -1313,7 +1313,7 @@
                     <div class="flex-1 min-w-0">
                         <span class="absolute inset-0" aria-hidden="true"></span>
                                 <p class="text-sm font-semibold text-gray-900 dark:text-white">Nuevo Cliente</p>
-                                <p class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Registrar cliente</p>
+                                <p class="text-xs dark:text-white text-gray-600 dark:text-white">Registrar cliente</p>
                     </div>
                 </a>
 
@@ -1328,7 +1328,7 @@
                     <div class="flex-1 min-w-0">
                         <span class="absolute inset-0" aria-hidden="true"></span>
                                 <p class="text-sm font-semibold text-gray-900 dark:text-white">Ver Estadísticas</p>
-                                <p class="text-xs dark:text-white text-gray-600 dark:text-gray-300">Reportes y gráficos</p>
+                                <p class="text-xs dark:text-white text-gray-600 dark:text-white">Reportes y gráficos</p>
                     </div>
                 </a>
             </div>
@@ -1384,7 +1384,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="5" class="px-6 py-8 text-center text-sm dark:text-white text-gray-600 dark:text-gray-300">
+                                <td colspan="5" class="px-6 py-8 text-center text-sm dark:text-white text-gray-600 dark:text-white">
                                     No hay servicios registrados aún
                                 </td>
                             </tr>

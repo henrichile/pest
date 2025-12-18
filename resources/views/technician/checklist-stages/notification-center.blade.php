@@ -10,7 +10,7 @@
             <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight text-gray-900 dark:text-white" class="font-bold">
                 Centro de Notificaciones
             </h2>
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+            <p class="mt-1 text-sm text-gray-600 dark:text-white">
                 Administra y envía notificaciones a los usuarios del sistema
             </p>
         </div>
@@ -58,12 +58,12 @@
         <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
-                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-gray-600 dark:text-gray-300">
+                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-gray-600 dark:text-white">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-300">Total</p>
+                    <p class="text-sm font-medium text-gray-600 dark:text-white">Total</p>
                     <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $totalNotifications }}</p>
                 </div>
             </div>
@@ -77,7 +77,7 @@
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-300">No Leídas</p>
+                    <p class="text-sm font-medium text-gray-600 dark:text-white">No Leídas</p>
                     <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $unreadNotifications }}</p>
                 </div>
             </div>
@@ -91,7 +91,7 @@
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-300">Hoy</p>
+                    <p class="text-sm font-medium text-gray-600 dark:text-white">Hoy</p>
                     <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $todayNotifications }}</p>
                 </div>
             </div>
@@ -105,7 +105,7 @@
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-300">Tipos</p>
+                    <p class="text-sm font-medium text-gray-600 dark:text-white">Tipos</p>
                     <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ count($notificationsByType) }}</p>
                 </div>
             </div>
@@ -116,14 +116,14 @@
     <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4 mb-6 border border-gray-200 dark:border-gray-700">
         <form method="GET" action="{{ route('admin.notification-center') }}" class="grid grid-cols-1 md:grid-cols-5 gap-4">
             <div>
-                <label for="search" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Buscar</label>
+                <label for="search" class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">Buscar</label>
                 <input type="text" id="search" name="search" value="{{ request('search') }}" placeholder="Buscar en notificaciones..."
                        class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                        style="border: 1px solid #e5e7eb !important; color: #111827;">
             </div>
 
             <div>
-                <label for="type" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Tipo</label>
+                <label for="type" class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">Tipo</label>
                 <select id="type" name="type" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:text-white dark:bg-gray-700 dark:border-gray-600" style="border: 1px solid #e5e7eb !important; color: #111827;">
                     <option value="">Todos</option>
                     @foreach($notificationsByType as $type => $count)
@@ -133,7 +133,7 @@
             </div>
 
             <div>
-                <label for="read_status" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Estado</label>
+                <label for="read_status" class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">Estado</label>
                 <select id="read_status" name="read_status" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:text-white dark:bg-gray-700 dark:border-gray-600" style="border: 1px solid #e5e7eb !important; color: #111827;">
                     <option value="">Todos</option>
                     <option value="unread" {{ request('read_status') == 'unread' ? 'selected' : '' }}>No Leídas</option>
@@ -142,14 +142,14 @@
             </div>
 
             <div>
-                <label for="start_date" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Desde</label>
+                <label for="start_date" class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">Desde</label>
                 <input type="date" id="start_date" name="start_date" value="{{ request('start_date') }}"
                        class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                        style="border: 1px solid #e5e7eb !important; color: #111827;">
             </div>
 
             <div>
-                <label for="end_date" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Hasta</label>
+                <label for="end_date" class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">Hasta</label>
                 <input type="date" id="end_date" name="end_date" value="{{ request('end_date') }}"
                        class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                        style="border: 1px solid #e5e7eb !important; color: #111827;">
@@ -181,13 +181,13 @@
                 </colgroup>
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">Usuario</th>
-                        <th class="px-2 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">Tipo</th>
-                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">Título</th>
-                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">Mensaje</th>
-                        <th class="px-2 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">Estado</th>
-                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">Fecha</th>
-                        <th class="px-3 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">Acciones</th>
+                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-white">Usuario</th>
+                        <th class="px-2 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-white">Tipo</th>
+                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-white">Título</th>
+                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-white">Mensaje</th>
+                        <th class="px-2 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-white">Estado</th>
+                        <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-white">Fecha</th>
+                        <th class="px-3 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-white">Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
@@ -260,7 +260,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-600 dark:text-gray-300">
+                            <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-600 dark:text-white">
                                 No se encontraron notificaciones
                             </td>
                         </tr>
@@ -298,31 +298,31 @@
 
                     <div class="space-y-4">
                         <div>
-                            <label for="user_ids" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Usuarios *</label>
+                            <label for="user_ids" class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">Usuarios *</label>
                             <select id="user_ids" name="user_ids[]" multiple required class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:text-white dark:bg-gray-700 dark:border-gray-600" style="border: 1px solid #e5e7eb !important; color: #111827; min-height: 100px;">
                                 @foreach($users as $user)
                                     <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
                                 @endforeach
                             </select>
-                            <p class="mt-1 text-xs text-gray-600 dark:text-gray-300">Mantén presionado Ctrl (Cmd en Mac) para seleccionar múltiples usuarios</p>
+                            <p class="mt-1 text-xs text-gray-600 dark:text-white">Mantén presionado Ctrl (Cmd en Mac) para seleccionar múltiples usuarios</p>
                         </div>
 
                         <div>
-                            <label for="title" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Título *</label>
+                            <label for="title" class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">Título *</label>
                             <input type="text" id="title" name="title" required
                                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                    style="border: 1px solid #e5e7eb !important; color: #111827;">
                         </div>
 
                         <div>
-                            <label for="message" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Mensaje *</label>
+                            <label for="message" class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">Mensaje *</label>
                             <textarea id="message" name="message" rows="4" required
                                       class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                       style="border: 1px solid #e5e7eb !important; color: #111827;"></textarea>
                         </div>
 
                         <div>
-                            <label for="type" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Tipo *</label>
+                            <label for="type" class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">Tipo *</label>
                             <select id="type" name="type" required class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:text-white dark:bg-gray-700 dark:border-gray-600" style="border: 1px solid #e5e7eb !important; color: #111827;">
                                 <option value="info">Info</option>
                                 <option value="success">Éxito</option>
@@ -332,7 +332,7 @@
                         </div>
 
                         <div>
-                            <label for="url" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">URL (opcional)</label>
+                            <label for="url" class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">URL (opcional)</label>
                             <input type="url" id="url" name="url"
                                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                                    style="border: 1px solid #e5e7eb !important; color: #111827;">

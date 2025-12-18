@@ -7,7 +7,7 @@
     <!-- Título -->
     <div class="mb-6">
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Configuración de Reportes</h1>
-        <p class="text-sm mt-1 text-gray-600 dark:text-gray-300">Personaliza la configuración predeterminada de los reportes</p>
+        <p class="text-sm mt-1 text-gray-600 dark:text-white">Personaliza la configuración predeterminada de los reportes</p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -18,7 +18,7 @@
                 <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Formato Predeterminado</h3>
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Formato de Exportación</label>
+                        <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Formato de Exportación</label>
                         <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                             <option value="csv">CSV</option>
                             <option value="pdf">PDF</option>
@@ -26,10 +26,10 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Incluir Gráficos</label>
+                        <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Incluir Gráficos</label>
                         <div class="flex items-center gap-2">
                             <input type="checkbox" id="include_charts" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
-                            <label for="include_charts" class="text-sm text-gray-600 dark:text-gray-300">Incluir gráficos en reportes PDF</label>
+                            <label for="include_charts" class="text-sm text-gray-600 dark:text-white">Incluir gráficos en reportes PDF</label>
                         </div>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                 <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Filtros Predeterminados</h3>
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Rango de Fechas Predeterminado</label>
+                        <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Rango de Fechas Predeterminado</label>
                         <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                             <option value="this-month">Este Mes</option>
                             <option value="last-month">Último Mes</option>
@@ -50,17 +50,17 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Incluir Servicios Completados</label>
+                        <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Incluir Servicios Completados</label>
                         <div class="flex items-center gap-2">
                             <input type="checkbox" id="include_completed" checked class="rounded border-gray-300 text-green-600 focus:ring-green-500">
-                            <label for="include_completed" class="text-sm text-gray-600 dark:text-gray-300">Incluir servicios completados por defecto</label>
+                            <label for="include_completed" class="text-sm text-gray-600 dark:text-white">Incluir servicios completados por defecto</label>
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Incluir Servicios Pendientes</label>
+                        <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Incluir Servicios Pendientes</label>
                         <div class="flex items-center gap-2">
                             <input type="checkbox" id="include_pending" checked class="rounded border-gray-300 text-green-600 focus:ring-green-500">
-                            <label for="include_pending" class="text-sm text-gray-600 dark:text-gray-300">Incluir servicios pendientes por defecto</label>
+                            <label for="include_pending" class="text-sm text-gray-600 dark:text-white">Incluir servicios pendientes por defecto</label>
                         </div>
                     </div>
                 </div>
@@ -71,14 +71,14 @@
                 <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Notificaciones</h3>
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Notificar al Completar Exportación</label>
+                        <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Notificar al Completar Exportación</label>
                         <div class="flex items-center gap-2">
                             <input type="checkbox" id="notify_export" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
-                            <label for="notify_export" class="text-sm text-gray-600 dark:text-gray-300">Enviar notificación cuando se complete una exportación</label>
+                            <label for="notify_export" class="text-sm text-gray-600 dark:text-white">Enviar notificación cuando se complete una exportación</label>
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-300">Email para Notificaciones</label>
+                        <label class="block text-sm font-medium mb-2 text-gray-600 dark:text-white">Email para Notificaciones</label>
                         <input type="email" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 placeholder:text-gray-400 dark:placeholder:text-gray-500 dark:text-white dark:bg-gray-700 dark:border-gray-600" placeholder="email@ejemplo.com">
                     </div>
                 </div>
@@ -90,7 +90,7 @@
             <!-- Información -->
             <div class="bg-white rounded-lg shadow-md border p-6" style="border: 1px solid #e5e7eb;">
                 <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Información</h3>
-                <div class="space-y-3 text-sm text-gray-600 dark:text-gray-300">
+                <div class="space-y-3 text-sm text-gray-600 dark:text-white">
                     <p>Las configuraciones aquí establecidas se aplicarán como valores predeterminados para todos los nuevos reportes.</p>
                     <p>Puedes sobrescribir estas configuraciones al generar reportes individuales.</p>
                 </div>
