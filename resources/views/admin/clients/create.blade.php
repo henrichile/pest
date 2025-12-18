@@ -118,7 +118,7 @@
                         </label>
                         <input type="text" name="name" id="name" value="{{ old('name') }}" required
                                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                               style="border: 1px solid #e5e7eb !important; color: #111827;">
+                               style="border: 1px solid #e5e7eb !important; ">
                     </div>
 
                     <!-- RUT -->
@@ -128,7 +128,7 @@
                         </label>
                         <input type="text" name="rut" id="rut" value="{{ old('rut') }}" required
                                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                               style="border: 1px solid #e5e7eb !important; color: #111827;">
+                               style="border: 1px solid #e5e7eb !important;">
                     </div>
 
                     <!-- Email -->
@@ -138,7 +138,7 @@
                         </label>
                         <input type="email" name="email" id="email" value="{{ old('email') }}"
                                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                               style="border: 1px solid #e5e7eb !important; color: #111827;">
+                               style="border: 1px solid #e5e7eb !important;">
                     </div>
 
                     <!-- Teléfono -->
@@ -148,7 +148,7 @@
                         </label>
                         <input type="text" name="phone" id="phone" value="{{ old('phone') }}" required
                                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                               style="border: 1px solid #e5e7eb !important; color: #111827;">
+                               style="border: 1px solid #e5e7eb !important;">
                     </div>
 
                     <!-- Dirección -->
@@ -159,7 +159,7 @@
                         <input type="text" name="address" id="address" value="{{ old('address') }}" required
                                placeholder="Calle, número, piso, depto."
                                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                               style="border: 1px solid #e5e7eb !important; color: #111827;">
+                               style="border: 1px solid #e5e7eb !important;">
                     </div>
 
                     <!-- Tipo de Negocio -->
@@ -170,7 +170,7 @@
                         <input type="text" name="business_type" id="business_type" value="{{ old('business_type') }}"
                                placeholder="Ej: Restaurante, Retail, etc."
                                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                               style="border: 1px solid #e5e7eb !important; color: #111827;">
+                               style="border: 1px solid #e5e7eb !important;">
                     </div>
 
                     <!-- Persona de Contacto -->
@@ -181,7 +181,7 @@
                         <input type="text" name="contact_person" id="contact_person" value="{{ old('contact_person') }}"
                                placeholder="Ej: Juan Pérez - Gerente"
                                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                               style="border: 1px solid #e5e7eb !important; color: #111827;">
+                               style="border: 1px solid #e5e7eb !important;">
                     </div>
                 </div>
             </div>
@@ -189,7 +189,7 @@
 
             <!-- Botones -->
             <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
-                <a href="{{ route('admin.clients.index') }}" class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium transition-colors">
+                <a href="{{ route('admin.clients.index') }}" class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium transition-colors dark:text-white dark:bg-gray-700 dark:hover:bg-gray-600">
                     Cancelar
                 </a>
                 <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors">
