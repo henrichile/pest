@@ -21,7 +21,7 @@
             <!-- Título -->
             <div class="flex-1">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white" class="font-bold">
-                    Clientes
+                    Clientes x
                 </h2>
             </div>
         </div>
@@ -40,7 +40,7 @@
         <div class="hidden md:flex md:items-center md:justify-between">
             <div class="min-w-0 flex-1">
                 <h2 class="text-2xl sm:text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight text-gray-900 dark:text-white" class="font-bold">
-                    Clientes x
+                    Clientes
                 </h2>
                 <p class="mt-1 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                     Gestiona la información de todos los clientes
