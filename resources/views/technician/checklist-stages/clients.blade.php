@@ -63,11 +63,11 @@
         <form method="GET" action="{{ route('admin.clients.index') ?? route('clients.index') ?? '#' }}" class="flex flex-col sm:flex-row gap-3">
             <div class="flex-1 relative" style="max-width: 100%;">
                 <div class="absolute inset-y-0 left-0 pl-3 dark:white flex items-center pointer-events-none z-10">
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <svg class="h-5 w-5" style="left: 10px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #9ca3af; pointer-events: none; z-index: 1;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                 </div>
-                <input type="text" name="search" id="search-input" class="block w-full pr-3 py-3.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all dark:text-white dark:bg-gray-700 dark:border-gray-600" style="border: 1px solid #e5e7eb !important; color: #111827; background: white; padding-left: 40px !important;" style="padding-left: 40px !important;" placeholder="Buscar por nombre, RUT..." value="{{ request('search') }}">
+                <input type="text" name="search" id="search-input" class="block w-full pr-3 py-3.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all dark:text-white dark:bg-gray-700 dark:border-gray-600" style="border: 1px solid #e5e7eb !important; color: #111827; background: white; padding-left: 40px !important;" placeholder="Buscar por nombre, RUT..." value="{{ request('search') }}">
             </div>
             <button type="submit" class="px-4 py-3.5 bg-gray-700 text-white rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors text-sm font-medium whitespace-nowrap">
                 Buscar
