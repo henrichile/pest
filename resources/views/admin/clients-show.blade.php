@@ -21,7 +21,7 @@
             <!-- Título -->
             <div class="flex-1">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white" class="font-bold">
-                    Detalle del Cliente x
+                    Detalle del Cliente 
                 </h2>
             </div>
 
@@ -91,7 +91,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         <!-- Información Básica -->
         <div class="lg:col-span-2 bg-white border border-gray-200 rounded-lg shadow-sm p-6">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Información Básica</h3>
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Información Básica x</h3>
             <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <dt class="text-sm font-medium text-gray-500">Nombre</dt>
