@@ -87,9 +87,9 @@
                         <th class="px-4 sm:px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-300">ACCIONES</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
+                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200">
                     @forelse($clients as $client)
-                        <tr class="hover:bg-gray-50 dark:hover:bg-transparent">
+                        <tr>
                             <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
                                 <div>
                                     <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $client->name ?? 'Sin nombre' }}</div>
