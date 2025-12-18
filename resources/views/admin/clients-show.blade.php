@@ -21,7 +21,7 @@
             <!-- Título -->
             <div class="flex-1">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white" class="font-bold">
-                    Detalle del Cliente
+                    Detalle del Cliente x
                 </h2>
             </div>
 
