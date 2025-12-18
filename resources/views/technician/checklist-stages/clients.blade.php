@@ -89,7 +89,7 @@
                 </thead>
                 <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
                     @forelse($clients as $client)
-                        <tr class="hover:bg-gray-50">
+                        <tr class="hover:bg-gray-50 dark:hover:bg-transparent">
                             <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
                                 <div>
                                     <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $client->name ?? 'Sin nombre' }}</div>
