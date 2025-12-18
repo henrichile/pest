@@ -91,62 +91,62 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         <!-- Información Básica -->
         <div class="lg:col-span-2 bg-white border border-gray-200 rounded-lg shadow-sm p-6">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Información Básica x</h3>
+            <h3 class="text-lg font-medium text-gray-900 mb-4 dark:text-white">Información Básica x</h3>
             <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <dt class="text-sm font-medium text-gray-500">Nombre</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ $client->name }}</dd>
+                    <dt class="text-sm font-medium text-gray-500 dark:text-white">Nombre</dt>
+                    <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $client->name }}</dd>
                 </div>
                 <div>
-                    <dt class="text-sm font-medium text-gray-500">RUT</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ $client->rut }}</dd>
+                    <dt class="text-sm font-medium text-gray-500 dark:text-white">RUT</dt>
+                    <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $client->rut }}</dd>
                 </div>
                 <div>
-                    <dt class="text-sm font-medium text-gray-500">Email</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ $client->email ?? 'N/A' }}</dd>
+                    <dt class="text-sm font-medium text-gray-500 dark:text-white">Email</dt>
+                    <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $client->email ?? 'N/A' }}</dd>
                 </div>
                 <div>
-                    <dt class="text-sm font-medium text-gray-500">Teléfono</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ $client->phone ?? 'N/A' }}</dd>
+                    <dt class="text-sm font-medium text-gray-500 dark:text-white">Teléfono</dt>
+                    <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $client->phone ?? 'N/A' }}</dd>
                 </div>
                 <div class="sm:col-span-2">
-                    <dt class="text-sm font-medium text-gray-500">Dirección</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ $client->address ?? 'N/A' }}</dd>
+                    <dt class="text-sm font-medium text-gray-500 dark:text-white">Dirección</dt>
+                    <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $client->address ?? 'N/A' }}</dd>
                 </div>
                 <div>
-                    <dt class="text-sm font-medium text-gray-500">Ciudad</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ $client->city ?? 'N/A' }}</dd>
+                    <dt class="text-sm font-medium text-gray-500 dark:text-white">Ciudad</dt>
+                    <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $client->city ?? 'N/A' }}</dd>
                 </div>
                 <div>
-                    <dt class="text-sm font-medium text-gray-500">Región</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ $client->region ?? 'N/A' }}</dd>
+                    <dt class="text-sm font-medium text-gray-500 dark:text-white">Región</dt>
+                    <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $client->region ?? 'N/A' }}</dd>
                 </div>
                 <div>
-                    <dt class="text-sm font-medium text-gray-500">País</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ $client->country ?? 'N/A' }}</dd>
+                    <dt class="text-sm font-medium text-gray-500 dark:text-white">País</dt>
+                    <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $client->country ?? 'N/A' }}</dd>
                 </div>
                 <div>
-                    <dt class="text-sm font-medium text-gray-500">Código Postal</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ $client->postal_code ?? 'N/A' }}</dd>
+                    <dt class="text-sm font-medium text-gray-500 dark:text-white">Código Postal</dt>
+                    <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $client->postal_code ?? 'N/A' }}</dd>
                 </div>
             </dl>
         </div>
 
         <!-- Información de Negocio -->
         <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Información de Negocio</h3>
+            <h3 class="text-lg font-medium text-gray-900 mb-4 dark:text-white">Información de Negocio</h3>
             <dl class="space-y-4">
                 <div>
-                    <dt class="text-sm font-medium text-gray-500">Tipo de Negocio</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ $client->business_type ?? 'N/A' }}</dd>
+                    <dt class="text-sm font-medium text-gray-500 dark:text-white">Tipo de Negocio</dt>
+                    <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $client->business_type ?? 'N/A' }}</dd>
                 </div>
                 <div>
-                    <dt class="text-sm font-medium text-gray-500">Industria</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ $client->industry ?? 'N/A' }}</dd>
+                    <dt class="text-sm font-medium text-gray-500 dark:text-white">Industria</dt>
+                    <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $client->industry ?? 'N/A' }}</dd>
                 </div>
                 <div>
-                    <dt class="text-sm font-medium text-gray-500">Notas</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ $client->notes ?? 'N/A' }}</dd>
+                    <dt class="text-sm font-medium text-gray-500 dark:text-white">Notas</dt>
+                    <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $client->notes ?? 'N/A' }}</dd>
                 </div>
             </dl>
         </div>
@@ -155,35 +155,35 @@
     <!-- Sitios del Cliente -->
     <div class="bg-white border border-gray-200 rounded-lg shadow-sm">
         <div class="px-6 py-4 border-b border-gray-200">
-            <h3 class="text-lg font-medium text-gray-900">Sitios</h3>
+            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Sitios</h3>
         </div>
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dirección</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ciudad</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-white tracking-wider">Nombre</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-white tracking-wider">Dirección</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-white tracking-wider">Ciudad</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-white tracking-wider">Estado</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200">
                     @forelse($client->sites as $site)
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $site->name }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $site->address ?? 'N/A' }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $site->city ?? 'N/A' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{{ $site->name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-white">{{ $site->address ?? 'N/A' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-white">{{ $site->city ?? 'N/A' }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($site->is_active)
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Activo</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:text-white">Activo</span>
                                 @else
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Inactivo</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 dark:text-white">Inactivo</span>
                                 @endif
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-6 py-8 text-center text-sm text-gray-500">
+                            <td colspan="4" class="px-6 py-8 text-center text-sm text-gray-500 dark:text-white">
                                 No hay sitios registrados para este cliente
                             </td>
                         </tr>
@@ -196,31 +196,31 @@
     <!-- Órdenes de Trabajo -->
     <div class="bg-white border border-gray-200 rounded-lg shadow-sm">
         <div class="px-6 py-4 border-b border-gray-200">
-            <h3 class="text-lg font-medium text-gray-900">Órdenes de Trabajo Recientes</h3>
+            <h3 class="text-lg font-medium text-gray-900 dark:text-white ">Órdenes de Trabajo Recientes</h3>
         </div>
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Folio</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Servicio</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Folio</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Servicio</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Fecha</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Estado</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200">
                     @forelse($client->workOrders->take(10) as $workOrder)
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $workOrder->folio ?? 'N/A' }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $workOrder->service->name ?? 'N/A' }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{{ $workOrder->folio ?? 'N/A' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-white">{{ $workOrder->service->name ?? 'N/A' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-white">
                                 {{ $workOrder->scheduled_date ? $workOrder->scheduled_date->format('d/m/Y') : 'N/A' }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-white">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                    @if($workOrder->status === 'completed') bg-green-100 text-green-800
-                                    @elseif($workOrder->status === 'pending') bg-yellow-100 text-yellow-800
-                                    @else bg-blue-100 text-blue-800
+                                    @if($workOrder->status === 'completed') bg-green-100 text-green-800 dark:text-white
+                                    @elseif($workOrder->status === 'pending') bg-yellow-100 text-yellow-800 dark:text-white
+                                    @else bg-blue-100 text-blue-800 dark:text-white
                                     @endif">
                                     {{ ucfirst($workOrder->status) }}
                                 </span>
@@ -228,7 +228,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-6 py-8 text-center text-sm text-gray-500">
+                            <td colspan="4" class="px-6 py-8 text-center text-sm text-gray-500 dark:text-white">
                                 No hay órdenes de trabajo registradas para este cliente
                             </td>
                         </tr>
