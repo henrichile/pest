@@ -182,7 +182,7 @@
                         <input type="text" name="contact_person" id="contact_person" value="{{ old('contact_person', $client->contact_person) }}"
                                placeholder="Ej: Juan Pérez - Gerente"
                                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                               style="border: 1px solid #e5e7eb !important; color: #111827;">
+                               style="border: 1px solid #e5e7eb !important; ">
                     </div>
                 </div>
             </div>
