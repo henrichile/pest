@@ -239,13 +239,25 @@ class NotificationController extends Controller
     {
         try {
             $user = Auth::user();
-            $notification = $user->notifications()->find($id);
             
-            if ($notification) {
-                $notification->delete();
+            // Si es admin, puede eliminar cualquier notificación
+            if ($user->hasRole('super-admin')) {
+                $deleted = DB::table('notifications')->where('id', $id)->delete();
                 
-                return redirect()->back()
-                    ->with('success', 'Notificación eliminada.');
+                if ($deleted) {
+                    return redirect()->back()
+                        ->with('success', 'Notificación eliminada.');
+                }
+            } else {
+                // Para técnicos, solo pueden eliminar sus propias notificaciones
+                $notification = $user->notifications()->find($id);
+                
+                if ($notification) {
+                    $notification->delete();
+                    
+                    return redirect()->back()
+                        ->with('success', 'Notificación eliminada.');
+                }
             }
             
             return redirect()->back()
