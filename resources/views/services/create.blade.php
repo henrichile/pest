@@ -4,8 +4,8 @@
 <div class="container mx-auto px-4 py-6">
     <div class="bg-white shadow-md rounded-lg p-6">
         <div class="mb-6">
-            <h2 class="text-xl font-semibold text-gray-900">Crear Nuevo Servicio</h2>
-            <p class="text-gray-600">Complete los datos del nuevo servicio</p>
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Crear Nuevo Servicio</h2>
+            <p class="text-gray-600 dark:text-white">Complete los datos del nuevo servicio</p>
         </div>
 
         @if ($errors->any())
