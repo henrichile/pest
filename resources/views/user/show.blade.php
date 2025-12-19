@@ -64,7 +64,7 @@
                 <h2 class="text-3xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight">
                     {{ $user->name }}
                 </h2>
-                <p class="mt-1 text-sm text-gray-600">
+                <p class="mt-1 text-sm text-gray-600 dark:text-white">
                     Detalles y estadísticas del usuario
                 </p>
             </div>
@@ -81,19 +81,19 @@
         <div class="px-4 py-5 sm:p-6">
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>
-                    <h3 class="text-sm font-medium text-gray-500">Nombre</h3>
-                    <p class="mt-1 text-sm text-gray-900">{{ $user->name }}</p>
+                    <h3 class="text-sm font-medium text-gray-500 dark:text-white">Nombre</h3>
+                    <p class="mt-1 text-sm text-gray-900 dark:text-white">{{ $user->name }}</p>
                 </div>
                 <div>
-                    <h3 class="text-sm font-medium text-gray-500">Email</h3>
-                    <p class="mt-1 text-sm text-gray-900">{{ $user->email }}</p>
+                    <h3 class="text-sm font-medium text-gray-500 dark:text-white">Email</h3>
+                    <p class="mt-1 text-sm text-gray-900 dark:text-white">{{ $user->email }}</p>
                 </div>
                 <div>
-                    <h3 class="text-sm font-medium text-gray-500">Teléfono</h3>
-                    <p class="mt-1 text-sm text-gray-900">{{ $user->phone ?? 'N/A' }}</p>
+                    <h3 class="text-sm font-medium text-gray-500 dark:text-white">Teléfono</h3>
+                    <p class="mt-1 text-sm text-gray-900 dark:text-white">{{ $user->phone ?? 'N/A' }}</p>
                 </div>
                 <div>
-                    <h3 class="text-sm font-medium text-gray-500">Estado</h3>
+                    <h3 class="text-sm font-medium text-gray-500 dark:text-white">Estado</h3>
                     <p class="mt-1">
                         @if($user->is_active)
                             <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
@@ -107,20 +107,20 @@
                     </p>
                 </div>
                 <div>
-                    <h3 class="text-sm font-medium text-gray-500">Roles</h3>
+                    <h3 class="text-sm font-medium text-gray-500 dark:text-white">Roles</h3>
                     <div class="mt-1 flex flex-wrap gap-1">
                         @forelse($user->roles as $role)
-                            <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
+                            <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-white">
                                 {{ $role->name }}
                             </span>
                         @empty
-                            <span class="text-sm text-gray-500">Sin roles asignados</span>
+                            <span class="text-sm text-gray-500 dark:text-white">Sin roles asignados</span>
                         @endforelse
                     </div>
                 </div>
                 <div>
-                    <h3 class="text-sm font-medium text-gray-500">Fecha de Registro</h3>
-                    <p class="mt-1 text-sm text-gray-900">{{ $user->created_at->format('d/m/Y H:i') }}</p>
+                    <h3 class="text-sm font-medium text-gray-500 dark:text-white">Fecha de Registro</h3>
+                    <p class="mt-1 text-sm text-gray-900 dark:text-white">{{ $user->created_at->format('d/m/Y H:i') }}</p>
                 </div>
             </div>
         </div>
@@ -138,8 +138,8 @@
                     </div>
                     <div class="ml-5 w-0 flex-1">
                         <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Órdenes de Trabajo</dt>
-                            <dd class="text-lg font-semibold text-gray-900">{{ $stats['total_work_orders'] }}</dd>
+                            <dt class="text-sm font-medium text-gray-500 truncate dark:text-white">Órdenes de Trabajo</dt>
+                            <dd class="text-lg font-semibold text-gray-900 dark:text-white">{{ $stats['total_work_orders'] }}</dd>
                         </dl>
                     </div>
                 </div>
@@ -156,8 +156,8 @@
                     </div>
                     <div class="ml-5 w-0 flex-1">
                         <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Completadas</dt>
-                            <dd class="text-lg font-semibold text-gray-900">{{ $stats['completed_work_orders'] }}</dd>
+                            <dt class="text-sm font-medium text-gray-500 truncate dark:text-white">Completadas</dt>
+                            <dd class="text-lg font-semibold text-gray-900 dark:text-white">{{ $stats['completed_work_orders'] }}</dd>
                         </dl>
                     </div>
                 </div>
@@ -174,8 +174,8 @@
                     </div>
                     <div class="ml-5 w-0 flex-1">
                         <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Sesiones de Trabajo</dt>
-                            <dd class="text-lg font-semibold text-gray-900">{{ $stats['total_sessions'] }}</dd>
+                            <dt class="text-sm font-medium text-gray-500 truncate dark:text-white">Sesiones de Trabajo</dt>
+                            <dd class="text-lg font-semibold text-gray-900 dark:text-white">{{ $stats['total_sessions'] }}</dd>
                         </dl>
                     </div>
                 </div>
@@ -192,8 +192,8 @@
                     </div>
                     <div class="ml-5 w-0 flex-1">
                         <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Tratamientos</dt>
-                            <dd class="text-lg font-semibold text-gray-900">{{ $stats['total_treatments'] }}</dd>
+                            <dt class="text-sm font-medium text-gray-500 truncate dark:text-white">Tratamientos</dt>
+                            <dd class="text-lg font-semibold text-gray-900 dark:text-white">{{ $stats['total_treatments'] }}</dd>
                         </dl>
                     </div>
                 </div>
@@ -205,24 +205,24 @@
     @if($workSessions->count() > 0)
     <div class="bg-white shadow sm:rounded-lg">
         <div class="px-4 py-5 sm:p-6">
-            <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Sesiones de Trabajo Recientes</h3>
+            <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4 dark:text-white">Sesiones de Trabajo Recientes</h3>
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead>
                         <tr>
-                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Orden de Trabajo</th>
-                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
-                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Inicio</th>
-                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duración</th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-white">Orden de Trabajo</th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-white">Cliente</th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-white">Inicio</th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-white">Duración</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white dark:bg-white divide-y divide-gray-200">
                         @foreach($workSessions as $session)
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                 #{{ $session->workOrder->folio ?? $session->work_order_id }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                 {{ $session->workOrder->client->name ?? 'N/A' }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -244,7 +244,7 @@
     @if($recentActivities->count() > 0)
     <div class="bg-white shadow sm:rounded-lg">
         <div class="px-4 py-5 sm:p-6">
-            <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Actividad Reciente</h3>
+            <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4 dark:text-white">Actividad Reciente</h3>
             <div class="flow-root">
                 <ul role="list" class="-mb-8">
                     @foreach($recentActivities as $activity)
@@ -263,9 +263,9 @@
                                 </div>
                                 <div class="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
                                     <div>
-                                        <p class="text-sm text-gray-500">{{ $activity->description }}</p>
+                                        <p class="text-sm text-gray-500 dark:text-white">{{ $activity->description }}</p>
                                     </div>
-                                    <div class="whitespace-nowrap text-right text-sm text-gray-500">
+                                    <div class="whitespace-nowrap text-right text-sm text-gray-500 dark:text-white">
                                         {{ $activity->created_at->diffForHumans() }}
                                     </div>
                                 </div>
