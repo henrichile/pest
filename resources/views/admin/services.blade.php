@@ -148,12 +148,12 @@
                                     {{ $service->client->name ?? 'Cliente no encontrado' }}
                                 </h3>
                                 @if($service->address)
-                                    <p class="text-sm text-gray-600 dark:text-white">{{ $service->address }}</p>
+                                    <p class="text-sm text-gray-600 dark:text-white hover:text-gray-900 dark:hover:text-gray-400">{{ $service->address }}</p>
                                 @endif
                             </div>
                             <div class="flex flex-wrap gap-2">
                                 @if($service->status)
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium hover:text-gray-900 dark:hover:text-gray-400
                                         @if($service->status == 'pendiente') bg-yellow-100 text-yellow-800
                                         @elseif($service->status == 'en_progreso') bg-blue-100 text-blue-800
                                         @elseif($service->status == 'completado') bg-green-100 text-green-800
