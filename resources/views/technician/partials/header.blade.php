@@ -23,7 +23,7 @@
                     type="text"
                     id="tech-search-input-{{ $pageId ?? 'page' }}"
                     placeholder="{{ $searchPlaceholder ?? 'Buscar...' }}"
-                    class="w-56 pr-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all text-sm"
+                    class="w-56 pr-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all text-sm dark:text-white"
                     style="padding-left: 36px; font-size: 14px;"
                     autocomplete="off"
                 />
