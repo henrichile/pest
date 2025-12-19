@@ -70,7 +70,7 @@
     </div>
 
     @if ($errors->any())
-        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 text-gray-900 dark:text-white">
             <div class="flex">
                 <div class="flex-shrink-0">
                     <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
@@ -101,7 +101,7 @@
     <form action="{{ route('admin.pests.store') }}" method="POST" class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
         @csrf
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-900 dark:text-white">
             <!-- Nombre -->
             <div class="md:col-span-2">
                 <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Nombre de la Plaga *</label>
