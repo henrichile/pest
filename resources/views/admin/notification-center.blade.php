@@ -472,6 +472,21 @@
 
 @push('scripts')
 <script>
+// Modal functions for sending notifications
+function openSendModal() {
+    const modal = document.getElementById('send-modal');
+    if (modal) {
+        modal.classList.remove('hidden');
+    }
+}
+
+function closeSendModal() {
+    const modal = document.getElementById('send-modal');
+    if (modal) {
+        modal.classList.add('hidden');
+    }
+}
+
 (function() {
     function initPageMenuButton() {
         const pageMenuButton = document.getElementById('page-mobile-menu-button');
