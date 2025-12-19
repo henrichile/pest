@@ -428,7 +428,7 @@
                     @if($page == $services->currentPage())
                         <span class="px-2.5 py-1.5 text-xs sm:text-sm font-medium text-white bg-green-600 border border-green-600 rounded-md whitespace-nowrap">{{ $page }}</span>
                     @else
-                        <a href="{{ $url }}" class="px-2.5 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap">{{ $page }}</a>
+                        <a href="{{ $url }}" class="px-2.5 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap dark:text-gray-600">{{ $page }}</a>
                     @endif
                 @endforeach
                 
@@ -436,18 +436,18 @@
                     @if($endPage < $lastPage - 1)
                         <span class="px-1 text-gray-400">...</span>
                     @endif
-                    <a href="{{ $services->url($lastPage) }}" class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap">{{ $lastPage }}</a>
+                    <a href="{{ $services->url($lastPage) }}" class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap dark:text-gray-600">{{ $lastPage }}</a>
                 @endif
                 
                 @if($services->hasMorePages())
-                    <a href="{{ $services->nextPageUrl() }}" class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap">Siguiente »</a>
+                    <a href="{{ $services->nextPageUrl() }}" class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap dark:text-gray-600">Siguiente »</a>
                 @else
-                    <span class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-400 cursor-not-allowed whitespace-nowrap">Siguiente »</span>
+                    <span class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-400 cursor-not-allowed whitespace-nowrap dark:text-gray-600">Siguiente »</span>
                 @endif
             </div>
             
             <!-- Información de resultados - Solo en móvil -->
-            <div class="sm:hidden text-xs text-gray-600 text-center mt-2">
+            <div class="sm:hidden text-xs text-gray-600 text-center mt-2 dark:text-gray-600">
                 Página {{ $services->currentPage() }} de {{ $services->lastPage() }}
             </div>
         </div>
@@ -457,8 +457,8 @@
             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
             </svg>
-            <h3 class="mt-2 text-sm font-medium text-gray-900">No hay servicios asignados</h3>
-            <p class="mt-1 text-sm text-gray-500">No tienes servicios asignados en este momento.</p>
+            <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-600">No hay servicios asignados</h3>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-600">No tienes servicios asignados en este momento.</p>
         </div>
         @endif
     </div>
