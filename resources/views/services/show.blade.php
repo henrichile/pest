@@ -9,8 +9,8 @@
     <div class="bg-white rounded-lg shadow-lg p-6">
         <div class="flex justify-between items-start mb-4">
             <div>
-                <h2 class="text-2xl font-bold text-gray-900">{{ $service->client->name ?? "Cliente no encontrado" }}</h2>
-                <p class="text-gray-600">{{ $service->address }}</p>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $service->client->name ?? "Cliente no encontrado" }}</h2>
+                <p class="text-gray-600 dark:text-gray-400">{{ $service->address }}</p>
             </div>
             <div class="text-right">
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
@@ -26,9 +26,9 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-                <h3 class="text-sm font-medium text-gray-500">Tipo de Servicio</h3>
-                <p class="text-lg font-semibold text-gray-900">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Tipo de Servicio</h3>
+                <p class="text-lg font-semibold text-gray-900 dark:text-white">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
                         @if($service->service_type == "desratizacion") bg-red-100 text-red-800
                         @elseif($service->service_type == "desinsectacion") bg-yellow-100 text-yellow-800
                         @else bg-blue-100 text-blue-800
@@ -47,8 +47,8 @@
                 @endif
             </div>
             <div>
-                <h3 class="text-sm font-medium text-gray-500">Prioridad</h3>
-                <p class="text-lg font-semibold text-gray-900">
+                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Prioridad</h3>
+                <p class="text-lg font-semibold text-gray-900 dark:text-white">
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                         @if($service->priority == "alta") bg-red-100 text-red-800
                         @elseif($service->priority == "media") bg-yellow-100 text-yellow-800
