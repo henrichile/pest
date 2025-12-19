@@ -74,11 +74,11 @@
     <!-- Filtros de Reporte -->
     <div class="bg-white rounded-lg shadow-md border mb-6" class="border border-gray-200 dark:border-gray-700">
         <div class="p-6">
-            <div class="flex items-center gap-2 mb-4">
+            <div class="flex items-center gap-2 mb-4 dark:text-white">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-green-500">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
                 </svg>
-                <h2 class="text-lg font-semibold text-green-500 dark:text-white">Filtros de Reporte</h2>
+                <h2 class="text-lg font-semibold text-green-500 ">Filtros de Reporte</h2>
             </div>
 
             <form method="GET" action="{{ route('admin.reports.index') }}" id="reportFiltersForm">
@@ -160,7 +160,7 @@
     <!-- Tarjetas de Estadísticas -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
         <!-- Total Servicios -->
-        <div class="bg-white rounded-lg shadow-md border p-5" class="border border-gray-200 dark:border-gray-700">
+        <div class="bg-white rounded-lg shadow-md border p-5 border-gray-200 dark:border-gray-700">
             <div class="flex items-center justify-between mb-2">
                 <div class="w-12 h-12 rounded-lg flex items-center justify-center bg-blue-500">
                     <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -174,7 +174,7 @@
         </div>
 
         <!-- Completados -->
-        <div class="bg-white dark:bg-gray-700 rounded-lg shadow-md border p-5" style="border: 1px solid #e5e7eb; background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);">
+        <div class="bg-white dark:bg-gray-700 rounded-lg shadow-md border p-5 border-gray-200 dark:border-gray-700">
             <div class="flex items-center justify-between mb-2">
                 <div class="w-12 h-12 rounded-lg flex items-center justify-center bg-green-500">
                     <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
