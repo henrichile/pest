@@ -209,7 +209,7 @@
     </div>
 
     <!-- Notifications List -->
-    <div class="bg-white dark:hover:bg-gray-800 border dark:border-gray-700 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+    <div class="dark:hover:bg-gray-800 border dark:border-gray-700 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
         <!-- Mobile View (Cards) -->
         <div class="md:hidden space-y-4 p-4">
             @forelse($notifications as $notification)
