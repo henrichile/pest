@@ -88,7 +88,7 @@
                     </div>
                     <div class="ml-4 flex-1">
                         <p class="text-sm font-medium mb-1 text-gray-700 dark:text-white">Clientes</p>
-                        <p class="text-3xl font-bold">{{ $clientsCount ?? 0 }}</p>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $clientsCount ?? 0 }}</p>
                     </div>
                 </div>
             </div>
@@ -107,7 +107,7 @@
                     </div>
                     <div class="ml-4 flex-1">
                         <p class="text-sm font-medium mb-1 text-gray-700 dark:text-white">Este Mes</p>
-                        <p class="text-3xl font-bold">{{ $monthlyServices ?? 0 }}</p>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $monthlyServices ?? 0 }}</p>
                     </div>
                 </div>
             </div>
@@ -126,7 +126,7 @@
                     </div>
                     <div class="ml-4 flex-1">
                         <p class="text-sm font-medium mb-1 text-gray-700 dark:text-white">Completados</p>
-                        <p class="text-3xl font-bold">{{ $finalizedServices ?? 0 }}</p>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $finalizedServices ?? 0 }}</p>
                     </div>
                 </div>
             </div>
@@ -145,7 +145,7 @@
                     </div>
                     <div class="ml-4 flex-1">
                         <p class="text-sm font-medium mb-1 text-gray-700 dark:text-white">Pendientes</p>
-                        <p class="text-3xl font-bold">{{ $pendingServices ?? 0 }}</p>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $pendingServices ?? 0 }}</p>
                     </div>
                 </div>
             </div>
@@ -160,7 +160,7 @@
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Servicios Asignados</h3>
                     <p class="text-sm mt-1 text-gray-700 dark:text-white">Próximos servicios a realizar</p>
                 </div>
-                <a href="{{ route('technician.services') }}" class="text-sm font-medium">Ver todos</a>
+                <a href="{{ route('technician.services') }}" class="text-sm font-medium text-gray-900 dark:text-white">Ver todos</a>
             </div>
             <div class="space-y-3">
                 @forelse($assignedServices ?? [] as $service)
@@ -201,7 +201,7 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
-                        <span class="px-2 py-1 text-xs font-medium rounded-full">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full text-gray-900 dark:text-white">
                             {{ ucfirst(str_replace('_', ' ', $service->status ?? 'Pendiente')) }}
                         </span>
                         <a href="{{ route('technician.service.detail', $service) }}" class="px-3 py-1.5 text-xs font-medium rounded-md text-white bg-green-500">Ver Detalle</a>
