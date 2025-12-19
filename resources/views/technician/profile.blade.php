@@ -70,23 +70,23 @@
         <div class="bg-white shadow rounded-lg p-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Nombre</label>
-                    <p class="mt-1 text-sm text-gray-900">{{ $user->name }}</p>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-white   ">Nombre</label>
+                    <p class="mt-1 text-sm text-gray-900 dark:text-white">{{ $user->name }}</p>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Email</label>
-                    <p class="mt-1 text-sm text-gray-900">{{ $user->email }}</p>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-white">Email</label>
+                    <p class="mt-1 text-sm text-gray-900 dark:text-white">{{ $user->email }}</p>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Rol</label>
-                    <p class="mt-1 text-sm text-gray-900">{{ $user->roles->first()->name ?? 'Sin rol asignado' }}</p>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-white">Rol</label>
+                    <p class="mt-1 text-sm text-gray-900 dark:text-white">{{ $user->roles->first()->name ?? 'Sin rol asignado' }}</p>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Fecha de registro</label>
-                    <p class="mt-1 text-sm text-gray-900">{{ $user->created_at->format('d/m/Y') }}</p>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-white">Fecha de registro</label>
+                    <p class="mt-1 text-sm text-gray-900 dark:text-white">{{ $user->created_at->format('d/m/Y') }}</p>
                 </div>
             </div>
 
