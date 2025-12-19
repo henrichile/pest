@@ -36,11 +36,11 @@
                             </svg>
                             Volver al Servicio
                         </a>
-                    <h1 class="text-2xl font-bold text-gray-900">Detalles Completos del servicio</h1>
-                    <p class="text-gray-600 mt-1">Servicio #{{ $service->id }} - {{ $service->client->name ?? 'Cliente' }}</p>
-                    <p class="text-gray-600">Tipo de Servicio: <strong>{{ ucfirst($service->service_type) }}</strong></p>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Detalles Completos del servicio</h1>
+                    <p class="text-gray-600 mt-1 dark:text-white">Servicio #{{ $service->id }} - {{ $service->client->name ?? 'Cliente' }}</p>
+                    <p class="text-gray-600 dark:text-white">Tipo de Servicio: <strong>{{ ucfirst($service->service_type) }}</strong></p>
                     @if($service->service_type === 'servicios-especiales' && $service->special_service_title)
-                    <p class="text-green-700 font-semibold text-lg mt-2">
+                    <p class="text-green-700 font-semibold text-lg mt-2 dark:text-green-700">
                         📋 {{ $service->special_service_title }}
                     </p>
                     @endif
@@ -60,8 +60,8 @@
             @if($isMonitoreoCebaderas || $hasMonitoreoData)
                 {{-- 1. DATOS DEL SERVICIO --}}
                 @if(isset($checklistData['monitoreo_datos']))
-                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-                    <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6   dark:bg-gray-800">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center dark:text-white">
                         <svg class="w-6 h-6 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
                         </svg>
@@ -70,10 +70,10 @@
 
                     @if(isset($checklistData['monitoreo_datos']['pests_detected_list']) && count($checklistData['monitoreo_datos']['pests_detected_list']) > 0)
                     <div class="mb-4">
-                        <strong class="text-gray-900">Plagas Detectadas:</strong>
+                        <strong class="text-gray-900 dark:text-white">Plagas Detectadas:</strong>
                         <ul class="mt-2 space-y-1">
                             @foreach($checklistData['monitoreo_datos']['pests_detected_list'] as $pest)
-                            <li class="flex items-center text-gray-700">
+                            <li class="flex items-center text-gray-700 dark:text-white">
                                 <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                                 </svg>
@@ -86,7 +86,7 @@
 
                     @if(isset($checklistData['monitoreo_datos']['infestation_level']))
                     <div class="mb-4">
-                        <strong class="text-gray-900">Nivel de Infestación:</strong>
+                        <strong class="text-gray-900 dark:text-white">Nivel de Infestación:</strong>
                         <span class="ml-2 px-3 py-1 rounded-full text-sm font-semibold
                             @if($checklistData['monitoreo_datos']['infestation_level'] === 'critico') bg-red-100 text-red-800
                             @elseif($checklistData['monitoreo_datos']['infestation_level'] === 'alto') bg-orange-100 text-orange-800
@@ -100,21 +100,21 @@
 
                     @if(isset($checklistData['monitoreo_datos']['technician_observations']))
                     <div class="mb-4">
-                        <strong class="text-gray-900">Observaciones del Técnico:</strong>
-                        <p class="text-gray-700 mt-2 whitespace-pre-wrap">{{ $checklistData['monitoreo_datos']['technician_observations'] }}</p>
+                        <strong class="text-gray-900 dark:text-white">Observaciones del Técnico:</strong>
+                        <p class="text-gray-700 dark:text-white mt-2 whitespace-pre-wrap">{{ $checklistData['monitoreo_datos']['technician_observations'] }}</p>
                     </div>
                     @endif
 
                     @if(isset($checklistData['monitoreo_datos']['client_recommendations']))
                     <div class="mb-4">
-                        <strong class="text-gray-900">Recomendaciones al Cliente:</strong>
-                        <p class="text-gray-700 mt-2 whitespace-pre-wrap">{{ $checklistData['monitoreo_datos']['client_recommendations'] }}</p>
+                        <strong class="text-gray-900 dark:text-white">Recomendaciones al Cliente:</strong>
+                        <p class="text-gray-700 dark:text-white mt-2 whitespace-pre-wrap">{{ $checklistData['monitoreo_datos']['client_recommendations'] }}</p>
                     </div>
                     @endif
 
                     @if(isset($checklistData['monitoreo_datos']['service_photos']) && count($checklistData['monitoreo_datos']['service_photos']) > 0)
                     <div class="mb-4">
-                        <strong class="text-gray-900">Fotografías del Servicio:</strong>
+                        <strong class="text-gray-900 dark:text-white    ">Fotografías del Servicio:</strong>
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-3">
                             @foreach($checklistData['monitoreo_datos']['service_photos'] as $photo)
                             @php
@@ -133,8 +133,8 @@
 
                 {{-- 2. CROQUIS DE CEBADERAS --}}
                 @if(isset($checklistData['monitoreo_croquis']))
-                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-                    <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6 dark:bg-gray-800">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center dark:text-white">
                         <svg class="w-6 h-6 text-blue-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
                         </svg>
