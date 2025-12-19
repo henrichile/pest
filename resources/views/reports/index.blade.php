@@ -251,7 +251,7 @@
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Evolución Temporal</h3>
             <div class="flex gap-2">
-                <button class="px-3 py-1 rounded text-sm font-medium transition-colors">PROGRAMADO</button>
+                <button class="px-3 py-1 rounded text-sm font-medium transition-colors border border-gray-200 dark:border-gray-700">PROGRAMADO</button>
                 <button class="px-3 py-1 rounded text-sm font-medium transition-colors bg-green-500 text-white">COMPLETADO</button>
             </div>
         </div>
