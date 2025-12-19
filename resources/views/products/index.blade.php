@@ -169,13 +169,13 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                             <a href="{{ route("admin.products.show", $product) }}" 
-                               class="text-green-600 hover:text-green-900 dark:text-white">Ver</a>
+                               class="text-green-600 hover:text-green-900 ">Ver</a>
                             <a href="{{ route("admin.products.edit", $product) }}" 
-                               class="text-blue-600 hover:text-blue-900  dark:text-white">Editar</a>
+                               class="text-blue-600 hover:text-blue-900">Editar</a>
                             <form method="POST" action="{{ route("admin.products.destroy", $product) }}" class="inline">
                                 @csrf
                                 @method("DELETE")
-                                <button type="submit" class="text-red-600 hover:text-red-900 dark:text-white" 
+                                <button type="submit" class="text-red-600 hover:text-red-900 " 
                                         onclick="return confirm('¿Está seguro de eliminar este producto?')">Eliminar</button>
                             </form>
                         </td>
