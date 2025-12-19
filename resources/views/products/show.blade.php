@@ -14,9 +14,9 @@
             </div>
             <div class="text-right">
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-                    @if($product->stock < 10) bg-red-100 text-red-800 dark:text-white
-                    @elseif($product->stock < 50) bg-yellow-100 text-yellow-800 dark:text-white
-                    @else bg-green-100 text-green-800 dark:text-white
+                    @if($product->stock < 10) bg-red-100 text-red-800 
+                    @elseif($product->stock < 50) bg-yellow-100 text-yellow-800 
+                    @else bg-green-100 text-green-800 
                     @endif">
                     Stock: {{ $product->stock }} {{ $product->unit }}
                 </span>
