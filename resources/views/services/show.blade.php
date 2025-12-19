@@ -76,20 +76,20 @@
                     <p class="text-gray-900 dark:text-white">{{ $service->client->name ?? "N/A" }}</p>
                 </div>
                 <div>
-                    <span class="text-sm font-medium text-gray-500">RUT:</span>
-                    <p class="text-gray-900">{{ $service->client->rut ?? "N/A" }}</p>
+                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400">RUT:</span>
+                    <p class="text-gray-900 dark:text-white">{{ $service->client->rut ?? "N/A" }}</p>
                 </div>
                 <div>
-                    <span class="text-sm font-medium text-gray-500">Email:</span>
-                    <p class="text-gray-900">{{ $service->client->email ?? "N/A" }}</p>
+                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Email:</span>
+                    <p class="text-gray-900 dark:text-white">{{ $service->client->email ?? "N/A" }}</p>
                 </div>
                 <div>
-                    <span class="text-sm font-medium text-gray-500">Teléfono:</span>
-                    <p class="text-gray-900">{{ $service->client->phone ?? "N/A" }}</p>
+                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Teléfono:</span>
+                    <p class="text-gray-900 dark:text-white">{{ $service->client->phone ?? "N/A" }}</p>
                 </div>
                 <div>
-                    <span class="text-sm font-medium text-gray-500">Tipo de Negocio:</span>
-                    <p class="text-gray-900">{{ $service->client->business_type ?? "No especificado" }}</p>
+                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Tipo de Negocio:</span>
+                    <p class="text-gray-900 dark:text-white">{{ $service->client->business_type ?? "No especificado" }}</p>
                 </div>
             </div>
         </div>
@@ -175,12 +175,12 @@
         <!-- Observations from Checklist -->
         @if(isset($checklistData['observations']) && count($checklistData['observations']) > 0)
         <div class="bg-white rounded-lg shadow-lg p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Observaciones ({{ count($checklistData['observations']) }})</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4 dark:text-white">Observaciones ({{ count($checklistData['observations']) }})</h3>
             <div class="space-y-3">
                 @foreach($checklistData['observations'] as $index => $observation)
                 <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
                     <div class="flex items-start justify-between">
-                        <span class="font-semibold text-gray-900">
+                        <span class="font-semibold text-gray-900 dark:text-white">
                             @if(isset($observation['cebadera_code']))
                                 Cebadera {{ $observation['cebadera_code'] }}
                             @else
@@ -192,10 +192,10 @@
                         @endif
                     </div>
                     @if(isset($observation['detail']) && !empty($observation['detail']))
-                    <p class="text-gray-700 mt-2">{{ $observation['detail'] }}</p>
+                    <p class="text-gray-700 mt-2 dark:text-gray-400">{{ $observation['detail'] }}</p>
                     @endif
                     @if(isset($observation['complementary']) && !empty($observation['complementary']))
-                    <p class="text-sm text-gray-600 mt-1 italic">{{ $observation['complementary'] }}</p>
+                    <p class="text-sm text-gray-600 mt-1 italic dark:text-gray-400">{{ $observation['complementary'] }}</p>
                     @endif
                 </div>
                 @endforeach
@@ -208,7 +208,7 @@
         <div class="bg-white rounded-lg shadow-lg p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4 dark:text-white">Sitios Tratados</h3>
             <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <p class="text-gray-700 dark:text-white whitespace-pre-wrap">{{ $checklistData['sites']['treated_sites'] }}</p>
+                <p class="text-gray-700 dark:text-white whitespace-pre-wrap dark:text-gray-400">{{ $checklistData['sites']['treated_sites'] }}</p>
             </div>
         </div>
         @endif
@@ -222,16 +222,16 @@
             <div class="mb-4">
                 <h4 class="text-sm font-medium text-gray-500 mb-2 dark:text-gray-400">Descripción del Servicio:</h4>
                 <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                    <p class="text-gray-700 whitespace-pre-wrap">{{ $checklistData['description']['service_description'] }}</p>
+                    <p class="text-gray-700 whitespace-pre-wrap dark:text-gray-400">{{ $checklistData['description']['service_description'] }}</p>
                 </div>
             </div>
             @endif
 
             @if(isset($checklistData['description']['service_sugerencia']) && !empty($checklistData['description']['service_sugerencia']))
             <div class="mb-4">
-                <h4 class="text-sm font-medium text-gray-500 mb-2 dark:text-gray-400">Sugerencias:</h4>
+                <h4 class="text-sm font-medium text-gray-500 mb-2 dark:text-gray-400 ">Sugerencias:</h4>
                 <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                    <p class="text-gray-700 dark:text-white whitespace-pre-wrap">{{ $checklistData['description']['service_sugerencia'] }}</p>
+                    <p class="text-gray-700 dark:text-white whitespace-pre-wrap dark:text-gray-400">{{ $checklistData['description']['service_sugerencia'] }}</p>
                 </div>
             </div>
             @endif
