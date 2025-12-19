@@ -217,7 +217,7 @@
     </div>
 
     <!-- Acciones Rápidas -->
-    <div class="overflow-hidden rounded-lg bg-white border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
+    <div class="overflow-hidden rounded-lg border dark:border-gray-700 border border-gray-200 dark:border-gray-700">
         <div class="p-6">
             <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Acciones Rápidas</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
