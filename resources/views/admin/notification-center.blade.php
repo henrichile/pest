@@ -329,7 +329,7 @@
                             ];
                             $typeLabel = $typeLabels[$typeName] ?? (strlen($typeName) > 12 ? substr($typeName, 0, 12) : $typeName);
                         @endphp
-                        <tr class="hover:bg-gray-50">
+                        <tr class="dark:hover:bg-gray-50">
                             <td class="px-3 py-4 whitespace-nowrap text-sm dark:text-white">
                                 {{ $user->name ?? 'Usuario eliminado' }}
                             </td>
