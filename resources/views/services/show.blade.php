@@ -59,8 +59,8 @@
                 </p>
             </div>
             <div>
-                <h3 class="text-sm font-medium text-gray-500">Fecha Programada</h3>
-                <p class="text-lg font-semibold text-gray-900">{{ $service->scheduled_date->format("d/m/Y H:i") }}</p>
+                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Fecha Programada</h3>
+                <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ $service->scheduled_date->format("d/m/Y H:i") }}</p>
             </div>
         </div>
     </div>
@@ -69,11 +69,11 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Client Information -->
         <div class="bg-white rounded-lg shadow-lg p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Información del Cliente</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4 dark:text-white">Información del Cliente</h3>
             <div class="space-y-3">
                 <div>
-                    <span class="text-sm font-medium text-gray-500">Razón Social:</span>
-                    <p class="text-gray-900">{{ $service->client->name ?? "N/A" }}</p>
+                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Razón Social:</span>
+                    <p class="text-gray-900 dark:text-white">{{ $service->client->name ?? "N/A" }}</p>
                 </div>
                 <div>
                     <span class="text-sm font-medium text-gray-500">RUT:</span>
@@ -96,32 +96,32 @@
 
         <!-- Service Information -->
         <div class="bg-white rounded-lg shadow-lg p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Detalles del Servicio</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4 dark:text-white">Detalles del Servicio</h3>
             <div class="space-y-3">
                 <div>
-                    <span class="text-sm font-medium text-gray-500">Descripción:</span>
-                    <p class="text-gray-900">{{ $service->description ?? "Sin descripción" }}</p>
+                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Descripción:</span>
+                    <p class="text-gray-900 dark:text-white">{{ $service->description ?? "Sin descripción" }}</p>
                 </div>
                 <div>
-                    <span class="text-sm font-medium text-gray-500">Técnico Asignado:</span>
-                    <p class="text-gray-900">{{ $service->assignedUser->name ?? "Sin asignar" }}</p>
+                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Técnico Asignado:</span>
+                    <p class="text-gray-900 dark:text-white">{{ $service->assignedUser->name ?? "Sin asignar" }}</p>
                 </div>
                 @if(auth()->check() && auth()->user()->hasRole('super-admin') && $service->price)
                 <div>
-                    <span class="text-sm font-medium text-gray-500">Precio de Venta:</span>
+                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Precio de Venta:</span>
                     <p class="text-gray-900 font-semibold text-green-600">${{ number_format($service->price, 2, ',', '.') }}</p>
                 </div>
                 @endif
                 @if($service->started_at)
                 <div>
-                    <span class="text-sm font-medium text-gray-500">Iniciado:</span>
-                    <p class="text-gray-900">{{ $service->started_at->format("d/m/Y H:i") }}</p>
+                    <span class="text-sm font-medium text-gray-500   dark:text-gray-400">Iniciado:</span>
+                    <p class="text-gray-900 dark:text-white">{{ $service->started_at->format("d/m/Y H:i") }}</p>
                 </div>
                 @endif
                 @if($service->completed_at)
                 <div>
-                    <span class="text-sm font-medium text-gray-500">Completado:</span>
-                    <p class="text-gray-900">{{ $service->completed_at->format("d/m/Y H:i") }}</p>
+                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Completado:</span>
+                    <p class="text-gray-900 dark:text-white">{{ $service->completed_at->format("d/m/Y H:i") }}</p>
                 </div>
                 @endif
             </div>
@@ -139,33 +139,33 @@
         <!-- Products Applied from Checklist -->
         @if(isset($checklistData['products']))
         <div class="bg-white rounded-lg shadow-lg p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Producto Aplicado (Checklist)</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4 dark:text-white">Producto Aplicado (Checklist)</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 @if(isset($checklistData['products']['applied_product']))
                 <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                    <span class="text-sm font-medium text-blue-700">Producto:</span>
-                    <p class="text-lg font-semibold text-gray-900 mt-1">{{ $checklistData['products']['applied_product'] }}</p>
+                    <span class="text-sm font-medium text-blue-700 dark:text-blue-400">Producto:</span>
+                    <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1">{{ $checklistData['products']['applied_product'] }}</p>
                 </div>
                 @endif
 
                 @if(isset($checklistData['products']['quantity']))
                 <div class="bg-green-50 rounded-lg p-4 border border-green-200">
-                    <span class="text-sm font-medium text-green-700">Cantidad:</span>
-                    <p class="text-lg font-semibold text-gray-900 mt-1">{{ $checklistData['products']['quantity'] }}</p>
+                    <span class="text-sm font-medium text-green-700 dark:text-green-400">Cantidad:</span>
+                    <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1">{{ $checklistData['products']['quantity'] }}</p>
                 </div>
                 @endif
 
                 @if(isset($checklistData['products']['dosis']))
                 <div class="bg-purple-50 rounded-lg p-4 border border-purple-200">
-                    <span class="text-sm font-medium text-purple-700">Dosis:</span>
-                    <p class="text-lg font-semibold text-gray-900 mt-1">{{ $checklistData['products']['dosis'] }}</p>
+                    <span class="text-sm font-medium text-purple-700 dark:text-purple-400">Dosis:</span>
+                    <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1">{{ $checklistData['products']['dosis'] }}</p>
                 </div>
                 @endif
 
                 @if(isset($checklistData['products']['agua']))
                 <div class="bg-cyan-50 rounded-lg p-4 border border-cyan-200">
-                    <span class="text-sm font-medium text-cyan-700">Agua:</span>
-                    <p class="text-lg font-semibold text-gray-900 mt-1">{{ $checklistData['products']['agua'] }}</p>
+                    <span class="text-sm font-medium text-cyan-700 dark:text-cyan-400">Agua:</span>
+                    <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1">{{ $checklistData['products']['agua'] }}</p>
                 </div>
                 @endif
             </div>
@@ -206,9 +206,9 @@
         <!-- Sites Treated from Checklist -->
         @if(isset($checklistData['sites']['treated_sites']))
         <div class="bg-white rounded-lg shadow-lg p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Sitios Tratados</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4 dark:text-white">Sitios Tratados</h3>
             <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <p class="text-gray-700 whitespace-pre-wrap">{{ $checklistData['sites']['treated_sites'] }}</p>
+                <p class="text-gray-700 dark:text-white whitespace-pre-wrap">{{ $checklistData['sites']['treated_sites'] }}</p>
             </div>
         </div>
         @endif
@@ -216,11 +216,11 @@
         <!-- Description and Suggestions from Checklist -->
         @if(isset($checklistData['description']))
         <div class="bg-white rounded-lg shadow-lg p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Descripción y Sugerencias</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4 dark:text-white">Descripción y Sugerencias</h3>
             
             @if(isset($checklistData['description']['service_description']) && !empty($checklistData['description']['service_description']))
             <div class="mb-4">
-                <h4 class="text-sm font-medium text-gray-500 mb-2">Descripción del Servicio:</h4>
+                <h4 class="text-sm font-medium text-gray-500 mb-2 dark:text-gray-400">Descripción del Servicio:</h4>
                 <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
                     <p class="text-gray-700 whitespace-pre-wrap">{{ $checklistData['description']['service_description'] }}</p>
                 </div>
@@ -229,9 +229,9 @@
 
             @if(isset($checklistData['description']['service_sugerencia']) && !empty($checklistData['description']['service_sugerencia']))
             <div class="mb-4">
-                <h4 class="text-sm font-medium text-gray-500 mb-2">Sugerencias:</h4>
+                <h4 class="text-sm font-medium text-gray-500 mb-2 dark:text-gray-400">Sugerencias:</h4>
                 <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                    <p class="text-gray-700 whitespace-pre-wrap">{{ $checklistData['description']['service_sugerencia'] }}</p>
+                    <p class="text-gray-700 dark:text-white whitespace-pre-wrap">{{ $checklistData['description']['service_sugerencia'] }}</p>
                 </div>
             </div>
             @endif
@@ -242,11 +242,11 @@
 
     <!-- Signatures -->
     <div class="bg-white rounded-lg shadow-lg p-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">Firmas de Confirmación</h3>
+        <h3 class="text-lg font-semibold text-gray-900 mb-4 dark:text-white">Firmas de Confirmación</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Technician Signature -->
             <div>
-                <h4 class="text-sm font-medium text-gray-500 mb-2">Firma del Técnico</h4>
+                <h4 class="text-sm font-medium text-gray-500 mb-2 dark:text-gray-400">Firma del Técnico</h4>
                 @php
                     $techSignature = null;
                     // Check in all possible locations for the technician signature
@@ -261,7 +261,7 @@
 
                 @if($techSignature)
                     <div class="border rounded-lg p-2 inline-block bg-gray-50">
-                        @if(str_starts_with($techSignature, 'data:image'))
+                        @if(str_starts_with($techSignature, 'data:image')   )
                             {{-- It's a base64 data URI, render directly --}}
                             <img src="{{ $techSignature }}" alt="Firma Técnico" class="max-h-24">
                         @else
@@ -269,15 +269,15 @@
                             <img src="{{ asset($techSignature) }}" alt="Firma Técnico" class="max-h-24">
                         @endif
                     </div>
-                    <p class="text-sm text-gray-600 mt-1">{{ $service->assignedUser->name ?? 'Técnico' }}</p>
+                    <p class="text-sm text-gray-600 mt-1 dark:text-gray-400">{{ $service->assignedUser->name ?? 'Técnico' }}</p>
                 @else
-                    <p class="text-gray-500 italic">No registrada</p>
+                    <p class="text-gray-500 italic dark:text-gray-400">No registrada</p>
                 @endif
             </div>
 
             <!-- Client Signature -->
             <div>
-                <h4 class="text-sm font-medium text-gray-500 mb-2">Firma del Cliente</h4>
+                <h4 class="text-sm font-medium text-gray-500 mb-2 dark:text-gray-400">Firma del Cliente</h4>
                 @php
                     $clientSignature = null;
                     // Check in all possible locations for the client signature
@@ -307,7 +307,7 @@
                         @endif
                     </p>
                 @else
-                    <p class="text-gray-500 italic">No registrada</p>
+                    <p class="text-gray-500 italic dark:text-gray-400">No registrada</p>
                 @endif
             </div>
         </div>
@@ -322,8 +322,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <div>
-                    <h3 class="text-lg font-semibold text-green-800">Servicio Finalizado</h3>
-                    <p class="text-sm text-green-700">Puedes descargar el informe completo en PDF.</p>
+                    <h3 class="text-lg font-semibold text-green-800 dark:text-green-400">Servicio Finalizado</h3>
+                    <p class="text-sm text-green-700 dark:text-green-400">Puedes descargar el informe completo en PDF.</p>
                 </div>
             </div>
             <a href="{{ url('/admin/technician-view/services/' . $service->id . '/pdf') }}" target="_blank" 
@@ -340,7 +340,7 @@
     <!-- Actions -->
     <div class="flex justify-between items-center">
         <a href="{{ route("admin.services.index") }}"
-           class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+           class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-600">
             Volver a Servicios
         </a>
 
