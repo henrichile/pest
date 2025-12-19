@@ -120,7 +120,7 @@
                             <div>
                                 <label for="name" class="block text-sm font-medium mb-2 text-gray-900 dark:text-white">Nombre</label>
                                 <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-gray-900 dark:text-white"
                                     style="border: 1px solid #d1d5db; border-radius: 8px;">
                                 @error('name')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -130,7 +130,7 @@
                             <div>
                                 <label for="email" class="block text-sm font-medium mb-2 text-gray-900 dark:text-white">Correo Electrónico</label>
                                 <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" required
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-gray-900 dark:text-white"
                                     style="border: 1px solid #d1d5db; border-radius: 8px;">
                                 @error('email')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -140,7 +140,7 @@
                             <div>
                                 <label for="phone" class="block text-sm font-medium mb-2 text-gray-900 dark:text-white">Teléfono</label>
                                 <input type="text" name="phone" id="phone" value="{{ old('phone', $user->phone) }}"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-gray-900 dark:text-white"
                                     style="border: 1px solid #d1d5db; border-radius: 8px;">
                                 @error('phone')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -150,7 +150,7 @@
                             <div>
                                 <label for="timezone" class="block text-sm font-medium mb-2 text-gray-900 dark:text-white">Zona Horaria</label>
                                 <select name="timezone" id="timezone"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-gray-900 dark:text-white"
                                     style="border: 1px solid #d1d5db; border-radius: 8px;">
                                     <option value="America/Santiago" {{ $user->timezone === 'America/Santiago' ? 'selected' : '' }}>Santiago (GMT-3)</option>
                                     <option value="America/Lima" {{ $user->timezone === 'America/Lima' ? 'selected' : '' }}>Lima (GMT-5)</option>
@@ -187,7 +187,7 @@
                             <div>
                                 <label for="current_password" class="block text-sm font-medium mb-2 text-gray-900 dark:text-white">Contraseña Actual</label>
                                 <input type="password" name="current_password" id="current_password" required
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-gray-900 dark:text-white"
                                     style="border: 1px solid #d1d5db; border-radius: 8px;">
                                 @error('current_password')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -197,7 +197,7 @@
                             <div>
                                 <label for="new_password" class="block text-sm font-medium mb-2 text-gray-900 dark:text-white">Nueva Contraseña</label>
                                 <input type="password" name="new_password" id="new_password" required
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-gray-900 dark:text-white"
                                     style="border: 1px solid #d1d5db; border-radius: 8px;">
                                 @error('new_password')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -207,7 +207,7 @@
                             <div>
                                 <label for="new_password_confirmation" class="block text-sm font-medium mb-2 text-gray-900 dark:text-white">Confirmar Nueva Contraseña</label>
                                 <input type="password" name="new_password_confirmation" id="new_password_confirmation" required
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-gray-900 dark:text-white"
                                     style="border: 1px solid #d1d5db; border-radius: 8px;">
                             </div>
                         </div>
@@ -238,7 +238,7 @@
                     @if($roles->count() > 0)
                         <div class="flex flex-wrap justify-center gap-2 mb-4">
                             @foreach($roles as $role)
-                                <span class="px-3 py-1 text-xs font-semibold rounded-full" 
+                                <span class="px-3 py-1 text-xs font-semibold rounded-full text-gray-900 dark:text-white" 
                                      >
                                     {{ ucfirst($role->name) }}
                                 </span>
@@ -260,7 +260,7 @@
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-sm text-gray-600 dark:text-white">Completadas</span>
-                        <span class="text-lg font-semibold">{{ $stats['completed_work_orders'] ?? 0 }}</span>
+                        <span class="text-lg font-semibold text-gray-900 dark:text-white">{{ $stats['completed_work_orders'] ?? 0 }}</span>
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-sm text-gray-600 dark:text-white">Sesiones</span>
@@ -286,7 +286,7 @@
                                 <div class="flex-shrink-0 w-2 h-2 rounded-full mt-2 bg-green-500"></div>
                                 <div class="flex-1 min-w-0">
                                     <p class="text-sm text-gray-900 dark:text-white">{{ $activity->description ?? 'Actividad' }}</p>
-                                    <p class="text-xs mt-1">{{ $activity->created_at->diffForHumans() }}</p>
+                                    <p class="text-xs mt-1 text-gray-600 dark:text-white">{{ $activity->created_at->diffForHumans() }}</p>
                                 </div>
                             </div>
                         @endforeach
