@@ -97,23 +97,23 @@
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 space-y-3">
                 <div class="flex justify-between items-start">
                     <div>
-                        <h3 class="text-lg font-bold text-gray-900">{{ $product->name }}</h3>
-                        <p class="text-sm text-gray-500">{{ $product->active_ingredient }}</p>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ $product->name }}</h3>
+                        <p class="text-sm text-gray-500 dark:text-white">{{ $product->active_ingredient }}</p>
                     </div>
-                    <span class="px-2 py-1 text-xs font-medium rounded bg-blue-100 text-blue-800">
+                    <span class="px-2 py-1 text-xs font-medium rounded bg-blue-100 text-blue-800 text-gray-900 dark:text-white">
                         {{ ucfirst($product->service_type) }}
                     </span>
                 </div>
                 
                 <div class="grid grid-cols-2 gap-2 text-sm">
                     <div>
-                        <span class="text-gray-500 block text-xs">Stock</span>
-                        <span class="font-medium">{{ $product->stock }} {{ $product->unit }}</span>
+                        <span class="text-gray-500 block text-xs dark:text-white">Stock</span>
+                        <span class="font-medium dark:text-white">{{ $product->stock }} {{ $product->unit }}</span>
                     </div>
                     <div>
-                        <span class="text-gray-500 block text-xs">Registro</span>
-                        <span class="font-medium text-xs block">SAG: {{ $product->sag_registration ?? 'N/A' }}</span>
-                        <span class="font-medium text-xs block">ISP: {{ $product->isp_registration ?? 'N/A' }}</span>
+                        <span class="text-gray-500 block text-xs dark:text-white">Registro</span>
+                        <span class="font-medium text-xs block dark:text-white">SAG: {{ $product->sag_registration ?? 'N/A' }}</span>
+                        <span class="font-medium text-xs block dark:text-white">ISP: {{ $product->isp_registration ?? 'N/A' }}</span>
                     </div>
                 </div>
 
@@ -128,7 +128,7 @@
                 </div>
             </div>
         @empty
-            <div class="text-center py-8 text-gray-500 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+            <div class="text-center py-8 text-gray-500 dark:text-white bg-gray-50 rounded-lg border border-dashed border-gray-300">
                 No hay productos registrados
             </div>
         @endforelse
@@ -152,37 +152,37 @@
                     @forelse($products as $product)
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">{{ $product->name }}</div>
+                            <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $product->name }}</div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                             {{ $product->active_ingredient }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                             {{ ucfirst($product->service_type) }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                             {{ $product->stock }} {{ $product->unit }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <div>SAG: {{ $product->sag_registration ?? 'N/A' }}</div>
-                            <div>ISP: {{ $product->isp_registration ?? 'N/A' }}</div>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-white">
+                            <div class="dark:text-white">SAG: {{ $product->sag_registration ?? 'N/A' }}</div>
+                            <div class="dark:text-white">ISP: {{ $product->isp_registration ?? 'N/A' }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                             <a href="{{ route("admin.products.show", $product) }}" 
-                               class="text-green-600 hover:text-green-900">Ver</a>
+                               class="text-green-600 hover:text-green-900 dark:text-white">Ver</a>
                             <a href="{{ route("admin.products.edit", $product) }}" 
-                               class="text-blue-600 hover:text-blue-900">Editar</a>
+                               class="text-blue-600 hover:text-blue-900  dark:text-white">Editar</a>
                             <form method="POST" action="{{ route("admin.products.destroy", $product) }}" class="inline">
                                 @csrf
                                 @method("DELETE")
-                                <button type="submit" class="text-red-600 hover:text-red-900" 
+                                <button type="submit" class="text-red-600 hover:text-red-900 dark:text-white" 
                                         onclick="return confirm('¿Está seguro de eliminar este producto?')">Eliminar</button>
                             </form>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                        <td colspan="6" class="px-6 py-4 text-center text-gray-500 dark:text-white">
                             No hay productos registrados
                         </td>
                     </tr>
@@ -192,7 +192,7 @@
         </div>
         
         @if($products->hasPages())
-        <div class="px-6 py-3 border-t border-gray-200">
+        <div class="px-6 py-3 border-t border-gray-200 dark:border-gray-700">
             {{ $products->links() }}
         </div>
         @endif
