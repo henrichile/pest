@@ -79,7 +79,7 @@
                 </p>
             </div>
             <div class="mt-3 sm:mt-4 md:mt-0 md:ml-4">
-                <a href="{{ route('admin.services.create') ?? route('services.create') ?? '#' }}" class="inline-flex items-center justify-center w-full sm:w-auto px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium transition-colors dark:text-white dark:bg-green-600 dark:hover:bg-green-700">
+                <a href="{{ route('admin.services.create') ?? route('services.create') ?? '#' }}" class="inline-flex items-center justify-center w-full sm:w-auto px-3 sm:px-4 py-2 border border-transparent rounded-lg shadow-sm text-xs sm:text-sm font-medium transition-colors dark:text-white dark:bg-green-600 dark:hover:bg-green-700" style="border: 1px solid #e5e7eb !important;">
                     <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
@@ -92,10 +92,10 @@
 
     <!-- Filters -->
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6 mb-6">
-        <h3 class="text-sm font-semibold text-gray-700 mb-4">Filtros</h3>
+        <h3 class="text-sm font-semibold text-gray-700 mb-4 dark:text-white">Filtros</h3>
         <form method="GET" action="{{ route('admin.services.index') ?? route('services.index') ?? '#' }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="flex flex-col space-y-2">
-                <label for="status" class="text-sm font-medium text-gray-700">Estado</label>
+                <label for="status" class="text-sm font-medium text-gray-700 dark:text-white">Estado</label>
                 <select name="status" id="status" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todos los estados</option>
                     <option value="pendiente" {{ request('status') === 'pendiente' ? 'selected' : '' }}>Pendiente</option>
@@ -105,7 +105,7 @@
                 </select>
             </div>
             <div class="flex flex-col space-y-2">
-                <label for="type" class="text-sm font-medium text-gray-700">Tipo</label>
+                <label for="type" class="text-sm font-medium text-gray-700 dark:text-white">Tipo</label>
                 <select name="type" id="type" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todos los tipos</option>
                     <option value="desratizacion" {{ request('type') === 'desratizacion' ? 'selected' : '' }}>Desratización</option>
@@ -114,7 +114,7 @@
                 </select>
             </div>
             <div class="flex flex-col space-y-2">
-                <label for="priority" class="text-sm font-medium text-gray-700">Prioridad</label>
+                <label for="priority" class="text-sm font-medium text-gray-700 dark:text-white">Prioridad</label>
                 <select name="priority" id="priority" class="border border-gray-300 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todas las prioridades</option>
                     <option value="baja" {{ request('priority') === 'baja' ? 'selected' : '' }}>Baja</option>
@@ -123,9 +123,9 @@
                 </select>
             </div>
             <div class="flex flex-col space-y-2">
-                <label class="text-sm font-medium text-gray-700 opacity-0">Acciones</label>
+                <label class="text-sm font-medium text-gray-700 opacity-0 dark:text-white">Acciones</label>
                 <div class="flex items-center gap-3 h-full">
-                    <button type="submit" id="filter-submit-btn" class="flex-1 px-6 py-3.5 bg-gray-700 hover:bg-gray-800 text-white font-medium rounded-lg shadow-sm transition-colors">
+                    <button type="submit" id="filter-submit-btn" class="flex-1 px-6 py-3.5 bg-gray-700 hover:bg-gray-800 text-white font-medium rounded-lg shadow-sm transition-colors dark:bg-green-600 dark:hover:bg-green-700">
                         Filtrar
                     </button>
                     <a href="{{ route('admin.services.index') }}" class="flex-1 px-6 py-3.5 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg shadow-sm transition-colors text-center no-underline">
@@ -170,7 +170,7 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-2">
-                            <a href="{{ route('admin.services.show', $service) ?? route('services.show', $service) ?? '#' }}" class="text-blue-600 hover:text-blue-900" title="Ver">
+                            <a href="{{ route('admin.services.show', $service) ?? route('services.show', $service) ?? '#' }}" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300" title="Ver">
                                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -189,7 +189,7 @@
         @if($services->hasPages())
         <div class="bg-white px-2 sm:px-6 py-3 border-t border-gray-200" style="border-top: 1px solid #e5e7eb !important;">
             <!-- Información de resultados - Solo en desktop -->
-            <div class="hidden sm:block text-sm text-gray-700 mb-3">
+            <div class="hidden sm:block text-sm text-gray-700 mb-3 dark:text-white">
                 Mostrando
                 <span class="font-medium">{{ $services->firstItem() }}</span>
                 a
@@ -202,9 +202,9 @@
             <!-- Números de página - Visible en móvil y desktop -->
             <div class="flex items-center justify-center gap-1 overflow-x-auto w-full">
                 @if($services->onFirstPage())
-                    <span class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-400 cursor-not-allowed whitespace-nowrap">« Anterior</span>
+                    <span class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-400 cursor-not-allowed whitespace-nowrap" style="color: #9CA3AF !important;">« Anterior</span>
                 @else
-                    <a href="{{ $services->previousPageUrl() }}" class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap">« Anterior</a>
+                    <a href="{{ $services->previousPageUrl() }}" class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap" style="color: #9CA3AF !important;">« Anterior</a>
                 @endif
                 
                 @php
@@ -224,7 +224,7 @@
                 @endphp
                 
                 @if($startPage > 1)
-                    <a href="{{ $services->url(1) }}" class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap">1</a>
+                    <a href="{{ $services->url(1) }}" class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap" style="color: #9CA3AF !important;">1</a>
                     @if($startPage > 2)
                         <span class="px-1 text-gray-400">...</span>
                     @endif
@@ -234,7 +234,7 @@
                     @if($page == $services->currentPage())
                         <span class="px-2.5 py-1.5 text-xs sm:text-sm font-medium text-white bg-green-600 border border-green-600 rounded-md whitespace-nowrap">{{ $page }}</span>
                     @else
-                        <a href="{{ $url }}" class="px-2.5 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap">{{ $page }}</a>
+                        <a href="{{ $url }}" class="px-2.5 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap" style="color: #9CA3AF !important;">{{ $page }}</a>
                     @endif
                 @endforeach
                 
@@ -242,18 +242,18 @@
                     @if($endPage < $lastPage - 1)
                         <span class="px-1 text-gray-400">...</span>
                     @endif
-                    <a href="{{ $services->url($lastPage) }}" class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap">{{ $lastPage }}</a>
+                    <a href="{{ $services->url($lastPage) }}" class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap" style="color: #9CA3AF !important;">{{ $lastPage }}</a>
                 @endif
                 
                 @if($services->hasMorePages())
-                    <a href="{{ $services->nextPageUrl() }}" class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap">Siguiente »</a>
+                    <a href="{{ $services->nextPageUrl() }}" class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap" style="color: #9CA3AF !important;">Siguiente »</a>
                 @else
-                    <span class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-400 cursor-not-allowed whitespace-nowrap">Siguiente »</span>
+                    <span class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-400 cursor-not-allowed whitespace-nowrap" style="color: #9CA3AF !important;">Siguiente »</span>
                 @endif
             </div>
             
             <!-- Información de resultados - Solo en móvil -->
-            <div class="sm:hidden text-xs text-gray-600 text-center mt-2">
+            <div class="sm:hidden text-xs text-gray-600 text-center mt-2 dark:text-white">
                 Página {{ $services->currentPage() }} de {{ $services->lastPage() }}
             </div>
         </div>
