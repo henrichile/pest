@@ -260,7 +260,7 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200" id="services-table-body">
+                <tbody class="divide-y divide-gray-200" id="services-table-body">
                     @foreach($services as $service)
                     @php
                         $iconBg = '#dbeafe'; // blue-100 default
@@ -279,7 +279,7 @@
                              // Keep default blue
                         }
                     @endphp
-                    <tr class="hover:bg-gray-50 service-row" 
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 service-row" 
                         data-status="{{ $service->status }}" 
                         data-service-type="{{ $service->service_type }}">
                         <td class="px-6 py-4 whitespace-nowrap">
