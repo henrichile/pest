@@ -110,12 +110,12 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
         <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center">
-                <div class="flex-shrink-0">
+                <div class="flex-shrink-0 dark:text-white">
                     <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-gray-600 dark:text-white">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                     </svg>
                 </div>
-                <div class="ml-4">
+                <div class="ml-4 dark:text-white">
                     <p class="text-sm font-medium text-gray-600 dark:text-white">Total</p>
                     <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $totalNotifications }}</p>
                 </div>
@@ -124,12 +124,12 @@
 
         <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center">
-                <div class="flex-shrink-0">
-                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <div class="flex-shrink-0 dark:text-white">
+                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-gray-600 dark:text-white">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                     </svg>
                 </div>
-                <div class="ml-4">
+                <div class="ml-4 dark:text-white">
                     <p class="text-sm font-medium text-gray-600 dark:text-white">No Leídas</p>
                     <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $unreadNotifications }}</p>
                 </div>
@@ -138,12 +138,12 @@
 
         <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center">
-                <div class="flex-shrink-0">
-                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <div class="flex-shrink-0 dark:text-white">
+                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-gray-600 dark:text-white">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
                     </svg>
                 </div>
-                <div class="ml-4">
+                <div class="ml-4 dark:text-white">
                     <p class="text-sm font-medium text-gray-600 dark:text-white">Hoy</p>
                     <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $todayNotifications }}</p>
                 </div>
@@ -152,12 +152,12 @@
 
         <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center">
-                <div class="flex-shrink-0">
-                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <div class="flex-shrink-0    dark:text-white">
+                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-gray-600 dark:text-white">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
                     </svg>
                 </div>
-                <div class="ml-4">
+                <div class="ml-4 dark:text-white">
                     <p class="text-sm font-medium text-gray-600 dark:text-white">Tipos</p>
                     <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ count($notificationsByType) }}</p>
                 </div>
@@ -172,11 +172,11 @@
                 <label for="search" class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">Buscar</label>
                 <input type="text" id="search" name="search" value="{{ request('search') }}" placeholder="Buscar en notificaciones..."
                        class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                       style="border: 1px solid #e5e7eb !important; color: #111827;">
+                       style="border: 1px solid #e5e7eb !important; ">
             </div>
             <div>
                 <label for="read_status" class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">Estado</label>
-                <select id="read_status" name="read_status" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:text-white dark:bg-gray-700 dark:border-gray-600" style="border: 1px solid #e5e7eb !important; color: #111827;">
+                <select id="read_status" name="read_status" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:text-white dark:bg-gray-700 dark:border-gray-600" style="border: 1px solid #e5e7eb !important; ">
                     <option value="">Todos</option>
                     <option value="unread" {{ request('read_status') == 'unread' ? 'selected' : '' }}>No Leídas</option>
                     <option value="read" {{ request('read_status') == 'read' ? 'selected' : '' }}>Leídas</option>
@@ -187,14 +187,14 @@
                 <label for="start_date" class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">Desde</label>
                 <input type="date" id="start_date" name="start_date" value="{{ request('start_date') }}"
                        class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                       style="border: 1px solid #e5e7eb !important; color: #111827;">
+                       style="border: 1px solid #e5e7eb !important; ">
             </div>
 
             <div>
                 <label for="end_date" class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">Hasta</label>
                 <input type="date" id="end_date" name="end_date" value="{{ request('end_date') }}"
                        class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                       style="border: 1px solid #e5e7eb !important; color: #111827;">
+                       style="border: 1px solid #e5e7eb !important; ">
             </div>
 
             <div class="md:col-span-5 flex gap-2">
@@ -330,21 +330,21 @@
                             $typeLabel = $typeLabels[$typeName] ?? (strlen($typeName) > 12 ? substr($typeName, 0, 12) : $typeName);
                         @endphp
                         <tr class="hover:bg-gray-50">
-                            <td class="px-3 py-4 whitespace-nowrap text-sm">
+                            <td class="px-3 py-4 whitespace-nowrap text-sm dark:text-white">
                                 {{ $user->name ?? 'Usuario eliminado' }}
                             </td>
                             <td class="px-2 py-4" style="overflow: hidden; max-width: 0;">
-                                <span class="px-1.5 py-0.5 text-xs font-medium rounded whitespace-nowrap inline-block">
+                                <span class="px-1.5 py-0.5 text-xs font-medium rounded whitespace-nowrap inline-block dark:text-white">
                                     {{ $typeLabel }}
                                 </span>
                             </td>
-                            <td class="px-3 py-4 text-sm">
+                            <td class="px-3 py-4 text-sm dark:text-white">
                                 {{ $data['title'] ?? 'Sin título' }}
                             </td>
-                            <td class="px-3 py-4 text-sm">
+                            <td class="px-3 py-4 text-sm dark:text-white">
                                 {{ Str::limit($data['message'] ?? '', 100) }}
                             </td>
-                            <td class="px-2 py-4 whitespace-nowrap" style="overflow: hidden;">
+                            <td class="px-2 py-4 whitespace-nowrap dark:text-white" style="overflow: hidden;">
                                 @if($notification->read_at)
                                     <span class="px-1.5 py-0.5 text-xs font-medium rounded">
                                         Leída
@@ -355,7 +355,7 @@
                                     </span>
                                 @endif
                             </td>
-                            <td class="px-3 py-4 whitespace-nowrap text-sm">
+                            <td class="px-3 py-4 whitespace-nowrap text-sm dark:text-white">
                                 {{ \Carbon\Carbon::parse($notification->created_at)->format('d/m/Y H:i') }}
                             </td>
                             <td class="px-3 py-4 text-sm font-medium" style="overflow: visible;">
