@@ -63,12 +63,13 @@
         </div>
         
         <!-- Header original (desktop) -->
-        <div class="hidden md:block">
+        <div class="hidden md:block" >
             @include('technician.partials.header', [
                 'title' => 'Dashboard',
                 'searchPlaceholder' => 'Buscar servicios...',
                 'pageId' => 'dashboard',
-                'showDate' => true
+                'showDate' => true,
+                'class' => 'dark:text-white'
             ])
         </div>
     </div>
@@ -221,7 +222,7 @@
         <div class="p-6">
             <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Acciones Rápidas</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <a href="{{ route('technician.services') }}" class="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                <a href="{{ route('technician.services') }}" class="flex items-center gap-4 p-4 rounded-lg border border-gray-200  transition-colors">
                     <div class="w-12 h-12 rounded-lg flex items-center justify-center bg-green-500">
                         <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
@@ -232,7 +233,7 @@
                         <p class="text-xs text-gray-700 dark:text-white">Gestiona todos tus servicios</p>
                     </div>
                 </a>
-                <a href="{{ route('technician.profile') }}" class="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                <a href="{{ route('technician.profile') }}" class="flex items-center gap-4 p-4 rounded-lg border border-gray-200  transition-colors">
                     <div class="w-12 h-12 rounded-lg flex items-center justify-center">
                         <svg class="w-6 h-6 text-gray-900 dark:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
