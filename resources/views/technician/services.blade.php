@@ -83,7 +83,7 @@
             <div id="filter-content" class="space-y-4 md:space-y-0 md:flex md:items-center md:space-x-4 md:flex-1">
                 <!-- Filtro Estado -->
                 <div class="flex flex-col md:flex-row md:items-center md:space-x-2 w-full md:w-auto">
-                    <label class="text-sm font-medium text-gray-700 mb-1.5 md:mb-0">Estado:</label>
+                    <label class="text-sm font-medium text-gray-700 mb-1.5 md:mb-0 dark:text-white">Estado:</label>
                     <select name="estado" id="filter-estado" class="w-full md:w-auto border border-gray-300 rounded-lg px-4 py-2.5 md:px-3 md:py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:text-white dark:bg-gray-700 dark:border-gray-600">
                         <option value="">Todos</option>
                         <option value="pendiente" {{ request('estado') === 'pendiente' ? 'selected' : '' }}>Pendientes</option>
@@ -95,7 +95,7 @@
 
                 <!-- Filtro Tipo -->
                 <div class="flex flex-col md:flex-row md:items-center md:space-x-2 w-full md:w-auto">
-                    <label class="text-sm font-medium text-gray-700 mb-1.5 md:mb-0">Tipo:</label>
+                    <label class="text-sm font-medium text-gray-700 mb-1.5 md:mb-0 dark:text-white">Tipo:</label>
                     <select name="tipo" id="filter-tipo" class="w-full md:w-auto border border-gray-300 rounded-lg px-4 py-2.5 md:px-3 md:py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:text-white dark:bg-gray-700 dark:border-gray-600">
                         <option value="">Todos</option>
                         <option value="desratizacion" {{ request('tipo') === 'desratizacion' ? 'selected' : '' }}>Desratización</option>
@@ -130,7 +130,7 @@
     <!-- Lista de Servicios -->
     <div class="bg-white rounded-lg shadow-lg">
         <div class="px-6 py-4 border-b border-gray-200">
-            <h3 class="text-lg font-semibold text-gray-900">Servicios Asignados</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Servicios Asignados</h3>
         </div>
         
         @if($services->count() > 0)
@@ -158,9 +158,9 @@
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 space-y-3">
                 <div class="flex justify-between items-start">
                     <div>
-                        <h3 class="text-lg font-bold text-gray-900">{{ optional($service->client)->name ?? "N/A" }}</h3>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ optional($service->client)->name ?? "N/A" }}</h3>
                         @if($service->address)
-                        <p class="text-sm text-gray-500">{{ Str::limit($service->address, 30) }}</p>
+                        <p class="text-sm text-gray-500 dark:text-white">{{ Str::limit($service->address, 30) }}</p>
                         @endif
                     </div>
                     <span class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full" style="background-color: {{ $iconBg }}; color: {{ $iconColor }};">
@@ -173,26 +173,26 @@
                 
                 <div class="grid grid-cols-2 gap-2 text-sm">
                     <div>
-                        <span class="text-gray-500 block text-xs">Fecha</span>
+                        <span class="text-gray-500 block text-xs dark:text-white">Fecha</span>
                         <span class="font-medium">{{ $service->scheduled_date->format("d/m/Y H:i") }}</span>
                         @if($service->scheduled_date < now() && $service->status == "pendiente")
-                        <span class="text-xs text-red-600 font-medium block">Vencido</span>
+                        <span class="text-xs text-red-600 font-medium block dark:text-red-600">Vencido</span>
                         @endif
                     </div>
                     <div>
-                        <span class="text-gray-500 block text-xs">Estado</span>
+                        <span class="text-gray-500 block text-xs dark:text-white">Estado</span>
                         <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
                             @if($service->status == 'pendiente') bg-gray-100 text-gray-800
                             @elseif($service->status == 'en_progreso') bg-blue-100 text-blue-800
                             @elseif($service->status == 'vencido') bg-red-100 text-red-800
                             @else bg-green-100 text-green-800
-                            @endif">
+                            @endif dark:bg-gray-800 dark:text-gray-100">
                             {{ ucfirst(str_replace("_", " ", $service->status)) }}
                         </span>
                     </div>
                 </div>
 
-                <div class="flex justify-end gap-3 pt-3 border-t border-gray-100">
+                <div class="flex justify-end gap-3 pt-3 border-t border-gray-100 dark:border-gray-700">
                     @php
                         // Lógica de URLs (reutilizada)
                         $isTechView = false;
@@ -283,9 +283,9 @@
                         data-status="{{ $service->status }}" 
                         data-service-type="{{ $service->service_type }}">
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">{{ optional($service->client)->name ?? "N/A" }}</div>
+                            <div class="text-sm font-medium text-gray-900 dark:text-white">{{ optional($service->client)->name ?? "N/A" }}</div>
                             @if($service->address)
-                            <div class="text-sm text-gray-500">{{ Str::limit($service->address, 30) }}</div>
+                            <div class="text-sm text-gray-500 dark:text-white">{{ Str::limit($service->address, 30) }}</div>
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -296,10 +296,10 @@
                                 {{ ucfirst($service->service_type) }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                             {{ $service->scheduled_date->format("d/m/Y H:i") }}
                             @if($service->scheduled_date < now() && $service->status == "pendiente")
-                            <div class="text-xs text-red-600 font-medium">Vencido</div>
+                            <div class="text-xs text-red-600 font-medium dark:text-red-600">Vencido</div>
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -321,7 +321,7 @@
                                 {{ ucfirst($service->priority) }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium dark:text-white dark:bg-gray-800">
                             <div class="flex items-center space-x-2">
                                 @php
                                     // Lógica de URLs (reutilizada)
@@ -355,20 +355,20 @@
                                 @if($service->status == "pendiente")
                                 <form method="POST" action="{{ $startUrl }}" class="inline" id="start-form-{{ $service->id }}">
                                     @csrf
-                                    <button type="submit" class="text-blue-600 hover:text-blue-900 font-medium">
+                                    <button type="submit" class="text-blue-600 hover:text-blue-900 font-medium dark:text-blue-400 dark:hover:text-blue-600">
                                         Iniciar
                                     </button>
                                 </form>
                                 @elseif($service->status == "en_progreso")
-                                <a href="{{ $detailUrl }}" class="text-green-600 hover:text-green-900 font-medium">
+                                <a href="{{ $detailUrl }}" class="text-green-600 hover:text-green-900 font-medium dark:text-green-400 dark:hover:text-green-600">
                                     Completar
                                 </a>
                                 @elseif($service->status == "finalizado")
-                                <a href="{{ $pdfUrl }}" class="text-blue-600 hover:text-blue-900 font-medium">
+                                <a href="{{ $pdfUrl }}" class="text-blue-600 hover:text-blue-900 font-medium dark:text-blue-400 dark:hover:text-blue-600">
                                     📄 Descargar PDF
                                 </a>
                                 @endif
-                                <a href="{{ $detailUrl }}" class="text-gray-600 hover:text-gray-900 font-medium">
+                                <a href="{{ $detailUrl }}" class="text-gray-600 hover:text-gray-900 font-medium dark:text-gray-400 dark:hover:text-gray-600">
                                     Ver
                                 </a>
                             </div>
@@ -383,10 +383,10 @@
         @if($services->hasPages())
         <div class="px-2 sm:px-6 py-3 border-t border-gray-200 bg-white">
             <!-- Información de resultados - Solo en desktop -->
-            <div class="hidden sm:block text-sm text-gray-700 mb-3">
+            <div class="hidden sm:block text-sm text-gray-700 mb-3 dark:text-gray-400">
                 Mostrando
                 <span class="font-medium">{{ $services->firstItem() }}</span>
-                a
+                a       
                 <span class="font-medium">{{ $services->lastItem() }}</span>
                 de
                 <span class="font-medium">{{ $services->total() }}</span>
@@ -396,9 +396,9 @@
             <!-- Números de página - Visible en móvil y desktop -->
             <div class="flex items-center justify-center gap-1 overflow-x-auto w-full">
                 @if($services->onFirstPage())
-                    <span class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-400 cursor-not-allowed whitespace-nowrap">« Anterior</span>
+                    <span class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-400 cursor-not-allowed whitespace-nowrap dark:text-gray-600">« Anterior</span>
                 @else
-                    <a href="{{ $services->previousPageUrl() }}" class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap">« Anterior</a>
+                    <a href="{{ $services->previousPageUrl() }}" class="px-2 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 whitespace-nowrap dark:text-gray-600">« Anterior</a>
                 @endif
                 
                 @php
