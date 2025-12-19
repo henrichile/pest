@@ -79,12 +79,12 @@
                     </button>
                 </form>
                 @endif
-                <button type="button" onclick="openSendModal()" class="inline-flex items-center justify-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors w-full sm:w-auto">
+               <!-- <button type="button" onclick="openSendModal()" class="inline-flex items-center justify-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors w-full sm:w-auto">
                     <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
                     Enviar Notificación
-                </button>
+                </button>-->
             </div>
         </div>
     </div>
@@ -209,7 +209,7 @@
     </div>
 
     <!-- Notifications List -->
-    <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+    <div class="bg-white dark:hover:bg-gray-800 border dark:border-gray-700 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
         <!-- Mobile View (Cards) -->
         <div class="md:hidden space-y-4 p-4">
             @forelse($notifications as $notification)
