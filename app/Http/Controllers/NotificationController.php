@@ -260,6 +260,14 @@ class NotificationController extends Controller
     }
 
     /**
+     * Destroy notification (alias for delete, required by Route::resource).
+     */
+    public function destroy(string $id): RedirectResponse
+    {
+        return $this->delete($id);
+    }
+
+    /**
      * Delete all notifications.
      */
     public function deleteAll(): RedirectResponse
