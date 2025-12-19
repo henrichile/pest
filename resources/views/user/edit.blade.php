@@ -68,7 +68,7 @@
                 </p>
             </div>
             <div class="mt-4 md:mt-0 md:ml-4">
-                <a href="{{ route('admin.users.show', $user) }}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium transition-colors">
+                <a href="{{ route('admin.users.show', $user) }}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium transition-colors dark:text-white">
                     <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
                     </svg>
@@ -115,7 +115,7 @@
                     </label>
                     <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required
                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                           style="border: 1px solid #e5e7eb !important; color: #111827;">
+                           style="border: 1px solid #e5e7eb !important;">
                 </div>
 
                 <!-- Email -->
@@ -125,7 +125,7 @@
                     </label>
                     <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" required
                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                           style="border: 1px solid #e5e7eb !important; color: #111827;">
+                           style="border: 1px solid #e5e7eb !important;">
                 </div>
 
                 <!-- Teléfono -->
@@ -135,7 +135,7 @@
                     </label>
                     <input type="text" name="phone" id="phone" value="{{ old('phone', $user->phone) }}"
                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                           style="border: 1px solid #e5e7eb !important; color: #111827;">
+                           style="border: 1px solid #e5e7eb !important;">
                 </div>
 
                 <!-- Estado -->
@@ -145,7 +145,7 @@
                     </label>
                     <select name="is_active" id="is_active" required
                             class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                            style="border: 1px solid #e5e7eb !important; color: #111827;">
+                            style="border: 1px solid #e5e7eb !important;">
                         <option value="1" {{ old('is_active', $user->is_active) == 1 ? 'selected' : '' }}>Activo</option>
                         <option value="0" {{ old('is_active', $user->is_active) == 0 ? 'selected' : '' }}>Inactivo</option>
                     </select>
@@ -158,7 +158,7 @@
                     </label>
                     <input type="password" name="password" id="password" minlength="8"
                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                           style="border: 1px solid #e5e7eb !important; color: #111827;">
+                           style="border: 1px solid #e5e7eb !important;">
                     <p class="mt-1 text-xs text-gray-600 dark:text-white">Dejar en blanco para mantener la contraseña actual. Mínimo 8 caracteres si se cambia.</p>
                 </div>
 
@@ -169,7 +169,7 @@
                     </label>
                     <input type="password" name="password_confirmation" id="password_confirmation" minlength="8"
                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                           style="border: 1px solid #e5e7eb !important; color: #111827;">
+                           style="border: 1px solid #e5e7eb !important;">
                 </div>
 
                 <!-- Dirección -->
@@ -179,7 +179,7 @@
                     </label>
                     <textarea name="address" id="address" rows="3"
                               class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                              style="border: 1px solid #e5e7eb !important; color: #111827;">{{ old('address', $user->address) }}</textarea>
+                              style="border: 1px solid #e5e7eb !important;">{{ old('address', $user->address) }}</textarea>
                 </div>
 
                 <!-- Roles -->
@@ -234,7 +234,7 @@
                 <a href="{{ route('admin.users.show', $user) }}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium dark:text-white transition-colors">
                     Cancelar
                 </a>
-                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium dark:text-white transition-colors">
+                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium dark:text-white transition-colors dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-500">
                     <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                     </svg>
