@@ -80,12 +80,12 @@
     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
         <div class="flex justify-between items-start mb-4">
             <div>
-                <h3 class="text-xl font-bold text-gray-900">{{ $service->client->name ?? 'Cliente no encontrado' }}</h3>
-                <p class="text-gray-600 mt-1">{{ $service->address }}</p>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ $service->client->name ?? 'Cliente no encontrado' }}</h3>
+                <p class="text-gray-600 mt-1 dark:text-white">{{ $service->address }}</p>
             </div>
             <div class="text-right">
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-                    @if($service->status == 'pendiente') bg-gray-100 text-gray-800
+                    @if($service->status == 'pendiente') bg-gray-100 text-gray-800 dark:text-white
                     @elseif($service->status == 'en_progreso') bg-blue-100 text-blue-800
                     @elseif($service->status == 'vencido') bg-red-100 text-red-800
                     @else bg-green-100 text-green-800
@@ -98,11 +98,11 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
             <div>
                 <h4 class="text-sm font-medium text-gray-500">Tipo de Servicio</h4>
-                <p class="text-lg font-semibold text-gray-900 mt-1">
+                <p class="text-lg font-semibold text-gray-900 mt-1 dark:text-white">
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                        @if($service->service_type == 'desratizacion') bg-red-100 text-red-800
-                        @elseif($service->service_type == 'desinsectacion') bg-yellow-100 text-yellow-800
-                        @else bg-blue-100 text-blue-800
+                        @if($service->service_type == 'desratizacion') bg-red-100 text-red-800 dark:text-white
+                        @elseif($service->service_type == 'desinsectacion') bg-yellow-100 text-yellow-800 dark:text-white
+                        @else bg-blue-100 text-blue-800 dark:text-white
                         @endif">
                         {{ ucfirst($service->service_type) }}
                     </span>
@@ -112,20 +112,20 @@
                 @endif
             </div>
             <div>
-                <h4 class="text-sm font-medium text-gray-500">Prioridad</h4>
-                <p class="text-lg font-semibold text-gray-900 mt-1">
+                <h4 class="text-sm font-medium text-gray-500 dark:text-white">Prioridad</h4>
+                <p class="text-lg font-semibold text-gray-900 mt-1 dark:text-white">
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                        @if($service->priority == 'alta') bg-red-100 text-red-800
-                        @elseif($service->priority == 'media') bg-yellow-100 text-yellow-800
-                        @else bg-green-100 text-green-800
+                        @if($service->priority == 'alta') bg-red-100 text-red-800 dark:text-white
+                        @elseif($service->priority == 'media') bg-yellow-100 text-yellow-800 dark:text-white
+                        @else bg-green-100 text-green-800 dark:text-white
                         @endif">
                         {{ ucfirst($service->priority) }}
                     </span>
                 </p>
             </div>
             <div>
-                <h4 class="text-sm font-medium text-gray-500">Fecha Programada</h4>
-                <p class="text-lg font-semibold text-gray-900 mt-1">{{ $service->scheduled_date->format('d/m/Y H:i') }}</p>
+                <h4 class="text-sm font-medium text-gray-500 dark:text-white">Fecha Programada</h4>
+                <p class="text-lg font-semibold text-gray-900 mt-1 dark:text-white">{{ $service->scheduled_date->format('d/m/Y H:i') }}</p>
             </div>
         </div>
     </div>
@@ -134,45 +134,45 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <!-- Client Information -->
         <div class="bg-white rounded-lg shadow-sm p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Información del Cliente</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4 dark:text-white">Información del Cliente</h3>
             <div class="space-y-3">
                 <div>
-                    <span class="text-sm font-medium text-gray-500">Razón Social:</span>
-                    <p class="text-gray-900">{{ $service->client->name ?? 'N/A' }}</p>
+                    <span class="text-sm font-medium text-gray-500 dark:text-white">Razón Social:</span>
+                    <p class="text-gray-900 dark:text-white">{{ $service->client->name ?? 'N/A' }}</p>
                 </div>
                 <div>
-                    <span class="text-sm font-medium text-gray-500">RUT:</span>
-                    <p class="text-gray-900">{{ $service->client->rut ?? 'N/A' }}</p>
+                    <span class="text-sm font-medium text-gray-500 dark:text-white">RUT:</span>
+                    <p class="text-gray-900 dark:text-white">{{ $service->client->rut ?? 'N/A' }}</p>
                 </div>
                 <div>
-                    <span class="text-sm font-medium text-gray-500">Email:</span>
-                    <p class="text-gray-900">{{ $service->client->email ?? 'N/A' }}</p>
+                    <span class="text-sm font-medium text-gray-500 dark:text-white">Email:</span>
+                    <p class="text-gray-900 dark:text-white">{{ $service->client->email ?? 'N/A' }}</p>
                 </div>
                 <div>
-                    <span class="text-sm font-medium text-gray-500">Teléfono:</span>
-                    <p class="text-gray-900">{{ $service->client->phone ?? 'N/A' }}</p>
+                    <span class="text-sm font-medium text-gray-500 dark:text-white">Teléfono:</span>
+                    <p class="text-gray-900 dark:text-white">{{ $service->client->phone ?? 'N/A' }}</p>
                 </div>
             </div>
         </div>
 
         <!-- Service Information -->
         <div class="bg-white rounded-lg shadow-sm p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Detalles del Servicio</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4 dark:text-white">Detalles del Servicio</h3>
             <div class="space-y-3">
                 <div>
-                    <span class="text-sm font-medium text-gray-500">Descripción:</span>
-                    <p class="text-gray-900">{{ $service->description ?? 'Sin descripción' }}</p>
+                    <span class="text-sm font-medium text-gray-500 dark:text-white">Descripción:</span>
+                    <p class="text-gray-900 dark:text-white">{{ $service->description ?? 'Sin descripción' }}</p>
                 </div>
                 @if($service->started_at)
                 <div>
-                    <span class="text-sm font-medium text-gray-500">Iniciado:</span>
-                    <p class="text-gray-900">{{ $service->started_at->format('d/m/Y H:i') }}</p>
+                    <span class="text-sm font-medium text-gray-500 dark:text-white">Iniciado:</span>
+                    <p class="text-gray-900 dark:text-white">{{ $service->started_at->format('d/m/Y H:i') }}</p>
                 </div>
                 @endif
                 @if($service->completed_at)
                 <div>
-                    <span class="text-sm font-medium text-gray-500">Completado:</span>
-                    <p class="text-gray-900">{{ $service->completed_at->format('d/m/Y H:i') }}</p>
+                    <span class="text-sm font-medium text-gray-500 dark:text-white">Completado:</span>
+                    <p class="text-gray-900 dark:text-white">{{ $service->completed_at->format('d/m/Y H:i') }}</p>
                 </div>
                 @endif
             </div>
