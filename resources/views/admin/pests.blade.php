@@ -131,7 +131,7 @@
 
                     <!-- Description / Technical Notes -->
                     @if($pest->technical_notes)
-                        <p class="text-sm mb-4">
+                        <p class="text-sm mb-4 text-gray-900 dark:text-white">
                             {{ Str::limit($pest->technical_notes, 120) }}
                         </p>
                     @endif
@@ -139,7 +139,7 @@
                     <!-- Control Methods / Treatment -->
                     @if($pest->control_methods)
                         <div>
-                            <p class="text-sm font-semibold mb-2">Tratamiento:</p>
+                            <p class="text-sm font-semibold mb-2 text-gray-900 dark:text-white">Tratamiento:</p>
                             <ul class="list-disc list-inside text-sm space-y-1 text-gray-600 dark:text-white">
                                 @if(is_array($pest->control_methods))
                                     @foreach(array_slice($pest->control_methods, 0, 3) as $method)
