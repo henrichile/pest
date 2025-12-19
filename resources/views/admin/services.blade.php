@@ -140,7 +140,7 @@
     <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
         <div class="overflow-x-auto">
             @forelse($services as $service)
-                <div class="p-4 sm:p-6 border-b border-gray-200 hover:bg-gray-50" style="border-bottom: 1px solid #e5e7eb;">
+                <div class="p-4 sm:p-6 border-b border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700" style="border-bottom: 1px solid #e5e7eb;">
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div class="flex-1">
                             <div class="mb-2">
