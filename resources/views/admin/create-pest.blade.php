@@ -104,9 +104,9 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-900 dark:text-white">
             <!-- Nombre -->
             <div class="md:col-span-2">
-                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Nombre de la Plaga *</label>
+                <label for="name" class="block text-sm font-medium text-gray-700 mb-2 text-gray-900 dark:text-white">Nombre de la Plaga *</label>
                 <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 @error('name') border-red-500 @enderror"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 @error('name') border-red-500 @enderror text-gray-900 dark:text-white"
                        placeholder="Ej: Araña de Rincón">
                 @error('name')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -115,9 +115,9 @@
 
             <!-- Nombre Científico -->
             <div>
-                <label for="scientific_name" class="block text-sm font-medium text-gray-700 mb-2">Nombre Científico</label>
+                <label for="scientific_name" class="block text-sm font-medium text-gray-700 mb-2 text-gray-900 dark:text-white">Nombre Científico</label>
                 <input type="text" name="scientific_name" id="scientific_name" value="{{ old('scientific_name') }}"
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 @error('scientific_name') border-red-500 @enderror"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 @error('scientific_name') border-red-500 @enderror text-gray-900 dark:text-white"
                        placeholder="Ej: Loxosceles laeta">
                 @error('scientific_name')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -126,9 +126,9 @@
 
             <!-- Categoría -->
             <div>
-                <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Categoría *</label>
+                <label for="category" class="block text-sm font-medium text-gray-700 mb-2 text-gray-900 dark:text-white">Categoría *</label>
                 <select name="category" id="category" required
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 @error('category') border-red-500 @enderror">
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 @error('category') border-red-500 @enderror text-gray-900 dark:text-white">
                     <option value="">Seleccione una categoría</option>
                     @foreach($categories as $category)
                         <option value="{{ $category }}" {{ old('category') == $category ? 'selected' : '' }}>{{ $category }}</option>
@@ -141,9 +141,9 @@
 
             <!-- Descripción -->
             <div class="md:col-span-2">
-                <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Descripción</label>
+                <label for="description" class="block text-sm font-medium text-gray-700 mb-2 text-gray-900 dark:text-white">Descripción</label>
                 <textarea name="description" id="description" rows="3"
-                          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 @error('description') border-red-500 @enderror"
+                          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 @error('description') border-red-500 @enderror text-gray-900 dark:text-white"
                           placeholder="Descripción general de la plaga">{{ old('description') }}</textarea>
                 @error('description')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -152,9 +152,9 @@
 
             <!-- Notas Técnicas -->
             <div class="md:col-span-2">
-                <label for="technical_notes" class="block text-sm font-medium text-gray-700 mb-2">Notas Técnicas</label>
+                <label for="technical_notes" class="block text-sm font-medium text-gray-700 mb-2 text-gray-900 dark:text-white">Notas Técnicas</label>
                 <textarea name="technical_notes" id="technical_notes" rows="4"
-                          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 @error('technical_notes') border-red-500 @enderror"
+                          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 @error('technical_notes') border-red-500 @enderror text-gray-900 dark:text-white"
                           placeholder="Información técnica sobre la plaga (veneno, peligrosidad, etc.)">{{ old('technical_notes') }}</textarea>
                 @error('technical_notes')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -163,11 +163,11 @@
 
             <!-- Métodos de Control -->
             <div class="md:col-span-2">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Métodos de Control</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2 text-gray-900 dark:text-white">Métodos de Control</label>
                 <div id="control-methods-container" class="space-y-2">
                     <div class="flex gap-2">
                         <input type="text" name="control_methods[]" value="{{ old('control_methods.0') }}"
-                               class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                               class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-900 dark:text-white"
                                placeholder="Ej: Aspirado">
                         <button type="button" onclick="removeControlMethod(this)" class="px-3 py-2 text-red-600 hover:text-red-800 hidden">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -183,11 +183,11 @@
 
             <!-- Riesgos -->
             <div class="md:col-span-2">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Riesgos</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2 text-gray-900 dark:text-white">Riesgos</label>
                 <div id="risks-container" class="space-y-2">
                     <div class="flex gap-2">
                         <input type="text" name="risks[]" value="{{ old('risks.0') }}"
-                               class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                               class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-900 dark:text-white"
                                placeholder="Ej: Veneno necrótico">
                         <button type="button" onclick="removeRisk(this)" class="px-3 py-2 text-red-600 hover:text-red-800 hidden">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -196,7 +196,7 @@
                         </button>
                     </div>
                 </div>
-                <button type="button" onclick="addRisk()" class="mt-2 text-sm text-green-600 hover:text-green-800 font-medium">
+                <button type="button" onclick="addRisk()" class="mt-2 text-sm text-green-600 hover:text-green-800 font-medium text-gray-900 dark:text-white">
                     + Agregar riesgo
                 </button>
             </div>
@@ -206,7 +206,7 @@
                 <label class="flex items-center">
                     <input type="checkbox" name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }}
                            class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded">
-                    <span class="ml-2 text-sm text-gray-700">Plaga activa</span>
+                    <span class="ml-2 text-sm text-gray-700 text-gray-900 dark:text-white">Plaga activa</span>
                 </label>
             </div>
         </div>
