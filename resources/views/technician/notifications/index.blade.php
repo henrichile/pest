@@ -34,8 +34,8 @@
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Total</p>
-                    <p class="text-2xl font-bold text-gray-900">{{ $stats['total'] }}</p>
+                    <p class="text-sm font-medium text-gray-600 dark:text-white">Total</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $stats['total'] }}</p>
                 </div>
             </div>
         </div>
@@ -43,13 +43,13 @@
         <div class="bg-white rounded-lg shadow p-6">
             <div class="flex items-center">
                 <div class="p-2 bg-orange-100 rounded-lg">
-                    <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-6 h-6 text-orange-600 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">No leídas</p>
-                    <p class="text-2xl font-bold text-gray-900">{{ $stats['unread'] }}</p>
+                    <p class="text-sm font-medium text-gray-600 dark:text-white">No leídas</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $stats['unread'] }}</p>
                 </div>
             </div>
         </div>
@@ -57,13 +57,13 @@
         <div class="bg-white rounded-lg shadow p-6">
             <div class="flex items-center">
                 <div class="p-2 bg-green-100 rounded-lg">
-                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-6 h-6 text-green-600 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Leídas</p>
-                    <p class="text-2xl font-bold text-gray-900">{{ $stats['read'] }}</p>
+                    <p class="text-sm font-medium text-gray-600 dark:text-white">Leídas</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $stats['read'] }}</p>
                 </div>
             </div>
         </div>
@@ -71,13 +71,13 @@
         <div class="bg-white rounded-lg shadow p-6">
             <div class="flex items-center">
                 <div class="p-2 bg-red-100 rounded-lg">
-                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-6 h-6 text-red-600 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Urgentes</p>
-                    <p class="text-2xl font-bold text-gray-900">{{ $stats['urgent'] + $stats['high'] }}</p>
+                    <p class="text-sm font-medium text-gray-600 dark:text-white">Urgentes</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $stats['urgent'] + $stats['high'] }}</p>
                 </div>
             </div>
         </div>
@@ -87,7 +87,7 @@
     <div class="bg-white rounded-lg shadow p-6">
         <form method="GET" action="{{ route('technician.notifications.index') }}" class="flex flex-wrap gap-4">
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1 dark:text-white">Estado</label>
                 <select name="status" class="border border-gray-300 rounded-lg px-3 py-2 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todos</option>
                     <option value="unread" {{ request('status') == 'unread' ? 'selected' : '' }}>No leídas</option>
@@ -96,7 +96,7 @@
             </div>
             
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1 dark:text-white">Tipo</label>
                 <select name="type" class="border border-gray-300 rounded-lg px-3 py-2 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todos</option>
                     <option value="info" {{ request('type') == 'info' ? 'selected' : '' }}>Información</option>
@@ -107,7 +107,7 @@
             </div>
             
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Prioridad</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1 dark:text-white  ">Prioridad</label>
                 <select name="priority" class="border border-gray-300 rounded-lg px-3 py-2 dark:text-white dark:bg-gray-700 dark:border-gray-600">
                     <option value="">Todas</option>
                     <option value="urgent" {{ request('priority') == 'urgent' ? 'selected' : '' }}>Urgente</option>
@@ -129,7 +129,7 @@
     <div class="bg-white rounded-lg shadow overflow-hidden">
         @if($notifications->count() > 0)
             @foreach($notifications as $notification)
-            <div class="border-b border-gray-200 last:border-b-0 {{ $notification->is_read ? 'bg-gray-50' : 'bg-white' }}">
+            <div class="border-b border-gray-200 last:border-b-0 {{ $notification->is_read ? 'bg-gray-50 dark:bg-gray-800' : 'bg-white dark:bg-gray-800' }}">
                 <div class="p-6">
                     <div class="flex items-start justify-between">
                         <div class="flex-1">
