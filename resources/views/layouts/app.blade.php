@@ -356,7 +356,7 @@ function getTechnicianRoute($routeName, ...$params) {
                     }
                 }
             </style>
-            <div class="flex grow flex-col gap-y-3 px-5 pb-24">
+            <div class="flex grow flex-col gap-y-3 px-5 pb-40">
                 <div class="flex h-16 shrink-0 items-center justify-center pt-6 pb-4">
                     @php
                         // Determinar la ruta del dashboard según el rol
