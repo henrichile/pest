@@ -1056,6 +1056,19 @@ function getTechnicianRoute($routeName, ...$params) {
                             input.style.borderColor = '#374151';
                         }
                     });
+                    
+                    // Actualizar botones de menú móvil en dark mode
+                    const mobileMenuButtons = document.querySelectorAll('#page-mobile-menu-button, #mobile-menu-button, #dashboard-mobile-menu-button');
+                    mobileMenuButtons.forEach(btn => {
+                        btn.style.backgroundColor = '#1f2937';
+                        btn.style.borderColor = '#374151';
+                        // Hacer las líneas del SVG blancas
+                        const svg = btn.querySelector('svg');
+                        if (svg) {
+                            svg.style.color = '#ffffff';
+                            svg.setAttribute('stroke', '#ffffff');
+                        }
+                    });
                 } else {
                     // Aplicar modo claro
                     htmlRoot.classList.remove('dark');
@@ -1119,6 +1132,19 @@ function getTechnicianRoute($routeName, ...$params) {
                             input.style.borderColor = '#e5e7eb';
                         }
                     });
+                    
+                    // Restaurar botones de menú móvil en modo claro
+                    const mobileMenuButtons = document.querySelectorAll('#page-mobile-menu-button, #mobile-menu-button, #dashboard-mobile-menu-button');
+                    mobileMenuButtons.forEach(btn => {
+                        btn.style.backgroundColor = '#ffffff';
+                        btn.style.borderColor = '#d1d5db';
+                        // Restaurar las líneas del SVG a color oscuro
+                        const svg = btn.querySelector('svg');
+                        if (svg) {
+                            svg.style.color = '#374151';
+                            svg.setAttribute('stroke', '#374151');
+                        }
+                    });
                 }
                 
                 localStorage.setItem('darkMode', isDark);
@@ -1165,6 +1191,18 @@ function getTechnicianRoute($routeName, ...$params) {
                             input.style.backgroundColor = '#1f2937';
                             input.style.borderColor = '#374151';
                         });
+                        
+                        // Actualizar botones de menú móvil en dark mode
+                        const mobileMenuButtons = document.querySelectorAll('#page-mobile-menu-button, #mobile-menu-button, #dashboard-mobile-menu-button');
+                        mobileMenuButtons.forEach(btn => {
+                            btn.style.backgroundColor = '#1f2937';
+                            btn.style.borderColor = '#374151';
+                            const svg = btn.querySelector('svg');
+                            if (svg) {
+                                svg.style.color = '#ffffff';
+                                svg.setAttribute('stroke', '#ffffff');
+                            }
+                        });
                     } else {
                         // Restaurar body y html en modo claro
                         const bodyEl = document.getElementById('body-element');
@@ -1175,6 +1213,18 @@ function getTechnicianRoute($routeName, ...$params) {
                         if (htmlEl) {
                             htmlEl.style.background = '#f9fafb';
                         }
+                        
+                        // Restaurar botones de menú móvil en modo claro
+                        const mobileMenuButtons = document.querySelectorAll('#page-mobile-menu-button, #mobile-menu-button, #dashboard-mobile-menu-button');
+                        mobileMenuButtons.forEach(btn => {
+                            btn.style.backgroundColor = '#ffffff';
+                            btn.style.borderColor = '#d1d5db';
+                            const svg = btn.querySelector('svg');
+                            if (svg) {
+                                svg.style.color = '#374151';
+                                svg.setAttribute('stroke', '#374151');
+                            }
+                        });
                     }
                 }, 100);
             }
