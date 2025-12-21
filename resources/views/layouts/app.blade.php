@@ -337,7 +337,7 @@ function getTechnicianRoute($routeName, ...$params) {
         <div id="mobile-overlay" class="md:hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-40 hidden" style="z-index: 9998;"></div>
         
         <!-- Sidebar -->
-        <aside id="sidebar" class="fixed md:static flex-shrink-0 w-72 flex flex-col border-r border-gray-200 z-50 h-full overflow-y-auto" style="transform: translateX(-100%); transition: transform 0.3s ease-in-out;">
+        <aside id="sidebar" class="fixed md:static flex-shrink-0 w-72 flex flex-col bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 z-50 h-full overflow-y-auto" style="transform: translateX(-100%); transition: transform 0.3s ease-in-out;">
             <style>
                 @media (min-width: 768px) {
                     #sidebar {
