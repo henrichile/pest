@@ -3,15 +3,86 @@
 @section('title', 'Notificaciones')
 
 @section('content')
-    <div class="px-4 sm:px-6 lg:px-8 pt-12 md:pt-0">
-        <div class="flex items-center justify-between mb-6">
-            <div class="flex-1">
-                <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">Notificaciones</h1>
-                <p class="mt-2 text-sm text-gray-700 dark:text-white">
+    <div class="px-4 sm:px-6 lg:px-8 pt-3 md:pt-0">
+        <!-- Header con hamburguesa y título -->
+        <div class="mb-4 sm:mb-6">
+            <!-- Primera fila: Hamburguesa + Título (móvil) -->
+            <div class="flex items-center gap-3 mb-4 md:hidden" style="padding-top: 2.5rem;">
+                <!-- Hamburguesa (solo móvil) -->
+                <button id="page-mobile-menu-button"
+                    class="flex-shrink-0 p-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 shadow-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    style="z-index: 1000; position: relative;">
+                    <svg id="page-menu-icon" class="h-5 w-5 text-gray-900 dark:text-white" fill="none" viewBox="0 0 24 24"
+                        stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                    <svg id="page-close-icon" class="h-5 w-5 hidden text-gray-900 dark:text-white" fill="none"
+                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+
+                <!-- Título -->
+                <div class="flex-1">
+                    <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">Notificaciones</h1>
+                </div>
+
+                <!-- Iconos Header Móvil -->
+                <div class="flex items-center gap-4">
+                    <!-- Perfil -->
+                    @if(auth()->check() && auth()->user()->hasRole('technician') && !auth()->user()->hasRole('super-admin'))
+                        <a href="{{ route('technician.profile') }}" class="flex-shrink-0">
+                            <div
+                                class="h-10 w-10 rounded-full bg-green-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                                <span
+                                    class="text-white font-medium text-base">{{ substr(auth()->user()->name ?? 'U', 0, 1) }}</span>
+                            </div>
+                        </a>
+                    @endif
+                    <!-- Logout -->
+                    <form method="POST" action="{{ route('logout') }}" class="flex-shrink-0">
+                        @csrf
+                        <button type="submit" class="text-gray-500 hover:text-red-600 transition-colors"
+                            title="Cerrar Sesión">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Header original (desktop) -->
+            <div class="hidden md:flex items-center justify-between">
+                <div class="flex-1">
+                    <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">Notificaciones</h1>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-white">
+                        Gestiona todas tus notificaciones del sistema.
+                    </p>
+                </div>
+                <div class="ml-4 flex-shrink-0">
+                    @if($unreadNotifications > 0)
+                        <form
+                            action="{{ auth()->check() && auth()->user()->hasRole('technician') && !auth()->user()->hasRole('super-admin') ? route('technician.notifications.mark-all-read') : route('notifications.mark-all-read') }}"
+                            method="POST" class="inline">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit"
+                                class="inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors bg-green-500">
+                                Marcar todas como leídas
+                            </button>
+                        </form>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Botón marcar como leídas (móvil) -->
+            <div class="md:hidden">
+                <p class="text-sm text-gray-700 dark:text-white mb-3">
                     Gestiona todas tus notificaciones del sistema.
                 </p>
-            </div>
-            <div class="ml-4 flex-shrink-0">
                 @if($unreadNotifications > 0)
                     <form
                         action="{{ auth()->check() && auth()->user()->hasRole('technician') && !auth()->user()->hasRole('super-admin') ? route('technician.notifications.mark-all-read') : route('notifications.mark-all-read') }}"
@@ -257,6 +328,41 @@
                     });
                 });
             });
+
+            // Inicializar botón de menú móvil
+            (function () {
+                function initPageMenuButton() {
+                    const pageMenuButton = document.getElementById('page-mobile-menu-button');
+
+                    if (!pageMenuButton) {
+                        console.warn('[PAGE MENU] Botón page-mobile-menu-button no encontrado, reintentando...');
+                        setTimeout(initPageMenuButton, 100);
+                        return;
+                    }
+
+                    console.log('[PAGE MENU] Botón encontrado, configurando listener...');
+
+                    pageMenuButton.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('[PAGE MENU] Click detectado, llamando a window.openMobileMenu()');
+
+                        if (typeof window.openMobileMenu === 'function') {
+                            window.openMobileMenu();
+                        } else {
+                            console.error('[PAGE MENU] window.openMobileMenu no está definida!');
+                        }
+                    });
+
+                    console.log('[PAGE MENU] Listener configurado correctamente');
+                }
+
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', initPageMenuButton);
+                } else {
+                    initPageMenuButton();
+                }
+            })();
         </script>
     @endpush
 @endsection
