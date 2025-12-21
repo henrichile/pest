@@ -362,7 +362,7 @@
                         </svg>
                         <input type="text" id="global-search-input-desktop" placeholder="Buscar servicios, clientes..."
                             class="w-56 pr-3 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all text-sm dark:text-white"
-                            autocomplete="off" />
+                            autocomplete="off" style="padding-left: 2rem;" />
                     </div>
 
                     <!-- Search Results Dropdown -->
@@ -415,7 +415,8 @@
                                             <div class="notification-item-content">
                                                 <div class="notification-item-header">
                                                     <h4 class="text-gray-900 dark:text-white font-semibold text-sm mb-1">
-                                                        {{ $title }}</h4>
+                                                        {{ $title }}
+                                                    </h4>
                                                     <span
                                                         class="notification-time">{{ $notification->created_at->diffForHumans() }}</span>
                                                 </div>
@@ -1470,26 +1471,29 @@
                             @forelse($recentServices ?? [] as $service)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                        {{ $service->client->name ?? 'N/A' }}</td>
+                                        {{ $service->client->name ?? 'N/A' }}
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                        {{ ucfirst(str_replace('-', ' ', $service->service_type ?? 'N/A')) }}</td>
+                                        {{ ucfirst(str_replace('-', ' ', $service->service_type ?? 'N/A')) }}
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                        {{ $service->created_at->format('d/m/Y') }}</td>
+                                        {{ $service->created_at->format('d/m/Y') }}
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 py-1 text-xs font-medium rounded-full
-                                                @if($service->status === 'completed') bg-green-100 text-green-800
-                                                @elseif($service->status === 'in_progress') bg-blue-100 text-blue-800
-                                                @else bg-yellow-100 text-yellow-800
-                                                @endif">
+                                                                @if($service->status === 'completed') bg-green-100 text-green-800
+                                                                @elseif($service->status === 'in_progress') bg-blue-100 text-blue-800
+                                                                @else bg-yellow-100 text-yellow-800
+                                                                @endif">
                                             {{ ucfirst($service->status ?? 'pending') }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 py-1 text-xs font-medium rounded-full
-                                                @if(strtolower($service->priority ?? 'media') === 'alta') bg-red-100 text-red-800
-                                                @elseif(strtolower($service->priority ?? 'media') === 'media') bg-yellow-100 text-yellow-800
-                                                @else bg-blue-100 text-blue-800
-                                                @endif">
+                                                                @if(strtolower($service->priority ?? 'media') === 'alta') bg-red-100 text-red-800
+                                                                @elseif(strtolower($service->priority ?? 'media') === 'media') bg-yellow-100 text-yellow-800
+                                                                @else bg-blue-100 text-blue-800
+                                                                @endif">
                                             {{ ucfirst($service->priority ?? 'Media') }}
                                         </span>
                                     </td>
@@ -1764,12 +1768,12 @@
                         html += '<div class="mb-2"><div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Servicios</div>';
                         data.services.forEach(item => {
                             html += `<a href="${item.url}" class="flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors">
-                                <div class="text-green-600">${typeIcons.service}</div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="font-medium text-gray-900 truncate">${item.title}</div>
-                                    <div class="text-sm text-gray-500 truncate">${item.subtitle}</div>
-                                </div>
-                            </a>`;
+                                                <div class="text-green-600">${typeIcons.service}</div>
+                                                <div class="flex-1 min-w-0">
+                                                    <div class="font-medium text-gray-900 truncate">${item.title}</div>
+                                                    <div class="text-sm text-gray-500 truncate">${item.subtitle}</div>
+                                                </div>
+                                            </a>`;
                         });
                         html += '</div>';
                     }
@@ -1780,12 +1784,12 @@
                         html += '<div class="mb-2"><div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Clientes</div>';
                         data.clients.forEach(item => {
                             html += `<a href="${item.url}" class="flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors">
-                                <div class="text-blue-600">${typeIcons.client}</div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="font-medium text-gray-900 truncate">${item.title}</div>
-                                    <div class="text-sm text-gray-500 truncate">${item.subtitle}</div>
-                                </div>
-                            </a>`;
+                                                <div class="text-blue-600">${typeIcons.client}</div>
+                                                <div class="flex-1 min-w-0">
+                                                    <div class="font-medium text-gray-900 truncate">${item.title}</div>
+                                                    <div class="text-sm text-gray-500 truncate">${item.subtitle}</div>
+                                                </div>
+                                            </a>`;
                         });
                         html += '</div>';
                     }
@@ -1796,12 +1800,12 @@
                         html += '<div class="mb-2"><div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Productos</div>';
                         data.products.forEach(item => {
                             html += `<a href="${item.url}" class="flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors">
-                                <div class="text-purple-600">${typeIcons.product}</div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="font-medium text-gray-900 truncate">${item.title}</div>
-                                    <div class="text-sm text-gray-500 truncate">${item.subtitle}</div>
-                                </div>
-                            </a>`;
+                                                <div class="text-purple-600">${typeIcons.product}</div>
+                                                <div class="flex-1 min-w-0">
+                                                    <div class="font-medium text-gray-900 truncate">${item.title}</div>
+                                                    <div class="text-sm text-gray-500 truncate">${item.subtitle}</div>
+                                                </div>
+                                            </a>`;
                         });
                         html += '</div>';
                     }
@@ -1812,12 +1816,12 @@
                         html += '<div class="mb-2"><div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Plagas</div>';
                         data.pests.forEach(item => {
                             html += `<a href="${item.url}" class="flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors">
-                                <div class="text-red-600">${typeIcons.pest}</div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="font-medium text-gray-900 truncate">${item.title}</div>
-                                    <div class="text-sm text-gray-500 truncate">${item.subtitle}</div>
-                                </div>
-                            </a>`;
+                                                <div class="text-red-600">${typeIcons.pest}</div>
+                                                <div class="flex-1 min-w-0">
+                                                    <div class="font-medium text-gray-900 truncate">${item.title}</div>
+                                                    <div class="text-sm text-gray-500 truncate">${item.subtitle}</div>
+                                                </div>
+                                            </a>`;
                         });
                         html += '</div>';
                     }
@@ -1828,12 +1832,12 @@
                         html += '<div class="mb-2"><div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Técnicos</div>';
                         data.technicians.forEach(item => {
                             html += `<a href="${item.url}" class="flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors">
-                                <div class="text-indigo-600">${typeIcons.technician}</div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="font-medium text-gray-900 truncate">${item.title}</div>
-                                    <div class="text-sm text-gray-500 truncate">${item.subtitle}</div>
-                                </div>
-                            </a>`;
+                                                <div class="text-indigo-600">${typeIcons.technician}</div>
+                                                <div class="flex-1 min-w-0">
+                                                    <div class="font-medium text-gray-900 truncate">${item.title}</div>
+                                                    <div class="text-sm text-gray-500 truncate">${item.subtitle}</div>
+                                                </div>
+                                            </a>`;
                         });
                         html += '</div>';
                     }
@@ -2026,42 +2030,42 @@
                                 document.head.appendChild(styleTag);
                             }
                             styleTag.textContent = `
-                                #sidebar {
-                                    transform: translateX(0) !important;
-                                    display: flex !important;
-                                    visibility: visible !important;
-                                    opacity: 1 !important;
-                                    z-index: 9999 !important;
-                                    position: fixed !important;
-                                    left: 0 !important;
-                                    top: 0 !important;
-                                    width: 288px !important;
-                                    height: 100vh !important;
-                                }
-                            `;
+                                                #sidebar {
+                                                    transform: translateX(0) !important;
+                                                    display: flex !important;
+                                                    visibility: visible !important;
+                                                    opacity: 1 !important;
+                                                    z-index: 9999 !important;
+                                                    position: fixed !important;
+                                                    left: 0 !important;
+                                                    top: 0 !important;
+                                                    width: 288px !important;
+                                                    height: 100vh !important;
+                                                }
+                                            `;
 
                             // También aplicar estilos inline como respaldo
                             sidebar.style.cssText = `
-                                display: flex !important;
-                                transform: translateX(0) !important;
-                                visibility: visible !important;
-                                opacity: 1 !important;
-                                z-index: 9999 !important;
-                                position: fixed !important;
-                                left: 0 !important;
-                                top: 0 !important;
-                                width: 288px !important;
-                                height: 100vh !important;
-                            `;
+                                                display: flex !important;
+                                                transform: translateX(0) !important;
+                                                visibility: visible !important;
+                                                opacity: 1 !important;
+                                                z-index: 9999 !important;
+                                                position: fixed !important;
+                                                left: 0 !important;
+                                                top: 0 !important;
+                                                width: 288px !important;
+                                                height: 100vh !important;
+                                            `;
 
                             // Mostrar overlay
                             if (mobileOverlay) {
                                 mobileOverlay.classList.remove('hidden');
                                 mobileOverlay.style.cssText = `
-                                    display: block !important;
-                                    visibility: visible !important;
-                                    z-index: 9998 !important;
-                                `;
+                                                    display: block !important;
+                                                    visibility: visible !important;
+                                                    z-index: 9998 !important;
+                                                `;
                             }
 
                             // Cambiar iconos
