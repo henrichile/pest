@@ -717,6 +717,7 @@ function getTechnicianRoute($routeName, ...$params)
                         top: 0 !important;
                         width: 288px !important;
                         height: 100vh !important;
+                        padding-bottom: 300px !important;
                     }
                 `;
                 
@@ -732,6 +733,7 @@ function getTechnicianRoute($routeName, ...$params)
                     top: 0 !important;
                     width: 288px !important;
                     height: 100vh !important;
+                    padding-bottom: 300px !important;
                 `;
                 
                 // Mostrar overlay
