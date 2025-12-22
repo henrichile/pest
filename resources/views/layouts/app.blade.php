@@ -349,8 +349,6 @@ function getTechnicianRoute($routeName, ...$params) {
                     #sidebar {
                         transform: translateX(-100%) !important;
                         position: fixed !important;
-                        height: 100vh !important;
-                        max-height: 100vh !important;
                         overflow-y: auto !important;
                         -webkit-overflow-scrolling: touch !important;
                     }
