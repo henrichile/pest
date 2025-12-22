@@ -11,14 +11,14 @@
         if ($isViewingAsTechnician) {
             // Mapear rutas de technician a technician-view
             $routeMap = [
-                'technician.service.detail' => 'technician-view.service.detail',
-                'technician.service.checklist' => 'technician-view.service.checklist',
-                'technician.service.checklist.stage' => 'technician-view.service.checklist.stage',
-                'technician.service.checklist.location' => 'technician-view.service.checklist.location',
-                'technician.service.checklist.process-location' => 'technician-view.service.checklist.process-location',
-                'technician.service.checklist.submit' => 'technician-view.service.checklist.submit',
-                'technician.service.pdf' => 'technician-view.service.pdf',
-                'technician.service.checklist-details' => 'technician-view.service.checklist-details',
+                'technician.service.detail' => 'admin.technician-view.service.detail',
+                'technician.service.checklist' => 'admin.technician-view.service.checklist',
+                'technician.service.checklist.stage' => 'admin.technician-view.service.checklist.stage',
+                'technician.service.checklist.location' => 'admin.technician-view.service.checklist.location',
+                'technician.service.checklist.process-location' => 'admin.technician-view.service.checklist.process-location',
+                'technician.service.checklist.submit' => 'admin.technician-view.service.checklist.submit',
+                'technician.service.pdf' => 'admin.technician-view.service.pdf',
+                'technician.service.checklist-details' => 'admin.technician-view.service.checklist-details',
             ];
 
             $mappedRoute = $routeMap[$routeName] ?? $routeName;
@@ -830,9 +830,11 @@
                                         </div>
                                         <div class="flex-1 min-w-0">
                                             <p class="text-sm font-semibold text-gray-900 truncate">
-                                                {{ auth()->check() ? auth()->user()->name : 'Usuario' }}</p>
+                                                {{ auth()->check() ? auth()->user()->name : 'Usuario' }}
+                                            </p>
                                             <p class="text-xs text-gray-500 truncate">
-                                                {{ auth()->check() ? auth()->user()->email : '' }}</p>
+                                                {{ auth()->check() ? auth()->user()->email : '' }}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
