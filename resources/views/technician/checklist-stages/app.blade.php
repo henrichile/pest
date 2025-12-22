@@ -35,9 +35,10 @@ if (auth()->check()) {
 }
 
 // Helper function para obtener la ruta correcta según el modo
-function getTechnicianRoute($routeName, ...$params) {
+function getTechnicianRoute($routeName, ...$params)
+{
     $isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
-    
+
     if ($isViewingAsTechnician) {
         // Mapear rutas de technician a technician-view
         $routeMap = [
@@ -50,11 +51,11 @@ function getTechnicianRoute($routeName, ...$params) {
             'technician.service.pdf' => 'technician-view.service.pdf',
             'technician.service.checklist-details' => 'technician-view.service.checklist-details',
         ];
-        
+
         $mappedRoute = $routeMap[$routeName] ?? $routeName;
         return route($mappedRoute, ...$params);
     }
-    
+
     return route($routeName, ...$params);
 }
 @endphp
@@ -337,7 +338,7 @@ function getTechnicianRoute($routeName, ...$params) {
         <div id="mobile-overlay" class="md:hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-40 hidden" style="z-index: 9998;"></div>
         
         <!-- Sidebar -->
-        <aside id="sidebar" class="fixed md:static flex-shrink-0 w-72 flex flex-col bg-white border-r border-gray-200 z-50 h-full" style="transform: translateX(-100%); transition: transform 0.3s ease-in-out;">
+        <aside id="sidebar" class="fixed md:static flex-shrink-0 w-72 flex flex-col bg-white border-r border-gray-200 z-50 h-full" style="transform: translateX(-100%); transition: transform 0.3s ease-in-out;padding-bottom: 300px !important;">
             <style>
                 @media (min-width: 768px) {
                     #sidebar {
