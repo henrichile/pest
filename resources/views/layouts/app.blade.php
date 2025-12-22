@@ -35,9 +35,10 @@ if (auth()->check()) {
 }
 
 // Helper function para obtener la ruta correcta según el modo
-function getTechnicianRoute($routeName, ...$params) {
+function getTechnicianRoute($routeName, ...$params)
+{
     $isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
-    
+
     if ($isViewingAsTechnician) {
         // Mapear rutas de technician a technician-view
         $routeMap = [
@@ -50,11 +51,11 @@ function getTechnicianRoute($routeName, ...$params) {
             'technician.service.pdf' => 'technician-view.service.pdf',
             'technician.service.checklist-details' => 'technician-view.service.checklist-details',
         ];
-        
+
         $mappedRoute = $routeMap[$routeName] ?? $routeName;
         return route($mappedRoute, ...$params);
     }
-    
+
     return route($routeName, ...$params);
 }
 @endphp
@@ -357,20 +358,20 @@ function getTechnicianRoute($routeName, ...$params) {
             <div class="flex grow flex-col gap-y-3 px-5 pb-40">
                 <div class="flex h-16 shrink-0 items-center justify-center pt-6 pb-4">
                     @php
-                        // Determinar la ruta del dashboard según el rol
-                        $dashboardRoute = route('admin.dashboard');
-                        if (auth()->check()) {
-                            if (auth()->user()->hasRole('technician') && !auth()->user()->hasRole('super-admin')) {
-                                // Usuario es técnico (no admin)
-                                $dashboardRoute = route('technician.dashboard');
-                            } elseif (session('view_as_technician') && auth()->user()->hasRole('super-admin')) {
-                                // Admin viendo como técnico
-                                $dashboardRoute = route('admin.technician-view.dashboard');
-                            } else {
-                                // Admin normal
-                                $dashboardRoute = route('admin.dashboard');
-                            }
-                        }
+// Determinar la ruta del dashboard según el rol
+$dashboardRoute = route('admin.dashboard');
+if (auth()->check()) {
+    if (auth()->user()->hasRole('technician') && !auth()->user()->hasRole('super-admin')) {
+        // Usuario es técnico (no admin)
+        $dashboardRoute = route('technician.dashboard');
+    } elseif (session('view_as_technician') && auth()->user()->hasRole('super-admin')) {
+        // Admin viendo como técnico
+        $dashboardRoute = route('admin.technician-view.dashboard');
+    } else {
+        // Admin normal
+        $dashboardRoute = route('admin.dashboard');
+    }
+}
                     @endphp
                     <a href="{{ $dashboardRoute }}" class="flex items-center justify-center">
                         <img src="https://pestcontroller.cl/wp-content/uploads/2022/07/pestcontroller-logo.png" alt="PestController Logo" class="h-14 w-auto object-contain max-w-full">
@@ -750,6 +751,7 @@ function getTechnicianRoute($routeName, ...$params) {
                         max-height: 100vh !important;
                         overflow-y: auto !important;
                         -webkit-overflow-scrolling: touch !important;
+                        padding-bottom: 300px !important;
                     }
                 `;
                 
@@ -768,6 +770,7 @@ function getTechnicianRoute($routeName, ...$params) {
                     max-height: 100vh !important;
                     overflow-y: auto !important;
                     -webkit-overflow-scrolling: touch !important;
+                    padding-bottom: 300px !important;
                 `;
                 
                 // Mostrar overlay
@@ -959,6 +962,7 @@ function getTechnicianRoute($routeName, ...$params) {
                         max-height: 100vh !important;
                         overflow-y: auto !important;
                         -webkit-overflow-scrolling: touch !important;
+                        padding-bottom: 300px !important;
                     `
                 };
             };
