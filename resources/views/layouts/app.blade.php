@@ -352,6 +352,7 @@ function getTechnicianRoute($routeName, ...$params)
                         position: fixed !important;
                         overflow-y: auto !important;
                         -webkit-overflow-scrolling: touch !important;
+                        padding-bottom: 300px !important;
                     }
                 }
             </style>
