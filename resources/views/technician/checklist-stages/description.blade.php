@@ -31,17 +31,19 @@
 
         <!-- Resumen del Checklist -->
         <div class="checklist-summary">
-            <h5>Resumen del Checklist</h5>
+            <h5>Resumen del Monitoreo</h5>
             <div class="summary-grid">
                 <div class="summary-item">
                     <span class="summary-label">Producto Aplicado:</span>
                     <p class="summary-value">
-                        {{ $service->checklist_data["products"]["applied_product"] ?? "No especificado" }}</p>
+                        {{ $service->checklist_data["products"]["applied_product"] ?? "No especificado" }}
+                    </p>
                 </div>
                 <div class="summary-item">
                     <span class="summary-label">Sitios Tratados:</span>
                     <p class="summary-value">
-                        {{ Str::limit($service->checklist_data["sites"]["treated_sites"] ?? "No especificado", 50) }}</p>
+                        {{ Str::limit($service->checklist_data["sites"]["treated_sites"] ?? "No especificado", 50) }}
+                    </p>
                 </div>
                 <div class="summary-item">
                     <span class="summary-label">Observaciones:</span>
@@ -544,7 +546,7 @@
 
                 if (!technicianSigned || !clientSigned) {
                     e.preventDefault();
-                    alert('Por favor, complete ambas firmas antes de finalizar el checklist.');
+                    alert('Por favor, complete ambas firmas antes de finalizar el monitoreo.');
                 }
             });
         });

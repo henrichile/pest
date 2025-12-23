@@ -1,30 +1,32 @@
 @php
-// Helper function para obtener la ruta correcta según el modo
-function getTechnicianRoute($routeName, ...$params) {
-    $isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
+    // Helper function para obtener la ruta correcta según el modo
+    function getTechnicianRoute($routeName, ...$params)
+    {
+        $isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
 
-    if ($isViewingAsTechnician) {
-        // Mapear rutas de technician a technician-view
-        $routeMap = [
-            'technician.service.detail' => 'technician-view.service.detail',
-            'technician.service.checklist' => 'technician-view.service.checklist',
-            'technician.service.checklist.stage' => 'technician-view.service.checklist.stage',
-            'technician.service.checklist.location' => 'technician-view.service.checklist.location',
-            'technician.service.checklist.process-location' => 'technician-view.service.checklist.process-location',
-            'technician.service.checklist.submit' => 'technician-view.service.checklist.submit',
-            'technician.service.pdf' => 'technician-view.service.pdf',
-            'technician.service.checklist-details' => 'technician-view.service.checklist-details',
-        ];
+        if ($isViewingAsTechnician) {
+            // Mapear rutas de technician a technician-view
+            $routeMap = [
+                'technician.service.detail' => 'technician-view.service.detail',
+                'technician.service.checklist' => 'technician-view.service.checklist',
+                'technician.service.checklist.stage' => 'technician-view.service.checklist.stage',
+                'technician.service.checklist.location' => 'technician-view.service.checklist.location',
+                'technician.service.checklist.process-location' => 'technician-view.service.checklist.process-location',
+                'technician.service.checklist.submit' => 'technician-view.service.checklist.submit',
+                'technician.service.pdf' => 'technician-view.service.pdf',
+                'technician.service.checklist-details' => 'technician-view.service.checklist-details',
+            ];
 
-        $mappedRoute = $routeMap[$routeName] ?? $routeName;
-        return route($mappedRoute, ...$params);
+            $mappedRoute = $routeMap[$routeName] ?? $routeName;
+            return route($mappedRoute, ...$params);
+        }
+
+        return route($routeName, ...$params);
     }
-
-    return route($routeName, ...$params);
-}
 @endphp
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -168,7 +170,7 @@ function getTechnicianRoute($routeName, ...$params) {
             border-radius: 10px;
             overflow: hidden;
             margin: 15px 0;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .progress-fill {
@@ -254,7 +256,7 @@ function getTechnicianRoute($routeName, ...$params) {
         .form-group textarea:focus {
             border-color: #22c55e;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(34,197,94,0.1);
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
         }
 
         .form-group input:hover,
@@ -435,8 +437,13 @@ function getTechnicianRoute($routeName, ...$params) {
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .stage-indicator {
@@ -514,7 +521,7 @@ function getTechnicianRoute($routeName, ...$params) {
             background: #ffffff;
             border: 2px solid #22c55e;
             color: #22c55e;
-            box-shadow: 0 0 0 3px rgba(34,197,94,0.1);
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
             transform: translateY(-2px);
         }
 
@@ -596,7 +603,9 @@ function getTechnicianRoute($routeName, ...$params) {
             font-weight: 600;
         }
 
-        .form-input, .form-select, .form-textarea {
+        .form-input,
+        .form-select,
+        .form-textarea {
             width: 100%;
             padding: 12px 16px;
             border: 2px solid #dee2e6;
@@ -607,10 +616,12 @@ function getTechnicianRoute($routeName, ...$params) {
             font-family: inherit;
         }
 
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
             border-color: #22c55e;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(34,197,94,0.1);
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
         }
 
         .form-textarea {
@@ -653,17 +664,20 @@ function getTechnicianRoute($routeName, ...$params) {
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div style="text-align: center; margin-bottom: 32px;">
-            <h1 style="font-size: 32px; margin-bottom: 8px; color: #111827;">Checklist de Servicio</h1>
+            <h1 style="font-size: 32px; margin-bottom: 8px; color: #111827;">Etapas del Servicio</h1>
             <p>Complete todas las etapas para finalizar el servicio</p>
         </div>
 
         <div class="service-info">
             <h3>
-                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px; height: 20px; color: #6b7280;">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                    style="width: 20px; height: 20px; color: #6b7280;">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
                 </svg>
                 Detalles del Servicio
             </h3>
@@ -679,10 +693,10 @@ function getTechnicianRoute($routeName, ...$params) {
                     <span>{{ $service->address ?? "N/A" }}</span>
                 </div>
                 @if($service->client && $service->client->phone)
-                <div class="info-item">
-                    <strong>Tel:</strong>
-                    <span>{{ $service->client->phone }}</span>
-                </div>
+                    <div class="info-item">
+                        <strong>Tel:</strong>
+                        <span>{{ $service->client->phone }}</span>
+                    </div>
                 @endif
             </div>
 
@@ -704,27 +718,34 @@ function getTechnicianRoute($routeName, ...$params) {
             </div>
             <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
                 <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px; height: 20px; @if($service->latitude && $service->longitude) color: #22c55e; @else color: #ef4444; @endif">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                        style="width: 20px; height: 20px; @if($service->latitude && $service->longitude) color: #22c55e; @else color: #ef4444; @endif">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                     </svg>
                     <span class="info-label">Ubicación:</span>
-                    <span class="info-value" style="@if($service->latitude && $service->longitude) color: #22c55e; font-weight: 600; @else color: #ef4444; @endif">
-                    @if($service->latitude && $service->longitude)
-                        Capturada ({{ number_format($service->latitude, 6) }}, {{ number_format($service->longitude, 6) }})
-                    @else
+                    <span class="info-value"
+                        style="@if($service->latitude && $service->longitude) color: #22c55e; font-weight: 600; @else color: #ef4444; @endif">
+                        @if($service->latitude && $service->longitude)
+                            Capturada ({{ number_format($service->latitude, 6) }},
+                            {{ number_format($service->longitude, 6) }})
+                        @else
                             No capturada
-                    @endif
-                </span>
-            </div>
+                        @endif
+                    </span>
+                </div>
                 <div style="text-align: center;">
-                <a href="{{ getTechnicianRoute('technician.service.checklist.location', $service) }}"
-                   class="geolocation-retry-btn">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px;">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.25 18.002h4.992m-.01-13.5v4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-                    </svg>
-                        <span>{{ $service->latitude && $service->longitude ? 'Reconectar' : 'Capturar' }} Geolocalización</span>
-                </a>
+                    <a href="{{ getTechnicianRoute('technician.service.checklist.location', $service) }}"
+                        class="geolocation-retry-btn">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                            style="width: 16px; height: 16px;">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M16.023 9.348h4.992v-.001M2.25 18.002h4.992m-.01-13.5v4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                        </svg>
+                        <span>{{ $service->latitude && $service->longitude ? 'Reconectar' : 'Capturar' }}
+                            Geolocalización</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -732,12 +753,15 @@ function getTechnicianRoute($routeName, ...$params) {
         <div class="progress-box">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <h4 style="margin: 0; display: flex; align-items: center; gap: 10px;">
-                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px; height: 20px; color: #6b7280;">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                        style="width: 20px; height: 20px; color: #6b7280;">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
                     </svg>
-                    Progreso del Checklist
+                    Progreso del Servicio
                 </h4>
-                <span style="font-size: 24px; font-weight: 700; color: #22c55e;">{{ number_format($service->getProgressPercentage(), 0) }}%</span>
+                <span
+                    style="font-size: 24px; font-weight: 700; color: #22c55e;">{{ number_format($service->getProgressPercentage(), 0) }}%</span>
             </div>
             <div class="progress-bar">
                 <div class="progress-fill" style="width: {{ $service->getProgressPercentage() }}%"></div>
@@ -772,23 +796,31 @@ function getTechnicianRoute($routeName, ...$params) {
                 @endforeach
             @else
                 @if($service->service_type === 'desratizacion')
-                <span class="{{ $service->checklist_stage === 'points' ? 'active' : ($service->getStageNumber() > 1 ? 'completed' : '') }}">Puntos</span>
+                    <span
+                        class="{{ $service->checklist_stage === 'points' ? 'active' : ($service->getStageNumber() > 1 ? 'completed' : '') }}">Puntos</span>
                 @endif
-                <span class="{{ $service->checklist_stage === 'products' ? 'active' : ($service->getStageNumber() > 2 ? 'completed' : '') }}">Productos</span>
+                <span
+                    class="{{ $service->checklist_stage === 'products' ? 'active' : ($service->getStageNumber() > 2 ? 'completed' : '') }}">Productos</span>
                 {{-- ✅ CORREGIDO: Results solo para desratización y desinsectación, NO para sanitización --}}
                 @if(in_array($service->service_type, ['desratizacion', 'desinsectacion']))
-                <span class="{{ $service->checklist_stage === 'results' ? 'active' : ($service->getStageNumber() > 3 ? 'completed' : '') }}">Resultados</span>
+                    <span
+                        class="{{ $service->checklist_stage === 'results' ? 'active' : ($service->getStageNumber() > 3 ? 'completed' : '') }}">Resultados</span>
                 @endif
-                <span class="{{ $service->checklist_stage === 'observations' ? 'active' : ($service->getStageNumber() > 4 ? 'completed' : '') }}">Observaciones</span>
-                <span class="{{ $service->checklist_stage === 'sites' ? 'active' : ($service->getStageNumber() > 5 ? 'completed' : '') }}">Sitios</span>
-                <span class="{{ $service->checklist_stage === 'description' ? 'active' : ($service->getStageNumber() > 6 ? 'completed' : '') }}">Descripción</span>
+                <span
+                    class="{{ $service->checklist_stage === 'observations' ? 'active' : ($service->getStageNumber() > 4 ? 'completed' : '') }}">Observaciones</span>
+                <span
+                    class="{{ $service->checklist_stage === 'sites' ? 'active' : ($service->getStageNumber() > 5 ? 'completed' : '') }}">Sitios</span>
+                <span
+                    class="{{ $service->checklist_stage === 'description' ? 'active' : ($service->getStageNumber() > 6 ? 'completed' : '') }}">Descripción</span>
             @endif
         </div>
 
         <div class="stage-box">
             <h4>
-                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px; height: 20px; color: #6b7280;">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                    style="width: 20px; height: 20px; color: #6b7280;">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
                 </svg>
                 @if($service->service_type === 'monitoreo-cebaderas')
                     @if($service->checklist_stage === 'monitoreo-datos') Datos del Servicio
@@ -836,15 +868,18 @@ function getTechnicianRoute($routeName, ...$params) {
 
         <div class="buttons-container">
             @if($previousStage)
-                <a href="{{ getTechnicianRoute('technician.service.checklist.stage', ['service' => $service, 'stage' => $previousStage]) }}" class="back-button">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 18px; height: 18px; margin-right: 8px;">
+                <a href="{{ getTechnicianRoute('technician.service.checklist.stage', ['service' => $service, 'stage' => $previousStage]) }}"
+                    class="back-button">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                        style="width: 18px; height: 18px; margin-right: 8px;">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
                     </svg>
                     <span>Etapa Anterior</span>
                 </a>
             @else
                 <a href="{{ getTechnicianRoute('technician.service.detail', $service) }}" class="back-button">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 18px; height: 18px; margin-right: 8px;">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                        style="width: 18px; height: 18px; margin-right: 8px;">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
                     </svg>
                     <span>Volver al Servicio</span>
@@ -853,23 +888,29 @@ function getTechnicianRoute($routeName, ...$params) {
 
             @if($nextStage)
                 @if($service->service_type === 'monitoreo-cebaderas')
-                    <button type="submit" form="{{ $service->checklist_stage === 'monitoreo-datos' ? 'monitoreoDatosForm' : ($service->checklist_stage === 'monitoreo-croquis' ? 'croquisForm' : ($service->checklist_stage === 'monitoreo-completo' ? 'monitoreoCompletoForm' : ($service->checklist_stage === 'monitoreo-estadisticas' ? 'estadisticasForm' : ($service->checklist_stage === 'monitoreo-analisis' ? 'analisisForm' : 'firmaForm')))) }}" class="next-button">
+                    <button type="submit"
+                        form="{{ $service->checklist_stage === 'monitoreo-datos' ? 'monitoreoDatosForm' : ($service->checklist_stage === 'monitoreo-croquis' ? 'croquisForm' : ($service->checklist_stage === 'monitoreo-completo' ? 'monitoreoCompletoForm' : ($service->checklist_stage === 'monitoreo-estadisticas' ? 'estadisticasForm' : ($service->checklist_stage === 'monitoreo-analisis' ? 'analisisForm' : 'firmaForm')))) }}"
+                        class="next-button">
                         <span>Siguiente Etapa</span>
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 18px; height: 18px; margin-left: 8px;">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                            style="width: 18px; height: 18px; margin-left: 8px;">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                         </svg>
                     </button>
                 @else
-                    <a href="{{ getTechnicianRoute('technician.service.checklist.stage', ['service' => $service, 'stage' => $nextStage]) }}" class="next-button">
+                    <a href="{{ getTechnicianRoute('technician.service.checklist.stage', ['service' => $service, 'stage' => $nextStage]) }}"
+                        class="next-button">
                         <span>Siguiente Etapa</span>
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 18px; height: 18px; margin-left: 8px;">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                            style="width: 18px; height: 18px; margin-left: 8px;">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                         </svg>
                     </a>
                 @endif
             @else
                 <button type="button" class="next-button bg-green-500" disabled>
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 18px; height: 18px; margin-right: 8px;">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                        style="width: 18px; height: 18px; margin-right: 8px;">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                     </svg>
                     <span>Última Etapa</span>
@@ -881,10 +922,10 @@ function getTechnicianRoute($routeName, ...$params) {
 
     <script>
         // Auto-guardar datos al cambiar de etapa
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const forms = document.querySelectorAll("form[data-stage]");
             forms.forEach(form => {
-                form.addEventListener("submit", function(e) {
+                form.addEventListener("submit", function (e) {
                     // Agregar indicador de carga
                     const submitBtn = form.querySelector("button[type=\"submit\"]");
                     if (submitBtn) {
@@ -897,7 +938,7 @@ function getTechnicianRoute($routeName, ...$params) {
             // Mejorar interacción de checkboxes
             const checkboxes = document.querySelectorAll('.checkbox-item input[type="checkbox"]');
             checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
+                checkbox.addEventListener('change', function () {
                     const item = this.closest('.checkbox-item');
                     if (this.checked) {
                         item.classList.add('checked');
@@ -910,7 +951,7 @@ function getTechnicianRoute($routeName, ...$params) {
             // Mejorar interacción de radio buttons
             const radios = document.querySelectorAll('.radio-item input[type="radio"]');
             radios.forEach(radio => {
-                radio.addEventListener('change', function() {
+                radio.addEventListener('change', function () {
                     // Remover clase checked de todos los radio items
                     document.querySelectorAll('.radio-item').forEach(item => {
                         item.classList.remove('checked');
@@ -924,4 +965,5 @@ function getTechnicianRoute($routeName, ...$params) {
         });
     </script>
 </body>
+
 </html>

@@ -28,7 +28,7 @@ function getTechnicianRoute($routeName, ...$params) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checklist - {{ $service->id }}</title>
+    <title>Servicio - {{ $service->id }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -692,7 +692,7 @@ function getTechnicianRoute($routeName, ...$params) {
 <body>
     <div class="container">
         <div style="text-align: center; margin-bottom: 32px;">
-            <h1 style="font-size: 32px; margin-bottom: 8px; color: #111827;">Checklist de Servicio</h1>
+            <h1 style="font-size: 32px; margin-bottom: 8px; color: #111827;">Etapa de Servicio</h1>
             <p>Complete todas las etapas para finalizar el servicio</p>
         </div>
 

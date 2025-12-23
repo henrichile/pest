@@ -434,12 +434,12 @@ class NotificationController extends Controller
                 'type' => 'warning'
             ],
             'checklist_pending' => [
-                'title' => 'Checklist Pendiente',
-                'message' => 'Tienes un checklist pendiente para la orden de trabajo {work_order_folio}',
+                'title' => 'Servicio Pendiente',
+                'message' => 'Tienes un servicio pendiente para la orden de trabajo {work_order_folio}',
                 'type' => 'warning'
             ],
             'checklist_completed' => [
-                'title' => 'Checklist Completado',
+                'title' => 'Servicio Completado',
                 'message' => 'El checklist para la orden de trabajo {work_order_folio} ha sido completado',
                 'type' => 'success'
             ],

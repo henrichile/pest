@@ -1,34 +1,36 @@
 @php
-// Helper function para obtener la ruta correcta según el modo
-function getTechnicianRoute($routeName, ...$params) {
-    $isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
+    // Helper function para obtener la ruta correcta según el modo
+    function getTechnicianRoute($routeName, ...$params)
+    {
+        $isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
 
-    if ($isViewingAsTechnician) {
-        // Mapear rutas de technician a technician-view
-        $routeMap = [
-            'technician.service.detail' => 'technician-view.service.detail',
-            'technician.service.checklist' => 'technician-view.service.checklist',
-            'technician.service.checklist.stage' => 'technician-view.service.checklist.stage',
-            'technician.service.checklist.location' => 'technician-view.service.checklist.location',
-            'technician.service.checklist.process-location' => 'technician-view.service.checklist.process-location',
-            'technician.service.checklist.submit' => 'technician-view.service.checklist.submit',
-            'technician.service.pdf' => 'technician-view.service.pdf',
-            'technician.service.checklist-details' => 'technician-view.service.checklist-details',
-        ];
+        if ($isViewingAsTechnician) {
+            // Mapear rutas de technician a technician-view
+            $routeMap = [
+                'technician.service.detail' => 'technician-view.service.detail',
+                'technician.service.checklist' => 'technician-view.service.checklist',
+                'technician.service.checklist.stage' => 'technician-view.service.checklist.stage',
+                'technician.service.checklist.location' => 'technician-view.service.checklist.location',
+                'technician.service.checklist.process-location' => 'technician-view.service.checklist.process-location',
+                'technician.service.checklist.submit' => 'technician-view.service.checklist.submit',
+                'technician.service.pdf' => 'technician-view.service.pdf',
+                'technician.service.checklist-details' => 'technician-view.service.checklist-details',
+            ];
 
-        $mappedRoute = $routeMap[$routeName] ?? $routeName;
-        return route($mappedRoute, ...$params);
+            $mappedRoute = $routeMap[$routeName] ?? $routeName;
+            return route($mappedRoute, ...$params);
+        }
+
+        return route($routeName, ...$params);
     }
-
-    return route($routeName, ...$params);
-}
 @endphp
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checklist - {{ $service->id }}</title>
+    <title>Servicio - {{ $service->id }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         * {
@@ -55,7 +57,7 @@ function getTechnicianRoute($routeName, ...$params) {
             border-radius: 16px;
             padding: 30px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .header-title {
@@ -84,7 +86,7 @@ function getTechnicianRoute($routeName, ...$params) {
             border-radius: 16px;
             padding: 25px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .service-card-header {
@@ -202,7 +204,7 @@ function getTechnicianRoute($routeName, ...$params) {
         .geolocation-btn:hover {
             background: #0056b3;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
         }
 
         /* Progress Card */
@@ -211,7 +213,7 @@ function getTechnicianRoute($routeName, ...$params) {
             border-radius: 16px;
             padding: 25px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .progress-header {
@@ -250,7 +252,7 @@ function getTechnicianRoute($routeName, ...$params) {
             background: linear-gradient(90deg, #1a472a 0%, #28a745 100%);
             border-radius: 10px;
             transition: width 0.5s ease;
-            box-shadow: 0 2px 8px rgba(26,71,42,0.3);
+            box-shadow: 0 2px 8px rgba(26, 71, 42, 0.3);
         }
 
         .progress-text {
@@ -265,7 +267,7 @@ function getTechnicianRoute($routeName, ...$params) {
             border-radius: 16px;
             padding: 25px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .stages-list {
@@ -290,7 +292,7 @@ function getTechnicianRoute($routeName, ...$params) {
 
         .stage-item:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .stage-item.completed {
@@ -312,7 +314,7 @@ function getTechnicianRoute($routeName, ...$params) {
             background: linear-gradient(135deg, #1a472a 0%, #28a745 100%);
             border-color: #1a472a;
             color: white;
-            box-shadow: 0 4px 15px rgba(26,71,42,0.4);
+            box-shadow: 0 4px 15px rgba(26, 71, 42, 0.4);
             transform: translateY(-2px);
         }
 
@@ -342,7 +344,7 @@ function getTechnicianRoute($routeName, ...$params) {
             background: white;
             border-radius: 16px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
 
@@ -391,12 +393,12 @@ function getTechnicianRoute($routeName, ...$params) {
         .nav-btn-primary {
             background: linear-gradient(135deg, #1a472a 0%, #28a745 100%);
             color: white;
-            box-shadow: 0 4px 15px rgba(26,71,42,0.3);
+            box-shadow: 0 4px 15px rgba(26, 71, 42, 0.3);
         }
 
         .nav-btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(26,71,42,0.4);
+            box-shadow: 0 6px 20px rgba(26, 71, 42, 0.4);
         }
 
         .nav-btn-secondary {
@@ -436,11 +438,12 @@ function getTechnicianRoute($routeName, ...$params) {
         }
     </style>
 </head>
+
 <body>
     <div class="main-container">
         <!-- Header -->
         <div class="header-card">
-            <h1 class="header-title">Checklist de Servicio</h1>
+            <h1 class="header-title">Etapas del Servicio</h1>
             <p class="header-subtitle">Complete todas las etapas para finalizar el servicio</p>
         </div>
 
@@ -474,24 +477,28 @@ function getTechnicianRoute($routeName, ...$params) {
             <div class="location-section">
                 <div class="location-status">
                     <span class="location-icon">📍</span>
-                    <span class="location-text {{ $service->latitude && $service->longitude ? 'location-success' : 'location-error' }}">
+                    <span
+                        class="location-text {{ $service->latitude && $service->longitude ? 'location-success' : 'location-error' }}">
                         @if($service->latitude && $service->longitude)
-                            Ubicación capturada ({{ number_format($service->latitude, 6) }}, {{ number_format($service->longitude, 6) }})
+                            Ubicación capturada ({{ number_format($service->latitude, 6) }},
+                            {{ number_format($service->longitude, 6) }})
                         @else
                             Ubicación no capturada
                         @endif
                     </span>
                 </div>
                 @if(!$service->latitude || !$service->longitude)
-                <a href="{{ getTechnicianRoute('technician.service.checklist.location', $service) }}" class="geolocation-btn">
-                    <span>🔄</span>
-                    <span>Capturar Ubicación</span>
-                </a>
+                    <a href="{{ getTechnicianRoute('technician.service.checklist.location', $service) }}"
+                        class="geolocation-btn">
+                        <span>🔄</span>
+                        <span>Capturar Ubicación</span>
+                    </a>
                 @else
-                <a href="{{ getTechnicianRoute('technician.service.checklist.location', $service) }}" class="geolocation-btn">
-                    <span>🔄</span>
-                    <span>Reconectar Ubicación</span>
-                </a>
+                    <a href="{{ getTechnicianRoute('technician.service.checklist.location', $service) }}"
+                        class="geolocation-btn">
+                        <span>🔄</span>
+                        <span>Reconectar Ubicación</span>
+                    </a>
                 @endif
             </div>
         </div>
@@ -501,7 +508,7 @@ function getTechnicianRoute($routeName, ...$params) {
             <div class="progress-header">
                 <h3 class="progress-title">
                     <span>📊</span>
-                    <span>Progreso del Checklist</span>
+                    <span>Progreso del Servicio</span>
                 </h3>
                 <span class="progress-percentage">{{ number_format($service->getProgressPercentage(), 0) }}%</span>
             </div>
@@ -598,13 +605,12 @@ function getTechnicianRoute($routeName, ...$params) {
         <div class="nav-buttons">
             @if($previousStage)
                 <a href="{{ getTechnicianRoute('technician.service.checklist.stage', ['service' => $service, 'stage' => $previousStage]) }}"
-                   class="nav-btn nav-btn-secondary">
+                    class="nav-btn nav-btn-secondary">
                     <span>←</span>
                     <span>Etapa Anterior</span>
                 </a>
             @else
-                <a href="{{ getTechnicianRoute('technician.service.detail', $service) }}"
-                   class="nav-btn nav-btn-secondary">
+                <a href="{{ getTechnicianRoute('technician.service.detail', $service) }}" class="nav-btn nav-btn-secondary">
                     <span>←</span>
                     <span>Volver al Servicio</span>
                 </a>
@@ -624,6 +630,5 @@ function getTechnicianRoute($routeName, ...$params) {
         </div>
     </div>
 </body>
+
 </html>
-
-

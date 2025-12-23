@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,7 +27,7 @@
             background: white;
             border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             max-width: 500px;
             width: 100%;
             text-align: center;
@@ -184,9 +185,15 @@
             color: #1976d2;
             border: 2px solid #1976d2;
         }
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .hidden {
@@ -194,6 +201,7 @@
         }
     </style>
 </head>
+
 <body style="padding-top: 80px;">
     <div class="container">
         <div class="logo">PC</div>
@@ -228,10 +236,10 @@
 
         <div id="coordinates" class="coordinates hidden"></div>
 
-@php
-$isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
-$processLocationRoute = $isViewingAsTechnician ? route('technician-view.service.checklist.process-location', $service) : route('technician.service.checklist.process-location', $service);
-@endphp
+        @php
+            $isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
+            $processLocationRoute = $isViewingAsTechnician ? route('technician-view.service.checklist.process-location', $service) : route('technician.service.checklist.process-location', $service);
+        @endphp
         <form id="locationForm" method="POST" action="{{ $processLocationRoute }}" class="hidden">
             @csrf
             <input type="hidden" name="latitude" id="latitude">
@@ -239,7 +247,7 @@ $processLocationRoute = $isViewingAsTechnician ? route('technician-view.service.
             <input type="hidden" name="location_accuracy" id="location_accuracy">
             <input type="hidden" name="address" value="{{ $service->address ?? 'Ubicación capturada' }}">
             <button type="submit" id="continueBtn" class="continue-button" disabled>
-                ✅ Continuar al Checklist
+                ✅ Continuar
             </button>
         </form>
     </div>
@@ -257,11 +265,11 @@ $processLocationRoute = $isViewingAsTechnician ? route('technician-view.service.
         const accuracyInput = document.getElementById("location_accuracy");
 
         // Mostrar instrucciones al cargar la página
-        window.addEventListener("load", function() {
+        window.addEventListener("load", function () {
             showStatus("info", "ℹ️ <strong>Instrucciones importantes:</strong><br>1. Asegúrate de estar en HTTPS o localhost<br>2. Haz clic en el botón para solicitar permisos<br>3. Si no aparece popup, revisa la barra de direcciones");
         });
 
-        locationBtn.addEventListener("click", function() {
+        locationBtn.addEventListener("click", function () {
             if (!navigator.geolocation) {
                 showStatus("error", "❌ Tu navegador no soporta geolocalización. Usa Chrome, Firefox o Safari actualizado.");
                 return;
@@ -278,7 +286,7 @@ $processLocationRoute = $isViewingAsTechnician ? route('technician-view.service.
             locationBtn.innerHTML = "<div class=\"spinner\"></div>Solicitando permisos...";
 
             // Configuración más agresiva para obtener permisos
-          // Mostrar mensaje de solicitud de permisos
+            // Mostrar mensaje de solicitud de permisos
             coordinatesDiv.innerHTML = "<div><strong>📍 Solicitando permisos de ubicación...</strong><br>Por favor, permite el acceso a tu ubicación cuando el navegador lo solicite.</div>";
             coordinatesDiv.classList.remove("hidden");
             const options = {
@@ -288,7 +296,7 @@ $processLocationRoute = $isViewingAsTechnician ? route('technician-view.service.
             };
 
             navigator.geolocation.getCurrentPosition(
-                function(position) {
+                function (position) {
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
                     const accuracy = position.coords.accuracy;
@@ -308,7 +316,7 @@ $processLocationRoute = $isViewingAsTechnician ? route('technician-view.service.
                     `;
                     coordinatesDiv.classList.remove("hidden");
 
-                    showStatus("success", "✅ <strong>¡Ubicación capturada!</strong><br>Ahora puedes continuar al checklist");
+                    showStatus("success", "✅ <strong>¡Ubicación capturada!</strong><br>Ahora puedes continuar");
 
                     // Mostrar formulario y habilitar botón
                     locationForm.classList.remove("hidden");
@@ -319,11 +327,11 @@ $processLocationRoute = $isViewingAsTechnician ? route('technician-view.service.
                     locationBtn.innerHTML = "✅ Ubicación Capturada";
                     locationBtn.style.background = "#4caf50";
                 },
-                function(error) {
+                function (error) {
                     let message = "❌ <strong>Error al obtener ubicación:</strong><br>";
                     let instructions = "";
 
-                    switch(error.code) {
+                    switch (error.code) {
                         case 1:
                             message += "Permiso denegado por el usuario.";
                             instructions = `
@@ -426,7 +434,7 @@ $processLocationRoute = $isViewingAsTechnician ? route('technician-view.service.
         // Función para verificar permisos al cargar
         function checkPermissions() {
             if (navigator.permissions) {
-                navigator.permissions.query({name: "geolocation"}).then(function(result) {
+                navigator.permissions.query({ name: "geolocation" }).then(function (result) {
                     if (result.state === "granted") {
                         showStatus("success", "✅ Permisos de ubicación ya están permitidos. Haz clic en el botón para capturar tu ubicación.");
                     } else if (result.state === "denied") {
@@ -440,4 +448,5 @@ $processLocationRoute = $isViewingAsTechnician ? route('technician-view.service.
         window.addEventListener("load", checkPermissions);
     </script>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -174,7 +175,8 @@
                 padding: 1rem;
             }
 
-            .status-card, .service-info {
+            .status-card,
+            .service-info {
                 padding: 1rem;
             }
 
@@ -184,6 +186,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="header">
         <h1>📍 Captura de Ubicación</h1>
@@ -208,11 +211,13 @@
         <!-- Estado de error -->
         <div id="error-card" class="status-card hidden">
             <div class="actions" style="margin-top:1rem">
-                <button type="button" class="btn btn-primary" onclick="retryGeolocation()">Reintentar geolocalización</button>
+                <button type="button" class="btn btn-primary" onclick="retryGeolocation()">Reintentar
+                    geolocalización</button>
             </div>
             <div class="status-icon error">❌</div>
             <div class="status-title">Error al obtener ubicación</div>
-            <div class="status-message">No se pudo obtener tu ubicación. Por favor verifica que tengas habilitado el GPS y los permisos de ubicación.</div>
+            <div class="status-message">No se pudo obtener tu ubicación. Por favor verifica que tengas habilitado el GPS
+                y los permisos de ubicación.</div>
         </div>
 
         <!-- Información del servicio -->
@@ -232,14 +237,15 @@
             </div>
             <div class="info-row">
                 <span class="info-label">Fecha programada:</span>
-                <span class="info-value">{{ $service->scheduled_date ? \Carbon\Carbon::parse($service->scheduled_date)->format('d/m/Y H:i') : 'No especificada' }}</span>
+                <span
+                    class="info-value">{{ $service->scheduled_date ? \Carbon\Carbon::parse($service->scheduled_date)->format('d/m/Y H:i') : 'No especificada' }}</span>
             </div>
         </div>
 
         <!-- Acciones -->
         <div class="actions">
             <button id="continue-btn" class="btn btn-primary hidden" onclick="continueToChecklist()">
-                Continuar al Checklist
+                Continuar
             </button>
             <a href="{{ route('technician.services') }}" class="btn btn-secondary">
                 Volver a Servicios
@@ -264,7 +270,7 @@
             };
 
             navigator.geolocation.getCurrentPosition(
-                function(position) {
+                function (position) {
                     capturedLocation = {
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
@@ -272,9 +278,9 @@
                     };
                     showSuccess();
                 },
-                function(error) {
+                function (error) {
                     let errorMessage = 'Error al obtener la ubicación';
-                    switch(error.code) {
+                    switch (error.code) {
                         case error.PERMISSION_DENIED:
                             errorMessage = 'Permisos de ubicación denegados';
                             break;
@@ -301,11 +307,11 @@
         // Mostrar estado de error
         function showError(message) {
 
-          function retryGeolocation() {
-              document.getElementById("error-card").classList.add("hidden");
-              document.getElementById("loading-card").classList.remove("hidden");
-              setTimeout(getCurrentLocation, 200);
-          }
+            function retryGeolocation() {
+                document.getElementById("error-card").classList.add("hidden");
+                document.getElementById("loading-card").classList.remove("hidden");
+                setTimeout(getCurrentLocation, 200);
+            }
 
             document.getElementById('loading-card').classList.add('hidden');
             document.getElementById('error-card').classList.remove('hidden');
@@ -323,7 +329,7 @@
             const form = document.createElement('form');
             form.method = 'POST';
             @php
-                $isViewingAsTechnician = (session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin')) 
+                $isViewingAsTechnician = (session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin'))
                     || request()->is('admin/technician-view/*')
                     || (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], '/admin/technician-view/') !== false);
                 $processLocationRoute = $isViewingAsTechnician ? route('admin.technician-view.service.checklist.process-location', $service) : route('technician.service.checklist.process-location', $service);
@@ -362,10 +368,10 @@
             form.submit();
         }
 
-        // Iniciar captura automáticamente al cargar la página
+        // Iniciar captura automáticamente al cargar la página  
         document.addEventListener('DOMContentLoaded', function() {
             getCurrentLocation();
         });
-    </script>
-</body>
-</html>
+            < /s
+cript> 
+ </body></html>
