@@ -60,38 +60,38 @@
         <!-- Campos de Firma Digital -->
         <div class="signatures-section">
             <h5>Firmas Digitales de Confirmación</h5>
-            <div class="signatures-grid">
-                <div class="signature-group">
-                    <label>Firma del Técnico</label>
-                    <canvas id="technicianSignature"
-                        style="width: 100%; background-color: #fff; border: 1px solid #ccc;"></canvas>
-                    <div class="signature-controls">
-                        <button type="button" class="clear-signature" data-canvas="technicianSignature">Limpiar</button>
-                        <span class="signature-status" id="technicianStatus">Sin firma</span>
-                    </div>
-                    <p class="signature-help">Dibuje su firma en el área superior</p>
-                    <input type="hidden" name="technician_signature" id="technicianSignatureData">
+        </div>
+        <div class="signatures-grid">
+            <div class="signature-group">
+                <label>Firma del Técnico</label>
+                <canvas id="technicianSignature"
+                    style="width: 100%; background-color: #fff; border: 1px solid #ccc;"></canvas>
+                <div class="signature-controls">
+                    <button type="button" class="clear-signature" data-canvas="technicianSignature">Limpiar</button>
+                    <span class="signature-status" id="technicianStatus">Sin firma</span>
                 </div>
-
-                <div class="signature-group">
-                    <label>Firma del Cliente</label>
-                    <canvas id="clientSignature"
-                        style="width: 100%; background-color: #fff; border: 1px solid #ccc;"></canvas>
-                    <div class="signature-controls">
-                        <button type="button" class="clear-signature" data-canvas="clientSignature">Limpiar</button>
-                        <span class="signature-status" id="clientStatus">Sin firma</span>
-                    </div>
-                    <p class="signature-help">Dibuje su firma en el área superior</p>
-                    <input type="hidden" name="client_signature" id="clientSignatureData">
-                </div>
+                <p class="signature-help">Dibuje su firma en el área superior</p>
+                <input type="hidden" name="technician_signature" id="technicianSignatureData">
             </div>
 
-            <div class="signature-date">
-                <label>Fecha de Finalización</label>
-                <input type="date" name="completion_date"
-                    value="{{ $service->checklist_data["description"]["completion_date"] ?? date("Y-m-d") }}" required>
+            <div class="signature-group">
+                <label>Firma del Cliente</label>
+                <canvas id="clientSignature" style="width: 100%; background-color: #fff; border: 1px solid #ccc;"></canvas>
+                <div class="signature-controls">
+                    <button type="button" class="clear-signature" data-canvas="clientSignature">Limpiar</button>
+                    <span class="signature-status" id="clientStatus">Sin firma</span>
+                </div>
+                <p class="signature-help">Dibuje su firma en el área superior</p>
+                <input type="hidden" name="client_signature" id="clientSignatureData">
             </div>
         </div>
+
+        <div class="signature-date">
+            <label>Fecha de Finalización</label>
+            <input type="date" name="completion_date"
+                value="{{ $service->checklist_data["description"]["completion_date"] ?? date("Y-m-d") }}" required>
+        </div>
+
 
         <div class="buttons-container">
             <a href="{{ route("technician.service.checklist.stage", ["service" => $service, "stage" => "sites"]) }}"
@@ -165,7 +165,7 @@
 
         .signatures-grid {
             /*  display: grid;
-                                grid-template-columns: 1fr 1fr;*/
+                                            grid-template-columns: 1fr 1fr;*/
             gap: 20px;
             margin-bottom: 20px;
             max-width: 100%;
