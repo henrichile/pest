@@ -84,7 +84,7 @@
             font-size: 16px;
             font-weight: bold;
             color: #1a472a;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             border-bottom: 1px solid #ddd;
             padding-bottom: 5px;
         }
