@@ -50,12 +50,12 @@ Route::middleware(['auth'])->group(function () {
         }
         return redirect('/login');
     });
-    
+
     // Perfil de usuario (para todos los usuarios autenticados)
     Route::get('/profile', [App\Http\Controllers\UserController::class, 'profile'])->name('profile');
     Route::post('/profile', [App\Http\Controllers\UserController::class, 'updateProfile'])->name('profile.update');
     Route::post('/profile/change-password', [App\Http\Controllers\UserController::class, 'changePassword'])->name('profile.change-password');
-    
+
     // Rutas de notificaciones globales (para todos los usuarios autenticados)
     Route::get('/notifications/count', [App\Http\Controllers\NotificationController::class, 'getUnreadCount'])->name('notifications.count');
     Route::get('/api/notifications/unread-count', [App\Http\Controllers\NotificationController::class, 'getUnreadCount'])->name('notifications.unread-count');
@@ -66,21 +66,21 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'role:super-admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
     Route::get('/statistics', [App\Http\Controllers\DashboardController::class, 'statistics'])->name('statistics');
-    
+
     // Búsqueda global
     Route::get('/search', [App\Http\Controllers\SearchController::class, 'search'])->name('search');
-    
+
     // Servicios
     Route::resource('services', App\Http\Controllers\ServiceController::class);
-    
+
     // Clientes
     Route::resource('clients', App\Http\Controllers\ClientController::class);
-    
+
     // Productos
     Route::resource('products', App\Http\Controllers\ProductController::class);
     Route::patch('users/{user}/toggle-status', [App\Http\Controllers\UserController::class, 'toggleStatus'])->name('users.toggle-status');
     Route::resource("users", App\Http\Controllers\UserController::class);
-    
+
     // Roles y Permisos
     Route::get('/roles-permissions', [App\Http\Controllers\RolePermissionController::class, 'index'])->name('roles-permissions');
     Route::post('/roles-permissions', [App\Http\Controllers\RolePermissionController::class, 'store'])->name('roles-permissions.store');
@@ -89,16 +89,16 @@ Route::middleware(['auth', 'role:super-admin'])->prefix('admin')->name('admin.')
     Route::post('/roles-permissions/assign', [App\Http\Controllers\RolePermissionController::class, 'assignRole'])->name('roles-permissions.assign');
     Route::post('/permissions', [App\Http\Controllers\RolePermissionController::class, 'createPermission'])->name('permissions.store');
     Route::delete('/permissions/{permission}', [App\Http\Controllers\RolePermissionController::class, 'deletePermission'])->name('permissions.destroy');
-    
+
     // Configuraciones
     Route::get('/settings', [App\Http\Controllers\ConfigurationController::class, 'settings'])->name('settings');
     Route::put('/settings/update', [App\Http\Controllers\ConfigurationController::class, 'updateCompanySettings'])->name('settings.update');
     Route::put('/settings/smtp', [App\Http\Controllers\ConfigurationController::class, 'updateSmtpSettings'])->name('settings.smtp');
-    
+
     // Ver como Técnico - Rutas que muestran la vista de técnico para super-admins
     Route::post('/view-as-technician', [App\Http\Controllers\AdminController::class, 'viewAsTechnician'])->name('view-as-technician');
     Route::post('/stop-viewing-as-technician', [App\Http\Controllers\AdminController::class, 'stopViewingAsTechnician'])->name('stop-viewing-as-technician');
-    
+
     // Rutas de vista de técnico para super-admins (sin requerir rol de técnico)
     Route::get('/technician-view/dashboard', [App\Http\Controllers\TechnicianController::class, 'dashboard'])->name('technician-view.dashboard');
     Route::get('/technician-view/services', [App\Http\Controllers\TechnicianController::class, 'services'])->name('technician-view.services');
@@ -106,7 +106,7 @@ Route::middleware(['auth', 'role:super-admin'])->prefix('admin')->name('admin.')
     Route::get('/technician-view/services/{service}/pdf', [App\Http\Controllers\TechnicianController::class, 'generatePDF'])->name('technician-view.service.pdf');
     Route::get('/technician-view/services/{service}/checklist-details', [App\Http\Controllers\TechnicianController::class, 'showChecklistDetails'])->name('technician-view.service.checklist-details');
     Route::get('/technician-view/profile', [App\Http\Controllers\TechnicianController::class, 'profile'])->name('technician-view.profile');
-    
+
     // Servicios del técnico (solo lectura para admin en modo view_as_technician)
     Route::match(['GET', 'POST'], '/technician-view/services/{service}/start', [App\Http\Controllers\TechnicianController::class, 'startService'])->name('technician-view.service.start');
     Route::post('/technician-view/services/{service}/complete', [App\Http\Controllers\TechnicianController::class, 'completeService'])->name('technician-view.service.complete');
@@ -118,16 +118,17 @@ Route::middleware(['auth', 'role:super-admin'])->prefix('admin')->name('admin.')
     Route::post('/technician-view/services/{service}/checklist/submit', [App\Http\Controllers\TechnicianController::class, 'saveChecklistStage'])->name('technician-view.service.checklist.submit');
     Route::get('/notification-center', [App\Http\Controllers\NotificationController::class, 'index'])->name('notification-center');
     Route::post('/notifications/send', [App\Http\Controllers\NotificationController::class, 'sendNotification'])->name('notifications.send');
-    Route::resource('notifications', App\Http\Controllers\NotificationController::class)->except(['index']);
+    Route::patch('/notifications/mark-all-read', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
     Route::patch('/notifications/{notification}/mark-read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.mark-read');
     Route::patch('/notifications/{notification}/mark-unread', [App\Http\Controllers\NotificationController::class, 'markAsUnread'])->name('notifications.mark-unread');
-    Route::patch('/notifications/mark-all-read', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
-    Route::get('/checklist-management', function() { return view('admin.checklist-management'); })->name('checklist-management');
-    
+    Route::resource('notifications', App\Http\Controllers\NotificationController::class)->except(['index']);
+    Route::get('/checklist-management', function () {
+        return view('admin.checklist-management'); })->name('checklist-management');
+
     // Checklist Templates
     Route::resource('checklist-templates', App\Http\Controllers\ChecklistTemplateController::class);
     Route::post('/checklist-templates/{checklistTemplate}/duplicate', [App\Http\Controllers\ChecklistTemplateController::class, 'duplicate'])->name('checklist-templates.duplicate');
-    
+
     // TODO: Arreglar estas rutas cuando el controlador ChecklistManagementController esté disponible
     /*
     Route::post("/checklist-management/templates", [App\Http\Controllers\ChecklistManagementController::class, "createTemplate"])->name("checklist-management.templates.create");
@@ -139,12 +140,12 @@ Route::middleware(['auth', 'role:super-admin'])->prefix('admin')->name('admin.')
     Route::delete("/checklist-management/items/{item}", [App\Http\Controllers\ChecklistManagementController::class, "deleteItem"])->name("checklist-management.items.delete");
     */
     Route::resource('service-types', App\Http\Controllers\ServiceTypeController::class);
-    
+
     // Plagas
     Route::get('/plagas', [App\Http\Controllers\AdminController::class, 'pests'])->name('pests');
     Route::get('/plagas/create', [App\Http\Controllers\AdminController::class, 'createPest'])->name('pests.create');
     Route::post('/plagas', [App\Http\Controllers\AdminController::class, 'storePest'])->name('pests.store');
-    
+
     // Reportes
     Route::get('/reports', [App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/export', [App\Http\Controllers\ReportController::class, 'export'])->name('reports.export');
@@ -166,11 +167,11 @@ Route::middleware(['auth', \App\Http\Middleware\RedirectTechnicianRoutes::class,
     Route::get('/services/{service}/pdf', [App\Http\Controllers\TechnicianController::class, 'generatePDF'])->name('service.pdf');
     Route::get('/services/{service}/checklist-details', [App\Http\Controllers\TechnicianController::class, 'showChecklistDetails'])->name('service.checklist-details');
     Route::get('/profile', [App\Http\Controllers\TechnicianController::class, 'profile'])->name('profile');
-    
+
     // Servicios del técnico
     Route::post('/services/{service}/start', [App\Http\Controllers\TechnicianController::class, 'startService'])->name('service.start');
     Route::post('/services/{service}/complete', [App\Http\Controllers\TechnicianController::class, 'completeService'])->name('service.complete');
-    
+
     // Checklist
     Route::get('/services/{service}/checklist', [App\Http\Controllers\TechnicianController::class, 'showChecklist'])->name('service.checklist');
     Route::get('/services/{service}/checklist/location', [App\Http\Controllers\TechnicianController::class, 'showLocationCapture'])->name('service.checklist.location');
@@ -182,7 +183,7 @@ Route::middleware(['auth', \App\Http\Middleware\RedirectTechnicianRoutes::class,
     Route::delete('/services/{service}/checklist/observations/{index}', [App\Http\Controllers\TechnicianController::class, 'deleteObservation'])->name('service.checklist.observation.delete');
     Route::post('/services/{service}/checklist/observations/{index}', [App\Http\Controllers\TechnicianController::class, 'updateObservation'])->name('service.checklist.observation.update');
     Route::get('/services/{service}/checklist/observations/{index}/edit', [App\Http\Controllers\TechnicianController::class, 'editObservation'])->name('service.checklist.observation.edit');
-    
+
     // Notificaciones para técnicos
     Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
     Route::patch('/notifications/{notification}/mark-read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.mark-read');
