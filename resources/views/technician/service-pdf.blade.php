@@ -37,7 +37,7 @@
             font-weight: bold;
             color: #333;
             padding-top: 20px;
-            padding-left: 20px;
+            padding-left: 40px;
             /* Bajar un poco el título */
             margin: 0 90px;
             /* Margen para no chocar con logo y QR */
