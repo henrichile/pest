@@ -43,15 +43,15 @@ class NotificationController extends Controller
     public function index(Request $request): View
     {
         $user = Auth::user();
-        
+
         // Si es técnico (no super-admin), mostrar solo sus notificaciones
         if ($user->hasRole('technician') && !$user->hasRole('super-admin')) {
             return $this->dashboard();
         }
-        
+
         // Get all notifications from all users (admin view)
         $query = DB::table('notifications');
-        
+
         // Filters
         if ($request->filled('search')) {
             $search = $request->search;
@@ -59,11 +59,11 @@ class NotificationController extends Controller
                 $q->where('data', 'like', "%{$search}%");
             });
         }
-        
+
         if ($request->filled('type')) {
             $query->where('type', $request->type);
         }
-        
+
         if ($request->filled('read_status')) {
             if ($request->read_status === 'read') {
                 $query->whereNotNull('read_at');
@@ -71,35 +71,35 @@ class NotificationController extends Controller
                 $query->whereNull('read_at');
             }
         }
-        
+
         if ($request->filled('start_date')) {
             $query->where('created_at', '>=', $request->start_date);
         }
-        
+
         if ($request->filled('end_date')) {
             $query->where('created_at', '<=', $request->end_date . ' 23:59:59');
         }
-        
+
         // Get notifications with user info
         $notifications = $query->orderBy('created_at', 'desc')
             ->paginate(20);
-        
+
         // Get statistics
         $totalNotifications = DB::table('notifications')->count();
         $unreadNotifications = DB::table('notifications')->whereNull('read_at')->count();
         $todayNotifications = DB::table('notifications')
             ->whereDate('created_at', Carbon::today())
             ->count();
-        
+
         // Get notifications by type
         $notificationsByType = DB::table('notifications')
             ->selectRaw('type, COUNT(*) as count')
             ->groupBy('type')
             ->pluck('count', 'type');
-        
+
         // Get all users for sending notifications
         $users = User::orderBy('name')->get();
-        
+
         return view('admin.notification-center', compact(
             'notifications',
             'totalNotifications',
@@ -116,19 +116,19 @@ class NotificationController extends Controller
     public function dashboard(): View
     {
         $user = Auth::user();
-        
+
         // Get user's notifications
         $notifications = $user->notifications()
             ->orderBy('created_at', 'desc')
             ->paginate(20);
-        
+
         // Get notification statistics
         $totalNotifications = $user->notifications()->count();
         $unreadNotifications = $user->unreadNotifications()->count();
         $todayNotifications = $user->notifications()
             ->whereDate('created_at', Carbon::today())
             ->count();
-        
+
         // Get notification types (usando consulta directa para evitar conflictos con GROUP BY)
         $notificationTypes = DB::table('notifications')
             ->where('notifiable_type', 'App\Models\User')
@@ -137,7 +137,7 @@ class NotificationController extends Controller
             ->groupBy('type')
             ->orderBy('count', 'desc')
             ->pluck('count', 'type');
-        
+
         return view('notifications.dashboard', compact(
             'notifications',
             'totalNotifications',
@@ -154,23 +154,23 @@ class NotificationController extends Controller
     {
         try {
             $user = Auth::user();
-            
+
             // Si es admin, buscar la notificación directamente en la tabla
             if ($user->hasRole('super-admin')) {
                 $notification = DB::table('notifications')->where('id', $id)->first();
-                
+
                 if ($notification) {
                     // Obtener el usuario al que pertenece la notificación
                     $notifiableType = $notification->notifiable_type;
                     $notifiableId = $notification->notifiable_id;
-                    
+
                     if ($notifiableType === 'App\Models\User') {
                         $targetUser = User::find($notifiableId);
                         if ($targetUser) {
                             $userNotification = $targetUser->notifications()->find($id);
                             if ($userNotification) {
                                 $userNotification->markAsRead();
-                                
+
                                 return redirect()->back()
                                     ->with('success', 'Notificación marcada como leída.');
                             }
@@ -180,21 +180,21 @@ class NotificationController extends Controller
             } else {
                 // Para técnicos, buscar solo en sus notificaciones
                 $notification = $user->notifications()->find($id);
-                
+
                 if ($notification) {
                     $notification->markAsRead();
-                    
+
                     return redirect()->back()
                         ->with('success', 'Notificación marcada como leída.');
                 }
             }
-            
+
             return redirect()->back()
                 ->with('error', 'Notificación no encontrada.');
-                
+
         } catch (\Exception $e) {
             Log::error('Error marking notification as read: ' . $e->getMessage());
-            
+
             return redirect()->back()
                 ->with('error', 'Error al marcar la notificación como leída.');
         }
@@ -207,26 +207,26 @@ class NotificationController extends Controller
     {
         try {
             $user = Auth::user();
-            
+
             // Si es admin, marcar todas las notificaciones no leídas de todos los usuarios
             if ($user->hasRole('super-admin')) {
                 DB::table('notifications')
                     ->whereNull('read_at')
                     ->update(['read_at' => now()]);
-                
+
                 return redirect()->back()
                     ->with('success', 'Todas las notificaciones marcadas como leídas.');
             } else {
                 // Para técnicos, marcar solo sus notificaciones
                 $user->unreadNotifications()->update(['read_at' => now()]);
-                
+
                 return redirect()->back()
                     ->with('success', 'Todas las notificaciones marcadas como leídas.');
             }
-                
+
         } catch (\Exception $e) {
             Log::error('Error marking all notifications as read: ' . $e->getMessage());
-            
+
             return redirect()->back()
                 ->with('error', 'Error al marcar todas las notificaciones como leídas.');
         }
@@ -239,11 +239,11 @@ class NotificationController extends Controller
     {
         try {
             $user = Auth::user();
-            
+
             // Si es admin, puede eliminar cualquier notificación
             if ($user->hasRole('super-admin')) {
                 $deleted = DB::table('notifications')->where('id', $id)->delete();
-                
+
                 if ($deleted) {
                     return redirect()->back()
                         ->with('success', 'Notificación eliminada.');
@@ -251,21 +251,21 @@ class NotificationController extends Controller
             } else {
                 // Para técnicos, solo pueden eliminar sus propias notificaciones
                 $notification = $user->notifications()->find($id);
-                
+
                 if ($notification) {
                     $notification->delete();
-                    
+
                     return redirect()->back()
                         ->with('success', 'Notificación eliminada.');
                 }
             }
-            
+
             return redirect()->back()
                 ->with('error', 'Notificación no encontrada.');
-                
+
         } catch (\Exception $e) {
             Log::error('Error deleting notification: ' . $e->getMessage());
-            
+
             return redirect()->back()
                 ->with('error', 'Error al eliminar la notificación.');
         }
@@ -280,6 +280,15 @@ class NotificationController extends Controller
     }
 
     /**
+     * Update notification (required by Route::resource).
+     * In the context of notifications, this marks the notification as read.
+     */
+    public function update(Request $request, string $id): RedirectResponse
+    {
+        return $this->markAsRead($id);
+    }
+
+    /**
      * Delete all notifications.
      */
     public function deleteAll(): RedirectResponse
@@ -287,13 +296,13 @@ class NotificationController extends Controller
         try {
             $user = Auth::user();
             $user->notifications()->delete();
-            
+
             return redirect()->back()
                 ->with('success', 'Todas las notificaciones eliminadas.');
-                
+
         } catch (\Exception $e) {
             Log::error('Error deleting all notifications: ' . $e->getMessage());
-            
+
             return redirect()->back()
                 ->with('error', 'Error al eliminar todas las notificaciones.');
         }
@@ -305,10 +314,10 @@ class NotificationController extends Controller
     public function settings(): View
     {
         $user = Auth::user();
-        
+
         // Get user's notification preferences
         $preferences = $user->notificationPreferences ?? [];
-        
+
         return view('notifications.settings', compact('preferences'));
     }
 
@@ -319,7 +328,7 @@ class NotificationController extends Controller
     {
         try {
             $user = Auth::user();
-            
+
             $preferences = [
                 'email_notifications' => $request->boolean('email_notifications'),
                 'push_notifications' => $request->boolean('push_notifications'),
@@ -337,21 +346,21 @@ class NotificationController extends Controller
                 'weekly_summary' => $request->boolean('weekly_summary'),
                 'monthly_summary' => $request->boolean('monthly_summary'),
             ];
-            
+
             $user->update(['notification_preferences' => $preferences]);
-            
+
             // Log activity
             activity()
                 ->performedOn($user)
                 ->causedBy($user)
                 ->log('Configuración de notificaciones actualizada');
-            
+
             return redirect()->back()
                 ->with('success', 'Configuración de notificaciones actualizada correctamente.');
-                
+
         } catch (\Exception $e) {
             Log::error('Error updating notification settings: ' . $e->getMessage());
-            
+
             return redirect()->back()
                 ->with('error', 'Error al actualizar la configuración de notificaciones.');
         }
@@ -373,9 +382,9 @@ class NotificationController extends Controller
             ]);
 
             $notificationService = app(NotificationService::class);
-            
+
             $users = User::whereIn('id', $request->user_ids)->get();
-            
+
             foreach ($users as $user) {
                 $notificationService->sendCustomNotification(
                     $user,
@@ -385,18 +394,18 @@ class NotificationController extends Controller
                     $request->url ?? null
                 );
             }
-            
+
             // Log activity
             activity()
                 ->causedBy(Auth::user())
                 ->log('Notificación personalizada enviada');
-            
+
             return redirect()->route('admin.notification-center')
                 ->with('success', 'Notificación enviada correctamente a ' . count($users) . ' usuario(s).');
-                
+
         } catch (\Exception $e) {
             Log::error('Error sending notification: ' . $e->getMessage());
-            
+
             return redirect()->back()
                 ->withInput()
                 ->withErrors(['error' => 'Error al enviar la notificación: ' . $e->getMessage()]);
@@ -470,7 +479,7 @@ class NotificationController extends Controller
                 'type' => 'info'
             ]
         ];
-        
+
         return view('notifications.templates', compact('templates'));
     }
 
@@ -480,14 +489,14 @@ class NotificationController extends Controller
     public function history(Request $request): View
     {
         $user = Auth::user();
-        
+
         $query = $user->notifications();
-        
+
         // Filters
         if ($request->filled('type')) {
             $query->where('type', $request->type);
         }
-        
+
         if ($request->filled('read_status')) {
             if ($request->read_status === 'read') {
                 $query->whereNotNull('read_at');
@@ -495,18 +504,18 @@ class NotificationController extends Controller
                 $query->whereNull('read_at');
             }
         }
-        
+
         if ($request->filled('start_date')) {
             $query->where('created_at', '>=', $request->start_date);
         }
-        
+
         if ($request->filled('end_date')) {
             $query->where('created_at', '<=', $request->end_date);
         }
-        
+
         $notifications = $query->orderBy('created_at', 'desc')
             ->paginate(50);
-        
+
         return view('notifications.history', compact('notifications'));
     }
 
@@ -516,40 +525,40 @@ class NotificationController extends Controller
     public function statistics(Request $request): View
     {
         $user = Auth::user();
-        
+
         $query = $user->notifications();
-        
+
         // Filter by date range
         if ($request->filled('start_date')) {
             $query->where('created_at', '>=', $request->start_date);
         }
-        
+
         if ($request->filled('end_date')) {
             $query->where('created_at', '<=', $request->end_date);
         }
-        
+
         // Get statistics
         $totalNotifications = $query->count();
         $readNotifications = $query->whereNotNull('read_at')->count();
         $unreadNotifications = $query->whereNull('read_at')->count();
-        
+
         // Get notifications by type
         $notificationsByType = $query->selectRaw('type, COUNT(*) as count')
             ->groupBy('type')
             ->pluck('count', 'type');
-        
+
         // Get notifications by day
         $notificationsByDay = $query->selectRaw('DATE(created_at) as date, COUNT(*) as count')
             ->groupBy('date')
             ->orderBy('date')
             ->get();
-        
+
         // Get notifications by hour
         $notificationsByHour = $query->selectRaw('HOUR(created_at) as hour, COUNT(*) as count')
             ->groupBy('hour')
             ->orderBy('hour')
             ->get();
-        
+
         return view('notifications.statistics', compact(
             'totalNotifications',
             'readNotifications',
@@ -568,20 +577,20 @@ class NotificationController extends Controller
         try {
             $user = Auth::user();
             $notificationService = app(NotificationService::class);
-            
+
             $notificationService->sendCustomNotification(
                 $user,
                 'Notificación de Prueba',
                 'Esta es una notificación de prueba para verificar que el sistema funciona correctamente.',
                 'info'
             );
-            
+
             return redirect()->back()
                 ->with('success', 'Notificación de prueba enviada correctamente.');
-                
+
         } catch (\Exception $e) {
             Log::error('Error sending test notification: ' . $e->getMessage());
-            
+
             return redirect()->back()
                 ->with('error', 'Error al enviar la notificación de prueba.');
         }
@@ -595,12 +604,12 @@ class NotificationController extends Controller
         try {
             $user = Auth::user();
             $count = $user->unreadNotifications()->count();
-            
+
             return response()->json(['count' => $count]);
-            
+
         } catch (\Exception $e) {
             Log::error('Error getting unread notifications count: ' . $e->getMessage());
-            
+
             return response()->json(['count' => 0]);
         }
     }
@@ -626,12 +635,12 @@ class NotificationController extends Controller
                         'created_at' => $notification->created_at->diffForHumans(),
                     ];
                 });
-            
+
             return response()->json($notifications);
-            
+
         } catch (\Exception $e) {
             Log::error('Error getting recent notifications: ' . $e->getMessage());
-            
+
             return response()->json([]);
         }
     }
@@ -644,18 +653,18 @@ class NotificationController extends Controller
         try {
             $user = Auth::user();
             $notification = $user->notifications()->find($id);
-            
+
             if ($notification) {
                 $notification->markAsRead();
-                
+
                 return response()->json(['success' => true]);
             }
-            
+
             return response()->json(['success' => false, 'message' => 'Notificación no encontrada']);
-            
+
         } catch (\Exception $e) {
             Log::error('Error marking notification as read: ' . $e->getMessage());
-            
+
             return response()->json(['success' => false, 'message' => 'Error al marcar la notificación como leída']);
         }
     }
