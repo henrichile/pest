@@ -177,7 +177,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            max-width: 100%;
+            width: 100%;
             overflow: hidden;
         }
 
@@ -197,7 +197,6 @@
             margin-bottom: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 320px;
             box-sizing: border-box;
         }
 
@@ -207,8 +206,8 @@
             cursor: crosshair;
             display: block;
             margin: 0 auto;
-            max-width: 100%;
-            height: auto;
+            width: 100%;
+            height: 150px;
         }
 
         .signature-controls {
