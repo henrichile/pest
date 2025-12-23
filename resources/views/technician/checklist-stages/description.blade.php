@@ -63,12 +63,11 @@
             <div class="signatures-grid">
                 <div class="signature-group">
                     <label>Firma del Técnico</label>
-                    <div class="signature-pad">
-                        <canvas id="technicianSignature" width="280" height="120"></canvas>
-                        <div class="signature-controls">
-                            <button type="button" class="clear-signature" data-canvas="technicianSignature">Limpiar</button>
-                            <span class="signature-status" id="technicianStatus">Sin firma</span>
-                        </div>
+                    <canvas id="technicianSignature"
+                        style="width: 100%; background-color: #fff; border: 1px solid #ccc;"></canvas>
+                    <div class="signature-controls">
+                        <button type="button" class="clear-signature" data-canvas="technicianSignature">Limpiar</button>
+                        <span class="signature-status" id="technicianStatus">Sin firma</span>
                     </div>
                     <p class="signature-help">Dibuje su firma en el área superior</p>
                     <input type="hidden" name="technician_signature" id="technicianSignatureData">
@@ -76,12 +75,11 @@
 
                 <div class="signature-group">
                     <label>Firma del Cliente</label>
-                    <div class="signature-pad">
-                        <canvas id="clientSignature" width="280" height="120"></canvas>
-                        <div class="signature-controls">
-                            <button type="button" class="clear-signature" data-canvas="clientSignature">Limpiar</button>
-                            <span class="signature-status" id="clientStatus">Sin firma</span>
-                        </div>
+                    <canvas id="clientSignature"
+                        style="width: 100%; background-color: #fff; border: 1px solid #ccc;"></canvas>
+                    <div class="signature-controls">
+                        <button type="button" class="clear-signature" data-canvas="clientSignature">Limpiar</button>
+                        <span class="signature-status" id="clientStatus">Sin firma</span>
                     </div>
                     <p class="signature-help">Dibuje su firma en el área superior</p>
                     <input type="hidden" name="client_signature" id="clientSignatureData">
@@ -166,8 +164,8 @@
         }
 
         .signatures-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            /* display: grid;
+                    grid-template-columns: 1fr 1fr;*/
             gap: 20px;
             margin-bottom: 20px;
             max-width: 100%;
@@ -175,7 +173,7 @@
 
         .signature-group {
             display: flex;
-            flex-direction: column;
+            /*flex-direction: column;*/
             align-items: center;
             width: 100%;
             overflow: hidden;
