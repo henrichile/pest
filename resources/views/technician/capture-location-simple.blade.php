@@ -306,16 +306,16 @@
 
         // Mostrar estado de error
         function showError(message) {
-
-            function retryGeolocation() {
-                document.getElementById("error-card").classList.add("hidden");
-                document.getElementById("loading-card").classList.remove("hidden");
-                setTimeout(getCurrentLocation, 200);
-            }
-
             document.getElementById('loading-card').classList.add('hidden');
             document.getElementById('error-card').classList.remove('hidden');
             document.getElementById('error-card').querySelector('.status-message').textContent = message;
+        }
+
+        // Función para reintentar la geolocalización
+        function retryGeolocation() {
+            document.getElementById("error-card").classList.add("hidden");
+            document.getElementById("loading-card").classList.remove("hidden");
+            setTimeout(getCurrentLocation, 200);
         }
 
         // Continuar al checklist
@@ -368,10 +368,10 @@
             form.submit();
         }
 
-        // Iniciar captura automáticamente al cargar la página  
+        // Iniciar captura automáticamente al cargar la página 
         document.addEventListener('DOMContentLoaded', function() {
             getCurrentLocation();
         });
-            < /s
-cript> 
- </body></html>
+    </s
+cript>
+</body></html>
