@@ -1,8 +1,9 @@
 @php
 // Helper function para obtener la ruta correcta según el modo
-function getTechnicianRoute($routeName, ...$params) {
+function getTechnicianRoute($routeName, ...$params)
+{
     $isViewingAsTechnician = session('view_as_technician', false) && auth()->check() && auth()->user()->hasRole('super-admin');
-    
+
     if ($isViewingAsTechnician) {
         // Mapear rutas de technician a technician-view
         $routeMap = [
@@ -15,11 +16,11 @@ function getTechnicianRoute($routeName, ...$params) {
             'technician.service.pdf' => 'admin.technician-view.service.pdf',
             'technician.service.checklist-details' => 'admin.technician-view.service.checklist-details',
         ];
-        
+
         $mappedRoute = $routeMap[$routeName] ?? $routeName;
         return route($mappedRoute, ...$params);
     }
-    
+
     return route($routeName, ...$params);
 }
 @endphp
@@ -777,8 +778,10 @@ function getTechnicianRoute($routeName, ...$params) {
                 <div style="text-align: center;">
                 <a href="{{ getTechnicianRoute('technician.service.checklist.location', $service) }}" 
                    class="geolocation-retry-btn">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px;">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.25 18.002h4.992m-.01-13.5v4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                    <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                        style="width: 16px; height: 16px; min-width: 16px; flex-shrink: 0;">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M16.023 9.348h4.992v-.001M2.25 18.002h4.992m-.01-13.5v4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
                     </svg>
                         <span>{{ $service->latitude && $service->longitude ? 'Reconectar' : 'Capturar' }} Geolocalización</span>
                 </a>
@@ -805,21 +808,21 @@ function getTechnicianRoute($routeName, ...$params) {
             <div class="stages-list-compact" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb;">
                 @if($service->service_type === 'monitoreo-cebaderas')
                     @php
-                        $stages = [
-                            ['num' => 1, 'name' => 'Datos del Servicio', 'stage' => 'monitoreo-datos'],
-                            ['num' => 2, 'name' => 'Croquis de Cebaderas', 'stage' => 'monitoreo-croquis'],
-                            ['num' => 3, 'name' => 'Monitoreo Completo', 'stage' => 'monitoreo-completo'],
-                            ['num' => 4, 'name' => 'Estadísticas', 'stage' => 'monitoreo-estadisticas'],
-                            ['num' => 5, 'name' => 'Análisis IA', 'stage' => 'monitoreo-analisis'],
-                            ['num' => 6, 'name' => 'Firma Final', 'stage' => 'monitoreo-firma'],
-                        ];
-                        $currentIndex = array_search($service->checklist_stage, array_column($stages, 'stage'));
+    $stages = [
+        ['num' => 1, 'name' => 'Datos del Servicio', 'stage' => 'monitoreo-datos'],
+        ['num' => 2, 'name' => 'Croquis de Cebaderas', 'stage' => 'monitoreo-croquis'],
+        ['num' => 3, 'name' => 'Monitoreo Completo', 'stage' => 'monitoreo-completo'],
+        ['num' => 4, 'name' => 'Estadísticas', 'stage' => 'monitoreo-estadisticas'],
+        ['num' => 5, 'name' => 'Análisis IA', 'stage' => 'monitoreo-analisis'],
+        ['num' => 6, 'name' => 'Firma Final', 'stage' => 'monitoreo-firma'],
+    ];
+    $currentIndex = array_search($service->checklist_stage, array_column($stages, 'stage'));
                     @endphp
                     @foreach($stages as $index => $stageInfo)
                         @php
-                            $isActive = $service->checklist_stage === $stageInfo['stage'];
-                            $isCompleted = $currentIndex !== false && $index < $currentIndex;
-                            $isPending = $currentIndex !== false && $index > $currentIndex;
+        $isActive = $service->checklist_stage === $stageInfo['stage'];
+        $isCompleted = $currentIndex !== false && $index < $currentIndex;
+        $isPending = $currentIndex !== false && $index > $currentIndex;
                         @endphp
                         <div class="stage-item-compact {{ $isActive ? 'active' : ($isCompleted ? 'completed' : 'pending') }}">
                             <div class="stage-icon-compact">
@@ -838,25 +841,25 @@ function getTechnicianRoute($routeName, ...$params) {
                     @endforeach
                 @else
                     @php
-                        $stages = [];
-                        // Desratización ya no incluye "points", empieza en "products"
-                        $stages[] = ['num' => 1, 'name' => 'Productos', 'stage' => 'products'];
-                        if(in_array($service->service_type, ['desratizacion', 'desinsectacion'])) {
-                            $stages[] = ['num' => count($stages) + 1, 'name' => 'Resultados', 'stage' => 'results'];
-                        }
-                        $stages[] = ['num' => count($stages) + 1, 'name' => 'Observaciones', 'stage' => 'observations'];
-                        $stages[] = ['num' => count($stages) + 1, 'name' => 'Sitios', 'stage' => 'sites'];
-                        $stages[] = ['num' => count($stages) + 1, 'name' => 'Descripción', 'stage' => 'description'];
-                        // Para desratización, el default es 'products' en lugar de 'points'
-                        $defaultStage = ($service->service_type === 'desratizacion') ? 'products' : 'points';
-                        $currentIndex = array_search($service->checklist_stage ?? $defaultStage, array_column($stages, 'stage'));
+    $stages = [];
+    // Desratización ya no incluye "points", empieza en "products"
+    $stages[] = ['num' => 1, 'name' => 'Productos', 'stage' => 'products'];
+    if (in_array($service->service_type, ['desratizacion', 'desinsectacion'])) {
+        $stages[] = ['num' => count($stages) + 1, 'name' => 'Resultados', 'stage' => 'results'];
+    }
+    $stages[] = ['num' => count($stages) + 1, 'name' => 'Observaciones', 'stage' => 'observations'];
+    $stages[] = ['num' => count($stages) + 1, 'name' => 'Sitios', 'stage' => 'sites'];
+    $stages[] = ['num' => count($stages) + 1, 'name' => 'Descripción', 'stage' => 'description'];
+    // Para desratización, el default es 'products' en lugar de 'points'
+    $defaultStage = ($service->service_type === 'desratizacion') ? 'products' : 'points';
+    $currentIndex = array_search($service->checklist_stage ?? $defaultStage, array_column($stages, 'stage'));
                     @endphp
                     @foreach($stages as $index => $stageInfo)
                         @php
-                            $defaultStage = ($service->service_type === 'desratizacion') ? 'products' : 'points';
-                            $isActive = ($service->checklist_stage ?? $defaultStage) === $stageInfo['stage'];
-                            $isCompleted = $currentIndex !== false && $index < $currentIndex;
-                            $isPending = $currentIndex !== false && $index > $currentIndex;
+        $defaultStage = ($service->service_type === 'desratizacion') ? 'products' : 'points';
+        $isActive = ($service->checklist_stage ?? $defaultStage) === $stageInfo['stage'];
+        $isCompleted = $currentIndex !== false && $index < $currentIndex;
+        $isPending = $currentIndex !== false && $index > $currentIndex;
                         @endphp
                         <div class="stage-item-compact {{ $isActive ? 'active' : ($isCompleted ? 'completed' : 'pending') }}">
                             <div class="stage-icon-compact">
@@ -892,8 +895,8 @@ function getTechnicianRoute($routeName, ...$params) {
                     @endif
                 @else
                     @php
-                        $defaultStageTitle = ($service->service_type === 'desratizacion') ? 'products' : 'points';
-                        $stageTitle = $service->checklist_stage ?? $defaultStageTitle;
+    $defaultStageTitle = ($service->service_type === 'desratizacion') ? 'products' : 'points';
+    $stageTitle = $service->checklist_stage ?? $defaultStageTitle;
                     @endphp
                     {{ ucfirst($stageTitle) }}
                 @endif
@@ -915,8 +918,8 @@ function getTechnicianRoute($routeName, ...$params) {
                 @endif
             @else
             @php
-                $defaultStage = ($service->service_type === 'desratizacion') ? 'products' : 'points';
-                $currentStage = $service->checklist_stage ?? $defaultStage;
+    $defaultStage = ($service->service_type === 'desratizacion') ? 'products' : 'points';
+    $currentStage = $service->checklist_stage ?? $defaultStage;
             @endphp
             @if($currentStage === "points")
                 @include("technician.checklist-stages.points")
