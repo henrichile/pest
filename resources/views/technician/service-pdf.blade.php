@@ -37,6 +37,7 @@
             font-weight: bold;
             color: #333;
             padding-top: 20px;
+            padding-left: 20px;
             /* Bajar un poco el título */
             margin: 0 90px;
             /* Margen para no chocar con logo y QR */
@@ -706,7 +707,8 @@
 
                                 @if(isset($station['quantity']))
                                     <div class="bait-station-detail"><strong>Cantidad:</strong> {{ $station['quantity'] }}
-                                        {{ $station['unit'] ?? 'g' }}</div>
+                                        {{ $station['unit'] ?? 'g' }}
+                                    </div>
                                 @endif
 
                                 @if(isset($station['observations']) && is_array($station['observations']) && count($station['observations']) > 0)
@@ -1214,14 +1216,16 @@
                                 <div>
                                     <div style="font-size: 11px; color: #666; margin-bottom: 3px;">Puntos Instalados</div>
                                     <div style="font-size: 16px; font-weight: bold; color: #1a472a;">
-                                        {{ $checklistData['results']['total_installed_points'] }}</div>
+                                        {{ $checklistData['results']['total_installed_points'] }}
+                                    </div>
                                 </div>
                             @endif
                             @if(isset($checklistData['results']['total_consumption_activity']))
                                 <div>
                                     <div style="font-size: 11px; color: #666; margin-bottom: 3px;">Actividad de Consumo Total</div>
                                     <div style="font-size: 16px; font-weight: bold; color: #1a472a;">
-                                        {{ $checklistData['results']['total_consumption_activity'] }}</div>
+                                        {{ $checklistData['results']['total_consumption_activity'] }}
+                                    </div>
                                 </div>
                             @endif
                         </div>
@@ -1518,21 +1522,24 @@
                                 <div>
                                     <div style="font-size: 11px; color: #666; margin-bottom: 3px;">Lámparas UV</div>
                                     <div style="font-size: 16px; font-weight: bold; color: #1a472a;">
-                                        {{ $checklistData['results']['uv_lamps'] }}</div>
+                                        {{ $checklistData['results']['uv_lamps'] }}
+                                    </div>
                                 </div>
                             @endif
                             @if(isset($checklistData['results']['tuv']))
                                 <div>
                                     <div style="font-size: 11px; color: #666; margin-bottom: 3px;">TUV</div>
                                     <div style="font-size: 16px; font-weight: bold; color: #1a472a;">
-                                        {{ $checklistData['results']['tuv'] }}</div>
+                                        {{ $checklistData['results']['tuv'] }}
+                                    </div>
                                 </div>
                             @endif
                             @if(isset($checklistData['results']['installed_devices']))
                                 <div>
                                     <div style="font-size: 11px; color: #666; margin-bottom: 3px;">Dispositivos Instalados</div>
                                     <div style="font-size: 16px; font-weight: bold; color: #1a472a;">
-                                        {{ $checklistData['results']['installed_devices'] }}</div>
+                                        {{ $checklistData['results']['installed_devices'] }}
+                                    </div>
                                 </div>
                             @endif
                         </div>
