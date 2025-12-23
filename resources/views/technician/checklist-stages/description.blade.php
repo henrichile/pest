@@ -165,7 +165,7 @@
 
         .signatures-grid {
             /*  display: grid;
-                    grid-template-columns: 1fr 1fr;*/
+                                grid-template-columns: 1fr 1fr;*/
             gap: 20px;
             margin-bottom: 20px;
             max-width: 100%;
@@ -173,7 +173,7 @@
 
         .signature-group {
             display: flex;
-            /*flex-direction: column;*/
+            flex-direction: column;
             align-items: center;
             width: 100%;
             overflow: hidden;
