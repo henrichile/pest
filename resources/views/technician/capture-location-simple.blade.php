@@ -210,14 +210,35 @@
 
         <!-- Estado de error -->
         <div id="error-card" class="status-card hidden">
-            <div class="actions" style="margin-top:1rem">
-                <button type="button" class="btn btn-primary" onclick="retryGeolocation()">Reintentar
-                    geolocalización</button>
-            </div>
             <div class="status-icon error">❌</div>
             <div class="status-title">Error al obtener ubicación</div>
             <div class="status-message">No se pudo obtener tu ubicación. Por favor verifica que tengas habilitado el GPS
                 y los permisos de ubicación.</div>
+            <div class="actions" style="margin-top:1rem">
+                <button type="button" class="btn btn-primary" onclick="retryGeolocation()">🔄 Reintentar
+                    geolocalización</button>
+            </div>
+        </div>
+
+        <!-- Debug info -->
+        <div id="debug-info" class="service-info" style="background: #2a2a2a; border-color: #444;">
+            <h3 style="color: #888;">🔧 Información de Diagnóstico</h3>
+            <div class="info-row">
+                <span class="info-label">Protocolo:</span>
+                <span id="debug-protocol" class="info-value">-</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Contexto seguro:</span>
+                <span id="debug-secure" class="info-value">-</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Geolocation disponible:</span>
+                <span id="debug-geo" class="info-value">-</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Estado:</span>
+                <span id="debug-status" class="info-value">Iniciando...</span>
+            </div>
         </div>
 
         <!-- Información del servicio -->
@@ -256,21 +277,44 @@
     <script>
         let capturedLocation = null;
 
+        // Verificar si estamos en un contexto seguro (HTTPS o localhost)
+        function isSecureContext() {
+            return window.isSecureContext ||
+                location.protocol === 'https:' ||
+                location.hostname === 'localhost' ||
+                location.hostname === '127.0.0.1';
+        }
+
         // Función para obtener la ubicación
         function getCurrentLocation() {
+            console.log('Iniciando captura de ubicación...');
+            console.log('Protocolo:', location.protocol);
+            console.log('Hostname:', location.hostname);
+            console.log('Contexto seguro:', isSecureContext());
+            console.log('Geolocation disponible:', !!navigator.geolocation);
+
+            // Verificar contexto seguro
+            if (!isSecureContext()) {
+                showError('La geolocalización requiere HTTPS. Protocolo actual: ' + location.protocol + '. Contacta al administrador para habilitar HTTPS.');
+                return;
+            }
+
             if (!navigator.geolocation) {
-                showError('Tu navegador no soporta geolocalización');
+                showError('Tu navegador no soporta geolocalización. Usa Chrome, Firefox o Safari actualizado.');
                 return;
             }
 
             const options = {
                 enableHighAccuracy: true,
-                timeout: 10000,
+                timeout: 15000,
                 maximumAge: 0
             };
 
+            console.log('Solicitando permisos de geolocalización...');
+
             navigator.geolocation.getCurrentPosition(
                 function (position) {
+                    console.log('Ubicación obtenida:', position.coords);
                     capturedLocation = {
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
@@ -279,19 +323,28 @@
                     showSuccess();
                 },
                 function (error) {
+                    console.error('Error de geolocalización:', error);
                     let errorMessage = 'Error al obtener la ubicación';
+                    let extraInfo = '';
+
                     switch (error.code) {
-                        case error.PERMISSION_DENIED:
+                        case 1: // PERMISSION_DENIED
                             errorMessage = 'Permisos de ubicación denegados';
+                            extraInfo = '. Por favor, permite el acceso a la ubicación en tu navegador (icono de candado en la barra de direcciones).';
                             break;
-                        case error.POSITION_UNAVAILABLE:
+                        case 2: // POSITION_UNAVAILABLE
                             errorMessage = 'Ubicación no disponible';
+                            extraInfo = '. Verifica que el GPS esté activado en tu dispositivo.';
                             break;
-                        case error.TIMEOUT:
+                        case 3: // TIMEOUT
                             errorMessage = 'Tiempo de espera agotado';
+                            extraInfo = '. Intenta de nuevo en un lugar con mejor señal GPS.';
                             break;
+                        default:
+                            errorMessage = 'Error desconocido (código: ' + error.code + ')';
+                            extraInfo = '. Mensaje: ' + error.message;
                     }
-                    showError(errorMessage);
+                    showError(errorMessage + extraInfo);
                 },
                 options
             );
@@ -302,6 +355,7 @@
             document.getElementById('loading-card').classList.add('hidden');
             document.getElementById('success-card').classList.remove('hidden');
             document.getElementById('continue-btn').classList.remove('hidden');
+            document.getElementById('debug-status').textContent = '✅ Ubicación capturada: ' + capturedLocation.latitude.toFixed(6) + ', ' + capturedLocation.longitude.toFixed(6);
         }
 
         // Mostrar estado de error
@@ -309,6 +363,7 @@
             document.getElementById('loading-card').classList.add('hidden');
             document.getElementById('error-card').classList.remove('hidden');
             document.getElementById('error-card').querySelector('.status-message').textContent = message;
+            document.getElementById('debug-status').textContent = '❌ Error: ' + message;
         }
 
         // Función para reintentar la geolocalización
@@ -368,10 +423,19 @@
             form.submit();
         }
 
+        // Función para actualizar debug info
+        function updateDebugInfo() {
+            document.getElementById('debug-protocol').textContent = location.protocol;
+            document.getElementById('debug-secure').textContent = isSecureContext() ? '✅ Sí' : '❌ No (HTTPS requerido)';
+            document.getElementById('debug-geo').textContent = navigator.geolocation ? '✅ Sí' : '❌ No';
+        }
+
         // Iniciar captura automáticamente al cargar la página 
         document.addEventListener('DOMContentLoaded', function() {
+            updateDebugInfo();
+            document.getElementById('debug-status').textContent = 'Solicitando ubicación...';
             getCurrentLocation();
         });
-    </s
-cript>
-</body></html>
+        </script>
+</body>
+</html>
