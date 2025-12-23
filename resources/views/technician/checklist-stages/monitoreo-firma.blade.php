@@ -35,33 +35,31 @@
     <div class="form-section">
         <h5>✍️ Firma del Cliente</h5>
         <div class="signature-section">
-            <div class="signature-display">
-                @php
-                    $monitoreoFirma = $service->checklist_data['monitoreo_firma'] ?? [];
-                    $existingClientSignature = $monitoreoFirma['client_signature'] ?? $service->checklist_data['client_signature'] ?? null;
-                @endphp
-                @if($existingClientSignature)
-                    <div class="signature-loaded">
-                        <span class="check-icon">✔</span>
-                        <p>Firma del cliente ya registrada</p>
+            @php
+                $monitoreoFirma = $service->checklist_data['monitoreo_firma'] ?? [];
+                $existingClientSignature = $monitoreoFirma['client_signature'] ?? $service->checklist_data['client_signature'] ?? null;
+            @endphp
+            @if($existingClientSignature)
+                <div class="signature-loaded">
+                    <span class="check-icon">✔</span>
+                    <p>Firma del cliente ya registrada</p>
+                </div>
+                <div class="signature-preview">
+                    @if(strpos($existingClientSignature, 'data:image') === 0)
+                        <img src="{{ $existingClientSignature }}" alt="Firma del Cliente" class="signature-image">
+                    @else
+                        <img src="/{{ $existingClientSignature }}" alt="Firma del Cliente" class="signature-image">
+                    @endif
+                </div>
+            @else
+                <div class="signature-placeholder">
+                    <canvas id="client-signature-canvas" width="300" height="200"></canvas>
+                    <div class="signature-actions">
+                        <button type="button" class="btn-clear" onclick="clearClientSignature()">Limpiar</button>
                     </div>
-                    <div class="signature-preview">
-                        @if(strpos($existingClientSignature, 'data:image') === 0)
-                            <img src="{{ $existingClientSignature }}" alt="Firma del Cliente" class="signature-image">
-                        @else
-                            <img src="/{{ $existingClientSignature }}" alt="Firma del Cliente" class="signature-image">
-                        @endif
-                    </div>
-                @else
-                    <div class="signature-placeholder">
-                        <canvas id="client-signature-canvas" width="300" height="200"></canvas>
-                        <div class="signature-actions">
-                            <button type="button" class="btn-clear" onclick="clearClientSignature()">Limpiar</button>
-                        </div>
-                        <input type="hidden" name="client_signature" id="client_signature">
-                    </div>
-                @endif
-            </div>
+                    <input type="hidden" name="client_signature" id="client_signature">
+                </div>
+            @endif
         </div>
     </div>
 
