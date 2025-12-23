@@ -165,7 +165,7 @@
 
         .signatures-grid {
             /*  display: grid;
-                                            grid-template-columns: 1fr 1fr;*/
+                                                        grid-template-columns: 1fr 1fr;*/
             gap: 20px;
             margin-bottom: 20px;
             max-width: 100%;
@@ -350,136 +350,171 @@
             // Configuración de canvas para firmas
             const technicianCanvas = document.getElementById('technicianSignature');
             const clientCanvas = document.getElementById('clientSignature');
-            const technicianCtx = technicianCanvas.getContext('2d');
-            const clientCtx = clientCanvas.getContext('2d');
+            let technicianCtx = technicianCanvas.getContext('2d');
+            let clientCtx = clientCanvas.getContext('2d');
 
-            // Configurar canvas
-            function setupCanvas(canvas, ctx) {
+            // Función para redimensionar canvas a su tamaño real en pantalla
+            function resizeCanvas(canvas) {
+                const rect = canvas.getBoundingClientRect();
+                const dpr = window.devicePixelRatio || 1;
+
+                // Establecer el tamaño interno del canvas igual al tamaño CSS
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+
+                const ctx = canvas.getContext('2d');
+                ctx.scale(dpr, dpr);
+
+                // Configurar estilos de dibujo
                 ctx.strokeStyle = '#1a472a';
                 ctx.lineWidth = 2;
                 ctx.lineCap = 'round';
                 ctx.lineJoin = 'round';
 
-                // Limpiar canvas
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                // Llenar con fondo blanco
                 ctx.fillStyle = '#ffffff';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillRect(0, 0, rect.width, rect.height);
+
+                return ctx;
             }
 
-            setupCanvas(technicianCanvas, technicianCtx);
-            setupCanvas(clientCanvas, clientCtx);
+            // Redimensionar ambos canvas
+            technicianCtx = resizeCanvas(technicianCanvas);
+            clientCtx = resizeCanvas(clientCanvas);
+
+            // Redimensionar cuando cambia el tamaño de ventana
+            window.addEventListener('resize', function () {
+                technicianCtx = resizeCanvas(technicianCanvas);
+                clientCtx = resizeCanvas(clientCanvas);
+            });
 
             // Variables para tracking de dibujo
             let isDrawing = false;
             let lastX = 0;
             let lastY = 0;
+            let currentCanvas = null;
+            let currentCtx = null;
+
+            // Función para obtener coordenadas correctas del canvas
+            function getCanvasCoordinates(canvas, clientX, clientY) {
+                const rect = canvas.getBoundingClientRect();
+                return {
+                    x: clientX - rect.left,
+                    y: clientY - rect.top
+                };
+            }
 
             // Función para iniciar dibujo
-            function startDrawing(e, ctx) {
+            function startDrawing(e, canvas, ctx) {
                 isDrawing = true;
-                const rect = e.target.getBoundingClientRect();
-                lastX = e.clientX - rect.left;
-                lastY = e.clientY - rect.top;
+                currentCanvas = canvas;
+                currentCtx = ctx;
+                const coords = getCanvasCoordinates(canvas, e.clientX, e.clientY);
+                lastX = coords.x;
+                lastY = coords.y;
             }
 
             // Función para dibujar
-            function draw(e, ctx) {
-                if (!isDrawing) return;
+            function draw(e) {
+                if (!isDrawing || !currentCanvas || !currentCtx) return;
 
-                const rect = e.target.getBoundingClientRect();
-                const currentX = e.clientX - rect.left;
-                const currentY = e.clientY - rect.top;
+                const coords = getCanvasCoordinates(currentCanvas, e.clientX, e.clientY);
 
-                ctx.beginPath();
-                ctx.moveTo(lastX, lastY);
-                ctx.lineTo(currentX, currentY);
-                ctx.stroke();
+                currentCtx.beginPath();
+                currentCtx.moveTo(lastX, lastY);
+                currentCtx.lineTo(coords.x, coords.y);
+                currentCtx.stroke();
 
-                lastX = currentX;
-                lastY = currentY;
+                lastX = coords.x;
+                lastY = coords.y;
             }
 
             // Función para detener dibujo
-            function stopDrawing(ctx, canvasId) {
+            function stopDrawing(canvasId) {
                 if (isDrawing) {
                     isDrawing = false;
+                    currentCanvas = null;
+                    currentCtx = null;
                     updateSignatureStatus(canvasId);
                 }
             }
 
             // Eventos para canvas del técnico
-            technicianCanvas.addEventListener('mousedown', (e) => startDrawing(e, technicianCtx));
-            technicianCanvas.addEventListener('mousemove', (e) => draw(e, technicianCtx));
-            technicianCanvas.addEventListener('mouseup', () => stopDrawing(technicianCtx, 'technicianSignature'));
-            technicianCanvas.addEventListener('mouseout', () => stopDrawing(technicianCtx, 'technicianSignature'));
+            technicianCanvas.addEventListener('mousedown', (e) => startDrawing(e, technicianCanvas, technicianCtx));
+            technicianCanvas.addEventListener('mousemove', (e) => draw(e));
+            technicianCanvas.addEventListener('mouseup', () => stopDrawing('technicianSignature'));
+            technicianCanvas.addEventListener('mouseout', () => stopDrawing('technicianSignature'));
 
-            // Eventos táctiles para móviles
+            // Eventos táctiles para móviles - Técnico
             technicianCanvas.addEventListener('touchstart', (e) => {
                 e.preventDefault();
                 const touch = e.touches[0];
-                const mouseEvent = new MouseEvent('mousedown', {
-                    clientX: touch.clientX,
-                    clientY: touch.clientY
-                });
-                technicianCanvas.dispatchEvent(mouseEvent);
-            });
+                startDrawing({ clientX: touch.clientX, clientY: touch.clientY }, technicianCanvas, technicianCtx);
+            }, { passive: false });
 
             technicianCanvas.addEventListener('touchmove', (e) => {
                 e.preventDefault();
                 const touch = e.touches[0];
-                const mouseEvent = new MouseEvent('mousemove', {
-                    clientX: touch.clientX,
-                    clientY: touch.clientY
-                });
-                technicianCanvas.dispatchEvent(mouseEvent);
-            });
+                draw({ clientX: touch.clientX, clientY: touch.clientY });
+            }, { passive: false });
 
             technicianCanvas.addEventListener('touchend', (e) => {
                 e.preventDefault();
-                const mouseEvent = new MouseEvent('mouseup', {});
-                technicianCanvas.dispatchEvent(mouseEvent);
-            });
+                stopDrawing('technicianSignature');
+            }, { passive: false });
 
             // Eventos para canvas del cliente
-            clientCanvas.addEventListener('mousedown', (e) => startDrawing(e, clientCtx));
-            clientCanvas.addEventListener('mousemove', (e) => draw(e, clientCtx));
-            clientCanvas.addEventListener('mouseup', () => stopDrawing(clientCtx, 'clientSignature'));
-            clientCanvas.addEventListener('mouseout', () => stopDrawing(clientCtx, 'clientSignature'));
+            clientCanvas.addEventListener('mousedown', (e) => startDrawing(e, clientCanvas, clientCtx));
+            clientCanvas.addEventListener('mousemove', (e) => draw(e));
+            clientCanvas.addEventListener('mouseup', () => stopDrawing('clientSignature'));
+            clientCanvas.addEventListener('mouseout', () => stopDrawing('clientSignature'));
 
             // Eventos táctiles para móviles - Cliente
             clientCanvas.addEventListener('touchstart', (e) => {
                 e.preventDefault();
                 const touch = e.touches[0];
-                const mouseEvent = new MouseEvent('mousedown', {
-                    clientX: touch.clientX,
-                    clientY: touch.clientY
-                });
-                clientCanvas.dispatchEvent(mouseEvent);
-            });
+                startDrawing({ clientX: touch.clientX, clientY: touch.clientY }, clientCanvas, clientCtx);
+            }, { passive: false });
 
             clientCanvas.addEventListener('touchmove', (e) => {
                 e.preventDefault();
                 const touch = e.touches[0];
-                const mouseEvent = new MouseEvent('mousemove', {
-                    clientX: touch.clientX,
-                    clientY: touch.clientY
-                });
-                clientCanvas.dispatchEvent(mouseEvent);
-            });
+                draw({ clientX: touch.clientX, clientY: touch.clientY });
+            }, { passive: false });
 
             clientCanvas.addEventListener('touchend', (e) => {
                 e.preventDefault();
-                const mouseEvent = new MouseEvent('mouseup', {});
-                clientCanvas.dispatchEvent(mouseEvent);
-            });
+                stopDrawing('clientSignature');
+            }, { passive: false });
 
             // Función para limpiar firma
             function clearSignature(canvasId) {
                 const canvas = document.getElementById(canvasId);
+                const rect = canvas.getBoundingClientRect();
                 const ctx = canvas.getContext('2d');
+                const dpr = window.devicePixelRatio || 1;
+
+                // Limpiar todo el canvas
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.scale(dpr, dpr);
+
+                // Rellenar con blanco
                 ctx.fillStyle = '#ffffff';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillRect(0, 0, rect.width, rect.height);
+
+                // Restaurar estilos de dibujo
+                ctx.strokeStyle = '#1a472a';
+                ctx.lineWidth = 2;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+
+                // Actualizar el contexto correspondiente
+                if (canvasId === 'technicianSignature') {
+                    technicianCtx = ctx;
+                } else {
+                    clientCtx = ctx;
+                }
 
                 updateSignatureStatus(canvasId);
             }
