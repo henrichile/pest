@@ -17,13 +17,11 @@
                 <img src="{{ Storage::url(auth()->user()->signature) }}" alt="Firma del Técnico" class="signature-image">
             </div>
         @else
-            <div class="signature-placeholder">
-                <canvas id="signature-canvas" width="300" height="200"></canvas>
-                <div class="signature-actions">
-                    <button type="button" class="btn-clear" onclick="clearSignature()">Limpiar</button>
-                </div>
-                <input type="hidden" name="technician_signature" id="technician_signature">
+            <canvas id="signature-canvas" style="width: 100%; background-color: #fff; border: 1px solid #ccc;"></canvas>
+            <div class="signature-actions">
+                <button type="button" class="btn-clear" onclick="clearSignature()">Limpiar</button>
             </div>
+            <input type="hidden" name="technician_signature" id="technician_signature">
         @endif
     </div>
 
@@ -46,13 +44,12 @@
                 @endif
             </div>
         @else
-            <div class="signature-placeholder">
-                <canvas id="client-signature-canvas" width="300" height="200"></canvas>
-                <div class="signature-actions">
-                    <button type="button" class="btn-clear" onclick="clearClientSignature()">Limpiar</button>
-                </div>
-                <input type="hidden" name="client_signature" id="client_signature">
+            <canvas id="client-signature-canvas"
+                style="width: 100%; background-color: #fff; border: 1px solid #ccc;"></canvas>
+            <div class="signature-actions">
+                <button type="button" class="btn-clear" onclick="clearClientSignature()">Limpiar</button>
             </div>
+            <input type="hidden" name="client_signature" id="client_signature">
         @endif
     </div>
 
