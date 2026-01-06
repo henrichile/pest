@@ -73,7 +73,7 @@
     <div class="bg-white rounded-lg shadow-lg p-4 md:p-6">
         <!-- Título del filtro (solo móvil) -->
         <div class="flex items-center justify-between mb-3 md:hidden">
-            <h3 class="text-sm font-semibold text-gray-900">Filtrar Servicios</h3>
+            <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Filtrar Servicios</h3>
             <button type="button" id="toggle-filters" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
                 <span id="filter-toggle-text">Ocultar</span>
             </button>
@@ -155,7 +155,7 @@
                      // Keep default blue
                 }
             @endphp
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 space-y-3">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 space-y-3">
                 <div class="flex justify-between items-start">
                     <div>
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ optional($service->client)->name ?? "N/A" }}</h3>
@@ -174,7 +174,7 @@
                 <div class="grid grid-cols-2 gap-2 text-sm">
                     <div>
                         <span class="text-gray-500 block text-xs dark:text-white">Fecha</span>
-                        <span class="font-medium">{{ $service->scheduled_date->format("d/m/Y H:i") }}</span>
+                        <span class="font-medium dark:text-white">{{ $service->scheduled_date->format("d/m/Y H:i") }}</span>
                         @if($service->scheduled_date < now() && $service->status == "pendiente")
                         <span class="text-xs text-red-600 font-medium block dark:text-red-600">Vencido</span>
                         @endif
@@ -182,11 +182,11 @@
                     <div>
                         <span class="text-gray-500 block text-xs dark:text-white">Estado</span>
                         <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
-                            @if($service->status == 'pendiente') bg-gray-100 text-gray-800
-                            @elseif($service->status == 'en_progreso') bg-blue-100 text-blue-800
-                            @elseif($service->status == 'vencido') bg-red-100 text-red-800
-                            @else bg-green-100 text-green-800
-                            @endif dark:bg-gray-800 dark:text-gray-100">
+                            @if($service->status == 'pendiente') bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
+                            @elseif($service->status == 'en_progreso') bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300
+                            @elseif($service->status == 'vencido') bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300
+                            @else bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300
+                            @endif">
                             {{ ucfirst(str_replace("_", " ", $service->status)) }}
                         </span>
                     </div>
@@ -226,20 +226,20 @@
                     @if($service->status == "pendiente")
                     <form method="POST" action="{{ $startUrl }}" class="inline" id="mobile-start-form-{{ $service->id }}">
                         @csrf
-                        <button type="submit" class="text-blue-600 hover:text-blue-900 font-medium text-sm">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600 px-3 py-1.5 rounded-md text-sm font-medium transition-colors">
                             Iniciar
                         </button>
                     </form>
                     @elseif($service->status == "en_progreso")
-                    <a href="{{ $detailUrl }}" class="text-green-600 hover:text-green-900 font-medium text-sm">
+                    <a href="{{ $detailUrl }}" class="bg-green-600 hover:bg-green-700 text-white dark:bg-green-500 dark:hover:bg-green-600 px-3 py-1.5 rounded-md text-sm font-medium transition-colors">
                         Completar
                     </a>
                     @elseif($service->status == "finalizado")
-                    <a href="{{ $pdfUrl }}" class="text-blue-600 hover:text-blue-900 font-medium text-sm">
+                    <a href="{{ $pdfUrl }}" class="bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600 px-3 py-1.5 rounded-md text-sm font-medium transition-colors">
                         PDF
                     </a>
                     @endif
-                    <a href="{{ $detailUrl }}" class="text-gray-600 hover:text-gray-900 font-medium text-sm">
+                    <a href="{{ $detailUrl }}" class="bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white px-3 py-1.5 rounded-md text-sm font-medium transition-colors">
                         Ver Detalle
                     </a>
                 </div>

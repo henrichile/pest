@@ -187,8 +187,8 @@
                         $iconPath = 'M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z';
                     }
                 @endphp
-                <div class="flex items-center justify-between p-4 border-b border-gray-200 last:border-b-0">
-                    <div class="flex items-center gap-4 flex-1">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 border-b border-gray-200 last:border-b-0">
+                    <div class="flex items-center gap-4 w-full sm:w-auto">
                         <div class="flex-shrink-0">
                             <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: {{ $iconBg }};">
                                 <svg class="w-5 h-5" style="color: {{ $iconColor }};" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -201,11 +201,18 @@
                             <p class="text-xs text-gray-700 dark:text-white">{{ $service->scheduled_date ? $service->scheduled_date->format('d/m/Y H:i') : ($service->created_at->format('d/m/Y H:i')) }}</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span class="px-2 py-1 text-xs font-medium rounded-full text-gray-900 dark:text-white">
+                    <div class="flex items-center justify-between w-full mt-3 sm:mt-0 sm:w-auto sm:justify-start gap-2">
+                        <!-- Mobile Status Badge (Left aligned on mobile) -->
+                        <span class="inline-flex sm:hidden px-2 py-1 text-xs font-medium rounded-full text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
                             {{ ucfirst(str_replace('_', ' ', $service->status ?? 'Pendiente')) }}
                         </span>
-                        <a href="{{ route('technician.service.detail', $service) }}" class="px-3 py-1.5 text-xs font-medium rounded-md text-white bg-green-500">Ver Detalle</a>
+
+                        <!-- Desktop Status Badge -->
+                        <span class="hidden sm:inline-flex px-2 py-1 text-xs font-medium rounded-full text-gray-900 dark:text-white">
+                            {{ ucfirst(str_replace('_', ' ', $service->status ?? 'Pendiente')) }}
+                        </span>
+                        
+                        <a href="{{ route('technician.service.detail', $service) }}" class="px-3 py-1.5 text-xs font-medium rounded-md text-white bg-green-500 whitespace-nowrap">Ver Detalle</a>
                     </div>
                 </div>
                 @empty

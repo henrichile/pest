@@ -618,14 +618,16 @@
                 </div>
 
                 <div class="form-group">
-                    <label style="display: flex; align-items: center; cursor: pointer;">
+                    <label style="display: flex; align-items: flex-start; cursor: pointer; gap: 10px;">
                         <input type="checkbox" id="no_observation" name="no_observation" value="1"
-                            style="margin-right: 8px;">
-                        <span>Sin observación</span>
+                            style="width: 20px; height: 20px; margin-top: 2px;">
+                        <div>
+                            <span style="display: block; font-weight: bold; margin-bottom: 2px;">Sin observación</span>
+                            <small style="display: block; line-height: 1.3;">
+                                Marque esta opción si no hay observaciones que registrar
+                            </small>
+                        </div>
                     </label>
-                    <small>
-                        Marque esta opción si no hay observaciones que registrar
-                    </small>
                 </div>
 
                 <div class="form-group">
@@ -1079,6 +1081,6 @@
                     }, 500);
                 }
             @endif
-    });
+        });
     </script>
 @endsection

@@ -416,7 +416,7 @@
                         <div class="space-y-4">
                             <div>
                                 <label for="user_ids" class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">Usuarios *</label>
-                                <select id="user_ids" name="user_ids[]" multiple required class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:text-white dark:bg-gray-700 dark:border-gray-600" style="border: 1px solid #e5e7eb !important; color: #111827; min-height: 100px;">
+                                <select id="user_ids" name="user_ids[]" multiple required class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:text-white dark:bg-gray-700 dark:border-gray-600" style="border: 1px solid #e5e7eb !important; min-height: 100px;">
                                     @foreach($users as $user)
                                         <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
                                     @endforeach
@@ -428,19 +428,19 @@
                                 <label for="title" class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">Título *</label>
                                 <input type="text" id="title" name="title" required
                                        class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                                       style="border: 1px solid #e5e7eb !important; color: #111827;">
+                                       style="border: 1px solid #e5e7eb !important;">
                             </div>
 
                             <div>
                                 <label for="message" class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">Mensaje *</label>
                                 <textarea id="message" name="message" rows="4" required
                                           class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                                          style="border: 1px solid #e5e7eb !important; color: #111827;"></textarea>
+                                          style="border: 1px solid #e5e7eb !important;"></textarea>
                             </div>
 
                             <div>
                                 <label for="type" class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">Tipo *</label>
-                                <select id="type" name="type" required class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:text-white dark:bg-gray-700 dark:border-gray-600" style="border: 1px solid #e5e7eb !important; color: #111827;">
+                                <select id="type" name="type" required class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:text-white dark:bg-gray-700 dark:border-gray-600" style="border: 1px solid #e5e7eb !important;">
                                     <option value="info">Info</option>
                                     <option value="success">Éxito</option>
                                     <option value="warning">Advertencia</option>
@@ -452,7 +452,7 @@
                                 <label for="url" class="block text-sm font-medium mb-2 text-gray-700 dark:text-white">URL (opcional)</label>
                                 <input type="url" id="url" name="url"
                                        class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                                       style="border: 1px solid #e5e7eb !important; color: #111827;">
+                                       style="border: 1px solid #e5e7eb !important;">
                             </div>
                         </div>
                     </div>
