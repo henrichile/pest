@@ -68,7 +68,7 @@
             @endif
         </div>
 
-        @if (in_array($service->service_type, ['desinfeccion', 'sanitizacion', 'desinsectacion', 'fumigacion-de-jardines']))
+        @if (in_array($service->service_type, ['desratizacion', 'desinfeccion', 'sanitizacion', 'desinsectacion', 'fumigacion-de-jardines']))
 
             <div class="mb-6">
                 <h2 class="text-lg font-medium text-gray-900 mb-4">
