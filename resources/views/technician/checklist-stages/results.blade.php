@@ -96,7 +96,11 @@
         @endif
 
         <div class="buttons-container">
-            <a href="{{ route("technician.service.checklist.stage", ["service" => $service, "stage" => "observations"]) }}"
+            @php
+                // Determinar la etapa anterior según el tipo de servicio
+                $previousStage = in_array($service->service_type, ['desratizacion', 'desinsectacion', 'desinfeccion', 'sanitizacion', 'fumigacion-de-jardines']) ? 'products' : 'observations';
+            @endphp
+            <a href="{{ route("technician.service.checklist.stage", ["service" => $service, "stage" => $previousStage]) }}"
                 class="back-button">
                 <span class="arrow">←</span> Anterior
             </a>
