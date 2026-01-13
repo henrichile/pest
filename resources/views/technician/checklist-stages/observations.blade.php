@@ -527,6 +527,12 @@
                                         <label>Lugar tratado:</label>
                                     @endif
                                 </div>
+                                @if($service->service_type === 'desratizacion' && isset($observation['trap_code']) && !empty($observation['trap_code']))
+                                    <div class="detail-row">
+                                        <label>Código de la Trampa:</label>
+                                        <span>{{ $observation['trap_code'] }}</span>
+                                    </div>
+                                @endif
                                 <div class="detail-row">
                                     <label>Número de Observación:</label>
                                     <span>{{ $observation['observation_number'] ?? ($index + 1) }}</span>
@@ -603,6 +609,29 @@
                             placeholder="Ej: CE-001">
                         <small>Se asignará automáticamente si se deja vacío</small>
                     </div>
+                    @if($service->service_type === 'desratizacion')
+                        <div class="form-group">
+                            @php
+                                // Generar el siguiente código de trampa automáticamente
+                                $maxTrapNumber = 0;
+                                foreach ($existingObservations as $obs) {
+                                    if (isset($obs['trap_code']) && !empty($obs['trap_code'])) {
+                                        if (preg_match('/TR-(\d+)/i', $obs['trap_code'], $matches)) {
+                                            $number = (int) $matches[1];
+                                            if ($number > $maxTrapNumber) {
+                                                $maxTrapNumber = $number;
+                                            }
+                                        }
+                                    }
+                                }
+                                $nextTrapCode = sprintf('TR-%03d', $maxTrapNumber + 1);
+                            @endphp
+                            <label>Código de la Trampa:</label>
+                            <input type="text" id="trap_code" name="trap_code" value="{{ $nextTrapCode }}"
+                                placeholder="Ej: TR-001">
+                            <small>Opcional - Dejar vacío si no aplica</small>
+                        </div>
+                    @endif
                     <div class="form-group">
                         <label for="observation_number">N° de Observación</label>
                         <input type="number" id="observation_number" name="observation_number"
@@ -676,6 +705,13 @@
                         @endif
                         <input type="text" id="editCebaderaCode" name="cebadera_code" required>
                     </div>
+                    @if($service->service_type === 'desratizacion')
+                        <div class="form-group">
+                            <label>Código de la Trampa:</label>
+                            <input type="text" id="editTrapCode" name="trap_code" placeholder="Ej: TR-001">
+                            <small>Opcional - Dejar vacío si no aplica</small>
+                        </div>
+                    @endif
                     <div class="form-group">
                         <label for="editObservationNumber">N° de Observación</label>
                         <input type="number" id="editObservationNumber" name="observation_number" min="1" required>
@@ -836,6 +872,13 @@
             const observationNumber = header.querySelector('.observation-number')?.textContent.replace('Obs #', '') || '';
             const detail = observationItem.querySelector('.observation-content .detail-row:last-child span')?.textContent || '';
 
+            // Obtener el código de trampa si existe
+            const trapCodeRow = observationItem.querySelector('.observation-content .detail-row:nth-child(2) label');
+            let trapCode = '';
+            if (trapCodeRow && trapCodeRow.textContent.includes('Trampa')) {
+                trapCode = trapCodeRow.nextElementSibling?.textContent || '';
+            }
+
             // Obtener información de la foto actual si existe
             const currentPhoto = observationItem.querySelector('.observation-photo img');
             const currentPhotoSrc = currentPhoto ? currentPhoto.src : '';
@@ -846,6 +889,12 @@
             document.getElementById('editCebaderaCode').value = cebaderaCode;
             document.getElementById('editObservationNumber').value = observationNumber;
             document.getElementById('editDetail').value = detail;
+
+            // Llenar el código de trampa si el campo existe
+            const editTrapCodeField = document.getElementById('editTrapCode');
+            if (editTrapCodeField) {
+                editTrapCodeField.value = trapCode;
+            }
 
             // Mostrar información de la foto actual
             if (currentPhotoSrc) {
@@ -1081,6 +1130,6 @@
                     }, 500);
                 }
             @endif
-        });
+            });
     </script>
 @endsection

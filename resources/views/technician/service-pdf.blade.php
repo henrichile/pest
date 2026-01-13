@@ -1245,6 +1245,9 @@
                                 @if(isset($observation['cebadera_code']))
                                     <div style="font-weight: bold; color: #1a472a; margin-bottom: 5px;">
                                         {{ $observation['cebadera_code'] }}
+                                        @if(isset($observation['trap_code']) && !empty($observation['trap_code']))
+                                            | Trampa: {{ $observation['trap_code'] }}
+                                        @endif
                                         @if(isset($observation['observation_number']))
                                             - Obs #{{ $observation['observation_number'] }}
                                         @endif
@@ -1393,6 +1396,9 @@
                                 @if(isset($observation['cebadera_code']))
                                     <div style="font-weight: bold; color: #1a472a; margin-bottom: 5px;">
                                         {{ $observation['cebadera_code'] }}
+                                        @if(isset($observation['trap_code']) && !empty($observation['trap_code']))
+                                            | Trampa: {{ $observation['trap_code'] }}
+                                        @endif
                                         @if(isset($observation['observation_number']))
                                             - Obs #{{ $observation['observation_number'] }}
                                         @endif
@@ -1559,6 +1565,9 @@
                                 @if(isset($observation['cebadera_code']))
                                     <div style="font-weight: bold; color: #1a472a; margin-bottom: 5px;">
                                         {{ $observation['cebadera_code'] }}
+                                        @if(isset($observation['trap_code']) && !empty($observation['trap_code']))
+                                            | Trampa: {{ $observation['trap_code'] }}
+                                        @endif
                                         @if(isset($observation['observation_number']))
                                             - Obs #{{ $observation['observation_number'] }}
                                         @endif
@@ -1669,6 +1678,9 @@
                                 @if(isset($observation['cebadera_code']))
                                     <div style="font-weight: bold; color: #1a472a; margin-bottom: 5px;">
                                         {{ $observation['cebadera_code'] }}
+                                        @if(isset($observation['trap_code']) && !empty($observation['trap_code']))
+                                            | Trampa: {{ $observation['trap_code'] }}
+                                        @endif
                                         @if(isset($observation['observation_number']))
                                             - Obs #{{ $observation['observation_number'] }}
                                         @endif

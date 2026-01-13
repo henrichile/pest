@@ -44,9 +44,11 @@
                         </a>
                         <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Detalles Completos del servicio</h1>
                         <p class="text-gray-600 mt-1 dark:text-white">Servicio #{{ $service->id }} -
-                            {{ $service->client->name ?? 'Cliente' }}</p>
+                            {{ $service->client->name ?? 'Cliente' }}
+                        </p>
                         <p class="text-gray-600 dark:text-white">Tipo de Servicio:
-                            <strong>{{ ucfirst($service->service_type) }}</strong></p>
+                            <strong>{{ ucfirst($service->service_type) }}</strong>
+                        </p>
                         @if($service->service_type === 'servicios-especiales' && $service->special_service_title)
                             <p class="text-green-700 font-semibold text-lg mt-2 dark:text-green-700">
                                 📋 {{ $service->special_service_title }}
@@ -100,11 +102,11 @@
                                 <div class="mb-4">
                                     <strong class="text-gray-900 dark:text-white">Nivel de Infestación:</strong>
                                     <span class="ml-2 px-3 py-1 rounded-full text-sm font-semibold
-                                                @if($checklistData['monitoreo_datos']['infestation_level'] === 'critico') bg-red-100 text-red-800
-                                                @elseif($checklistData['monitoreo_datos']['infestation_level'] === 'alto') bg-orange-100 text-orange-800
-                                                @elseif($checklistData['monitoreo_datos']['infestation_level'] === 'medio') bg-yellow-100 text-yellow-800
-                                                @else bg-green-100 text-green-800
-                                                @endif">
+                                                                    @if($checklistData['monitoreo_datos']['infestation_level'] === 'critico') bg-red-100 text-red-800
+                                                                    @elseif($checklistData['monitoreo_datos']['infestation_level'] === 'alto') bg-orange-100 text-orange-800
+                                                                    @elseif($checklistData['monitoreo_datos']['infestation_level'] === 'medio') bg-yellow-100 text-yellow-800
+                                                                    @else bg-green-100 text-green-800
+                                                                    @endif">
                                         {{ ucfirst($checklistData['monitoreo_datos']['infestation_level']) }}
                                     </span>
                                 </div>
@@ -114,7 +116,8 @@
                                 <div class="mb-4">
                                     <strong class="text-gray-900 dark:text-white">Observaciones del Técnico:</strong>
                                     <p class="text-gray-700 dark:text-white mt-2 whitespace-pre-wrap">
-                                        {{ $checklistData['monitoreo_datos']['technician_observations'] }}</p>
+                                        {{ $checklistData['monitoreo_datos']['technician_observations'] }}
+                                    </p>
                                 </div>
                             @endif
 
@@ -122,7 +125,8 @@
                                 <div class="mb-4">
                                     <strong class="text-gray-900 dark:text-white">Recomendaciones al Cliente:</strong>
                                     <p class="text-gray-700 dark:text-white mt-2 whitespace-pre-wrap">
-                                        {{ $checklistData['monitoreo_datos']['client_recommendations'] }}</p>
+                                        {{ $checklistData['monitoreo_datos']['client_recommendations'] }}
+                                    </p>
                                 </div>
                             @endif
 
@@ -162,7 +166,8 @@
                                 <div class="mb-4">
                                     <strong class="text-gray-900 dark:text-white">Notas del Croquis:</strong>
                                     <p class="text-gray-700 dark:text-white mt-2 whitespace-pre-wrap">
-                                        {{ $checklistData['monitoreo_croquis']['croquis_notes'] }}</p>
+                                        {{ $checklistData['monitoreo_croquis']['croquis_notes'] }}
+                                    </p>
                                 </div>
                             @endif
 
@@ -336,11 +341,11 @@
                                                         <div>
                                                             <span class="text-sm font-medium text-gray-600 dark:text-white">Estado:</span>
                                                             <span class="ml-2 px-2 py-1 rounded text-xs font-semibold
-                                                                        @if($trap['status'] === 'captura') bg-red-100 text-red-800
-                                                                        @elseif($trap['status'] === 'activa') bg-green-100 text-green-800
-                                                                        @elseif($trap['status'] === 'dañada') bg-yellow-100 text-yellow-800
-                                                                        @else bg-gray-100 text-gray-800
-                                                                        @endif">
+                                                                                                    @if($trap['status'] === 'captura') bg-red-100 text-red-800
+                                                                                                    @elseif($trap['status'] === 'activa') bg-green-100 text-green-800
+                                                                                                    @elseif($trap['status'] === 'dañada') bg-yellow-100 text-yellow-800
+                                                                                                    @else bg-gray-100 text-gray-800
+                                                                                                    @endif">
                                                                 {{ ucfirst($trap['status']) }}
                                                             </span>
                                                         </div>
@@ -382,7 +387,8 @@
                                 <div class="mb-4">
                                     <strong class="text-gray-900 dark:text-white">Observaciones Generales:</strong>
                                     <p class="text-gray-700 dark:text-white mt-2 whitespace-pre-wrap">
-                                        {{ $checklistData['monitoreo_completo']['general_observations'] }}</p>
+                                        {{ $checklistData['monitoreo_completo']['general_observations'] }}
+                                    </p>
                                 </div>
                             @endif
 
@@ -390,7 +396,8 @@
                                 <div class="mb-4">
                                     <strong class="text-gray-900     dark:text-white">Recomendaciones al Cliente:</strong>
                                     <p class="text-gray-700 dark:text-white mt-2 whitespace-pre-wrap">
-                                        {{ $checklistData['monitoreo_completo']['client_recommendations_monitoring'] }}</p>
+                                        {{ $checklistData['monitoreo_completo']['client_recommendations_monitoring'] }}
+                                    </p>
                                 </div>
                             @endif
                         </div>
@@ -474,91 +481,96 @@
                         }
                     @endphp
                     @if(isset($checklistData['monitoreo_estadisticas']))
-                            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-                                <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
-                                    <svg class="w-6 h-6 text-purple-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                                        <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-                                    </svg>
-                                    4. Estadísticas
-                                </h2>
+                        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+                                <svg class="w-6 h-6 text-purple-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
+                                    <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
+                                </svg>
+                                4. Estadísticas
+                            </h2>
 
-                                <!-- Fila Superior: Tarjetas de Estado -->
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                                    <!-- Monitoreadas -->
-                                    <div class="bg-white rounded-lg p-4 border border-gray-200 text-center">
-                                        <h3 class="text-xs font-bold text-gray-500 uppercase mb-1 dark:text-white">Cebaderas Monitoreadas
-                                        </h3>
-                                        <p class="text-3xl font-bold text-gray-800 dark:text-white">
-                                            {{ $checklistData['monitoreo_estadisticas']['total_monitored'] }}</p>
-                                    </div>
-
-                                    <!-- Activas -->
-                                    <div class="bg-green-50 rounded-lg p-4 border border-green-200 text-center">
-                                        <h3 class="text-xs font-bold text-green-700 uppercase mb-1">Cebaderas Activas</h3>
-                                        <p class="text-3xl font-bold text-green-600">
-                                            {{ $checklistData['monitoreo_estadisticas']['total_active'] }}</p>
-                                    </div>
-
-                                    <!-- Con Problemas -->
-                                    <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-200 text-center">
-                                        <h3 class="text-xs font-bold text-yellow-700 uppercase mb-1">Con Problemas</h3>
-                                        <p class="text-3xl font-bold text-yellow-600">
-                                            {{ $checklistData['monitoreo_estadisticas']['total_problems'] }}</p>
-                                    </div>
+                            <!-- Fila Superior: Tarjetas de Estado -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                                <!-- Monitoreadas -->
+                                <div class="bg-white rounded-lg p-4 border border-gray-200 text-center">
+                                    <h3 class="text-xs font-bold text-gray-500 uppercase mb-1 dark:text-white">Cebaderas Monitoreadas
+                                    </h3>
+                                    <p class="text-3xl font-bold text-gray-800 dark:text-white">
+                                        {{ $checklistData['monitoreo_estadisticas']['total_monitored'] }}
+                                    </p>
                                 </div>
 
-                                <!-- Fila Inferior: Resumen de Métricas -->
-                                <div class="bg-gray-50 rounded-lg border border-gray-200 p-6 mb-6">
-                                    <div
-                                        class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-gray-200">
-                                        <div class="py-2 md:py-0">
-                                            <h3 class="text-sm text-gray-500 mb-1">Total Monitoreos</h3>
-                                            <p class="text-2xl font-bold text-gray-800">
-                                                {{ $checklistData['monitoreo_estadisticas']['total_monitored'] }}</p>
-                                        </div>
-                                        <div class="py-2 md:py-0">
-                                            <h3 class="text-sm text-gray-500 mb-1">Consumo Promedio</h3>
-                                            <p class="text-2xl font-bold text-red-500">
-                                                {{ number_format($checklistData['monitoreo_estadisticas']['average_consumption_percent'], 1) }}%
-                                            </p>
-                                        </div>
-                                        <div class="py-2 md:py-0">
-                                            <h3 class="text-sm text-gray-500 mb-1">Nivel Actual</h3>
-                                            @php
-                                                $level = strtoupper($checklistData['monitoreo_estadisticas']['activity_level'] ?? 'BAJO');
-                                                // Mapeo de colores según nivel
-                                                $colorClass = match ($level) {
-                                                    'CRÍTICO' => 'bg-red-600',
-                                                    'ALTO' => 'bg-red-500',
-                                                    'MEDIO' => 'bg-yellow-500',
-                                                    default => 'bg-green-500' // BAJO
-                                                };
-                                            @endphp
-                         <span
-                                                class="inline-block px-4 py-1 rounded-full text-white text-sm font-bold {{ $colorClass }}">
-                                                {{ $level }}
-                                            </span>
-                                        </div>
-                                    </div>
+                                <!-- Activas -->
+                                <div class="bg-green-50 rounded-lg p-4 border border-green-200 text-center">
+                                    <h3 class="text-xs font-bold text-green-700 uppercase mb-1">Cebaderas Activas</h3>
+                                    <p class="text-3xl font-bold text-green-600">
+                                        {{ $checklistData['monitoreo_estadisticas']['total_active'] }}
+                                    </p>
                                 </div>
 
-                                @if(isset($checklistData['monitoreo_estadisticas']['executive_summary']))
-                                    <div class="mb-4">
-                                        <strong class="text-gray-900 dark:text-white">Resumen Ejecutivo:</strong>
-                                        <p class="text-gray-700 dark:text-white mt-2">
-                                            {{ $checklistData['monitoreo_estadisticas']['executive_summary'] }}</p>
-                                    </div>
-                                @endif
-
-                                <!-- Gráfico de Evolución -->
-                                @if(isset($checklistData['monitoreo_estadisticas']['historical_data']) && count($checklistData['monitoreo_estadisticas']['historical_data']) > 0)
-                                    <div class="mt-8">
-                                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Evolución del Consumo</h3>
-                                        <canvas id="consumptionChart" width="400" height="200"></canvas>
-                                    </div>
-                                @endif
+                                <!-- Con Problemas -->
+                                <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-200 text-center">
+                                    <h3 class="text-xs font-bold text-yellow-700 uppercase mb-1">Con Problemas</h3>
+                                    <p class="text-3xl font-bold text-yellow-600">
+                                        {{ $checklistData['monitoreo_estadisticas']['total_problems'] }}
+                                    </p>
+                                </div>
                             </div>
+
+                            <!-- Fila Inferior: Resumen de Métricas -->
+                            <div class="bg-gray-50 rounded-lg border border-gray-200 p-6 mb-6">
+                                <div
+                                    class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-gray-200">
+                                    <div class="py-2 md:py-0">
+                                        <h3 class="text-sm text-gray-500 mb-1">Total Monitoreos</h3>
+                                        <p class="text-2xl font-bold text-gray-800">
+                                            {{ $checklistData['monitoreo_estadisticas']['total_monitored'] }}
+                                        </p>
+                                    </div>
+                                    <div class="py-2 md:py-0">
+                                        <h3 class="text-sm text-gray-500 mb-1">Consumo Promedio</h3>
+                                        <p class="text-2xl font-bold text-red-500">
+                                            {{ number_format($checklistData['monitoreo_estadisticas']['average_consumption_percent'], 1) }}%
+                                        </p>
+                                    </div>
+                                    <div class="py-2 md:py-0">
+                                        <h3 class="text-sm text-gray-500 mb-1">Nivel Actual</h3>
+                                        @php
+                                            $level = strtoupper($checklistData['monitoreo_estadisticas']['activity_level'] ?? 'BAJO');
+                                            // Mapeo de colores según nivel
+                                            $colorClass = match ($level) {
+                                                'CRÍTICO' => 'bg-red-600',
+                                                'ALTO' => 'bg-red-500',
+                                                'MEDIO' => 'bg-yellow-500',
+                                                default => 'bg-green-500' // BAJO
+                                            };
+                                        @endphp
+                                        <span
+                                            class="inline-block px-4 py-1 rounded-full text-white text-sm font-bold {{ $colorClass }}">
+                                            {{ $level }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if(isset($checklistData['monitoreo_estadisticas']['executive_summary']))
+                                <div class="mb-4">
+                                    <strong class="text-gray-900 dark:text-white">Resumen Ejecutivo:</strong>
+                                    <p class="text-gray-700 dark:text-white mt-2">
+                                        {{ $checklistData['monitoreo_estadisticas']['executive_summary'] }}
+                                    </p>
+                                </div>
+                            @endif
+
+                            <!-- Gráfico de Evolución -->
+                            @if(isset($checklistData['monitoreo_estadisticas']['historical_data']) && count($checklistData['monitoreo_estadisticas']['historical_data']) > 0)
+                                <div class="mt-8">
+                                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Evolución del Consumo</h3>
+                                    <canvas id="consumptionChart" width="400" height="200"></canvas>
+                                </div>
+                            @endif
+                        </div>
                     @endif
 
                 @endif
@@ -582,7 +594,8 @@
                                     <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
                                         <span class="text-sm font-medium text-gray-500 dark:text-black">Producto Aplicado:</span>
                                         <p class="text-lg font-semibold text-gray-900 dark:text-black mt-1">
-                                            {{ $checklistData['products']['applied_product'] }}</p>
+                                            {{ $checklistData['products']['applied_product'] }}
+                                        </p>
                                     </div>
                                 @endif
 
@@ -590,7 +603,8 @@
                                     <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
                                         <span class="text-sm font-medium text-gray-500 dark:text-black">Cantidad:</span>
                                         <p class="text-lg font-semibold text-gray-900 dark:text-black mt-1">
-                                            {{ $checklistData['products']['quantity'] }}</p>
+                                            {{ $checklistData['products']['quantity'] }}
+                                        </p>
                                     </div>
                                 @endif
 
@@ -598,7 +612,8 @@
                                     <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
                                         <span class="text-sm font-medium text-gray-500 dark:text-black">Dosis:</span>
                                         <p class="text-lg font-semibold text-gray-900 dark:text-black mt-1">
-                                            {{ $checklistData['products']['dosis'] }}</p>
+                                            {{ $checklistData['products']['dosis'] }}
+                                        </p>
                                     </div>
                                 @endif
 
@@ -606,14 +621,16 @@
                                     <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
                                         <span class="text-sm font-medium text-gray-500 dark:text-black">Agua:</span>
                                         <p class="text-lg font-semibold text-gray-900 dark:text-black mt-1">
-                                            {{ $checklistData['products']['agua'] }}</p>
+                                            {{ $checklistData['products']['agua'] }}
+                                        </p>
                                     </div>
                                 @endif
                             </div>
 
                             @if(isset($checklistData['products']['applied_at']))
                                 <p class="text-sm text-gray-500 dark:text-white mt-4">Aplicado:
-                                    {{ \Carbon\Carbon::parse($checklistData['products']['applied_at'])->format('d/m/Y H:i') }}</p>
+                                    {{ \Carbon\Carbon::parse($checklistData['products']['applied_at'])->format('d/m/Y H:i') }}
+                                </p>
                             @endif
                         </div>
                     @endif
@@ -638,7 +655,8 @@
                                                 class="flex-shrink-0 bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mr-3 dark:text-white">{{ $index + 1 }}</span>
                                             <div class="flex-1">
                                                 <p class="font-medium text-gray-900 dark:text-white">
-                                                    {{ $point['address'] ?? 'Sin dirección' }}</p>
+                                                    {{ $point['address'] ?? 'Sin dirección' }}
+                                                </p>
                                                 @if(isset($point['notes']) && !empty($point['notes']))
                                                     <p class="text-sm text-gray-600 dark:text-white mt-1">{{ $point['notes'] }}</p>
                                                 @endif
@@ -679,7 +697,8 @@
                                     <div class="bg-gray-50 rounded-lg p-4 border border-gray-200 text-center">
                                         <span class="text-sm font-medium text-gray-500 dark:text-black  ">Eficacia</span>
                                         <p class="text-2xl font-bold text-purple-600 mt-1 dark:text-black">
-                                            {{ $checklistData['results']['efficacy'] }}%</p>
+                                            {{ $checklistData['results']['efficacy'] }}%
+                                        </p>
                                     </div>
                                 @endif
 
@@ -687,7 +706,8 @@
                                     <div class="bg-gray-50 rounded-lg p-4 border border-gray-200 text-center">
                                         <span class="text-sm font-medium text-gray-500 dark:text-black">Puntos Instalados</span>
                                         <p class="text-2xl font-bold text-gray-900 dark:text-black mt-1">
-                                            {{ $checklistData['results']['total_installed_points'] }}</p>
+                                            {{ $checklistData['results']['total_installed_points'] }}
+                                        </p>
                                     </div>
                                 @endif
 
@@ -695,7 +715,8 @@
                                     <div class="bg-gray-50 rounded-lg p-4 border border-gray-200 text-center">
                                         <span class="text-sm font-medium text-gray-500 dark:text-black">Actividad/Consumo</span>
                                         <p class="text-2xl font-bold text-gray-900 dark:text-black mt-1">
-                                            {{ $checklistData['results']['total_consumption_activity'] }}</p>
+                                            {{ $checklistData['results']['total_consumption_activity'] }}
+                                        </p>
                                     </div>
                                 @endif
                             </div>
@@ -707,7 +728,8 @@
                                         <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-200 text-center">
                                             <span class="text-sm font-medium text-yellow-700 dark:text-black">Lámparas UV</span>
                                             <p class="text-2xl font-bold text-yellow-600 dark:text-black mt-1">
-                                                {{ $checklistData['results']['uv_lamps'] }}</p>
+                                                {{ $checklistData['results']['uv_lamps'] }}
+                                            </p>
                                         </div>
                                     @endif
 
@@ -715,7 +737,8 @@
                                         <div class="bg-blue-50 rounded-lg p-4 border border-blue-200 text-center">
                                             <span class="text-sm font-medium text-blue-700 dark:text-black">Dispositivos Instalados</span>
                                             <p class="text-2xl font-bold text-blue-600 dark:text-black mt-1">
-                                                {{ $checklistData['results']['devices_installed'] }}</p>
+                                                {{ $checklistData['results']['devices_installed'] }}
+                                            </p>
                                         </div>
                                     @endif
 
@@ -723,7 +746,8 @@
                                         <div class="bg-orange-50 rounded-lg p-4 border border-orange-200 text-center">
                                             <span class="text-sm font-medium text-orange-700 dark:text-black">Dispositivos Reemplazados</span>
                                             <p class="text-2xl font-bold text-orange-600 dark:text-black mt-1">
-                                                {{ $checklistData['results']['devices_replaced'] }}</p>
+                                                {{ $checklistData['results']['devices_replaced'] }}
+                                            </p>
                                         </div>
                                     @endif
                                 </div>
@@ -750,6 +774,9 @@
                                             <span class="font-semibold text-gray-900 dark:text-white">
                                                 @if(isset($observation['cebadera_code']))
                                                     Cebadera {{ $observation['cebadera_code'] }}
+                                                    @if(isset($observation['trap_code']) && !empty($observation['trap_code']))
+                                                        | Trampa {{ $observation['trap_code'] }}
+                                                    @endif
                                                 @else
                                                     Observación #{{ $index + 1 }}
                                                 @endif
@@ -820,7 +847,8 @@
                                     <strong class="text-gray-900 dark:text-white">Descripción del Servicio:</strong>
                                     <div class="bg-gray-50 rounded-lg p-4 border border-gray-200 mt-2">
                                         <p class="text-gray-700 whitespace-pre-wrap dark:text-black">
-                                            {{ $checklistData['description']['service_description'] }}</p>
+                                            {{ $checklistData['description']['service_description'] }}
+                                        </p>
                                     </div>
                                 </div>
                             @endif
@@ -830,7 +858,8 @@
                                     <strong class="text-gray-900 dark:text-white">Sugerencias:</strong>
                                     <div class="bg-blue-50 rounded-lg p-4 border border-blue-200 mt-2">
                                         <p class="text-gray-700 whitespace-pre-wrap dark:text-black">
-                                            {{ $checklistData['description']['service_sugerencia'] }}</p>
+                                            {{ $checklistData['description']['service_sugerencia'] }}
+                                        </p>
                                     </div>
                                 </div>
                             @endif

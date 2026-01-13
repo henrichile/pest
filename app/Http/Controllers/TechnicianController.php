@@ -800,6 +800,7 @@ class TechnicianController extends Controller
 
             $newObservation = [
                 'cebadera_code' => $cebaderaCode,
+                'trap_code' => trim($request->input('trap_code', '')),
                 'observation_number' => $request->input('observation_number', 1),
                 'detail' => $request->input('detail', ''),
                 'complementary' => $request->input('complementary', ''),
@@ -839,6 +840,7 @@ class TechnicianController extends Controller
 
                     $observations[] = [
                         'cebadera_code' => $cebaderaCode,
+                        'trap_code' => trim($obs['trap_code'] ?? ''),
                         'observation_number' => $obs['observation_number'] ?? count($observations) + 1,
                         'detail' => $obs['detail'],
                         'complementary' => $obs['complementary'] ?? '',
@@ -1435,6 +1437,7 @@ class TechnicianController extends Controller
             // Validar datos de entrada
             $request->validate([
                 'cebadera_code' => 'nullable|string|max:255',
+                'trap_code' => 'nullable|string|max:255',
                 'observation_number' => 'nullable|integer|min:1',
                 'detail' => 'required|string|max:1000',
                 'complementary' => 'nullable|string|max:500',
@@ -1459,6 +1462,7 @@ class TechnicianController extends Controller
             // Preparar los datos actualizados
             $updatedObservation = [
                 'cebadera_code' => $request->input('cebadera_code', $currentObservation['cebadera_code'] ?? ''),
+                'trap_code' => $request->input('trap_code', $currentObservation['trap_code'] ?? ''),
                 'observation_number' => $request->input('observation_number', $currentObservation['observation_number'] ?? ($index + 1)),
                 'detail' => $request->input('detail'),
                 'complementary' => $request->input('complementary', $currentObservation['complementary'] ?? ''),
