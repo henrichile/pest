@@ -399,7 +399,19 @@ class TechnicianController extends Controller
         }
 
         if (!in_array($stage, $validStages)) {
-            abort(404, "Etapa no válida");
+            // Redirigir a la primera etapa válida en lugar de mostrar 404
+            $firstValidStage = $validStages[0];
+
+            // Detectar si estamos en modo technician-view
+            $isTechnicianViewRedirect = request()->is('admin/technician-view/*') ||
+                request()->routeIs('technician-view.*');
+
+            if ($isTechnicianViewRedirect) {
+                return redirect('/admin/technician-view/services/' . $service->id . '/checklist/' . $firstValidStage)
+                    ->with('info', "La etapa '{$stage}' no está disponible para este tipo de servicio. Redirigido a '{$firstValidStage}'.");
+            }
+            return redirect('/technician/services/' . $service->id . '/checklist/' . $firstValidStage)
+                ->with('info', "La etapa '{$stage}' no está disponible para este tipo de servicio. Redirigido a '{$firstValidStage}'.");
         }
 
         // Detectar si estamos en modo technician-view
@@ -787,9 +799,10 @@ class TechnicianController extends Controller
     private function processObservationsData(Request $request, $existingObservations = [])
     {
         $observations = [];
+        $processedFromDirectFields = false;
 
-        // Si es una nueva observación desde el formulario
-        if ($request->has('cebadera_code') || $request->has('detail')) {
+        // Si es una nueva observación desde el formulario (campos directos)
+        if ($request->has('detail') && !empty(trim($request->input('detail', '')))) {
             // Obtener el código de cebadera del request o generar uno automáticamente
             $cebaderaCode = trim($request->input('cebadera_code', ''));
 
@@ -825,27 +838,31 @@ class TechnicianController extends Controller
             }
 
             $observations[] = $newObservation;
+            $processedFromDirectFields = true;
         }
 
         // Si hay observaciones adicionales desde checkboxes o campos múltiples
-        $additionalObservations = $request->input('observations', []);
-        if (is_array($additionalObservations)) {
-            foreach ($additionalObservations as $obs) {
-                if (!empty($obs['detail'])) {
-                    // Generar código automáticamente si no se proporciona
-                    $cebaderaCode = trim($obs['cebadera_code'] ?? '');
-                    if (empty($cebaderaCode)) {
-                        $cebaderaCode = $this->generateNextCebaderaCode(array_merge($existingObservations, $observations));
-                    }
+        // SOLO procesar si NO se procesó desde campos directos (evitar duplicación)
+        if (!$processedFromDirectFields) {
+            $additionalObservations = $request->input('observations', []);
+            if (is_array($additionalObservations)) {
+                foreach ($additionalObservations as $obs) {
+                    if (!empty($obs['detail'])) {
+                        // Generar código automáticamente si no se proporciona
+                        $cebaderaCode = trim($obs['cebadera_code'] ?? '');
+                        if (empty($cebaderaCode)) {
+                            $cebaderaCode = $this->generateNextCebaderaCode(array_merge($existingObservations, $observations));
+                        }
 
-                    $observations[] = [
-                        'cebadera_code' => $cebaderaCode,
-                        'trap_code' => trim($obs['trap_code'] ?? ''),
-                        'observation_number' => $obs['observation_number'] ?? count($observations) + 1,
-                        'detail' => $obs['detail'],
-                        'complementary' => $obs['complementary'] ?? '',
-                        'created_at' => now()->format('Y-m-d H:i:s')
-                    ];
+                        $observations[] = [
+                            'cebadera_code' => $cebaderaCode,
+                            'trap_code' => trim($obs['trap_code'] ?? ''),
+                            'observation_number' => $obs['observation_number'] ?? count($observations) + 1,
+                            'detail' => $obs['detail'],
+                            'complementary' => $obs['complementary'] ?? '',
+                            'created_at' => now()->format('Y-m-d H:i:s')
+                        ];
+                    }
                 }
             }
         }
@@ -1632,7 +1649,7 @@ class TechnicianController extends Controller
         $integrityData = $service->id . $service->client->name . $service->checklist_completed_at . json_encode($service->checklist_data);
         $integrityHash = hash('sha256', $integrityData);
 
-        // Generar QR Code
+        // Generar QR Code con timeout para evitar bloqueos
         $qrData = json_encode([
             'service_id' => $service->id,
             'validation_id' => $validationId,
@@ -1642,7 +1659,28 @@ class TechnicianController extends Controller
             'technician' => $service->assignedUser->name ?? 'N/A'
         ]);
 
-        $qrCode = base64_encode(file_get_contents('https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' . urlencode($qrData)));
+        // Usar contexto con timeout para evitar bloqueos
+        $qrCode = null;
+        try {
+            $context = stream_context_create([
+                'http' => [
+                    'timeout' => 5, // Timeout de 5 segundos
+                    'ignore_errors' => true
+                ],
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false
+                ]
+            ]);
+            $qrContent = @file_get_contents('https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' . urlencode($qrData), false, $context);
+            if ($qrContent !== false) {
+                $qrCode = base64_encode($qrContent);
+            }
+        } catch (\Exception $e) {
+            // Si falla, continuar sin QR
+            \Log::warning('Error generando QR Code para servicio ' . $service->id . ': ' . $e->getMessage());
+            $qrCode = null;
+        }
 
         // Guardar información de trazabilidad en la base de datos
         $service->update([

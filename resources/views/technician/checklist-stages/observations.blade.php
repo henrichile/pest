@@ -604,9 +604,24 @@
                                 }
                             }
                             $nextCode = sprintf('CE-%03d', $maxNumber + 1);
+
+                            // Definir placeholder y valor según tipo de servicio
+                            $placeholder = 'Ej: CE-001';
+                            $defaultValue = $nextCode;
+
+                            if ($service->service_type === 'desinsectacion') {
+                                $placeholder = 'Ej: Cocina';
+                                $defaultValue = '';
+                            } elseif ($service->service_type === 'desinfeccion') {
+                                $placeholder = 'Ej: Baño';
+                                $defaultValue = '';
+                            } elseif ($service->service_type === 'servicios-especiales') {
+                                $placeholder = 'Ej: Techo Casa';
+                                $defaultValue = '';
+                            }
                         @endphp
-                        <input type="text" id="cebadera_code" name="cebadera_code" value="{{ $nextCode }}"
-                            placeholder="Ej: CE-001">
+                        <input type="text" id="cebadera_code" name="cebadera_code" value="{{ $defaultValue }}"
+                            placeholder="{{ $placeholder }}">
                         <small>Se asignará automáticamente si se deja vacío</small>
                     </div>
                     @if($service->service_type === 'desratizacion')
@@ -1130,6 +1145,6 @@
                     }, 500);
                 }
             @endif
-            });
+                });
     </script>
 @endsection

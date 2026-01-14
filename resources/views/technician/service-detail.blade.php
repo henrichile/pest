@@ -104,11 +104,11 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                 <div>
                     <h4 class="text-sm font-medium text-gray-500">Tipo de Servicio</h4>
-                    <p class="text-lg font-semibold text-gray-900 mt-1 dark:text-white">
+                    <p class="text-lg font-semibold text-gray-900 mt-1">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                            @if($service->service_type == 'desratizacion') bg-red-100 text-red-800 dark:text-white
-                            @elseif($service->service_type == 'desinsectacion') bg-yellow-100 text-yellow-800 dark:text-white
-                            @else bg-blue-100 text-blue-800 dark:text-white
+                            @if($service->service_type == 'desratizacion') bg-red-100 text-red-800 
+                            @elseif($service->service_type == 'desinsectacion') bg-yellow-100 text-yellow-800 
+                            @else bg-blue-100 text-blue-800 
                             @endif">
                             {{ ucfirst($service->service_type) }}
                         </span>
@@ -118,12 +118,12 @@
                     @endif
                 </div>
                 <div>
-                    <h4 class="text-sm font-medium text-gray-500 dark:text-white">Prioridad</h4>
-                    <p class="text-lg font-semibold text-gray-900 mt-1 dark:text-white">
+                    <h4 class="text-sm font-medium text-gray-500">Prioridad</h4>
+                    <p class="text-lg font-semibold text-gray-900 mt-1 ">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                            @if($service->priority == 'alta') bg-red-100 text-red-800 dark:text-white
-                            @elseif($service->priority == 'media') bg-yellow-100 text-yellow-800 dark:text-white
-                            @else bg-green-100 text-green-800 dark:text-white
+                            @if($service->priority == 'alta') bg-red-100 text-red-800 
+                            @elseif($service->priority == 'media') bg-yellow-100 text-yellow-800 
+                            @else bg-green-100 text-green-800 
                             @endif">
                             {{ ucfirst($service->priority) }}
                         </span>

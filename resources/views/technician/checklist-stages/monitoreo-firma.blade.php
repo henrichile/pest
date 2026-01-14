@@ -122,6 +122,7 @@
         // Canvas del técnico
         canvas = document.getElementById('signature-canvas');
         if (canvas) {
+            setupCanvas(canvas);
             ctx = canvas.getContext('2d');
             ctx.strokeStyle = '#000';
             ctx.lineWidth = 2;
@@ -134,14 +135,15 @@
             canvas.addEventListener('mouseout', stopDrawing);
 
             // Touch events para móviles
-            canvas.addEventListener('touchstart', handleTouch);
-            canvas.addEventListener('touchmove', handleTouch);
+            canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+            canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
             canvas.addEventListener('touchend', stopDrawing);
         }
 
         // Canvas del cliente
         clientCanvas = document.getElementById('client-signature-canvas');
         if (clientCanvas) {
+            setupCanvas(clientCanvas);
             clientCtx = clientCanvas.getContext('2d');
             clientCtx.strokeStyle = '#000';
             clientCtx.lineWidth = 2;
@@ -154,24 +156,61 @@
             clientCanvas.addEventListener('mouseout', stopDrawingClient);
 
             // Touch events para móviles
-            clientCanvas.addEventListener('touchstart', handleTouchClient);
-            clientCanvas.addEventListener('touchmove', handleTouchClient);
+            clientCanvas.addEventListener('touchstart', handleTouchStartClient, { passive: false });
+            clientCanvas.addEventListener('touchmove', handleTouchMoveClient, { passive: false });
             clientCanvas.addEventListener('touchend', stopDrawingClient);
         }
+
+        // Re-configurar canvas cuando cambia el tamaño de la ventana
+        window.addEventListener('resize', function () {
+            if (canvas) setupCanvas(canvas);
+            if (clientCanvas) setupCanvas(clientCanvas);
+        });
     });
+
+    function setupCanvas(canvasElement) {
+        // Obtener el contenedor del canvas
+        const rect = canvasElement.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+
+        // Establecer el tamaño real del canvas en píxeles
+        canvasElement.width = rect.width * dpr;
+        canvasElement.height = 200 * dpr; // Altura fija de 200px
+
+        // Configurar el estilo CSS para mantener el tamaño visual
+        canvasElement.style.width = rect.width + 'px';
+        canvasElement.style.height = '200px';
+
+        // Escalar el contexto para que coincida con el devicePixelRatio
+        const context = canvasElement.getContext('2d');
+        context.scale(dpr, dpr);
+
+        // Re-aplicar estilos del contexto
+        context.strokeStyle = '#000';
+        context.lineWidth = 2;
+        context.lineCap = 'round';
+        context.lineJoin = 'round';
+    }
+
+    function getCanvasCoordinates(canvasElement, e) {
+        const rect = canvasElement.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        return { x, y };
+    }
 
     // Funciones para firma del técnico
     function startDrawing(e) {
         isDrawing = true;
-        const rect = canvas.getBoundingClientRect();
+        const coords = getCanvasCoordinates(canvas, e);
         ctx.beginPath();
-        ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        ctx.moveTo(coords.x, coords.y);
     }
 
     function draw(e) {
         if (!isDrawing) return;
-        const rect = canvas.getBoundingClientRect();
-        ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+        const coords = getCanvasCoordinates(canvas, e);
+        ctx.lineTo(coords.x, coords.y);
         ctx.stroke();
         updateSignatureData();
     }
@@ -183,19 +222,30 @@
         }
     }
 
-    function handleTouch(e) {
+    function handleTouchStart(e) {
         e.preventDefault();
+        if (e.touches.length === 1) {
+            const touch = e.touches[0];
+            const coords = getCanvasCoordinates(canvas, touch);
+            isDrawing = true;
+            ctx.beginPath();
+            ctx.moveTo(coords.x, coords.y);
+        }
+    }
+
+    function handleTouchMove(e) {
+        e.preventDefault();
+        if (!isDrawing || e.touches.length !== 1) return;
         const touch = e.touches[0];
-        const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' :
-            e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
-            clientX: touch.clientX,
-            clientY: touch.clientY
-        });
-        canvas.dispatchEvent(mouseEvent);
+        const coords = getCanvasCoordinates(canvas, touch);
+        ctx.lineTo(coords.x, coords.y);
+        ctx.stroke();
+        updateSignatureData();
     }
 
     function clearSignature() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const dpr = window.devicePixelRatio || 1;
+        ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
         document.getElementById('technician_signature').value = '';
     }
 
@@ -207,15 +257,15 @@
     // Funciones para firma del cliente
     function startDrawingClient(e) {
         isDrawingClient = true;
-        const rect = clientCanvas.getBoundingClientRect();
+        const coords = getCanvasCoordinates(clientCanvas, e);
         clientCtx.beginPath();
-        clientCtx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        clientCtx.moveTo(coords.x, coords.y);
     }
 
     function drawClient(e) {
         if (!isDrawingClient) return;
-        const rect = clientCanvas.getBoundingClientRect();
-        clientCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+        const coords = getCanvasCoordinates(clientCanvas, e);
+        clientCtx.lineTo(coords.x, coords.y);
         clientCtx.stroke();
         updateClientSignatureData();
     }
@@ -227,19 +277,30 @@
         }
     }
 
-    function handleTouchClient(e) {
+    function handleTouchStartClient(e) {
         e.preventDefault();
+        if (e.touches.length === 1) {
+            const touch = e.touches[0];
+            const coords = getCanvasCoordinates(clientCanvas, touch);
+            isDrawingClient = true;
+            clientCtx.beginPath();
+            clientCtx.moveTo(coords.x, coords.y);
+        }
+    }
+
+    function handleTouchMoveClient(e) {
+        e.preventDefault();
+        if (!isDrawingClient || e.touches.length !== 1) return;
         const touch = e.touches[0];
-        const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' :
-            e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
-            clientX: touch.clientX,
-            clientY: touch.clientY
-        });
-        clientCanvas.dispatchEvent(mouseEvent);
+        const coords = getCanvasCoordinates(clientCanvas, touch);
+        clientCtx.lineTo(coords.x, coords.y);
+        clientCtx.stroke();
+        updateClientSignatureData();
     }
 
     function clearClientSignature() {
-        clientCtx.clearRect(0, 0, clientCanvas.width, clientCanvas.height);
+        const dpr = window.devicePixelRatio || 1;
+        clientCtx.clearRect(0, 0, clientCanvas.width / dpr, clientCanvas.height / dpr);
         document.getElementById('client_signature').value = '';
     }
 
