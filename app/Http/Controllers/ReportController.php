@@ -51,15 +51,15 @@ class ReportController extends Controller
         $clientId = $request->input('client_id', 'all');
         $technicianId = $request->input('technician_id', 'all');
         $status = $request->input('status', 'all');
-        
+
         // Construir query base
         $query = Service::with(['client', 'assignedUser']);
-        
+
         // Si el usuario es técnico (no super-admin), solo mostrar sus servicios
         if (auth()->check() && auth()->user()->hasRole('technician') && !auth()->user()->hasRole('super-admin')) {
             $query->where('assigned_to', auth()->id());
         }
-        
+
         // Aplicar filtros de fecha
         try {
             $query->whereBetween('created_at', [
@@ -77,84 +77,91 @@ class ReportController extends Controller
                 // Si tampoco hay scheduled_date, no filtrar por fecha
             }
         }
-        
+
         // Aplicar filtro de tipo de servicio
         if ($serviceType !== 'all') {
             $query->where('service_type', $serviceType);
         }
-        
+
         // Aplicar filtro de cliente
         if ($clientId !== 'all') {
             $query->where('client_id', $clientId);
         }
-        
+
         // Aplicar filtro de técnico
         if ($technicianId !== 'all') {
             $query->where('assigned_to', $technicianId);
         }
-        
+
         // Aplicar filtro de estado
         if ($status !== 'all') {
             $query->where('status', $status);
         }
-        
+
         $services = $query->get();
-        
+
         // ===== ESTADÍSTICAS =====
         $totalServices = $services->count();
         $completedServices = $services->where('status', 'finalizado')->count();
         $completedPercentage = $totalServices > 0 ? round(($completedServices / $totalServices) * 100, 1) : 0;
-        
+
         // Ingresos del período (solo servicios completados con precio)
         $periodIncome = $services->where('status', 'finalizado')
             ->whereNotNull('price')
             ->where('price', '>', 0)
             ->sum('price');
-        
+
         // Clientes únicos activos
         $uniqueClients = $services->pluck('client_id')->unique()->count();
-        
+
         // Técnicos activos en el período
         $activeTechnicians = $services->whereNotNull('assigned_to')
             ->pluck('assigned_to')
             ->unique()
             ->count();
-        
+
         // ===== GRÁFICOS =====
-        
+
         // 1. Servicios por Estado (Gráfico de barras)
         $statusDistribution = $services->groupBy('status')->map->count();
-        $statusLabels = $statusDistribution->keys()->map(function($status) {
+        $statusLabels = $statusDistribution->keys()->map(function ($status) {
             return strtoupper($status);
         })->toArray();
         $statusData = $statusDistribution->values()->toArray();
-        
+
         // 2. Distribución por Tipo (Gráfico de pastel)
         $typeDistribution = $services->groupBy('service_type')->map->count();
-        $typeLabels = $typeDistribution->keys()->map(function($type) {
+        $typeLabels = $typeDistribution->keys()->map(function ($type) {
             return ucfirst(str_replace('-', ' ', $type));
         })->toArray();
         $typeData = $typeDistribution->values()->toArray();
         $typeColors = [
-            '#3b82f6', '#ef4444', '#f59e0b', '#8b5cf6', '#ec4899', '#22c55e', '#06b6d4', '#f97316'
+            '#3b82f6',
+            '#ef4444',
+            '#f59e0b',
+            '#8b5cf6',
+            '#ec4899',
+            '#22c55e',
+            '#06b6d4',
+            '#f97316'
         ];
-        
+
         // 3. Evolución Temporal (Gráfico de líneas) - Últimos 12 meses
         $temporalData = [];
         $months = [];
-        
+
         // Siempre mostrar los últimos 12 meses
         $endMonth = Carbon::now();
         $startMonth = Carbon::now()->subMonths(11)->startOfMonth();
-        
+
         // Generar los últimos 12 meses
         $current = $startMonth->copy();
         while ($current <= $endMonth) {
             $monthKey = $current->format('Y-m');
             $months[] = $current->locale('es')->isoFormat('MMM YYYY');
-            
+
             // Filtrar servicios de este mes específico
-            $monthServices = $services->filter(function($service) use ($current) {
+            $monthServices = $services->filter(function ($service) use ($current) {
                 try {
                     $serviceDate = $service->created_at ?? $service->scheduled_date;
                     return $serviceDate && Carbon::parse($serviceDate)->format('Y-m') === $current->format('Y-m');
@@ -162,49 +169,49 @@ class ReportController extends Controller
                     return false;
                 }
             });
-            
+
             $temporalData[] = [
                 'total' => $monthServices->count(),
                 'completed' => $monthServices->whereIn('status', ['completed', 'finalizado'])->count(),
                 'pending' => $monthServices->whereIn('status', ['pendiente', 'pending', 'in_progress'])->count(),
             ];
-            
+
             $current->addMonth();
         }
-        
+
         // ===== TOP 5 =====
-        
+
         // Top 5 Clientes
         $topClients = $services->groupBy('client_id')
-            ->map(function($clientServices) {
+            ->map(function ($clientServices) {
                 return [
                     'client' => $clientServices->first()->client ?? null,
                     'count' => $clientServices->count()
                 ];
             })
-            ->filter(function($item) {
+            ->filter(function ($item) {
                 return $item['client'] !== null;
             })
             ->sortByDesc('count')
             ->take(5)
             ->values();
-        
+
         // Top 5 Técnicos
         $topTechnicians = $services->whereNotNull('assigned_to')
             ->groupBy('assigned_to')
-            ->map(function($techServices) {
+            ->map(function ($techServices) {
                 return [
                     'technician' => $techServices->first()->assignedUser ?? null,
                     'count' => $techServices->count()
                 ];
             })
-            ->filter(function($item) {
+            ->filter(function ($item) {
                 return $item['technician'] !== null;
             })
             ->sortByDesc('count')
             ->take(5)
             ->values();
-        
+
         // ===== DATOS PARA FILTROS =====
         try {
             // Intentar ordenar por business_name primero
@@ -222,31 +229,31 @@ class ReportController extends Controller
                 }
             }
         }
-        $allTechnicians = User::whereHas('roles', function($q) {
+        $allTechnicians = User::whereHas('roles', function ($q) {
             $q->where('name', 'technician');
         })->get();
-        
-        $serviceTypes = Service::distinct()->pluck('service_type')->filter()->map(function($type) {
+
+        $serviceTypes = Service::distinct()->pluck('service_type')->filter()->map(function ($type) {
             return [
                 'value' => $type,
                 'label' => ucfirst(str_replace('-', ' ', $type))
             ];
         })->values();
-        
+
         // Variables adicionales para los gráficos
         $inProgressServices = $services->where('status', 'in_progress')->count();
         $pendingServices = $services->whereIn('status', ['pendiente', 'pending'])->count();
-        
+
         // Renombrar variables para que coincidan con la vista
         $serviceTypeLabels = $typeLabels;
         $serviceTypeCounts = $typeData;
-        
+
         // Preparar datos temporales para el gráfico de líneas
         $temporalLabels = $months;
         $temporalCompleted = collect($temporalData)->pluck('completed')->toArray();
         $temporalPending = collect($temporalData)->pluck('pending')->toArray();
         $temporalTotal = collect($temporalData)->pluck('total')->toArray();
-        
+
         return view('reports.index', compact(
             'startDate',
             'endDate',
@@ -289,7 +296,7 @@ class ReportController extends Controller
     public function export(Request $request)
     {
         $format = $request->input('format', 'csv'); // csv, pdf, excel
-        
+
         // Obtener los mismos filtros que en index()
         $startDate = $request->input('start_date', Carbon::now()->startOfMonth()->format('Y-m-d'));
         $endDate = $request->input('end_date', Carbon::now()->format('Y-m-d'));
@@ -297,10 +304,10 @@ class ReportController extends Controller
         $clientId = $request->input('client_id', 'all');
         $technicianId = $request->input('technician_id', 'all');
         $status = $request->input('status', 'all');
-        
+
         // Construir query base (mismo que en index)
         $query = Service::with(['client', 'assignedUser']);
-        
+
         try {
             $query->whereBetween('created_at', [
                 Carbon::parse($startDate)->startOfDay(),
@@ -316,7 +323,7 @@ class ReportController extends Controller
                 // No filtrar por fecha
             }
         }
-        
+
         if ($serviceType !== 'all') {
             $query->where('service_type', $serviceType);
         }
@@ -329,9 +336,9 @@ class ReportController extends Controller
         if ($status !== 'all') {
             $query->where('status', $status);
         }
-        
+
         $services = $query->get();
-        
+
         // Preparar datos para exportación
         $exportData = [];
         foreach ($services as $service) {
@@ -349,7 +356,7 @@ class ReportController extends Controller
                 'Completado' => $service->completed_at ? $service->completed_at->format('d/m/Y H:i') : 'N/A',
             ];
         }
-        
+
         if ($format === 'csv') {
             return $this->exportToCsv($exportData, $startDate, $endDate);
         } elseif ($format === 'pdf') {
@@ -366,28 +373,28 @@ class ReportController extends Controller
     {
         $filename = 'reporte-servicios-' . $startDate . '-al-' . $endDate . '-' . now()->format('Y-m-d-His') . '.csv';
         $filepath = storage_path('app/exports/' . $filename);
-        
+
         if (!file_exists(dirname($filepath))) {
             mkdir(dirname($filepath), 0755, true);
         }
-        
+
         $file = fopen($filepath, 'w');
-        
+
         // BOM para UTF-8 (Excel compatibility)
-        fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
-        
+        fprintf($file, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
         if (!empty($data)) {
             // Headers
             fputcsv($file, array_keys($data[0]));
-            
+
             // Data
             foreach ($data as $row) {
                 fputcsv($file, $row);
             }
         }
-        
+
         fclose($file);
-        
+
         return response()->download($filepath, $filename)->deleteFileAfterSend(true);
     }
 
@@ -397,16 +404,94 @@ class ReportController extends Controller
     private function exportToPdf($services, string $startDate, string $endDate, array $filters)
     {
         try {
-            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('reports.export-pdf', compact('services', 'startDate', 'endDate', 'filters'))
+            // ===== CALCULAR ESTADÍSTICAS PARA GRÁFICOS =====
+            $totalServices = $services->count();
+            $completedServices = $services->whereIn('status', ['completed', 'finalizado'])->count();
+            $inProgressServices = $services->whereIn('status', ['in_progress', 'en_progreso'])->count();
+            $pendingServices = $services->whereIn('status', ['pendiente', 'pending'])->count();
+            $completedPercentage = $totalServices > 0 ? round(($completedServices / $totalServices) * 100, 1) : 0;
+
+            // Ingresos del período
+            $periodIncome = $services->whereIn('status', ['completed', 'finalizado'])
+                ->whereNotNull('price')
+                ->where('price', '>', 0)
+                ->sum('price');
+
+            // Clientes y técnicos únicos
+            $uniqueClients = $services->pluck('client_id')->unique()->count();
+            $activeTechnicians = $services->whereNotNull('assigned_to')
+                ->pluck('assigned_to')
+                ->unique()
+                ->count();
+
+            // Distribución por Estado
+            $statusDistribution = $services->groupBy('status')->map->count();
+            $maxStatusCount = $statusDistribution->max() ?: 1;
+
+            // Distribución por Tipo
+            $typeDistribution = $services->groupBy('service_type')->map->count();
+            $maxTypeCount = $typeDistribution->max() ?: 1;
+
+            // Top 5 Clientes
+            $topClients = $services->groupBy('client_id')
+                ->map(function ($clientServices) {
+                    return [
+                        'client' => $clientServices->first()->client ?? null,
+                        'count' => $clientServices->count()
+                    ];
+                })
+                ->filter(function ($item) {
+                    return $item['client'] !== null;
+                })
+                ->sortByDesc('count')
+                ->take(5)
+                ->values();
+
+            // Top 5 Técnicos
+            $topTechnicians = $services->whereNotNull('assigned_to')
+                ->groupBy('assigned_to')
+                ->map(function ($techServices) {
+                    return [
+                        'technician' => $techServices->first()->assignedUser ?? null,
+                        'count' => $techServices->count()
+                    ];
+                })
+                ->filter(function ($item) {
+                    return $item['technician'] !== null;
+                })
+                ->sortByDesc('count')
+                ->take(5)
+                ->values();
+
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('reports.export-pdf', compact(
+                'services',
+                'startDate',
+                'endDate',
+                'filters',
+                'totalServices',
+                'completedServices',
+                'inProgressServices',
+                'pendingServices',
+                'completedPercentage',
+                'periodIncome',
+                'uniqueClients',
+                'activeTechnicians',
+                'statusDistribution',
+                'maxStatusCount',
+                'typeDistribution',
+                'maxTypeCount',
+                'topClients',
+                'topTechnicians'
+            ))
                 ->setPaper('a4', 'landscape')
                 ->setOptions([
                     'isHtml5ParserEnabled' => true,
                     'isRemoteEnabled' => true,
                     'defaultFont' => 'Arial',
                 ]);
-            
+
             $filename = 'reporte-servicios-' . $startDate . '-al-' . $endDate . '-' . now()->format('Y-m-d-His') . '.pdf';
-            
+
             return $pdf->download($filename);
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error al generar PDF: ' . $e->getMessage());
@@ -421,7 +506,7 @@ class ReportController extends Controller
         $scheduledReports = ScheduledReport::with('creator')
             ->orderBy('created_at', 'desc')
             ->get();
-        
+
         return view('reports.scheduled', compact('scheduledReports'));
     }
 
@@ -439,11 +524,11 @@ class ReportController extends Controller
                 $allClients = Client::orderBy('id')->get();
             }
         }
-        
-        $allTechnicians = User::whereHas('roles', function($q) {
+
+        $allTechnicians = User::whereHas('roles', function ($q) {
             $q->where('name', 'technician');
         })->get();
-        
+
         return view('reports.create-scheduled', compact('allClients', 'allTechnicians'));
     }
 
@@ -467,13 +552,13 @@ class ReportController extends Controller
         $scheduledReport->format = $validated['format'];
         $scheduledReport->frequency = $validated['frequency'];
         $scheduledReport->created_by = auth()->id();
-        
+
         // Procesar destinatarios (separados por comas)
         if ($request->filled('recipients')) {
             $recipients = array_map('trim', explode(',', $request->recipients));
             $scheduledReport->recipients = array_filter($recipients);
         }
-        
+
         // Guardar filtros
         $filters = [];
         if ($request->filled('start_date')) {
@@ -495,7 +580,7 @@ class ReportController extends Controller
             $filters['status'] = $request->status;
         }
         $scheduledReport->filters = $filters;
-        
+
         $scheduledReport->calculateNextRun();
         $scheduledReport->save();
 
@@ -517,11 +602,11 @@ class ReportController extends Controller
                 $allClients = Client::orderBy('id')->get();
             }
         }
-        
-        $allTechnicians = User::whereHas('roles', function($q) {
+
+        $allTechnicians = User::whereHas('roles', function ($q) {
             $q->where('name', 'technician');
         })->get();
-        
+
         return view('reports.edit-scheduled', compact('scheduledReport', 'allClients', 'allTechnicians'));
     }
 
@@ -544,14 +629,14 @@ class ReportController extends Controller
         $scheduledReport->type = $validated['type'];
         $scheduledReport->format = $validated['format'];
         $scheduledReport->frequency = $validated['frequency'];
-        $scheduledReport->is_active = $request->has('is_active') ? (bool)$request->is_active : false;
-        
+        $scheduledReport->is_active = $request->has('is_active') ? (bool) $request->is_active : false;
+
         // Procesar destinatarios
         if ($request->filled('recipients')) {
             $recipients = array_map('trim', explode(',', $request->recipients));
             $scheduledReport->recipients = array_filter($recipients);
         }
-        
+
         // Guardar filtros
         $filters = [];
         if ($request->filled('start_date')) {
@@ -573,7 +658,7 @@ class ReportController extends Controller
             $filters['status'] = $request->status;
         }
         $scheduledReport->filters = $filters;
-        
+
         $scheduledReport->calculateNextRun();
         $scheduledReport->save();
 
@@ -622,25 +707,25 @@ class ReportController extends Controller
         $thisWeek = Carbon::now()->startOfWeek();
         $thisMonth = Carbon::now()->startOfMonth();
         $thisYear = Carbon::now()->startOfYear();
-        
+
         // Work order statistics
         $totalWorkOrders = WorkOrder::count();
         $todayWorkOrders = WorkOrder::whereDate('scheduled_date', $today)->count();
         $thisWeekWorkOrders = WorkOrder::where('scheduled_date', '>=', $thisWeek)->count();
         $thisMonthWorkOrders = WorkOrder::where('scheduled_date', '>=', $thisMonth)->count();
         $thisYearWorkOrders = WorkOrder::where('scheduled_date', '>=', $thisYear)->count();
-        
+
         // Status distribution
         $statusDistribution = WorkOrder::selectRaw('status, COUNT(*) as count')
             ->groupBy('status')
             ->pluck('count', 'status');
-        
+
         // Service distribution
         $serviceDistribution = WorkOrder::selectRaw('s.name as service_name, COUNT(*) as count')
             ->join('services as s', 'work_orders.service_id', '=', 's.id')
             ->groupBy('s.id', 's.name')
             ->pluck('count', 'service_name');
-        
+
         // Monthly work orders trend
         $monthlyTrend = WorkOrder::selectRaw('
                 DATE_FORMAT(scheduled_date, "%Y-%m") as month,
@@ -650,7 +735,7 @@ class ReportController extends Controller
             ->groupBy('month')
             ->orderBy('month')
             ->get();
-        
+
         // Top clients by work orders
         $topClients = WorkOrder::selectRaw('
                 c.name as client_name,
@@ -662,7 +747,7 @@ class ReportController extends Controller
             ->orderBy('work_order_count', 'desc')
             ->limit(10)
             ->get();
-        
+
         // Material usage trends
         $materialUsageTrend = MaterialMovement::selectRaw('
                 m.name as material_name,
@@ -675,7 +760,7 @@ class ReportController extends Controller
             ->groupBy('m.id', 'm.name', 'month')
             ->orderBy('month')
             ->get();
-        
+
         // Quality metrics
         $qualityMetrics = ChecklistResponse::selectRaw('
                 status,
@@ -685,7 +770,7 @@ class ReportController extends Controller
             ->where('created_at', '>=', $thisMonth)
             ->groupBy('status')
             ->get();
-        
+
         // Nonconformity trends
         $nonconformityTrend = Nonconformity::selectRaw('
                 DATE_FORMAT(reported_at, "%Y-%m") as month,
@@ -696,7 +781,7 @@ class ReportController extends Controller
             ->groupBy('month')
             ->orderBy('month')
             ->get();
-        
+
         return view('reports.dashboard', compact(
             'totalWorkOrders',
             'todayWorkOrders',
@@ -994,30 +1079,30 @@ class ReportController extends Controller
             $data = $this->getExportData($request->all());
             $filename = $this->generateExportFilename($request->all());
             $filepath = storage_path('app/exports/' . $filename);
-            
+
             // Ensure directory exists
             if (!file_exists(dirname($filepath))) {
                 mkdir(dirname($filepath), 0755, true);
             }
-            
+
             // Write CSV file
             $file = fopen($filepath, 'w');
-            
+
             if (!empty($data)) {
                 // Write headers
                 fputcsv($file, array_keys($data[0]));
-                
+
                 // Write data
                 foreach ($data as $row) {
                     fputcsv($file, $row);
                 }
             }
-            
+
             fclose($file);
-            
+
             // Return download URL
             $downloadUrl = route('reports.download-export', ['filename' => $filename]);
-            
+
             return redirect($downloadUrl);
         } catch (\Exception $e) {
             return redirect()->back()
@@ -1031,11 +1116,11 @@ class ReportController extends Controller
     public function downloadExport(string $filename): \Symfony\Component\HttpFoundation\Response
     {
         $filepath = storage_path('app/exports/' . $filename);
-        
+
         if (!file_exists($filepath)) {
             abort(404, 'Archivo no encontrado.');
         }
-        
+
         return response()->download($filepath)->deleteFileAfterSend(true);
     }
 
@@ -1047,7 +1132,7 @@ class ReportController extends Controller
         $type = $params['type'] ?? 'work_orders';
         $startDate = $params['start_date'] ?? null;
         $endDate = $params['end_date'] ?? null;
-        
+
         switch ($type) {
             case 'work_orders':
                 return $this->getWorkOrdersExportData($startDate, $endDate);
@@ -1083,13 +1168,13 @@ class ReportController extends Controller
         $startDate = $params['start_date'] ?? null;
         $endDate = $params['end_date'] ?? null;
         $timestamp = now()->format('Y-m-d_H-i-s');
-        
+
         $filename = "{$type}_{$timestamp}.csv";
-        
+
         if ($startDate && $endDate) {
             $filename = "{$type}_{$startDate}_to_{$endDate}_{$timestamp}.csv";
         }
-        
+
         return $filename;
     }
 
@@ -1099,17 +1184,17 @@ class ReportController extends Controller
     private function getWorkOrdersExportData(?string $startDate, ?string $endDate): array
     {
         $query = WorkOrder::with(['client', 'site', 'service', 'assignedTechnicians.technician']);
-        
+
         if ($startDate) {
             $query->where('scheduled_date', '>=', $startDate);
         }
-        
+
         if ($endDate) {
             $query->where('scheduled_date', '<=', $endDate);
         }
-        
+
         $workOrders = $query->get();
-        
+
         $data = [];
         foreach ($workOrders as $workOrder) {
             $data[] = [
@@ -1125,7 +1210,7 @@ class ReportController extends Controller
                 'notes' => $workOrder->notes,
             ];
         }
-        
+
         return $data;
     }
 
@@ -1135,17 +1220,17 @@ class ReportController extends Controller
     private function getMaterialsExportData(?string $startDate, ?string $endDate): array
     {
         $query = MaterialMovement::with(['material', 'technician', 'workOrder']);
-        
+
         if ($startDate) {
             $query->where('created_at', '>=', $startDate);
         }
-        
+
         if ($endDate) {
             $query->where('created_at', '<=', $endDate);
         }
-        
+
         $movements = $query->get();
-        
+
         $data = [];
         foreach ($movements as $movement) {
             $data[] = [
@@ -1158,7 +1243,7 @@ class ReportController extends Controller
                 'created_at' => $movement->created_at,
             ];
         }
-        
+
         return $data;
     }
 
@@ -1168,17 +1253,17 @@ class ReportController extends Controller
     private function getTreatmentsExportData(?string $startDate, ?string $endDate): array
     {
         $query = Treatment::with(['pest', 'material', 'technician', 'workOrder']);
-        
+
         if ($startDate) {
             $query->where('applied_at', '>=', $startDate);
         }
-        
+
         if ($endDate) {
             $query->where('applied_at', '<=', $endDate);
         }
-        
+
         $treatments = $query->get();
-        
+
         $data = [];
         foreach ($treatments as $treatment) {
             $data[] = [
@@ -1193,7 +1278,7 @@ class ReportController extends Controller
                 'notes' => $treatment->notes,
             ];
         }
-        
+
         return $data;
     }
 
@@ -1203,17 +1288,17 @@ class ReportController extends Controller
     private function getChecklistsExportData(?string $startDate, ?string $endDate): array
     {
         $query = ChecklistResponse::with(['checklistTemplate', 'technician', 'workOrder']);
-        
+
         if ($startDate) {
             $query->where('submitted_at', '>=', $startDate);
         }
-        
+
         if ($endDate) {
             $query->where('submitted_at', '<=', $endDate);
         }
-        
+
         $responses = $query->get();
-        
+
         $data = [];
         foreach ($responses as $response) {
             $data[] = [
@@ -1226,7 +1311,7 @@ class ReportController extends Controller
                 'approval_notes' => $response->approval_notes,
             ];
         }
-        
+
         return $data;
     }
 
@@ -1236,17 +1321,17 @@ class ReportController extends Controller
     private function getNonconformitiesExportData(?string $startDate, ?string $endDate): array
     {
         $query = Nonconformity::with(['technician', 'workOrder']);
-        
+
         if ($startDate) {
             $query->where('reported_at', '>=', $startDate);
         }
-        
+
         if ($endDate) {
             $query->where('reported_at', '<=', $endDate);
         }
-        
+
         $nonconformities = $query->get();
-        
+
         $data = [];
         foreach ($nonconformities as $nonconformity) {
             $data[] = [
@@ -1261,7 +1346,7 @@ class ReportController extends Controller
                 'resolution' => $nonconformity->resolution,
             ];
         }
-        
+
         return $data;
     }
 
@@ -1271,7 +1356,7 @@ class ReportController extends Controller
     private function getClientsExportData(): array
     {
         $clients = Client::all();
-        
+
         $data = [];
         foreach ($clients as $client) {
             $data[] = [
@@ -1290,7 +1375,7 @@ class ReportController extends Controller
                 'created_at' => $client->created_at,
             ];
         }
-        
+
         return $data;
     }
 
@@ -1300,7 +1385,7 @@ class ReportController extends Controller
     private function getSitesExportData(): array
     {
         $sites = Site::with('client')->get();
-        
+
         $data = [];
         foreach ($sites as $site) {
             $data[] = [
@@ -1319,7 +1404,7 @@ class ReportController extends Controller
                 'created_at' => $site->created_at,
             ];
         }
-        
+
         return $data;
     }
 
@@ -1329,7 +1414,7 @@ class ReportController extends Controller
     private function getServicesExportData(): array
     {
         $services = Service::all();
-        
+
         $data = [];
         foreach ($services as $service) {
             $data[] = [
@@ -1340,7 +1425,7 @@ class ReportController extends Controller
                 'created_at' => $service->created_at,
             ];
         }
-        
+
         return $data;
     }
 
@@ -1350,7 +1435,7 @@ class ReportController extends Controller
     private function getPestsExportData(): array
     {
         $pests = Pest::all();
-        
+
         $data = [];
         foreach ($pests as $pest) {
             $data[] = [
@@ -1362,7 +1447,7 @@ class ReportController extends Controller
                 'created_at' => $pest->created_at,
             ];
         }
-        
+
         return $data;
     }
 
@@ -1372,7 +1457,7 @@ class ReportController extends Controller
     private function getTechniciansExportData(): array
     {
         $technicians = User::role('technician')->get();
-        
+
         $data = [];
         foreach ($technicians as $technician) {
             $data[] = [
@@ -1383,7 +1468,7 @@ class ReportController extends Controller
                 'created_at' => $technician->created_at,
             ];
         }
-        
+
         return $data;
     }
 }
